@@ -28,6 +28,7 @@ const total = ref(0);
 const queryParams = reactive<RoleQuery>({
   pageNum: 1,
   pageSize: 10,
+  status: undefined,
 });
 
 const roleList = ref<RolePageVO[]>();
@@ -215,6 +216,11 @@ function handleRoleMenuSubmit() {
   }
 }
 
+// 修改状态
+function handleStatusChange(row: any) {
+  console.log(row);
+}
+
 onMounted(() => {
   handleQuery();
 });
@@ -224,13 +230,34 @@ onMounted(() => {
   <div class="app-container">
     <div class="search-container">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-        <el-form-item prop="keywords" label="关键字">
+        <el-form-item prop="keywords" label="角色名称">
           <el-input
             v-model="queryParams.keywords"
-            placeholder="角色名称"
+            placeholder="请输入角色名称"
             clearable
             @keyup.enter="handleQuery"
           />
+        </el-form-item>
+
+        <el-form-item prop="keywords" label="角色编号">
+          <el-input
+            v-model="queryParams.keywords"
+            placeholder="请输入角色编号"
+            clearable
+            @keyup.enter="handleQuery"
+          />
+        </el-form-item>
+
+        <el-form-item label="状态" prop="status">
+          <el-select
+            v-model="queryParams.status"
+            placeholder="全部"
+            clearable
+            class="!w-[100px]"
+          >
+            <el-option label="启用" :value="1" />
+            <el-option label="禁用" :value="0" />
+          </el-select>
         </el-form-item>
 
         <el-form-item>
@@ -260,21 +287,28 @@ onMounted(() => {
         v-loading="loading"
         :data="roleList"
         highlight-current-row
-        border
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center" />
+        <el-table-column type="index" label="序号" width="60" align="center" />
         <el-table-column label="角色名称" prop="name" min-width="100" />
-        <el-table-column label="角色编码" prop="code" width="150" />
-
+        <el-table-column label="描述" prop="code" width="150" />
+        <el-table-column label="编号" prop="code" width="150" />
         <el-table-column label="状态" align="center" width="100">
           <template #default="scope">
-            <el-tag v-if="scope.row.status === 1" type="success">正常</el-tag>
-            <el-tag v-else type="info">禁用</el-tag>
+            <el-switch
+              v-model="scope.row.status"
+              :active-value="1"
+              :inactive-value="0"
+              @change="handleStatusChange(scope.row)"
+            />
           </template>
         </el-table-column>
 
-        <el-table-column label="排序" align="center" width="80" prop="sort" />
+        <el-table-column label="创建人" align="center" prop="sort" />
+        <el-table-column label="创建时间" align="center" prop="sort" />
+        <el-table-column label="修改人" align="center" prop="sort" />
+        <el-table-column label="修改时间" align="center" prop="sort" />
 
         <el-table-column fixed="right" label="操作" width="220">
           <template #default="scope">
@@ -332,8 +366,19 @@ onMounted(() => {
           <el-input v-model="formData.name" placeholder="请输入角色名称" />
         </el-form-item>
 
-        <el-form-item label="角色编码" prop="code">
-          <el-input v-model="formData.code" placeholder="请输入角色编码" />
+        <el-form-item label="角色编号" prop="code">
+          <el-input v-model="formData.code" placeholder="请输入角色编号" />
+        </el-form-item>
+
+        <el-form-item label="描述" prop="code">
+          <el-input
+            type="textarea"
+            rows="5"
+            show-word-limit
+            maxlength="200"
+            v-model="formData.code"
+            placeholder="请输入描述"
+          />
         </el-form-item>
 
         <el-form-item label="数据权限" prop="dataScope">
@@ -350,15 +395,6 @@ onMounted(() => {
             <el-radio :label="1">正常</el-radio>
             <el-radio :label="0">停用</el-radio>
           </el-radio-group>
-        </el-form-item>
-
-        <el-form-item label="排序" prop="sort">
-          <el-input-number
-            v-model="formData.sort"
-            controls-position="right"
-            :min="0"
-            style="width: 100px"
-          />
         </el-form-item>
       </el-form>
 

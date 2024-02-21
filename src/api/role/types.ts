@@ -3,6 +3,7 @@
  */
 export interface RoleQuery extends PageQuery {
   keywords?: string;
+  status?: number;
 }
 
 /**
