@@ -1,7 +1,12 @@
 <!-- 部门树 -->
 <template>
   <el-card shadow="never">
-    <el-input v-model="deptName" placeholder="部门名称" clearable>
+    <el-input
+      v-model="deptName"
+      maxlength="20"
+      placeholder="请输入部门名称"
+      clearable
+    >
       <template #prefix>
         <i-ep-search />
       </template>
