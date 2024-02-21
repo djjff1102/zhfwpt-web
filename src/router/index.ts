@@ -107,7 +107,7 @@ export const constantRoutes: RouteRecordRaw[] = [
         component: () => import("@/views/system/dept/index.vue"),
         name: "Dept",
         meta: {
-          title: "部门管理",
+          title: "组织管理",
           icon: "tree",
           hidden: false,
           roles: ["ADMIN"],
