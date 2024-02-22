@@ -1,73 +1,34 @@
 /**
  * 部门查询参数
  */
-export interface DeptQuery {
-  keywords?: string;
-  status?: number;
+export interface DeptQuery extends PageQuery {
+  name?: string;
 }
 
 /**
  * 部门类型
  */
 export interface DeptVO {
-  /**
-   * 子部门
-   */
-  children?: DeptVO[];
-  /**
-   * 创建时间
-   */
-  createTime?: Date;
-  /**
-   * 部门ID
-   */
-  id?: number;
-  /**
-   * 部门名称
-   */
+  id?: string;
+  pid?: string;
   name?: string;
-  /**
-   * 父部门ID
-   */
-  parentId?: number;
-  /**
-   * 排序
-   */
+  code?: string;
+  systemType?: number;
+  type?: number;
   sort?: number;
-  /**
-   * 状态(1:启用；0:禁用)
-   */
-  status?: number;
-  /**
-   * 修改时间
-   */
-  updateTime?: Date;
+  children?: DeptVO[];
 }
 
 /**
  * 部门表单类型
  */
 export interface DeptForm {
-  /**
-   * 部门ID(新增不填)
-   */
-  id?: number;
-  /**
-   * 部门名称
-   */
   name?: string;
-  /**
-   * 父部门ID
-   */
-  parentId: number;
-  /**
-   * 排序
-   */
-  sort?: number;
-  /**
-   * 状态(1:启用；0：禁用)
-   */
-  status?: number;
+  alias: string[];
+  pid: string; // '0' 顶层 | 'xxx' 父级id
+  system_type?: number;
+  remark?: string;
+  id?: string;
 }
 
 export interface OrganizationUnit {

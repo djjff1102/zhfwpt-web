@@ -49,102 +49,60 @@ export interface Organization {
  * 用户查询对象类型
  */
 export interface UserQuery extends PageQuery {
-  keywords?: string;
-  status?: number;
-  deptId?: number;
-  startTime?: string;
-  endTime?: string;
+  current?: boolean;
+  role_id?: string;
+  real_name?: string;
+  name?: string;
+  phone?: string;
+  organization_id: string;
+  system_type: number;
+  total?: number;
 }
 
 /**
  * 用户分页对象
  */
 export interface UserPageVO {
-  /**
-   * 用户头像地址
-   */
-  avatar?: string;
-  /**
-   * 创建时间
-   */
-  createTime?: Date;
-  /**
-   * 部门名称
-   */
-  deptName?: string;
-  /**
-   * 用户邮箱
-   */
-  email?: string;
-  /**
-   * 性别
-   */
-  genderLabel?: string;
-  /**
-   * 用户ID
-   */
-  id?: number;
-  /**
-   * 手机号
-   */
-  mobile?: string;
-  /**
-   * 用户昵称
-   */
-  nickname?: string;
-  /**
-   * 角色名称，多个使用英文逗号(,)分割
-   */
-  roleNames?: string;
-  /**
-   * 用户状态(1:启用;0:禁用)
-   */
-  status?: number;
-  /**
-   * 用户名
-   */
-  username?: string;
+  create_date?: string;
+  create_user_id?: string;
+  create_user_name?: string;
+  enable_flag?: boolean;
+  id: string;
+  name: string;
+  organization_id?: string;
+  organization_name?: string;
+  organization_type?: number;
+  parent_organization_names?: string;
+  phone?: string;
+  real_name?: string;
+  role_id?: string;
+  role_name?: string;
+  system_type?: number;
+  work_no?: string;
+  work_phone?: string;
 }
 
 /**
  * 用户表单类型
  */
 export interface UserForm {
-  /**
-   * 用户头像
-   */
-  avatar?: string;
-  /**
-   * 部门ID
-   */
-  deptId?: number;
-  /**
-   * 邮箱
-   */
-  email?: string;
-  /**
-   * 性别
-   */
-  gender?: number;
-  /**
-   * 用户ID
-   */
-  id?: number;
-  mobile?: string;
-  /**
-   * 昵称
-   */
-  nickname?: string;
-  /**
-   * 角色ID集合
-   */
-  roleIds?: number[];
-  /**
-   * 用户状态(1:正常;0:禁用)
-   */
-  status?: number;
-  /**
-   * 用户名
-   */
-  username?: string;
+  organization_id: string;
+  role_id?: string;
+  name: string;
+  real_name?: string;
+  password?: string;
+  phone?: string;
+  system_type?: number;
+  enable_flag?: boolean;
+  work_no?: string;
+
+  create_date?: string;
+  create_user_id?: string;
+  create_user_name?: string;
+  id?: string;
+  organization_name?: string;
+  organization_type?: number;
+  parent_organization_names?: string;
+  role_name?: string;
+  work_phone?: string;
 }

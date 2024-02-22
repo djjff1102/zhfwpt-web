@@ -16,6 +16,7 @@
       ref="deptTreeRef"
       class="mt-2"
       :data="deptList"
+      highlight-current
       :props="{ children: 'children', label: 'name', disabled: '' }"
       :expand-on-click-node="false"
       :filter-node-method="handleFilter"
@@ -36,7 +37,7 @@ const props = defineProps({
   },
 });
 
-const deptList = ref<OrganizationUnit[]>(); // 部门列表
+const deptList = useStorage("deptList", [] as OrganizationUnit[]); // 部门列表
 const deptTreeRef = ref(ElTree); // 部门树
 const deptName = ref(); // 部门名称
 
@@ -63,7 +64,7 @@ function handleFilter(value: string, data: any) {
 
 /** 部门树节点 Click */
 function handleNodeClick(data: { [key: string]: any }) {
-  deptId.value = data.value;
+  deptId.value = data.id;
   emits("node-click");
 }
 

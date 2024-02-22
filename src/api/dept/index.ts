@@ -9,7 +9,7 @@ import { DeptForm, DeptQuery, DeptVO, OrganizationUnit } from "./types";
  */
 export function listDepts(queryParams?: DeptQuery): AxiosPromise<DeptVO[]> {
   return request({
-    url: "/api/v1/dept",
+    url: "/org/organization/find",
     method: "get",
     params: queryParams,
   });
@@ -52,13 +52,11 @@ export function addDept(data: DeptForm) {
 
 /**
  *  修改部门
- *
- * @param id
  * @param data
  */
-export function updateDept(id: number, data: DeptForm) {
+export function updateDept(data: DeptForm) {
   return request({
-    url: "/api/v1/dept/" + id,
+    url: "/org/organization/save",
     method: "put",
     data: data,
   });
@@ -69,9 +67,19 @@ export function updateDept(id: number, data: DeptForm) {
  *
  * @param ids
  */
-export function deleteDept(ids: string) {
+export function deleteDept(id?: string) {
   return request({
-    url: "/api/v1/dept/" + ids,
+    url: `/org/organization/delete/${id}`,
     method: "delete",
+  });
+}
+
+/**
+ * 通过部门id 查询部门别名
+ */
+export function getDeptAlias(id: string): AxiosPromise<string[]> {
+  return request({
+    url: `/org/organization/alias/find/${id}`,
+    method: "get",
   });
 }

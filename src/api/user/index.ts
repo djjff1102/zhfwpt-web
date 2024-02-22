@@ -19,9 +19,9 @@ export function getUserInfoApi(): AxiosPromise<UserInfo> {
  */
 export function getUserPage(
   queryParams: UserQuery
-): AxiosPromise<PageResult<UserPageVO[]>> {
+): AxiosPromise<UserPageVO[]> {
   return request({
-    url: "/api/v1/users/page",
+    url: "/org/user/find",
     method: "get",
     params: queryParams,
   });
@@ -44,24 +44,22 @@ export function getUserForm(userId: number): AxiosPromise<UserForm> {
  *
  * @param data
  */
-export function addUser(data: any) {
+export function addUser(data: UserForm) {
   return request({
-    url: "/api/v1/users",
-    method: "post",
+    url: "/org/user/save",
+    method: "put",
     data: data,
   });
 }
 
 /**
  * 修改用户
- *
- * @param id
  * @param data
  */
-export function updateUser(id: number, data: UserForm) {
+export function updateUser(data: UserForm) {
   return request({
-    url: "/api/v1/users/" + id,
-    method: "put",
+    url: "/org/user/update",
+    method: "patch",
     data: data,
   });
 }
@@ -72,22 +70,22 @@ export function updateUser(id: number, data: UserForm) {
  * @param id
  * @param password
  */
-export function updateUserPassword(id: number, password: string) {
+export function updateUserPassword(id: string, type = 0) {
   return request({
-    url: "/api/v1/users/" + id + "/password",
+    url: "/org/user/update_password",
     method: "patch",
-    params: { password: password },
+    data: { id, type },
   });
 }
 
 /**
  * 删除用户
  *
- * @param ids
+ * @param id
  */
-export function deleteUsers(ids: string) {
+export function deleteUser(id: string) {
   return request({
-    url: "/api/v1/users/" + ids,
+    url: `/org/user/delete/${id}`,
     method: "delete",
   });
 }

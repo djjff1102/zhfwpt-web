@@ -9,9 +9,9 @@ const tagsViewStore = useTagsViewStore();
     <router-view>
       <template #default="{ Component, route }">
         <transition name="fade-slide" mode="out-in">
-          <keep-alive :include="tagsViewStore.cachedViews">
-            <component :is="Component" :key="route.fullPath" />
-          </keep-alive>
+          <!-- <keep-alive :include="tagsViewStore.cachedViews"> -->
+          <component :is="Component" :key="route.fullPath" />
+          <!-- </keep-alive> -->
         </transition>
       </template>
     </router-view>
