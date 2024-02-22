@@ -3,8 +3,8 @@ declare global {
    * 分页查询参数
    */
   interface PageQuery {
-    pageNum: number;
-    pageSize: number;
+    page: number;
+    page_size: number;
   }
 
   /**

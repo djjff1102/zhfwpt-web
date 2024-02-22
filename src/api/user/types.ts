@@ -2,12 +2,47 @@
  * 登录用户信息
  */
 export interface UserInfo {
-  userId?: number;
+  accountNonExpired?: boolean;
+  accountNonLocked?: boolean;
+  authority?: Authority[];
+  authorityCode?: string[];
+  createDate?: string;
+  credentialsNonExpired?: boolean;
+  dataPermissionCode?: string[];
+  enableFlag?: boolean;
+  enabled?: boolean;
+  id?: string;
+  modifyDate?: string;
+  name?: string;
+  organization?: Organization;
+  password?: string;
+  phone?: string;
+  realName?: string;
+  roleId?: string[];
+  roleLevel?: number;
+  roleName?: string[];
+  salt?: string;
+  systemType?: number;
+  tenantId?: string;
   username?: string;
-  nickname?: string;
-  avatar?: string;
-  roles: string[];
-  perms: string[];
+  workNo?: string;
+  workPhone?: string;
+}
+
+export interface Authority {
+  code?: string;
+  id?: string;
+  name?: string;
+  routingAddress?: string;
+  type?: number;
+}
+
+export interface Organization {
+  code?: string;
+  id?: string;
+  name?: string;
+  systemType?: number;
+  type?: number;
 }
 
 /**

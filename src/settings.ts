@@ -5,7 +5,7 @@ const defaultSettings: AppSettings = {
   tagsView: true,
   fixedHeader: true,
   sidebarLogo: true,
-  layout: "top",
+  layout: "mix",
   theme: "light",
   size: "default",
   language: "zh-cn",

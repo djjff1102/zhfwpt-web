@@ -2,78 +2,71 @@
  * 角色查询参数
  */
 export interface RoleQuery extends PageQuery {
-  keywords?: string;
-  status?: number;
+  name?: string;
+  area_type?: string;
+  create_user_name?: string;
 }
 
 /**
  * 角色分页对象
  */
 export interface RolePageVO {
-  /**
-   * 角色编码
-   */
+  area_type?: number;
   code?: string;
-
-  /**
-   * 角色ID
-   */
-  id?: number;
-  /**
-   * 角色名称
-   */
+  create_date?: string;
+  create_user_id?: string;
+  create_user_name?: string;
+  id?: string;
   name?: string;
-  /**
-   * 排序
-   */
-  sort?: number;
-  /**
-   * 角色状态
-   */
-  status?: number;
-  /**
-   * 创建时间
-   */
-  createTime?: Date;
-  /**
-   * 修改时间
-   */
-  updateTime?: Date;
+  remark?: string;
+  sort?: string;
+  system_type?: number;
 }
-
-/**
- * 角色分页
- */
-export type RolePageResult = PageResult<RolePageVO[]>;
 
 /**
  * 角色表单对象
  */
 export interface RoleForm {
-  /**
-   * 角色ID
-   */
-  id?: number;
+  area_type?: number;
+  code?: string;
+  create_date?: string;
+  create_user_id?: string;
+  create_user_name?: string;
+  id?: string;
+  name?: string;
+  remark?: string;
+  sort?: string;
+  system_type?: number;
+}
 
-  /**
-   * 角色编码
-   */
+/**
+ * 菜单权限 树
+ */
+export interface MenuPremissionTreeProps {
+  id?: string;
+  pid?: string;
+  name?: string;
+  code?: string;
+  children?: MenuPremissionTreeProps[];
+}
+
+/**
+ * 通过roleId查询菜单权限
+ */
+export interface GetMenuPremissionByRoleIdProps extends PageQuery {
+  role_id: string;
+}
+
+/**
+ * 获取角色的菜单集合
+ */
+export interface GetRoleMenuProps {
   code: string;
-  /**
-   * 数据权限
-   */
-  dataScope?: number;
-
-  /**
-   * 角色名称
-   */
+  id: string;
   name: string;
-  /**
-   * 排序
-   */
-  sort?: number;
-  /**
-   * 角色状态(1-正常；0-停用)
-   */
-  status?: number;
+}
+
+export interface updatePremissionByIdParams {
+  id: string;
+  ids: string[];
 }

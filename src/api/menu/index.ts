@@ -3,16 +3,6 @@ import { AxiosPromise } from "axios";
 import { MenuQuery, MenuVO, MenuForm } from "./types";
 
 /**
- * 获取路由列表
- */
-export function listRoutes() {
-  return request({
-    url: "/api/v1/menus/routes",
-    method: "get",
-  });
-}
-
-/**
  * 获取菜单树形列表
  *
  * @param queryParams

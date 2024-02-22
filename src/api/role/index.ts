@@ -1,6 +1,14 @@
 import request from "@/utils/request";
 import { AxiosPromise } from "axios";
-import { RoleQuery, RolePageResult, RoleForm } from "./types";
+import {
+  RoleQuery,
+  RoleForm,
+  RolePageVO,
+  MenuPremissionTreeProps,
+  GetMenuPremissionByRoleIdProps,
+  GetRoleMenuProps,
+  updatePremissionByIdParams,
+} from "./types";
 
 /**
  * 获取角色分页数据
@@ -9,9 +17,9 @@ import { RoleQuery, RolePageResult, RoleForm } from "./types";
  */
 export function getRolePage(
   queryParams?: RoleQuery
-): AxiosPromise<RolePageResult> {
+): AxiosPromise<RolePageVO[]> {
   return request({
-    url: "/api/v1/roles/page",
+    url: "/org/role/find",
     method: "get",
     params: queryParams,
   });
@@ -79,8 +87,8 @@ export function getRoleForm(id: number): AxiosPromise<RoleForm> {
  */
 export function addRole(data: RoleForm) {
   return request({
-    url: "/api/v1/roles",
-    method: "post",
+    url: "/org/role/save",
+    method: "put",
     data: data,
   });
 }
@@ -91,22 +99,96 @@ export function addRole(data: RoleForm) {
  * @param id
  * @param data
  */
-export function updateRole(id: number, data: RoleForm) {
+export function updateRole(data: RoleForm) {
   return request({
-    url: "/api/v1/roles/" + id,
-    method: "put",
+    url: "/org/role/patch",
+    method: "patch",
     data: data,
   });
 }
 
 /**
- * 批量删除角色，多个以英文逗号(,)分割
- *
- * @param ids
+ * 删除角色
+ * @param id
+ * @returns
  */
-export function deleteRoles(ids: string) {
+export function deleteRoleById(id: string) {
   return request({
-    url: "/api/v1/roles/" + ids,
+    url: `/org/role/delete/${id}`,
     method: "delete",
+  });
+}
+
+/**
+ * 获取 菜单权限 树
+ * @returns
+ */
+export function getAuthorityTree(): AxiosPromise<MenuPremissionTreeProps[]> {
+  return request({
+    url: "/org/role/find_authority",
+    method: "get",
+  });
+}
+
+/**
+ * 获取 角色菜单权限
+ * @param params
+ * @returns
+ */
+export function getAuthorityById(
+  params: GetMenuPremissionByRoleIdProps
+): AxiosPromise<GetRoleMenuProps[]> {
+  return request({
+    url: "/org/role/authority/detail",
+    method: "get",
+    params: params,
+  });
+}
+
+/**
+ * 获取 当前角色 信息权限 树
+ */
+export function getInfoPremissionTreeById(
+  params: GetMenuPremissionByRoleIdProps
+): AxiosPromise<GetRoleMenuProps[]> {
+  return request({
+    url: "/org/role/authority/detail_data",
+    method: "get",
+    params: params,
+  });
+}
+
+/**
+ * 获取 信息权限 树
+ * @returns
+ */
+export function getInfoPremissionTree() {
+  return request({
+    url: "/org/role/find_data",
+    method: "get",
+  });
+}
+
+/**
+ * 修改 角色菜单权限
+ */
+export function updateAuthorityById(params: updatePremissionByIdParams) {
+  const { id, ids } = params;
+  return request({
+    url: `/org/role/authority/bind/${id}`,
+    method: "patch",
+    data: ids,
+  });
+}
+
+/**
+ * 修改 角色信息权限
+ */
+export function updateInfoPremissionById(params: updatePremissionByIdParams) {
+  const { id, ids } = params;
+  return request({
+    url: `/org/role/authority/data/${id}`,
+    method: "patch",
+    data: ids,
   });
 }

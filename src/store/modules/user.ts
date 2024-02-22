@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { loginApi, logoutApi } from "@/api/auth";
+import { loginApi } from "@/api/auth";
 import { getUserInfoApi } from "@/api/user";
 import { resetRouter } from "@/router";
 import { store } from "@/store";
@@ -12,8 +12,11 @@ import { useStorage } from "@vueuse/core";
 
 export const useUserStore = defineStore("user", () => {
   const user: UserInfo = {
-    roles: [],
-    perms: [],
+    authority: [],
+    authorityCode: [],
+    dataPermissionCode: [],
+    roleId: [],
+    roleName: [],
   };
 
   const token = useStorage("accessToken", "");
@@ -27,9 +30,8 @@ export const useUserStore = defineStore("user", () => {
   function login(loginData: LoginData) {
     return new Promise<void>((resolve, reject) => {
       loginApi(loginData)
-        .then((response) => {
-          const { tokenType, accessToken } = response.data;
-          token.value = tokenType + " " + accessToken; // Bearer eyJhbGciOiJIUzI1NiJ9.xxx.xxx
+        .then(({ data }) => {
+          token.value = data;
           resolve();
         })
         .catch((error) => {
@@ -43,11 +45,13 @@ export const useUserStore = defineStore("user", () => {
     return new Promise<UserInfo>((resolve, reject) => {
       getUserInfoApi()
         .then(({ data }) => {
+          console.log(data);
+          const { authority } = data;
           if (!data) {
             reject("Verification failed, please Login again.");
             return;
           }
-          if (!data.roles || data.roles.length <= 0) {
+          if (!authority || authority.length <= 0) {
             reject("getUserInfo: roles must be a non-null array!");
             return;
           }
@@ -63,15 +67,9 @@ export const useUserStore = defineStore("user", () => {
   // user logout
   function logout() {
     return new Promise<void>((resolve, reject) => {
-      logoutApi()
-        .then(() => {
-          token.value = "";
-          location.reload(); // 清空路由
-          resolve();
-        })
-        .catch((error) => {
-          reject(error);
-        });
+      token.value = "";
+      location.reload(); // 清空路由
+      resolve();
     });
   }
 

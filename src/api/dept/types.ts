@@ -69,3 +69,14 @@ export interface DeptForm {
    */
   status?: number;
 }
+
+export interface OrganizationUnit {
+  id?: string;
+  pid?: string;
+  name?: string;
+  code?: string;
+  systemType?: number;
+  type?: number;
+  sort?: number;
+  children?: OrganizationUnit[]; // 可选属性，表示子单位，递归地使用同一个接口
+}

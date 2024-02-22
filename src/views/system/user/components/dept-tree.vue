@@ -16,7 +16,7 @@
       ref="deptTreeRef"
       class="mt-2"
       :data="deptList"
-      :props="{ children: 'children', label: 'label', disabled: '' }"
+      :props="{ children: 'children', label: 'name', disabled: '' }"
       :expand-on-click-node="false"
       :filter-node-method="handleFilter"
       default-expand-all
@@ -27,6 +27,7 @@
 
 <script setup lang="ts">
 import { getDeptOptions } from "@/api/dept";
+import { OrganizationUnit } from "@/api/dept/types";
 
 const props = defineProps({
   modelValue: {
@@ -35,7 +36,7 @@ const props = defineProps({
   },
 });
 
-const deptList = ref<OptionType[]>(); // 部门列表
+const deptList = ref<OrganizationUnit[]>(); // 部门列表
 const deptTreeRef = ref(ElTree); // 部门树
 const deptName = ref(); // 部门名称
 
@@ -57,7 +58,7 @@ function handleFilter(value: string, data: any) {
   if (!value) {
     return true;
   }
-  return data.label.indexOf(value) !== -1;
+  return data.name.indexOf(value) !== -1;
 }
 
 /** 部门树节点 Click */

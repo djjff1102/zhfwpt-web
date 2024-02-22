@@ -18,6 +18,7 @@ import { getDeptOptions } from "@/api/dept";
 import { getRoleOptions } from "@/api/role";
 
 import { UserForm, UserQuery, UserPageVO } from "@/api/user/types";
+import { OrganizationUnit } from "@/api/dept/types";
 
 const queryFormRef = ref(ElForm); // 查询表单
 const userFormRef = ref(ElForm); // 用户表单
@@ -31,7 +32,7 @@ const queryParams = reactive<UserQuery>({
 const dateTimeRange = ref("");
 const total = ref(0); // 数据总数
 const pageData = ref<UserPageVO[]>(); // 用户分页数据
-const deptList = ref<OptionType[]>(); // 部门下拉数据源
+const deptList = ref<OrganizationUnit[]>(); // 部门下拉数据源
 const roleList = ref<OptionType[]>(); // 角色下拉数据源
 
 watch(dateTimeRange, (newVal) => {

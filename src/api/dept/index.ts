@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 import { AxiosPromise } from "axios";
-import { DeptForm, DeptQuery, DeptVO } from "./types";
+import { DeptForm, DeptQuery, DeptVO, OrganizationUnit } from "./types";
 
 /**
  * 部门树形表格
@@ -18,9 +18,9 @@ export function listDepts(queryParams?: DeptQuery): AxiosPromise<DeptVO[]> {
 /**
  * 部门下拉列表
  */
-export function getDeptOptions(): AxiosPromise<OptionType[]> {
+export function getDeptOptions(): AxiosPromise<OrganizationUnit[]> {
   return request({
-    url: "/api/v1/dept/options",
+    url: "/org/organization/find",
     method: "get",
   });
 }
