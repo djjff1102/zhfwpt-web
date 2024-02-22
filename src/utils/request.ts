@@ -25,7 +25,7 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   (response: AxiosResponse) => {
-    const { msg, result } = response.data;
+    const { message: msg, result } = response.data;
     if (result) {
       return response.data;
     }

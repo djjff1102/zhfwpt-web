@@ -1,17 +1,16 @@
 import request from "@/utils/request";
 import { AxiosPromise } from "axios";
-import { MenuQuery, MenuVO, MenuForm } from "./types";
+import { MenuVO, MenuForm, MenuFuncsProps } from "./types";
 
 /**
  * 获取菜单树形列表
  *
  * @param queryParams
  */
-export function listMenus(queryParams: MenuQuery): AxiosPromise<MenuVO[]> {
+export function listMenus(): AxiosPromise<MenuVO[]> {
   return request({
-    url: "/api/v1/menus",
+    url: "/org/menu/query",
     method: "get",
-    params: queryParams,
   });
 }
 
@@ -44,8 +43,19 @@ export function getMenuForm(id: number): AxiosPromise<MenuForm> {
  */
 export function addMenu(data: MenuForm) {
   return request({
-    url: "/api/v1/menus",
-    method: "post",
+    url: "/org/menu/add",
+    method: "put",
+    data: data,
+  });
+}
+
+/**
+ * 添加 子菜单
+ */
+export function addSubMenu(data: MenuForm) {
+  return request({
+    url: "/org/submenu/add",
+    method: "put",
     data: data,
   });
 }
@@ -56,10 +66,10 @@ export function addMenu(data: MenuForm) {
  * @param id
  * @param data
  */
-export function updateMenu(id: string, data: MenuForm) {
+export function updateMenu(data: MenuForm) {
   return request({
-    url: "/api/v1/menus/" + id,
-    method: "put",
+    url: "/org/menu/update",
+    method: "patch",
     data: data,
   });
 }
@@ -69,9 +79,52 @@ export function updateMenu(id: string, data: MenuForm) {
  *
  * @param id 菜单ID
  */
-export function deleteMenu(id: number) {
+export function deleteMenu(id: string) {
   return request({
-    url: "/api/v1/menus/" + id,
+    url: `/org/menu/delete/${id}`,
+    method: "delete",
+  });
+}
+
+/**
+ * 通过菜单id获取功能配置
+ */
+export function getMenuFuncsById(id: string): AxiosPromise<MenuFuncsProps[]> {
+  return request({
+    url: `/org/resource/query`,
+    method: "get",
+    params: { id },
+  });
+}
+
+/**
+ * 功能配置 添加资源
+ */
+export function addFuncResource(data: MenuFuncsProps) {
+  return request({
+    url: `/org/resource/add`,
+    method: "put",
+    data,
+  });
+}
+
+/**
+ * 功能配置 update资源
+ */
+export function updateFuncResource(data: MenuFuncsProps) {
+  return request({
+    url: `/org/resource/update`,
+    method: "patch",
+    data,
+  });
+}
+
+/**
+ * 功能配置 delete资源
+ */
+export function deleteFuncResource(id: string) {
+  return request({
+    url: `/org/resource/delete/${id}`,
     method: "delete",
   });
 }
