@@ -8,7 +8,6 @@ defineOptions({
 import { MenuForm, MenuVO } from "@/api/menu/types";
 import { listMenus, deleteMenu, updateMenu } from "@/api/menu";
 
-import SvgIcon from "@/components/SvgIcon/index.vue";
 import menuDialog from "./menuDialog.vue";
 import functionDialog from "./functionDialog.vue";
 import { MenuDialogConfigEnum } from "./menu.data";
@@ -121,7 +120,7 @@ onMounted(() => {
       >
         <el-table-column
           label="菜单名称"
-          width="250"
+          min-width="250"
           prop="name"
           show-overflow-tooltip
         />
@@ -129,15 +128,15 @@ onMounted(() => {
         <el-table-column
           label="路由路径"
           align="left"
-          width="150"
+          min-width="250"
           prop="routing_address"
         />
 
-        <el-table-column label="路由编码" align="left" width="80" prop="code" />
+        <el-table-column label="路由编码" align="left" prop="code" />
 
-        <el-table-column label="排序" align="center" width="80" prop="sort" />
+        <el-table-column label="排序" align="center" prop="sort" />
 
-        <el-table-column label="状态" align="center" width="80">
+        <el-table-column label="状态" align="center">
           <template #default="scope">
             <el-switch
               v-model="scope.row.enable_flag"
@@ -150,7 +149,7 @@ onMounted(() => {
           label="备注"
           align="left"
           show-overflow-tooltip
-          width="250"
+          min-width="250"
           prop="remark"
         />
 
