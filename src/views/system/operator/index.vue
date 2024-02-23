@@ -12,7 +12,7 @@ const queryFormRef = ref(ElForm);
 const loading = ref(false);
 const total = ref(0);
 
-const operatorTime = ref([]);
+const operatorTime = ref<any>([]);
 const queryParams = reactive<OperatorQuery>({
   page: 1,
   page_size: 10,

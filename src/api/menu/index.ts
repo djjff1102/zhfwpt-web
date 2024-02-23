@@ -1,5 +1,4 @@
 import request from "@/utils/request";
-import { AxiosPromise } from "axios";
 import { MenuVO, MenuForm, MenuFuncsProps } from "./types";
 
 /**
@@ -7,31 +6,9 @@ import { MenuVO, MenuForm, MenuFuncsProps } from "./types";
  *
  * @param queryParams
  */
-export function listMenus(): AxiosPromise<MenuVO[]> {
+export function listMenus(): CustomAxiosPromise<MenuVO[]> {
   return request({
     url: "/org/menu/query",
-    method: "get",
-  });
-}
-
-/**
- * 获取菜单下拉树形列表
- */
-export function getMenuOptions(): AxiosPromise<OptionType[]> {
-  return request({
-    url: "/api/v1/menus/options",
-    method: "get",
-  });
-}
-
-/**
- * 获取菜单表单数据
- *
- * @param id
- */
-export function getMenuForm(id: number): AxiosPromise<MenuForm> {
-  return request({
-    url: "/api/v1/menus/" + id + "/form",
     method: "get",
   });
 }
@@ -89,7 +66,9 @@ export function deleteMenu(id: string) {
 /**
  * 通过菜单id获取功能配置
  */
-export function getMenuFuncsById(id: string): AxiosPromise<MenuFuncsProps[]> {
+export function getMenuFuncsById(
+  id: string
+): CustomAxiosPromise<MenuFuncsProps[]> {
   return request({
     url: `/org/resource/query`,
     method: "get",

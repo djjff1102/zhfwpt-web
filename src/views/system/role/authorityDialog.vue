@@ -78,7 +78,6 @@ function updateAuthority() {
     id,
     ids,
   }).then((res) => {
-    console.log(res);
     if (res.result) {
       ElMessage.success("更新成功");
       closeDialog();

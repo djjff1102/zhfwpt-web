@@ -1,5 +1,4 @@
 import request from "@/utils/request";
-import { AxiosPromise } from "axios";
 import {
   RoleQuery,
   RoleForm,
@@ -17,7 +16,7 @@ import {
  */
 export function getRolePage(
   queryParams?: RoleQuery
-): AxiosPromise<RolePageVO[]> {
+): CustomAxiosPromise<RolePageVO[]> {
   return request({
     url: "/org/role/find",
     method: "get",
@@ -32,7 +31,7 @@ export function getRolePage(
  */
 export function getRoleOptions(
   queryParams?: RoleQuery
-): AxiosPromise<OptionType[]> {
+): CustomAxiosPromise<OptionType[]> {
   return request({
     url: "/api/v1/roles/options",
     method: "get",
@@ -45,7 +44,7 @@ export function getRoleOptions(
  *
  * @param queryParams
  */
-export function getRoleMenuIds(roleId: number): AxiosPromise<number[]> {
+export function getRoleMenuIds(roleId: number): CustomAxiosPromise<number[]> {
   return request({
     url: "/api/v1/roles/" + roleId + "/menuIds",
     method: "get",
@@ -60,7 +59,7 @@ export function getRoleMenuIds(roleId: number): AxiosPromise<number[]> {
 export function updateRoleMenus(
   roleId: number,
   data: number[]
-): AxiosPromise<any> {
+): CustomAxiosPromise<any> {
   return request({
     url: "/api/v1/roles/" + roleId + "/menus",
     method: "put",
@@ -73,7 +72,7 @@ export function updateRoleMenus(
  *
  * @param id
  */
-export function getRoleForm(id: number): AxiosPromise<RoleForm> {
+export function getRoleForm(id: number): CustomAxiosPromise<RoleForm> {
   return request({
     url: "/api/v1/roles/" + id + "/form",
     method: "get",
@@ -123,7 +122,9 @@ export function deleteRoleById(id: string) {
  * 获取 菜单权限 树
  * @returns
  */
-export function getAuthorityTree(): AxiosPromise<MenuPremissionTreeProps[]> {
+export function getAuthorityTree(): CustomAxiosPromise<
+  MenuPremissionTreeProps[]
+> {
   return request({
     url: "/org/role/find_authority",
     method: "get",
@@ -137,7 +138,7 @@ export function getAuthorityTree(): AxiosPromise<MenuPremissionTreeProps[]> {
  */
 export function getAuthorityById(
   params: GetMenuPremissionByRoleIdProps
-): AxiosPromise<GetRoleMenuProps[]> {
+): CustomAxiosPromise<GetRoleMenuProps[]> {
   return request({
     url: "/org/role/authority/detail",
     method: "get",
@@ -150,7 +151,7 @@ export function getAuthorityById(
  */
 export function getInfoPremissionTreeById(
   params: GetMenuPremissionByRoleIdProps
-): AxiosPromise<GetRoleMenuProps[]> {
+): CustomAxiosPromise<GetRoleMenuProps[]> {
   return request({
     url: "/org/role/authority/detail_data",
     method: "get",
@@ -172,7 +173,9 @@ export function getInfoPremissionTree() {
 /**
  * 修改 角色菜单权限
  */
-export function updateAuthorityById(params: updatePremissionByIdParams) {
+export function updateAuthorityById(
+  params: updatePremissionByIdParams
+): CustomAxiosPromise<any> {
   const { id, ids } = params;
   return request({
     url: `/org/role/authority/bind/${id}`,
@@ -184,7 +187,9 @@ export function updateAuthorityById(params: updatePremissionByIdParams) {
 /**
  * 修改 角色信息权限
  */
-export function updateInfoPremissionById(params: updatePremissionByIdParams) {
+export function updateInfoPremissionById(
+  params: updatePremissionByIdParams
+): CustomAxiosPromise<any> {
   const { id, ids } = params;
   return request({
     url: `/org/role/authority/data/${id}`,

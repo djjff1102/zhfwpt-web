@@ -1,5 +1,4 @@
 import request from "@/utils/request";
-import { AxiosPromise } from "axios";
 import { DeptForm, DeptQuery, DeptVO, OrganizationUnit } from "./types";
 
 /**
@@ -7,7 +6,9 @@ import { DeptForm, DeptQuery, DeptVO, OrganizationUnit } from "./types";
  *
  * @param queryParams
  */
-export function listDepts(queryParams?: DeptQuery): AxiosPromise<DeptVO[]> {
+export function listDepts(
+  queryParams?: DeptQuery
+): CustomAxiosPromise<DeptVO[]> {
   return request({
     url: "/org/organization/find",
     method: "get",
@@ -18,35 +19,10 @@ export function listDepts(queryParams?: DeptQuery): AxiosPromise<DeptVO[]> {
 /**
  * 部门下拉列表
  */
-export function getDeptOptions(): AxiosPromise<OrganizationUnit[]> {
+export function getDeptOptions(): CustomAxiosPromise<OrganizationUnit[]> {
   return request({
     url: "/org/organization/find",
     method: "get",
-  });
-}
-
-/**
- * 获取部门详情
- *
- * @param id
- */
-export function getDeptForm(id: number): AxiosPromise<DeptForm> {
-  return request({
-    url: "/api/v1/dept/" + id + "/form",
-    method: "get",
-  });
-}
-
-/**
- * 新增部门
- *
- * @param data
- */
-export function addDept(data: DeptForm) {
-  return request({
-    url: "/api/v1/dept",
-    method: "post",
-    data: data,
   });
 }
 
@@ -77,7 +53,7 @@ export function deleteDept(id?: string) {
 /**
  * 通过部门id 查询部门别名
  */
-export function getDeptAlias(id: string): AxiosPromise<string[]> {
+export function getDeptAlias(id: string): CustomAxiosPromise<string[]> {
   return request({
     url: `/org/organization/alias/find/${id}`,
     method: "get",

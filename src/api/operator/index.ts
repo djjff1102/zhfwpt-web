@@ -1,5 +1,4 @@
 import request from "@/utils/request";
-import { AxiosPromise } from "axios";
 import { OperatorPageVO, OperatorQuery } from "./types";
 
 /**
@@ -9,7 +8,7 @@ import { OperatorPageVO, OperatorQuery } from "./types";
  */
 export function getOperatorPage(
   queryParams?: OperatorQuery
-): AxiosPromise<OperatorPageVO[]> {
+): Promise<CustomAxiosResponse<OperatorPageVO[]>> {
   return request({
     url: "/org/log/select",
     method: "get",

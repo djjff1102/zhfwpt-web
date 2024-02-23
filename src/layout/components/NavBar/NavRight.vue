@@ -14,7 +14,7 @@
   <!-- 用户头像 -->
   <el-dropdown trigger="click">
     <div class="avatar-container">
-      <img :src="userStore.user.avatar + '?imageView2/1/w/80/h/80'" />
+      <div class="avatar_name text-[#FFF]">{{ userStore.user.name }}</div>
       <i-ep-caret-bottom class="w-3 h-3" />
     </div>
     <template #dropdown>

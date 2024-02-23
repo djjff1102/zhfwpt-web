@@ -1,5 +1,4 @@
 import request from "@/utils/request";
-import { AxiosPromise } from "axios";
 import { LoginData } from "./types";
 
 /**
@@ -8,7 +7,7 @@ import { LoginData } from "./types";
  * @param data {LoginData}
  * @returns
  */
-export function loginApi(data: LoginData): AxiosPromise<string> {
+export function loginApi(data: LoginData): CustomAxiosPromise<string> {
   return request({
     url: "/auth/login",
     method: "get",

@@ -1,3 +1,4 @@
+import axios, { AxiosResponse } from "axios";
 declare global {
   /**
    * 分页查询参数
@@ -6,6 +7,14 @@ declare global {
     page: number;
     page_size: number;
   }
+
+  interface CustomAxiosResponse<T = any> extends AxiosResponse<T> {
+    message?: string;
+    result?: number;
+    total?: string;
+  }
+
+  type CustomAxiosPromise<T = any> = Promise<CustomAxiosResponse<T>>;
 
   /**
    * 分页响应对象
