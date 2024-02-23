@@ -6,32 +6,34 @@ import { Directive, DirectiveBinding } from "vue";
  */
 export const hasPerm: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
-    // // 「超级管理员」拥有所有的按钮权限
-    // const { roles, perms } = useUserStoreHook().user;
-    // if (roles.includes("ROOT")) {
-    //   return true;
-    // }
-    // // 「其他角色」按钮权限校验
-    // const { value } = binding;
-    // if (value) {
-    //   const requiredPerms = value; // DOM绑定需要的按钮权限标识
-
-    //   const hasPerm = perms?.some((perm) => {
-    //     return requiredPerms.includes(perm);
-    //   });
-
-    //   if (!hasPerm) {
-    //     el.parentNode && el.parentNode.removeChild(el);
-    //   }
-    // } else {
-    //   throw new Error(
-    //     "need perms! Like v-has-perm=\"['sys:user:add','sys:user:edit']\""
-    //   );
-    // }
+    const { authorityCode } = useUserStoreHook().user;
+    const { value } = binding;
+    if (value) {
+      const requiredPerms = Array.isArray(value) ? value : [value];
+      if (!hasPermFunc(authorityCode, requiredPerms)) {
+        el.parentNode && el.parentNode.removeChild(el);
+      }
+    } else {
+      throw new Error(
+        "need perms! Like v-has-perm=\"['100', '101']\" v-has-perm=\"'101'\""
+      );
+    }
 
     return true;
   },
 };
+
+function hasPermFunc(
+  authorityCode: string[] = [],
+  requiredPerms: string[]
+): boolean {
+  if (!authorityCode?.length) {
+    return false;
+  }
+  return authorityCode?.some((code) => {
+    return requiredPerms.includes(code);
+  });
+}
 
 /**
  * 角色权限

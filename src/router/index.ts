@@ -66,6 +66,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
       hidden: false,
       roles: ["ADMIN"],
       keepAlive: true,
+      code: [100],
     },
     children: [
       {
@@ -78,6 +79,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
+          code: [101],
         },
       },
       {
@@ -90,6 +92,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
+          code: [102],
         },
       },
       {
@@ -102,6 +105,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
+          code: [103],
         },
       },
       {
@@ -114,6 +118,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
+          code: [104],
         },
       },
     ],

@@ -77,10 +77,15 @@ onMounted(() => {
         </el-form-item>
 
         <el-form-item>
-          <el-button class="filter-item" type="primary" @click="handleQuery">
+          <el-button
+            v-has-perm="['105']"
+            class="filter-item"
+            type="primary"
+            @click="handleQuery"
+          >
             搜索
           </el-button>
-          <el-button @click="resetQuery">重置</el-button>
+          <el-button v-has-perm="['106']" @click="resetQuery">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -88,10 +93,7 @@ onMounted(() => {
     <el-card shadow="never" class="table-container">
       <template #header>
         <div class="flex justify-end items-center">
-          <el-button
-            v-hasPerm="['sys:dept:add']"
-            type="success"
-            @click="openDialog()"
+          <el-button v-has-perm="['107']" type="success" @click="openDialog()"
             ><i-ep-plus />新增</el-button
           >
         </div>
@@ -112,6 +114,7 @@ onMounted(() => {
               type="primary"
               link
               size="small"
+              v-has-perm="['107']"
               @click.stop="openDialog(scope.row.id)"
             >
               新增
@@ -120,6 +123,7 @@ onMounted(() => {
               type="primary"
               link
               size="small"
+              v-has-perm="['108']"
               @click.stop="openDialog(scope.row)"
             >
               编辑
@@ -128,6 +132,7 @@ onMounted(() => {
               type="primary"
               link
               size="small"
+              v-has-perm="['109']"
               @click.stop="handleDelete(scope.row.id)"
             >
               删除
