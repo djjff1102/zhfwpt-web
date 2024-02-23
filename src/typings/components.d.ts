@@ -20,9 +20,11 @@ declare module "@vue/runtime-core" {
     ElBreadcrumbItem: typeof import("element-plus/es")["ElBreadcrumbItem"];
     ElButton: typeof import("element-plus/es")["ElButton"];
     ElCard: typeof import("element-plus/es")["ElCard"];
+    ElCascader: typeof import("element-plus/es")["ElCascader"];
     ElCheckbox: typeof import("element-plus/es")["ElCheckbox"];
     ElCheckboxGroup: typeof import("element-plus/es")["ElCheckboxGroup"];
     ElCol: typeof import("element-plus/es")["ElCol"];
+    ElConfigProvider: typeof import("element-plus/es")["ElConfigProvider"];
     ElDatePicker: typeof import("element-plus/es")["ElDatePicker"];
     ElDialog: typeof import("element-plus/es")["ElDialog"];
     ElDivider: typeof import("element-plus/es")["ElDivider"];
@@ -67,6 +69,7 @@ declare module "@vue/runtime-core" {
     IEpArrowDown: typeof import("~icons/ep/arrow-down")["default"];
     IEpCaretBottom: typeof import("~icons/ep/caret-bottom")["default"];
     IEpCaretTop: typeof import("~icons/ep/caret-top")["default"];
+    IEpCheck: typeof import("~icons/ep/check")["default"];
     IEpClose: typeof import("~icons/ep/close")["default"];
     IEpCollection: typeof import("~icons/ep/collection")["default"];
     IEpDelete: typeof import("~icons/ep/delete")["default"];

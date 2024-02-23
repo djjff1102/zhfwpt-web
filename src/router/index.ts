@@ -121,6 +121,18 @@ export const asyncRoutes: RouteRecordRaw[] = [
           code: [104],
         },
       },
+      {
+        path: "operator",
+        component: () => import("@/views/system/operator/index.vue"),
+        name: "Operator",
+        meta: {
+          title: "日志管理",
+          icon: "tree",
+          hidden: false,
+          roles: ["ADMIN"],
+          keepAlive: true,
+        },
+      },
     ],
   },
 ];
