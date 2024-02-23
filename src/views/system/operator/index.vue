@@ -152,13 +152,33 @@ onMounted(() => {
         <el-table-column label="部门" prop="organization" width="200" />
         <el-table-column label="操作角色" prop="role" width="150" />
 
-        <el-table-column label="操作人" align="center" prop="name" />
+        <el-table-column
+          label="操作人"
+          align="center"
+          prop="name"
+          min-width="200"
+          show-overflow-tooltip
+        />
         <el-table-column
           label="操作模块"
           align="center"
           prop="operationModule"
+          min-width="200"
+          show-overflow-tooltip
         />
-        <el-table-column label="操作时间" align="center" prop="updateDate" />
+        <el-table-column
+          label="操作描述"
+          align="center"
+          prop="operationDescription"
+          min-width="200"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          label="操作时间"
+          align="center"
+          prop="updateDate"
+          width="180"
+        />
       </el-table>
 
       <pagination
