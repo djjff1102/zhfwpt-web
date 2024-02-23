@@ -95,11 +95,7 @@ onMounted(() => {
     <el-card shadow="never" class="table-container">
       <template #header>
         <div class="flex justify-end items-center">
-          <el-button
-            v-hasPerm="['sys:menu:add']"
-            type="success"
-            @click="openDialog()"
-          >
+          <el-button type="success" @click="openDialog()">
             <template #icon><i-ep-plus /></template>
             新增</el-button
           >

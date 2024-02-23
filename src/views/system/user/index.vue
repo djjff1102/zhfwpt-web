@@ -143,10 +143,7 @@ onMounted(() => {
           <template #header>
             <div class="flex justify-end items-center">
               <div>
-                <el-button
-                  v-hasPerm="['sys:user:add']"
-                  type="success"
-                  @click="openDialog()"
+                <el-button type="success" @click="openDialog()"
                   ><i-ep-plus />新增</el-button
                 >
               </div>
