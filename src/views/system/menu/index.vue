@@ -95,14 +95,16 @@ onMounted(() => {
   <div class="app-container">
     <el-card shadow="never" class="table-container">
       <template #header>
-        <el-button
-          v-hasPerm="['sys:menu:add']"
-          type="success"
-          @click="openDialog()"
-        >
-          <template #icon><i-ep-plus /></template>
-          新增</el-button
-        >
+        <div class="flex justify-end items-center">
+          <el-button
+            v-hasPerm="['sys:menu:add']"
+            type="success"
+            @click="openDialog()"
+          >
+            <template #icon><i-ep-plus /></template>
+            新增</el-button
+          >
+        </div>
       </template>
 
       <el-table
@@ -110,18 +112,19 @@ onMounted(() => {
         :data="menuList"
         highlight-current-row
         row-key="id"
+        default-expand-all
         :expand-row-keys="['1']"
         :tree-props="{
           children: 'children',
           hasChildren: 'hasChildren',
         }"
       >
-        <el-table-column label="菜单名称" min-width="250">
-          <template #default="scope">
-            <svg-icon :icon-class="scope.row.icon" />
-            {{ scope.row.name }}
-          </template>
-        </el-table-column>
+        <el-table-column
+          label="菜单名称"
+          width="250"
+          prop="name"
+          show-overflow-tooltip
+        />
 
         <el-table-column
           label="路由路径"
@@ -130,12 +133,7 @@ onMounted(() => {
           prop="routing_address"
         />
 
-        <el-table-column
-          label="路由编码"
-          align="left"
-          width="250"
-          prop="code"
-        />
+        <el-table-column label="路由编码" align="left" width="80" prop="code" />
 
         <el-table-column label="排序" align="center" width="80" prop="sort" />
 
@@ -148,9 +146,15 @@ onMounted(() => {
           </template>
         </el-table-column>
 
-        <el-table-column label="备注" align="left" width="250" prop="remark" />
+        <el-table-column
+          label="备注"
+          align="left"
+          show-overflow-tooltip
+          width="250"
+          prop="remark"
+        />
 
-        <el-table-column fixed="right" align="center" label="操作" width="320">
+        <el-table-column fixed="right" label="操作" width="320">
           <template #default="scope">
             <el-button
               type="primary"
@@ -159,8 +163,7 @@ onMounted(() => {
               @click.stop="
                 openDialog(MenuDialogConfigEnum.UPDATE_MENU, scope.row)
               "
-            >
-              <i-ep-edit />编辑
+              >编辑
             </el-button>
             <el-button
               type="primary"
@@ -169,8 +172,7 @@ onMounted(() => {
               @click.stop="
                 openDialog(MenuDialogConfigEnum.ADD_SUB_MENU, scope.row)
               "
-            >
-              <i-ep-plus />子菜单配置
+              >子菜单配置
             </el-button>
 
             <el-button
@@ -178,8 +180,7 @@ onMounted(() => {
               link
               size="small"
               @click.stop="openFunctionDialog(scope.row.id)"
-            >
-              <i-ep-plus />功能配置
+              >功能配置
             </el-button>
 
             <el-button
@@ -187,7 +188,7 @@ onMounted(() => {
               link
               size="small"
               @click.stop="handleDelete(scope.row.id)"
-              ><i-ep-delete />
+            >
               删除
             </el-button>
           </template>

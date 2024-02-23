@@ -7,6 +7,7 @@
   >
     <el-scrollbar v-loading="loading" max-height="300px">
       <el-tree
+        class="!w-full"
         ref="menuRef"
         node-key="id"
         show-checkbox

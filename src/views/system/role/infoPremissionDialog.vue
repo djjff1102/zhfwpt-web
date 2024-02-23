@@ -12,6 +12,7 @@
         </el-form-item>
         <el-form-item label="信息权限:">
           <el-tree
+            class="!w-full"
             ref="menuRef"
             node-key="id"
             show-checkbox

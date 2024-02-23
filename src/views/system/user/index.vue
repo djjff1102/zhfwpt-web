@@ -19,7 +19,6 @@ const queryFormRef = ref(ElForm); // 查询表单
 const userFormDialogRef = ref(userFormDialog);
 
 const loading = ref(false); //  加载状态
-const removeIds = ref([]); // 删除用户ID集合 用于批量删除
 const queryParams = reactive<UserQuery>({
   page: 1,
   page_size: 10,
@@ -85,14 +84,10 @@ function handleDelete(id: string) {
   });
 }
 
-// 更多 查看按钮
-function openMoreDialog(row: any) {
-  console.log(row);
-}
-
 // 修改状态
 function handleStatusChange(row: any) {
   console.log(row);
+  userFormDialogRef.value?.updateUserByForm(row);
 }
 
 function getRoleOptions() {
@@ -102,8 +97,6 @@ function getRoleOptions() {
 }
 
 onMounted(() => {
-  handleQuery();
-
   // 角色options
   getRoleOptions();
 });
@@ -126,25 +119,13 @@ onMounted(() => {
           <el-form ref="queryFormRef" :model="queryParams" :inline="true">
             <el-form-item label="用户名称" prop="name">
               <el-input
-                v-model="queryParams.name"
+                v-model.trim="queryParams.name"
                 placeholder="请输入用户名称"
+                maxlength="40"
                 clearable
-                style="width: 200px"
                 @keyup.enter="handleQuery"
               />
             </el-form-item>
-
-            <!-- <el-form-item label="状态" prop="status">
-              <el-select
-                v-model="queryParams.status"
-                placeholder="全部"
-                clearable
-                class="!w-[100px]"
-              >
-                <el-option label="启用" value="1" />
-                <el-option label="禁用" value="0" />
-              </el-select>
-            </el-form-item> -->
 
             <el-form-item>
               <el-button type="primary" @click="handleQuery"
@@ -160,7 +141,7 @@ onMounted(() => {
 
         <el-card shadow="never" class="table-container">
           <template #header>
-            <div class="flex justify-between">
+            <div class="flex justify-end items-center">
               <div>
                 <el-button
                   v-hasPerm="['sys:user:add']"
@@ -173,7 +154,6 @@ onMounted(() => {
           </template>
 
           <el-table v-loading="loading" :data="pageData">
-            <el-table-column type="selection" width="50" align="center" />
             <el-table-column
               type="index"
               label="序号"
@@ -183,6 +163,8 @@ onMounted(() => {
             <el-table-column
               key="name"
               label="用户名"
+              width="120"
+              show-overflow-tooltip
               align="center"
               prop="name"
             />
@@ -195,7 +177,8 @@ onMounted(() => {
 
             <el-table-column
               label="部门"
-              width="100"
+              width="200"
+              show-overflow-tooltip
               align="center"
               prop="organization_name"
             />
@@ -206,18 +189,6 @@ onMounted(() => {
               align="center"
               prop="role_name"
             />
-            <el-table-column
-              label="更多"
-              align="center"
-              prop="mobile"
-              width="120"
-            >
-              <template #default="scope">
-                <el-button type="text" @click="openMoreDialog(scope.row)"
-                  >查看</el-button
-                >
-              </template>
-            </el-table-column>
 
             <el-table-column label="状态" align="center" prop="enable_flag">
               <template #default="scope">
@@ -236,28 +207,25 @@ onMounted(() => {
             <el-table-column label="操作" fixed="right" width="220">
               <template #default="scope">
                 <el-button
-                  v-hasPerm="['sys:user:reset_pwd']"
                   type="primary"
                   size="small"
                   link
                   @click="resetPassword(scope.row)"
-                  ><i-ep-refresh-left />重置密码</el-button
+                  >重置密码</el-button
                 >
                 <el-button
-                  v-hasPerm="['sys:user:edit']"
                   type="primary"
                   link
                   size="small"
                   @click="openDialog(scope.row)"
-                  ><i-ep-edit />编辑</el-button
+                  >编辑</el-button
                 >
                 <el-button
-                  v-hasPerm="['sys:user:delete']"
                   type="primary"
                   link
                   size="small"
                   @click="handleDelete(scope.row.id)"
-                  ><i-ep-delete />删除</el-button
+                  >删除</el-button
                 >
               </template>
             </el-table-column>

@@ -26,13 +26,19 @@
       </el-form-item>
 
       <el-form-item label="用户名" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入用户名" />
+        <el-input
+          v-model.trim="formData.name"
+          maxlength="40"
+          clearable
+          placeholder="请输入用户名"
+        />
       </el-form-item>
 
       <el-form-item label="角色" prop="role_id">
         <el-select
           v-model="formData.role_id"
           placeholder="请选择角色"
+          clearable
           filterable
         >
           <el-option
@@ -52,15 +58,30 @@
       </el-form-item>
 
       <el-form-item label="工号" prop="work_no">
-        <el-input v-model="formData.work_no" placeholder="请输入工号" />
+        <el-input
+          v-model.trim="formData.work_no"
+          maxlength="40"
+          clearable
+          placeholder="请输入工号"
+        />
       </el-form-item>
 
       <el-form-item label="真实姓名" prop="real_name">
-        <el-input v-model="formData.real_name" placeholder="请输入真实姓名" />
+        <el-input
+          v-model.trim="formData.real_name"
+          maxlength="40"
+          clearable
+          placeholder="请输入真实姓名"
+        />
       </el-form-item>
 
       <el-form-item label="手机号" prop="phone">
-        <el-input v-model="formData.phone" placeholder="请输入手机号" />
+        <el-input
+          v-model.trim="formData.phone"
+          maxlength="40"
+          clearable
+          placeholder="请输入手机号"
+        />
       </el-form-item>
     </el-form>
 
@@ -124,11 +145,9 @@ const formData = reactive<UserForm>({
 
 // 校验规则
 const rules = reactive({
-  name: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
-  real_name: [{ required: true, message: "真实姓名不能为空", trigger: "blur" }],
-  role_id: [
-    { required: true, message: "角色不能为空", trigger: ["blur", "change"] },
-  ],
+  name: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+  real_name: [{ required: true, message: "请输入真实姓名", trigger: "blur" }],
+  role_id: [{ required: true, message: "请选择角色", trigger: ["blur"] }],
   organization_id: [
     { required: true, message: "部门不能为空", trigger: "blur" },
   ],
@@ -149,11 +168,7 @@ function handleSubmit() {
   userFormRef.value.validate((valid: any) => {
     if (valid) {
       if (formData.id) {
-        updateUser(formData).then((res) => {
-          ElMessage.success("修改成功");
-          closeDialog();
-          emits("success");
-        });
+        updateUserByForm(formData);
       } else {
         addUser(formData).then((res) => {
           ElMessage.success("新增成功");
@@ -162,6 +177,17 @@ function handleSubmit() {
         });
       }
     }
+  });
+}
+
+/**
+ * 修改用户
+ */
+function updateUserByForm(row: UserForm) {
+  updateUser(row).then((res) => {
+    ElMessage.success("修改成功");
+    closeDialog();
+    emits("success");
   });
 }
 
@@ -188,9 +214,19 @@ function resetForm() {
   userFormRef.value.clearValidate();
 
   formData.id = undefined;
+  formData.organization_id = "";
+  formData.role_id = "";
+  formData.name = "";
+  formData.real_name = "";
+  formData.password = "";
+  formData.phone = "";
+  formData.system_type = 0;
+  formData.enable_flag = true;
+  formData.work_no = "";
 }
 
 defineExpose({
   showDialog,
+  updateUserByForm,
 });
 </script>

@@ -3,7 +3,7 @@
     class="max-h-[500px] overflow-y-auto"
     v-model="dialog.visible"
     :title="dialog.title"
-    width="600px"
+    width="500px"
     @closed="closeDialog"
   >
     <el-form
@@ -13,7 +13,12 @@
       label-width="80px"
     >
       <el-form-item label="组织名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入组织名称" />
+        <el-input
+          v-model="formData.name"
+          clearable
+          maxlength="20"
+          placeholder="请输入组织名称"
+        />
       </el-form-item>
       <el-form-item
         v-for="(item, index) in formData.alias"
@@ -25,6 +30,8 @@
           <el-input
             class="flex-1"
             placeholder="请输入别名"
+            clearable
+            maxlength="20"
             v-model="formData.alias[index]"
           />
           <el-button class="ml-3" @click="handleAdd()">添加</el-button>
@@ -35,7 +42,7 @@
         <el-input
           type="textarea"
           show-word-limit
-          maxlength="200"
+          maxlength="100"
           rows="5"
           v-model="formData.remark"
           placeholder="请输入备注"
@@ -148,6 +155,7 @@ function resetForm() {
     system_type: 0,
     remark: "",
     id: undefined,
+    code: "",
   });
 }
 

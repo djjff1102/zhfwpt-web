@@ -6,19 +6,20 @@
     append-to-body
     width="1000px"
     @close="closeDialog"
-    top="5vh"
   >
     <el-card shadow="never" class="table-container">
       <template #header>
-        <el-button
-          @click="
-            openFuncFormDialog(ResourceDialogConfigEnum.ADD_RESOURCE, {
-              id: curMenuId,
-            })
-          "
-          type="success"
-          ><i-ep-plus />新增</el-button
-        >
+        <div class="flex justify-end items-center">
+          <el-button
+            @click="
+              openFuncFormDialog(ResourceDialogConfigEnum.ADD_RESOURCE, {
+                id: curMenuId,
+              })
+            "
+            type="success"
+            ><i-ep-plus />新增</el-button
+          >
+        </div>
       </template>
 
       <el-table
@@ -27,8 +28,9 @@
         :data="list"
         highlight-current-row
         @selection-change="handleSelectionChange"
+        max-height="500"
       >
-        <el-table-column type="selection" width="55" align="center" />
+        <el-table-column type="index" width="60" label="序号" align="center" />
         <el-table-column label="功能名称" prop="name" />
         <el-table-column label="功能编码" prop="code" />
         <el-table-column label="功能类型" prop="type">
@@ -53,7 +55,7 @@
               "
               link
             >
-              <i-ep-edit />编辑
+              编辑
             </el-button>
             <el-button
               type="primary"
@@ -61,7 +63,7 @@
               size="small"
               link
             >
-              <i-ep-delete />删除
+              删除
             </el-button>
           </template>
         </el-table-column>
@@ -70,7 +72,6 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button type="primary" @click="closeDialog">确 定</el-button>
-        <el-button @click="closeDialog">取 消</el-button>
       </div>
     </template>
   </el-dialog>

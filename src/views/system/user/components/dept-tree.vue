@@ -2,7 +2,7 @@
 <template>
   <el-card shadow="never">
     <el-input
-      v-model="deptName"
+      v-model.trim="deptName"
       maxlength="20"
       placeholder="请输入部门名称"
       clearable
@@ -16,6 +16,7 @@
       ref="deptTreeRef"
       class="mt-2"
       :data="deptList"
+      node-key="id"
       highlight-current
       :props="{ children: 'children', label: 'name', disabled: '' }"
       :expand-on-click-node="false"
@@ -32,8 +33,8 @@ import { OrganizationUnit } from "@/api/dept/types";
 
 const props = defineProps({
   modelValue: {
-    type: [Number],
-    default: undefined,
+    type: String,
+    default: "",
   },
 });
 
@@ -68,9 +69,38 @@ function handleNodeClick(data: { [key: string]: any }) {
   emits("node-click");
 }
 
+/**
+ * 设置默认选中tree node
+ */
+function setDefaultValue() {
+  const topTreeNode = deptList.value[0];
+  if (!topTreeNode) {
+    return;
+  }
+  const topTreeNodeId = topTreeNode.id;
+  if (topTreeNodeId !== undefined) {
+    setCurrentNode(topTreeNodeId);
+  }
+}
+
+function setCurrentNode(id: string) {
+  setTimeout(() => {
+    nextTick(() => {
+      deptId.value = id;
+      deptTreeRef.value?.setCurrentKey(id);
+
+      emits("node-click");
+    });
+  }, 500);
+}
+
 onBeforeMount(() => {
   getDeptOptions().then((response) => {
     deptList.value = response.data;
   });
+});
+
+onMounted(() => {
+  setDefaultValue();
 });
 </script>

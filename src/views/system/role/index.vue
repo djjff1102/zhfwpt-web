@@ -6,6 +6,7 @@ import { RolePageVO, RoleQuery } from "@/api/role/types";
 import authorityDialog from "./authorityDialog.vue";
 import infoPremissionDialog from "./infoPremissionDialog.vue";
 import roleDialog from "./roleDialog.vue";
+import { areaTypeOptions } from "./role.data";
 
 defineOptions({
   name: "Role",
@@ -18,7 +19,6 @@ const authorityDialogRef = ref(authorityDialog);
 const infoPremissionDialogRef = ref(infoPremissionDialog);
 
 const loading = ref(false);
-const ids = ref<number[]>([]);
 const total = ref(0);
 
 const queryParams = reactive<RoleQuery>({
@@ -52,11 +52,6 @@ function resetQuery() {
   handleQuery();
 }
 
-/** 行checkbox 选中事件 */
-function handleSelectionChange(selection: any) {
-  ids.value = selection.map((item: any) => item.id);
-}
-
 /** 删除角色 */
 function handleDelete(roleId: string) {
   ElMessageBox.confirm("确认删除已选中的数据项?", "警告", {
@@ -82,11 +77,6 @@ function openMenuDialog(ref: any, row?: RolePageVO) {
   ref?.showDialog(row);
 }
 
-// 修改状态
-function handleStatusChange(row: any) {
-  // console.log(row);
-}
-
 onMounted(() => {
   handleQuery();
 });
@@ -98,9 +88,9 @@ onMounted(() => {
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
         <el-form-item prop="keywords" label="角色名称">
           <el-input
-            v-model="queryParams.name"
+            v-model.trim="queryParams.name"
             placeholder="请输入角色名称"
-            maxlength="20"
+            maxlength="40"
             clearable
             @keyup.enter="handleQuery"
           />
@@ -108,45 +98,29 @@ onMounted(() => {
 
         <el-form-item label="层级" prop="area_type">
           <el-select
+            class="!w-[100px]"
             v-model="queryParams.area_type"
             placeholder="全部"
             clearable
           >
-            <el-option label="校级" :value="1" />
-            <el-option label="院级" :value="2" />
+            <el-option
+              v-for="item in areaTypeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
           </el-select>
         </el-form-item>
 
         <el-form-item prop="create_user_name" label="添加人">
           <el-input
-            v-model="queryParams.create_user_name"
+            v-model.trim="queryParams.create_user_name"
             placeholder="请输入添加人"
-            maxlength="20"
+            maxlength="40"
             clearable
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-
-        <!-- <el-form-item prop="keywords" label="角色编号">
-          <el-input
-            v-model="queryParams.keywords"
-            placeholder="请输入角色编号"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </el-form-item> -->
-
-        <!-- <el-form-item label="状态" prop="status">
-          <el-select
-            v-model="queryParams.status"
-            placeholder="全部"
-            clearable
-            class="!w-[100px]"
-          >
-            <el-option label="启用" :value="1" />
-            <el-option label="禁用" :value="0" />
-          </el-select>
-        </el-form-item> -->
 
         <el-form-item>
           <el-button type="primary" @click="handleQuery"
@@ -159,9 +133,11 @@ onMounted(() => {
 
     <el-card shadow="never" class="table-container">
       <template #header>
-        <el-button type="success" @click="openMenuDialog(roleDialogRef)"
-          ><i-ep-plus />新增</el-button
-        >
+        <div class="flex justify-end items-center">
+          <el-button type="success" @click="openMenuDialog(roleDialogRef)"
+            ><i-ep-plus />新增</el-button
+          >
+        </div>
       </template>
 
       <el-table
@@ -169,32 +145,32 @@ onMounted(() => {
         v-loading="loading"
         :data="roleList"
         highlight-current-row
-        @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column type="index" label="序号" width="60" align="center" />
         <el-table-column label="角色名称" prop="name" min-width="100" />
-        <el-table-column label="描述" prop="remark" width="150" />
-        <el-table-column label="编号" prop="code" width="150" />
-        <el-table-column label="状态" align="center" width="100">
+        <el-table-column label="层级" prop="area_type" min-width="100">
           <template #default="scope">
-            <el-switch
-              v-model="scope.row.status"
-              :active-value="0"
-              :inactive-value="1"
-              @change="handleStatusChange(scope.row)"
-            />
+            {{
+              areaTypeOptions.find((item) => item.value === scope.row.area_type)
+                ?.label
+            }}
           </template>
         </el-table-column>
+        <el-table-column label="描述" prop="remark" width="150" />
 
         <el-table-column
           label="创建人"
           align="center"
           prop="create_user_name"
+          width="100"
         />
-        <el-table-column label="创建时间" align="center" prop="create_date" />
-        <el-table-column label="修改人" align="center" prop="sort" />
-        <el-table-column label="修改时间" align="center" prop="sort" />
+        <el-table-column
+          label="创建时间"
+          align="center"
+          width="180"
+          prop="create_date"
+        />
 
         <el-table-column fixed="right" label="操作" width="320">
           <template #default="scope">
@@ -204,7 +180,7 @@ onMounted(() => {
               link
               @click="openMenuDialog(roleDialogRef, scope.row)"
             >
-              <i-ep-edit />编辑
+              编辑
             </el-button>
             <el-button
               type="primary"
@@ -212,7 +188,7 @@ onMounted(() => {
               link
               @click="openMenuDialog(authorityDialogRef, scope.row)"
             >
-              <i-ep-position />菜单权限
+              菜单权限
             </el-button>
             <el-button
               type="primary"
@@ -220,7 +196,7 @@ onMounted(() => {
               link
               @click="openMenuDialog(infoPremissionDialogRef, scope.row)"
             >
-              <i-ep-position />信息权限
+              信息权限
             </el-button>
             <el-button
               type="primary"
@@ -228,7 +204,7 @@ onMounted(() => {
               link
               @click="handleDelete(scope.row.id)"
             >
-              <i-ep-delete />删除
+              删除
             </el-button>
           </template>
         </el-table-column>

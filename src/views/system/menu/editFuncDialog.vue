@@ -29,11 +29,21 @@
       </el-form-item>
 
       <el-form-item label="资源编码" prop="code">
-        <el-input v-model="formData.code" placeholder="请输入资源编码" />
+        <el-input
+          v-model.trim="formData.code"
+          maxlength="40"
+          clearable
+          placeholder="请输入资源编码"
+        />
       </el-form-item>
 
       <el-form-item label="资源名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入资源名称" />
+        <el-input
+          v-model.trim="formData.name"
+          maxlength="40"
+          clearable
+          placeholder="请输入资源名称"
+        />
       </el-form-item>
 
       <el-form-item label="备注" prop="remark">
@@ -42,7 +52,7 @@
           rows="5"
           show-word-limit
           maxlength="200"
-          v-model="formData.remark"
+          v-model.trim="formData.remark"
           placeholder="请输入备注"
         />
       </el-form-item>

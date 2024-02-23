@@ -69,30 +69,32 @@ onMounted(() => {
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
         <el-form-item label="部门名称" prop="name">
           <el-input
-            v-model="queryParams.name"
+            v-model.trim="queryParams.name"
             placeholder="部门名称"
+            maxlength="20"
             @keyup.enter="handleQuery"
           />
         </el-form-item>
 
         <el-form-item>
           <el-button class="filter-item" type="primary" @click="handleQuery">
-            <i-ep-search />
             搜索
           </el-button>
-          <el-button @click="resetQuery"> <i-ep-refresh />重置 </el-button>
+          <el-button @click="resetQuery">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
 
     <el-card shadow="never" class="table-container">
       <template #header>
-        <el-button
-          v-hasPerm="['sys:dept:add']"
-          type="success"
-          @click="openDialog()"
-          ><i-ep-plus />新增</el-button
-        >
+        <div class="flex justify-end items-center">
+          <el-button
+            v-hasPerm="['sys:dept:add']"
+            type="success"
+            @click="openDialog()"
+            ><i-ep-plus />新增</el-button
+          >
+        </div>
       </template>
 
       <el-table
@@ -102,45 +104,33 @@ onMounted(() => {
         default-expand-all
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       >
-        <el-table-column type="selection" width="55" align="center" />
         <el-table-column prop="name" label="部门名称" />
-        <el-table-column
-          prop="name"
-          label="描述"
-          show-overflow-tooltip
-          width="200"
-        />
-        <el-table-column prop="name" label="创建人" />
-        <el-table-column prop="name" label="创建时间" />
-        <el-table-column prop="name" label="修改人" />
-        <el-table-column prop="name" label="修改时间" />
 
         <el-table-column label="操作" fixed="right" align="left" width="200">
           <template #default="scope">
             <el-button
-              v-hasPerm="['sys:dept:add']"
               type="primary"
               link
               size="small"
               @click.stop="openDialog(scope.row.id)"
-              ><i-ep-plus />新增
+            >
+              新增
             </el-button>
             <el-button
-              v-hasPerm="['sys:dept:edit']"
               type="primary"
               link
               size="small"
               @click.stop="openDialog(scope.row)"
-              ><i-ep-edit />编辑
+            >
+              编辑
             </el-button>
             <el-button
-              v-hasPerm="['sys:dept:delete']"
               type="primary"
               link
               size="small"
               @click.stop="handleDelete(scope.row.id)"
             >
-              <i-ep-delete />删除
+              删除
             </el-button>
           </template>
         </el-table-column>

@@ -110,7 +110,7 @@ const loginFormRef = ref(ElForm); // 登录表单ref
 const loginData = ref<LoginData>({
   user_name: "lidianquan",
   // password: "ZGCM@2023edu",
-  password: "qishuo@123.com",
+  password: "Wxb@123",
 });
 
 const { t } = useI18n();
@@ -162,8 +162,8 @@ function handleLogin() {
       userStore
         .login({
           user_name,
-          // password: sha256(password),
-          password,
+          password: sha256(password),
+          // password,
         })
         .then(() => {
           const query: LocationQuery = route.query;

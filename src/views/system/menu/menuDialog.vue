@@ -6,7 +6,6 @@
     append-to-body
     width="600px"
     @close="closeDialog"
-    top="5vh"
   >
     <el-form
       ref="menuFormRef"
@@ -30,7 +29,12 @@
       </el-form-item>
 
       <el-form-item label="菜单名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入菜单名称" />
+        <el-input
+          v-model.trim="formData.name"
+          maxlength="40"
+          clearable
+          placeholder="请输入菜单名称"
+        />
       </el-form-item>
 
       <el-form-item
@@ -39,13 +43,20 @@
         prop="routing_address"
       >
         <el-input
-          v-model="formData.routing_address"
+          maxlength="40"
+          clearable
+          v-model.trim="formData.routing_address"
           placeholder="请输入路由地址"
         />
       </el-form-item>
 
       <el-form-item label="路由编码" prop="code">
-        <el-input v-model="formData.code" placeholder="请输入路由编码" />
+        <el-input
+          v-model.trim="formData.code"
+          maxlength="40"
+          clearable
+          placeholder="请输入路由编码"
+        />
       </el-form-item>
 
       <el-form-item prop="enable_flag" label="状态">
@@ -70,7 +81,7 @@
           rows="5"
           show-word-limit
           maxlength="200"
-          v-model="formData.remark"
+          v-model.trim="formData.remark"
           placeholder="请输入备注"
         />
       </el-form-item>
@@ -138,7 +149,9 @@ const formData = reactive<MenuForm>({
 
 const rules = reactive({
   name: [{ required: true, message: "请输入菜单名称", trigger: "blur" }],
-  type: [{ required: true, message: "请选择菜单类型", trigger: "blur" }],
+  type: [
+    { required: true, message: "请选择菜单类型", trigger: ["blur", "change"] },
+  ],
   routing_address: [
     { required: true, message: "请输入路由路径", trigger: "blur" },
   ],
@@ -189,6 +202,7 @@ function resetForm() {
   menuFormRef.value.resetFields();
   menuFormRef.value.clearValidate();
 
+  // init
   formData.id = undefined;
   formData.type = undefined;
   formData.name = "";

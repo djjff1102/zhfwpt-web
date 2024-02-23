@@ -12,11 +12,23 @@
       label-width="100px"
     >
       <el-form-item label="角色名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入角色名称" />
+        <el-input
+          v-model.trim="formData.name"
+          maxlength="40"
+          clearable
+          placeholder="请输入角色名称"
+        />
       </el-form-item>
 
-      <el-form-item label="角色编号" prop="code">
-        <el-input v-model="formData.code" placeholder="请输入角色编号" />
+      <el-form-item label="层级" prop="area_type">
+        <el-radio-group v-model="formData.area_type">
+          <el-radio
+            v-for="item in areaTypeOptions"
+            :key="item.value"
+            :label="item.value"
+            >{{ item.label }}</el-radio
+          >
+        </el-radio-group>
       </el-form-item>
 
       <el-form-item label="描述" prop="remark">
@@ -28,22 +40,6 @@
           v-model="formData.remark"
           placeholder="请输入描述"
         />
-      </el-form-item>
-
-      <!-- <el-form-item label="数据权限" prop="dataScope">
-          <el-select v-model="formData.dataScope">
-            <el-option :key="0" label="全部数据" :value="0" />
-            <el-option :key="1" label="部门及子部门数据" :value="1" />
-            <el-option :key="2" label="本部门数据" :value="2" />
-            <el-option :key="3" label="本人数据" :value="3" />
-          </el-select>
-        </el-form-item> -->
-
-      <el-form-item label="状态" prop="status">
-        <!-- <el-radio-group v-model="formData.status">
-            <el-radio :label="1">正常</el-radio>
-            <el-radio :label="0">停用</el-radio>
-          </el-radio-group> -->
       </el-form-item>
     </el-form>
 
@@ -59,6 +55,7 @@
 <script setup lang="ts">
 import { addRole, updateRole } from "@/api/role";
 import { RoleForm } from "@/api/role/types";
+import { areaTypeOptions } from "./role.data";
 defineOptions({
   name: "RoleDialog",
   inheritAttrs: false,
@@ -74,6 +71,7 @@ const roleFormRef = ref(ElForm);
 
 const rules = reactive({
   name: [{ required: true, message: "请输入角色名称", trigger: "blur" }],
+  area_type: [{ required: true, message: "请选择层级", trigger: "blur" }],
 });
 
 const formData = reactive<RoleForm>({
