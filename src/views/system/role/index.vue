@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { TinyTable } from "@/components/TinyTable/index";
 import { getRolePage, deleteRoleById } from "@/api/role";
 
 import { RolePageVO, RoleQuery } from "@/api/role/types";
@@ -6,7 +7,11 @@ import { RolePageVO, RoleQuery } from "@/api/role/types";
 import authorityDialog from "./authorityDialog.vue";
 import infoPremissionDialog from "./infoPremissionDialog.vue";
 import roleDialog from "./roleDialog.vue";
-import { areaTypeOptions } from "./role.data";
+import {
+  RoleDialogConfigEnum,
+  areaTypeOptions,
+  getRoleColumns,
+} from "./role.data";
 
 defineOptions({
   name: "Role",
@@ -17,6 +22,13 @@ const queryFormRef = ref(ElForm);
 const roleDialogRef = ref(roleDialog);
 const authorityDialogRef = ref(authorityDialog);
 const infoPremissionDialogRef = ref(infoPremissionDialog);
+
+const dialogMap = {
+  [RoleDialogConfigEnum.CREATE_ROLE]: roleDialogRef,
+  [RoleDialogConfigEnum.UPDATE_ROLE]: roleDialogRef, // 假设用同一个 dialog，但不同的配置
+  [RoleDialogConfigEnum.AUTHORITY_ROLE]: authorityDialogRef,
+  [RoleDialogConfigEnum.INFOR_PERMISSION_ROLE]: infoPremissionDialogRef,
+};
 
 const loading = ref(false);
 const total = ref(0);
@@ -71,11 +83,12 @@ function handleDelete(roleId: string) {
 
 /**
  * 打开 权限 弹窗
- * ref： 对应弹窗的ref
  */
-function openMenuDialog(ref: any, row?: RolePageVO) {
-  ref?.showDialog(row);
+function openMenuDialog(type: RoleDialogConfigEnum, row?: RolePageVO) {
+  dialogMap[type].value?.showDialog(row);
 }
+
+const roleColumns = getRoleColumns(openMenuDialog, handleDelete);
 
 onMounted(() => {
   handleQuery();
@@ -132,81 +145,22 @@ onMounted(() => {
     <el-card shadow="never" class="table-container">
       <template #header>
         <div class="flex justify-end items-center">
-          <el-button type="success" @click="openMenuDialog(roleDialogRef)"
+          <el-button
+            type="success"
+            @click="openMenuDialog(RoleDialogConfigEnum.CREATE_ROLE)"
             ><i-ep-plus />新增</el-button
           >
         </div>
       </template>
 
-      <el-table
+      <tiny-table
         ref="dataTableRef"
         v-loading="loading"
         :data="roleList"
         highlight-current-row
-      >
-        <el-table-column type="selection" width="55" align="center" />
-        <el-table-column type="index" label="序号" width="60" align="center" />
-        <el-table-column label="角色名称" prop="name" min-width="100" />
-        <el-table-column label="层级" prop="area_type" min-width="100">
-          <template #default="scope">
-            {{
-              areaTypeOptions.find((item) => item.value === scope.row.area_type)
-                ?.label
-            }}
-          </template>
-        </el-table-column>
-        <el-table-column label="描述" prop="remark" width="150" />
-
-        <el-table-column
-          label="创建人"
-          align="center"
-          prop="create_user_name"
-          width="100"
-        />
-        <el-table-column
-          label="创建时间"
-          align="center"
-          width="180"
-          prop="create_date"
-        />
-
-        <el-table-column fixed="right" label="操作" width="320">
-          <template #default="scope">
-            <el-button
-              type="primary"
-              size="small"
-              link
-              @click="openMenuDialog(roleDialogRef, scope.row)"
-            >
-              编辑
-            </el-button>
-            <el-button
-              type="primary"
-              size="small"
-              link
-              @click="openMenuDialog(authorityDialogRef, scope.row)"
-            >
-              菜单权限
-            </el-button>
-            <el-button
-              type="primary"
-              size="small"
-              link
-              @click="openMenuDialog(infoPremissionDialogRef, scope.row)"
-            >
-              信息权限
-            </el-button>
-            <el-button
-              type="primary"
-              size="small"
-              link
-              @click="handleDelete(scope.row.id)"
-            >
-              删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+        :columns="roleColumns"
+        show-index-column
+      />
 
       <pagination
         v-if="total > 0"

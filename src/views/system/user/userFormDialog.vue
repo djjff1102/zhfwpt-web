@@ -210,8 +210,10 @@ function closeDialog() {
 }
 
 function resetForm() {
-  userFormRef.value.resetFields();
-  userFormRef.value.clearValidate();
+  if (!userFormRef.value?.resetFields) return;
+
+  userFormRef.value?.resetFields();
+  userFormRef.value?.clearValidate();
 
   formData.id = undefined;
   formData.organization_id = "";

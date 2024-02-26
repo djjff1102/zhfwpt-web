@@ -1,6 +1,7 @@
 <!-- 用户管理 -->
 <script setup lang="ts">
 import { useStorage } from "@vueuse/core";
+import { TinyTable } from "@/components/TinyTable/index";
 defineOptions({
   name: "User",
   inheritAttrs: false,
@@ -13,6 +14,7 @@ import { UserQuery, UserPageVO } from "@/api/user/types";
 
 import userFormDialog from "./userFormDialog.vue";
 import { RolePageVO } from "@/api/role/types";
+import { getUserColumns } from "./user.data";
 
 const queryFormRef = ref(ElForm); // 查询表单
 
@@ -51,7 +53,7 @@ function resetQuery() {
 }
 
 /** 重置密码 */
-function resetPassword(row: { [key: string]: any }) {
+function resetPassword(row: UserPageVO) {
   ElMessageBox.confirm("是否确定重置该用户密码", "重置密码", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
@@ -85,8 +87,7 @@ function handleDelete(id: string) {
 }
 
 // 修改状态
-function handleStatusChange(row: any) {
-  console.log(row);
+function handleStatusChange(row: UserPageVO) {
   userFormDialogRef.value?.updateUserByForm(row);
 }
 
@@ -95,6 +96,13 @@ function getRoleOptions() {
     roleList.value = res.data;
   });
 }
+
+const userColumns = getUserColumns(
+  handleStatusChange,
+  resetPassword,
+  openDialog,
+  handleDelete
+);
 
 onMounted(() => {
   // 角色options
@@ -145,83 +153,14 @@ onMounted(() => {
             </div>
           </template>
 
-          <el-table v-loading="loading" :data="pageData">
-            <el-table-column
-              type="index"
-              label="序号"
-              width="60"
-              align="center"
-            />
-            <el-table-column
-              key="name"
-              label="用户名"
-              width="120"
-              show-overflow-tooltip
-              align="center"
-              prop="name"
-            />
-            <el-table-column
-              label="真实姓名"
-              width="120"
-              align="center"
-              prop="real_name"
-            />
-
-            <el-table-column
-              label="部门"
-              width="200"
-              show-overflow-tooltip
-              align="center"
-              prop="organization_name"
-            />
-
-            <el-table-column
-              label="角色"
-              width="120"
-              align="center"
-              prop="role_name"
-            />
-
-            <el-table-column label="状态" align="center" prop="enable_flag">
-              <template #default="scope">
-                <el-switch
-                  v-model="scope.row.enable_flag"
-                  @change="handleStatusChange(scope.row)"
-                />
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="添加时间"
-              align="center"
-              prop="create_date"
-              width="180"
-            />
-            <el-table-column label="操作" fixed="right" width="220">
-              <template #default="scope">
-                <el-button
-                  type="primary"
-                  size="small"
-                  link
-                  @click="resetPassword(scope.row)"
-                  >重置密码</el-button
-                >
-                <el-button
-                  type="primary"
-                  link
-                  size="small"
-                  @click="openDialog(scope.row)"
-                  >编辑</el-button
-                >
-                <el-button
-                  type="primary"
-                  link
-                  size="small"
-                  @click="handleDelete(scope.row.id)"
-                  >删除</el-button
-                >
-              </template>
-            </el-table-column>
-          </el-table>
+          <tiny-table
+            ref="dataTableRef"
+            v-loading="loading"
+            :data="pageData"
+            highlight-current-row
+            :columns="userColumns"
+            show-index-column
+          />
 
           <pagination
             v-if="totalCount > 0"

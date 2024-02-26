@@ -1,16 +1,18 @@
 <script setup lang="ts">
+import { TinyTable } from "@/components/TinyTable/index";
+
 defineOptions({
   // eslint-disable-next-line vue/no-reserved-component-names
   name: "Menu",
   inheritAttrs: false,
 });
 
-import { MenuForm, MenuVO } from "@/api/menu/types";
+import { MenuVO } from "@/api/menu/types";
 import { listMenus, deleteMenu, updateMenu } from "@/api/menu";
 
 import menuDialog from "./menuDialog.vue";
 import functionDialog from "./functionDialog.vue";
-import { MenuDialogConfigEnum } from "./menu.data";
+import { MenuDialogConfigEnum, getMenuColumns } from "./menu.data";
 
 const menuDialogRef = ref(menuDialog);
 const functionDialogRef = ref(functionDialog);
@@ -70,20 +72,25 @@ function handleDelete(menuId: string) {
 /**
  * 修改菜单状态
  */
-function handleStatusChange(row: MenuVO) {
-  updateMenuItem(row);
-}
-
-function updateMenuItem(row: MenuForm) {
+function updateMenuItem(row: MenuVO) {
   updateMenu(row)
     .then(() => {
       ElMessage.success("修改成功");
     })
     .catch(() => {
       ElMessage.info("修改失败");
-      row.enable_flag = !row.enable_flag;
+    })
+    .finally(() => {
+      handleQuery();
     });
 }
+
+const menuColumns = getMenuColumns(
+  updateMenuItem,
+  openDialog,
+  openFunctionDialog,
+  handleDelete
+);
 
 onMounted(() => {
   handleQuery();
@@ -102,7 +109,7 @@ onMounted(() => {
         </div>
       </template>
 
-      <el-table
+      <tiny-table
         v-loading="loading"
         :data="menuList"
         highlight-current-row
@@ -113,82 +120,8 @@ onMounted(() => {
           children: 'children',
           hasChildren: 'hasChildren',
         }"
-      >
-        <el-table-column
-          label="菜单名称"
-          min-width="250"
-          prop="name"
-          show-overflow-tooltip
-        />
-
-        <el-table-column
-          label="路由路径"
-          align="left"
-          min-width="250"
-          prop="routing_address"
-        />
-
-        <el-table-column label="路由编码" align="left" prop="code" />
-
-        <el-table-column label="排序" align="center" prop="sort" />
-
-        <el-table-column label="状态" align="center">
-          <template #default="scope">
-            <el-switch
-              v-model="scope.row.enable_flag"
-              @change="handleStatusChange(scope.row)"
-            />
-          </template>
-        </el-table-column>
-
-        <el-table-column
-          label="备注"
-          align="left"
-          show-overflow-tooltip
-          min-width="250"
-          prop="remark"
-        />
-
-        <el-table-column fixed="right" label="操作" width="320">
-          <template #default="scope">
-            <el-button
-              type="primary"
-              link
-              size="small"
-              @click.stop="
-                openDialog(MenuDialogConfigEnum.UPDATE_MENU, scope.row)
-              "
-              >编辑
-            </el-button>
-            <el-button
-              type="primary"
-              link
-              size="small"
-              @click.stop="
-                openDialog(MenuDialogConfigEnum.ADD_SUB_MENU, scope.row)
-              "
-              >子菜单配置
-            </el-button>
-
-            <el-button
-              type="primary"
-              link
-              size="small"
-              @click.stop="openFunctionDialog(scope.row.id)"
-              >功能配置
-            </el-button>
-
-            <el-button
-              type="primary"
-              link
-              size="small"
-              @click.stop="handleDelete(scope.row.id)"
-            >
-              删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+        :columns="menuColumns"
+      />
     </el-card>
 
     <!-- menu dialog -->

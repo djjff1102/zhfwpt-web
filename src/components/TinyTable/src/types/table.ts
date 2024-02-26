@@ -40,7 +40,7 @@ type TableColumnProps = Parameters<
 export type BasicColumn = RequiredProps &
   (ActionColumn | DataColumn) &
   Partial<TableColumnProps> & {
-    render?: (...args: any[]) => VNode;
+    render?: (...args: any[]) => VNode | string;
   };
 
 export interface BasicTableProps<T = any> {

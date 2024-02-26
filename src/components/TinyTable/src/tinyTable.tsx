@@ -1,5 +1,5 @@
 import { defineComponent, h } from "vue";
-import { ElTable, ElTableColumn, ElButton } from "element-plus";
+import { ElTable, ElTableColumn, ElButton, ElStep } from "element-plus";
 import { TinyTableProps } from "./props";
 import { BasicColumn, TableColumnScope } from "./types/table";
 import "element-plus/es/components/table/style/css";
@@ -18,52 +18,40 @@ export default defineComponent({
 
     // base Column
     const createBaseColumn = (column: BasicColumn) => {
-      // 检测是否为操作列
-      if (column.isActionColumn) {
-        return (
-          <ElTableColumn key={column.prop} {...column} v-memo={[column]}>
-            {{
-              default: (scope: TableColumnScope) => {
+      return (
+        <ElTableColumn key={column.prop} {...column}>
+          {{
+            default: (scope: TableColumnScope) => {
+              // 访问当前行的数据和索引
+              const { row, $index } = scope;
+              // 直接使用 column 中的属性，例如 column.prop
+              const columnValue = column.prop ? row[column.prop] : null;
+
+              if (column.isActionColumn && column.actions) {
                 return (
                   <div>
-                    {column.actions?.map((action) => {
-                      const vHasPerm = action["v-has-perm"];
-                      const hasPermission =
-                        (vHasPerm && checkPermission(vHasPerm)) ||
-                        vHasPerm == undefined;
-                      if (hasPermission) {
-                        return (
-                          <ElButton
-                            type="text"
-                            onClick={() => action.action(scope)}
-                          >
-                            {action.label}
-                          </ElButton>
-                        );
-                      }
-                      return null;
+                    {column.actions.map((action, index) => {
+                      // 示例：根据权限或其他条件显示按钮
+                      return (
+                        <ElButton
+                          key={index}
+                          link
+                          type="primary"
+                          onClick={() => action.action(scope)}
+                        >
+                          {action.label}
+                        </ElButton>
+                      );
                     })}
                   </div>
                 );
-              },
-            }}
-          </ElTableColumn>
-        );
-      } else {
-        // 其他普通列的处理
-        return (
-          <ElTableColumn key={column.prop} {...column} v-memo={[column]}>
-            {{
-              default: (scope: TableColumnScope) => {
-                const { row, column, $index } = scope;
-                return column.render
-                  ? column.render(row, column, $index)
-                  : column.prop && row[column.prop];
-              },
-            }}
-          </ElTableColumn>
-        );
-      }
+              } else {
+                return column.render ? column.render(scope) : columnValue;
+              }
+            },
+          }}
+        </ElTableColumn>
+      );
     };
 
     // index Column
@@ -73,7 +61,7 @@ export default defineComponent({
         width="60"
         label="序号"
         type="index"
-        fixed={hasFixedColumn.value ? "left" : false}
+        fixed={hasFixedColumn.value ? "left" : true}
       />
     );
 
