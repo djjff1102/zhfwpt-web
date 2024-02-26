@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { TinyTable } from "@/components/TinyTable/index";
+import deptFormDialog from "./deptFormDialog.vue";
+
 import { deleteDept, listDepts } from "@/api/dept";
 
 import { DeptVO, DeptQuery, DeptForm } from "@/api/dept/types";
 
-import deptFormDialog from "./deptFormDialog.vue";
+import { getDeptColumns } from "./dept.data";
 
 defineOptions({
   name: "Dept",
@@ -59,6 +62,8 @@ function handleDelete(deptId?: string) {
   });
 }
 
+const deptColumns = getDeptColumns(openDialog, handleDelete);
+
 onMounted(() => {
   handleQuery();
 });
@@ -99,47 +104,14 @@ onMounted(() => {
         </div>
       </template>
 
-      <el-table
+      <tiny-table
         v-loading="loading"
         :data="deptList"
+        :columns="deptColumns"
         row-key="id"
         default-expand-all
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-      >
-        <el-table-column prop="name" label="部门名称" />
-
-        <el-table-column label="操作" fixed="right" align="left" width="200">
-          <template #default="scope">
-            <el-button
-              type="primary"
-              link
-              size="small"
-              v-has-perm="['107']"
-              @click.stop="openDialog(scope.row.id)"
-            >
-              新增
-            </el-button>
-            <el-button
-              type="primary"
-              link
-              size="small"
-              v-has-perm="['108']"
-              @click.stop="openDialog(scope.row)"
-            >
-              编辑
-            </el-button>
-            <el-button
-              type="primary"
-              link
-              size="small"
-              v-has-perm="['109']"
-              @click.stop="handleDelete(scope.row.id)"
-            >
-              删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      />
     </el-card>
 
     <!-- 部门表单 弹窗 -->

@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { BasicColumn } from "@/components/TinyTable";
 declare global {
   /**
    * 分页查询参数
@@ -94,5 +95,25 @@ declare global {
     /** 子列表  */
     children?: OptionType[];
   }
+
+  namespace JSX {
+    // tslint:disable no-empty-interface
+    type Element = VNode;
+    // tslint:disable no-empty-interface
+    type ElementClass = ComponentRenderProxy;
+    interface ElementAttributesProperty {
+      $props: any;
+    }
+    interface IntrinsicElements {
+      [elem: string]: any;
+    }
+    interface IntrinsicAttributes {
+      [elem: string]: any;
+    }
+  }
+
+  type Recordable<T = any> = Record<string, T>;
+
+  type BaseColumn = BasicColumn;
 }
 export {};

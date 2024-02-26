@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { TinyTable } from "@/components/TinyTable/index";
+
 import { getOperatorPage } from "@/api/operator";
 import { OperatorPageVO, OperatorQuery } from "@/api/operator/types";
+
+import { operatorColumns } from "./operator.data";
 
 defineOptions({
   name: "Operator",
@@ -139,45 +143,15 @@ onMounted(() => {
     </div>
 
     <el-card shadow="never" class="table-container">
-      <el-table
-        ref="dataTableRef"
+      <tiny-table
         v-loading="loading"
-        :data="operatorList"
+        :tableData="operatorList"
+        :columns="operatorColumns"
+        :showIndexColumn="true"
+        :showSelectColumn="true"
+        ref="dataTableRef"
         highlight-current-row
-      >
-        <el-table-column type="selection" width="55" align="center" />
-        <el-table-column type="index" label="序号" width="60" align="center" />
-        <el-table-column label="部门" prop="organization" width="200" />
-        <el-table-column label="操作角色" prop="role" width="150" />
-
-        <el-table-column
-          label="操作人"
-          align="center"
-          prop="name"
-          min-width="200"
-          show-overflow-tooltip
-        />
-        <el-table-column
-          label="操作模块"
-          align="center"
-          prop="operationModule"
-          min-width="200"
-          show-overflow-tooltip
-        />
-        <el-table-column
-          label="操作描述"
-          align="center"
-          prop="operationDescription"
-          min-width="200"
-          show-overflow-tooltip
-        />
-        <el-table-column
-          label="操作时间"
-          align="center"
-          prop="updateDate"
-          width="180"
-        />
-      </el-table>
+      />
 
       <pagination
         v-if="total > 0"

@@ -6,11 +6,10 @@ import { Directive, DirectiveBinding } from "vue";
  */
 export const hasPerm: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
-    const { authorityCode } = useUserStoreHook().user;
     const { value } = binding;
     if (value) {
       const requiredPerms = Array.isArray(value) ? value : [value];
-      if (!hasPermFunc(authorityCode, requiredPerms)) {
+      if (!checkPermission(requiredPerms)) {
         el.parentNode && el.parentNode.removeChild(el);
       }
     } else {
@@ -23,10 +22,8 @@ export const hasPerm: Directive = {
   },
 };
 
-function hasPermFunc(
-  authorityCode: string[] = [],
-  requiredPerms: string[]
-): boolean {
+export function checkPermission(requiredPerms: string[] = []): boolean {
+  const { authorityCode } = useUserStoreHook().user;
   if (!authorityCode?.length) {
     return false;
   }
