@@ -8,8 +8,7 @@ export const hasPerm: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
     const { value } = binding;
     if (value) {
-      const requiredPerms = Array.isArray(value) ? value : [value];
-      if (!checkPermission(requiredPerms)) {
+      if (!checkPermission(value)) {
         el.parentNode && el.parentNode.removeChild(el);
       }
     } else {
@@ -22,7 +21,8 @@ export const hasPerm: Directive = {
   },
 };
 
-export function checkPermission(requiredPerms: string[] = []): boolean {
+export function checkPermission(value: string | string[]): boolean {
+  const requiredPerms = Array.isArray(value) ? value : [value];
   const { authorityCode } = useUserStoreHook().user;
   if (!authorityCode?.length) {
     return false;

@@ -23,7 +23,7 @@ export default defineComponent({
           {{
             default: (scope: TableColumnScope) => {
               // 访问当前行的数据和索引
-              const { row, $index } = scope;
+              const { row } = scope;
               // 直接使用 column 中的属性，例如 column.prop
               const columnValue = column.prop ? row[column.prop] : null;
 
@@ -32,6 +32,13 @@ export default defineComponent({
                   <div>
                     {column.actions.map((action, index) => {
                       // 示例：根据权限或其他条件显示按钮
+                      const isShow =
+                        (action["v-has-perm"] &&
+                          checkPermission(action["v-has-perm"])) ||
+                        !Object.hasOwn(action, "v-has-perm");
+                      if (!isShow) {
+                        return null;
+                      }
                       return (
                         <ElButton
                           key={index}
