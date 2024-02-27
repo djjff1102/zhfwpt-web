@@ -30,6 +30,7 @@
 <script setup lang="ts">
 import { getDeptOptions } from "@/api/dept";
 import { OrganizationUnit } from "@/api/dept/types";
+import { ElTree } from "element-plus";
 
 const props = defineProps({
   modelValue: {
