@@ -140,7 +140,7 @@ function toggleSideBar() {
     z-index: 800;
     display: flex;
     width: 100% !important;
-    height: 50px;
+    height: 64px;
 
     :deep(.logo-wrap) {
       width: $sideBarWidth;
@@ -149,18 +149,18 @@ function toggleSideBar() {
     :deep(.el-scrollbar) {
       flex: 1;
       min-width: 0;
-      height: 50px;
+      height: 64px;
     }
   }
 
   .main-container {
-    padding-top: 50px;
+    padding-top: 64px;
     margin-left: 0;
     overflow: hidden;
   }
 
   // 顶部模式全局变量修改
-  --el-menu-item-height: 50px;
+  --el-menu-item-height: 48px;
 }
 
 .mobile.isTop {
@@ -179,7 +179,7 @@ function toggleSideBar() {
   .mix-wrapper {
     display: flex;
     height: 100%;
-    padding-top: 50px;
+    padding-top: 64px;
 
     .mix-wrapper__left {
       position: relative;
@@ -201,11 +201,11 @@ function toggleSideBar() {
         box-shadow: 0 0 6px -2px var(--el-color-primary);
 
         div:hover {
-          background-color: var(--menuBg);
+          background-color: $leftMenuHover;
         }
 
         :deep(svg) {
-          color: #409eff !important;
+          color: #3470ff !important;
         }
       }
     }
@@ -225,7 +225,7 @@ function toggleSideBar() {
 
     :deep(.svg-icon) {
       margin-top: -1px;
-      margin-right: 5px;
+      margin-right: 10px;
     }
 
     .el-menu {

@@ -20,7 +20,9 @@
 
     // reset element-ui css
     .horizontal-collapse-transition {
-      transition: 0s width ease-in-out, 0s padding-left ease-in-out,
+      transition:
+        0s width ease-in-out,
+        0s padding-left ease-in-out,
         0s padding-right ease-in-out;
     }
 
@@ -94,7 +96,7 @@
 
       .header {
         .logo-wrap {
-          width: 54px !important;
+          width: fit-content !important;
           transition: transform 0.28s;
         }
       }
@@ -122,7 +124,7 @@
 
       // TODO
       & > .svg-icon {
-        margin-left: 20px;
+        margin-left: 10px;
       }
 
       & > span {
@@ -203,6 +205,17 @@
 
 // when menu collapsed
 .el-menu--vertical {
+  padding: 32px 12px !important;
+  background: $leftMenuBg !important;
+
+  > div {
+    margin-bottom: 16px !important;
+
+    .el-menu-item {
+      padding: 0 26px !important;
+    }
+  }
+
   & > .el-menu {
     .svg-icon {
       margin-right: 12px;
@@ -216,9 +229,21 @@
 
   .nest-menu .el-sub-menu > .el-sub-menu__title,
   .el-menu-item {
+    height: $leftMenuItemHeight !important;
+    border-radius: 4px;
+
     &:hover {
       // you can use $subMenuHover
-      background-color: $menuHover !important;
+      color: $leftMenuHoverText !important;
+      background-color: $leftMenuHover !important;
+    }
+
+    &.is-active {
+      background: linear-gradient(
+        270deg,
+        $leftMenuActiveBgStart 0%,
+        $leftMenuActiveBgEnd
+      ) !important;
     }
   }
 
@@ -238,6 +263,32 @@
     &::-webkit-scrollbar-thumb {
       background: #99a9bf;
       border-radius: 20px;
+    }
+  }
+}
+
+.el-menu--horizontal {
+  .el-menu-item {
+    background: transparent !important;
+    border-bottom: none !important;
+
+    &:hover {
+      background-color: $topMenuHover !important;
+    }
+
+    &.is-active {
+      position: relative;
+
+      &::after {
+        position: absolute;
+        bottom: 14px;
+        left: 50%;
+        width: 12px;
+        height: 2px;
+        content: "";
+        background-color: #fff;
+        transform: translateX(-50%);
+      }
     }
   }
 }

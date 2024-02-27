@@ -98,8 +98,8 @@ onMounted(() => {
     <el-card shadow="never" class="table-container">
       <template #header>
         <div class="flex justify-end items-center">
-          <el-button v-has-perm="['107']" type="success" @click="openDialog()"
-            ><i-ep-plus />新增</el-button
+          <el-button v-has-perm="['107']" type="primary" @click="openDialog()"
+            >新增</el-button
           >
         </div>
       </template>

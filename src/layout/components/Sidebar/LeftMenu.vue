@@ -48,9 +48,9 @@ function resolvePath(routePath: string) {
   <el-menu
     :default-active="layout === 'top' ? '-' : currRoute.path"
     :collapse="!appStore.sidebar.opened"
-    :background-color="variables.menuBg"
-    :text-color="variables.menuText"
-    :active-text-color="variables.menuActiveText"
+    :background-color="variables.leftMenuBg"
+    :text-color="variables.leftMenuText"
+    :active-text-color="variables.leftMenuActiveText"
     :unique-opened="false"
     :collapse-transition="false"
     :mode="layout === 'top' ? 'horizontal' : 'vertical'"

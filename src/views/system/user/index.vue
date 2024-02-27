@@ -146,9 +146,7 @@ onMounted(() => {
           <template #header>
             <div class="flex justify-end items-center">
               <div>
-                <el-button type="success" @click="openDialog()"
-                  ><i-ep-plus />新增</el-button
-                >
+                <el-button type="primary" @click="openDialog()">新增</el-button>
               </div>
             </div>
           </template>

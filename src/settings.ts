@@ -1,5 +1,5 @@
 const defaultSettings: AppSettings = {
-  title: "vue3-element-admin",
+  title: "大宗贸易综合服务平台",
   version: "v0.0.1",
   showSettings: false,
   tagsView: true,
@@ -9,7 +9,7 @@ const defaultSettings: AppSettings = {
   theme: "light",
   size: "default",
   language: "zh-cn",
-  themeColor: "#409EFF",
+  themeColor: "#3470FF",
   watermark: { enabled: false, content: "anonymity" },
 };
 

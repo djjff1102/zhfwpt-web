@@ -82,7 +82,7 @@ watchEffect(() => {
 .isMix,
 .isTop {
   .fixed-header {
-    top: 50px;
+    top: 64px;
   }
 }
 </style>

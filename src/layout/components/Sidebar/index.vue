@@ -65,31 +65,43 @@ watch(
   .menu-wrap {
     z-index: 99;
     width: 100% !important;
-    height: 50px;
-    background-color: $menuBg;
+    height: 64px;
+    background: linear-gradient(
+      180deg,
+      $headBgStartColor 0%,
+      $headBgEndColor 100%
+    );
 
     :deep(.header) {
       display: flex;
       width: 100%;
       // 顶部模式全局变量修改
-      --el-menu-item-height: 50px;
+      --el-menu-item-height: 64px;
 
       .logo-wrap {
-        width: $sideBarWidth;
+        width: fit-content;
       }
 
       .el-menu {
-        background-color: $menuBg;
+        background: linear-gradient(
+          180deg,
+          $headBgStartColor 0%,
+          $headBgEndColor 100%
+        );
 
         .el-menu-item {
-          color: $menuText;
+          color: $topMenuText;
+
+          &:hover {
+            color: $topMenuHoverText;
+          }
         }
       }
 
       .el-scrollbar {
         flex: 1;
         min-width: 0;
-        height: 50px;
+        height: 64px;
       }
     }
   }

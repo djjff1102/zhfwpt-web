@@ -14,8 +14,9 @@
   <!-- 用户头像 -->
   <el-dropdown trigger="click">
     <div class="avatar-container">
-      <div class="avatar_name text-[#FFF]">{{ userStore.user.name }}</div>
-      <i-ep-caret-bottom class="w-3 h-3" />
+      <div class="avatar_name text-[#FFF]">
+        欢迎您，{{ userStore.user.name }}
+      </div>
     </div>
     <template #dropdown>
       <el-dropdown-menu>

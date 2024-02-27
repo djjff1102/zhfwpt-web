@@ -38,9 +38,8 @@ onMounted(() => {
     <el-menu
       mode="horizontal"
       :default-active="activePath"
-      :background-color="variables.menuBg"
-      :text-color="variables.menuText"
-      :active-text-color="variables.menuActiveText"
+      :text-color="variables.topMenuText"
+      :active-text-color="variables.topMenuActiveText"
       @select="selectMenu"
     >
       <el-menu-item
@@ -49,10 +48,10 @@ onMounted(() => {
         :index="route.path"
       >
         <template #title>
-          <svg-icon
+          <!-- <svg-icon
             v-if="route.meta && route.meta.icon"
             :icon-class="route.meta.icon"
-          />
+          /> -->
           <span v-if="route.path === '/'"> 首页 </span>
           <template v-else>
             <span v-if="route.meta && route.meta.title">
@@ -66,6 +65,8 @@ onMounted(() => {
 </template>
 <style lang="scss" scoped>
 .el-menu {
-  height: 50px !important;
+  height: 64px !important;
+  padding-left: 84px;
+  font-size: 18px;
 }
 </style>

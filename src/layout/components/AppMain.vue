@@ -26,7 +26,7 @@ const tagsViewStore = useTagsViewStore();
   /* 50= navbar  50  */
   min-height: calc(100vh - 50px);
   overflow: hidden;
-  background-color: var(--el-bg-color-page);
+  background-color: $pageBg;
 }
 
 .fixed-header + .app-main {
@@ -47,18 +47,18 @@ const tagsViewStore = useTagsViewStore();
 
 .isMix {
   .app-main {
-    height: calc(100vh - 50px);
+    height: calc(100vh - 64px);
     overflow-y: auto;
   }
 
   .hasTagsView {
     .app-main {
-      /* 84 = navbar + tags-view = 50 + 34 */
-      height: calc(100vh - 84px);
+      /* 98 = navbar + tags-view = 64 + 34 */
+      height: calc(100vh - 98px);
     }
 
     .fixed-header + .app-main {
-      min-height: calc(100vh - 50px);
+      min-height: calc(100vh - 64px);
       padding-top: 34px;
     }
   }

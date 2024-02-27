@@ -146,9 +146,9 @@ onMounted(() => {
       <template #header>
         <div class="flex justify-end items-center">
           <el-button
-            type="success"
+            type="primary"
             @click="openMenuDialog(RoleDialogConfigEnum.CREATE_ROLE)"
-            ><i-ep-plus />新增</el-button
+            >新增</el-button
           >
         </div>
       </template>
