@@ -18,6 +18,9 @@ import "@/styles/index.scss";
 import "uno.css";
 import "./styles/element-variables.scss";
 
+// iconfont
+import "./assets/iconfont/iconfont.css";
+
 const app = createApp(App);
 // 全局注册 自定义指令(directive)
 setupDirective(app);
