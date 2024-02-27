@@ -45,7 +45,7 @@ watchEffect(() => {
 <template>
   <div :class="{ hasTagsView: showTagsView }" class="main-container">
     <div :class="{ 'fixed-header': fixedHeader, device: device }">
-      <navbar v-if="layout === 'left'" />
+      <navbar />
       <tags-view v-if="showTagsView" />
     </div>
     <!--主页面-->
