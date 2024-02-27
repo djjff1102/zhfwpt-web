@@ -9,11 +9,21 @@
 
 .search-container {
   padding: 18px 0 0 10px;
-  margin-bottom: 10px;
   background-color: var(--el-bg-color-overlay);
-  border: 1px solid var(--el-border-color-light);
   border-radius: 4px;
-  box-shadow: var(--el-box-shadow-light);
+}
+
+.el-card.table-container {
+  border: none;
+
+  .el-card__header {
+    border: none;
+  }
+
+  .el-table th.el-table__cell {
+    color: #000;
+    background-color: #f2f3f5;
+  }
 }
 
 .table-container > .el-card__header {
@@ -28,4 +38,8 @@
   &:hover {
     color: rgb(32 160 255);
   }
+}
+
+.el-button {
+  border-radius: 2px !important;
 }

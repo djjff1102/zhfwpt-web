@@ -43,7 +43,7 @@ export default defineComponent({
                         <ElButton
                           key={index}
                           link
-                          type="primary"
+                          type={action.type || "primary"}
                           onClick={() => action.action(scope)}
                         >
                           {action.label}

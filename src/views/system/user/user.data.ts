@@ -81,6 +81,7 @@ export const getUserColumns = (
         },
         {
           label: "删除",
+          type: "danger",
           action: (scope) => {
             handleDelete(scope.row.id);
           },
