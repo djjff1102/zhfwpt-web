@@ -3,6 +3,9 @@ export default {
   route: {
     dashboard: "首页",
     document: "项目文档",
+    search: "全局检索",
+    attention: "我关注的",
+    companyDetail:"企业详情"
   },
   // 登录页面国际化
   login: {

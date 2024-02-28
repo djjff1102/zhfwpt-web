@@ -93,12 +93,12 @@ function toggleSideBar() {
       <div class="mix-wrapper__left">
         <LeftMenu :menu-list="mixLeftMenu" :base-path="activeTopMenu" />
         <!-- 展开/收缩侧边栏菜单 -->
-        <div class="toggle-sidebar">
+        <!-- <div class="toggle-sidebar">
           <hamburger
             :is-active="appStore.sidebar.opened"
             @toggle-click="toggleSideBar"
           />
-        </div>
+        </div> -->
       </div>
       <Main />
     </div>
@@ -156,6 +156,7 @@ function toggleSideBar() {
   .main-container {
     padding-top: 64px;
     margin-left: 0;
+
     overflow: hidden;
   }
 
@@ -173,6 +174,7 @@ function toggleSideBar() {
   :deep(.main-container) {
     display: inline-block;
     width: calc(100% - #{$sideBarWidth});
+    background-color: var(--pageBg);
     margin-left: 0;
   }
 

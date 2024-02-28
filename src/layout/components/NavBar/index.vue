@@ -24,9 +24,9 @@ function toggleSideBar() {
     </div>
 
     <!-- 右侧导航设置 -->
-    <div class="flex">
+    <!-- <div class="flex">
       <NavRight />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -35,8 +35,8 @@ function toggleSideBar() {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 50px;
-  background-color: #fff;
-  box-shadow: 0 0 1px #0003;
+  height: 54px;
+  // background-color: #fff;
+  // box-shadow: 0 0 1px #0003;
 }
 </style>

@@ -1,0 +1,18 @@
+// element-ui样式覆盖
+.el-descriptions {
+  .el-descriptions__body {
+    .el-descriptions__table.is-bordered {
+      .el-descriptions__cell {
+        padding: 11px 16px;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.w-table .w-table-cell {
+  padding: 10px 16px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #000000;
+}

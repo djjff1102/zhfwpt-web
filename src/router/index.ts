@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+import archives from "./archives";
 
 export const Layout = () => import("@/layout/index.vue");
 
@@ -36,6 +37,7 @@ export const constantRoutes: RouteRecordRaw[] = [
         meta: {
           title: "dashboard",
           icon: "homepage",
+          breadcrumb: false,
           affix: true,
           keepAlive: true,
           alwaysShow: false,
@@ -135,6 +137,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
       },
     ],
   },
+  ...archives,
 ];
 
 /**

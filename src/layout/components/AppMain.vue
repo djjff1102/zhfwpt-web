@@ -10,7 +10,9 @@ const tagsViewStore = useTagsViewStore();
       <template #default="{ Component, route }">
         <transition name="fade-slide" mode="out-in">
           <!-- <keep-alive :include="tagsViewStore.cachedViews"> -->
-          <component :is="Component" :key="route.fullPath" />
+          <div class="app-wrap">
+            <component :is="Component" :key="route.fullPath" />
+          </div>
           <!-- </keep-alive> -->
         </transition>
       </template>
@@ -22,13 +24,14 @@ const tagsViewStore = useTagsViewStore();
 .app-main {
   position: relative;
   width: 100%;
-
   /* 50= navbar  50  */
-  min-height: calc(100vh - 50px);
+  height: calc(100vh - 118px);
   overflow: hidden;
   background-color: $pageBg;
 }
-
+.app-wrap {
+  height: 100%;
+}
 .fixed-header + .app-main {
   padding-top: 34px;
 }
@@ -40,26 +43,29 @@ const tagsViewStore = useTagsViewStore();
   }
 
   .fixed-header + .app-main {
-    min-height: 100vh;
     padding-top: 84px;
   }
 }
 
 .isMix {
   .app-main {
-    height: calc(100vh - 64px);
+    margin-top: 54px;
+    height: calc(100vh - 118px);
+    padding-top: 40px;
+    padding: 0px 16px 16px 16px;
     overflow-y: auto;
   }
 
   .hasTagsView {
     .app-main {
       /* 98 = navbar + tags-view = 64 + 34 */
-      height: calc(100vh - 98px);
+      height: calc(100vh - 64px);
     }
 
     .fixed-header + .app-main {
-      min-height: calc(100vh - 64px);
-      padding-top: 34px;
+      height: calc(100vh - 118px);
+      padding-top: 40px;
+      padding: 54px 16px 16px 16px;
     }
   }
 }

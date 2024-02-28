@@ -108,9 +108,8 @@ const passwordVisible = ref(false); // 密码是否可见
 const loginFormRef = ref(ElForm); // 登录表单ref
 
 const loginData = ref<LoginData>({
-  user_name: "",
-  // password: "ZGCM@2023edu",
-  password: "",
+  user_name: "admin",
+  password: "DJdzmy@2024~",
 });
 
 const { t } = useI18n();

@@ -29,3 +29,8 @@
     color: rgb(32 160 255);
   }
 }
+
+.w-btn-text[type="button"]:hover {
+  background-color: transparent;
+  color: blue;
+}
