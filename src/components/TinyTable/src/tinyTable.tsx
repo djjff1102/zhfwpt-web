@@ -1,5 +1,5 @@
 import { defineComponent, h } from "vue";
-import { ElTable, ElTableColumn, ElButton, ElStep } from "element-plus";
+import { ElTable, ElTableColumn, ElButton } from "element-plus";
 import { TinyTableProps } from "./props";
 import { BasicColumn, TableColumnScope } from "./types/table";
 import "element-plus/es/components/table/style/css";
@@ -8,7 +8,25 @@ import { checkPermission } from "@/directive/permission";
 export default defineComponent({
   name: "TinyTable",
   props: TinyTableProps,
-  setup(props) {
+  setup(props, { expose }) {
+    const elTableRef = ref(ElTable);
+
+    onMounted(() => {
+      if (elTableRef.value) {
+        const methods = Object.getOwnPropertyNames(elTableRef.value).filter(
+          (method) => typeof elTableRef.value[method] === "function"
+        );
+
+        const exposedMethods = methods.reduce((acc: any, methodName) => {
+          acc[methodName] = (...args: any) =>
+            elTableRef.value[methodName](...args);
+          return acc;
+        }, {});
+
+        expose({ ...exposedMethods, elTableRef });
+      }
+    });
+
     // 检测是否有固定列
     const hasFixedColumn = computed(() =>
       props.columns.some(
@@ -82,7 +100,7 @@ export default defineComponent({
     );
 
     return () => (
-      <ElTable data={props.tableData}>
+      <ElTable ref={elTableRef} data={props.tableData}>
         {props.showSelectColumn && <SelectionColumn />}
         {props.showIndexColumn && <IndexColumn />}
         {props.columns.map(createBaseColumn)}
