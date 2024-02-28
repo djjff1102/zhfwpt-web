@@ -65,9 +65,10 @@ function handleFilter(value: string, data: any) {
 }
 
 /** 部门树节点 Click */
-function handleNodeClick(data: { [key: string]: any }) {
+function handleNodeClick(data: { [key: string]: any }, node: any) {
+  const { level } = node;
   deptId.value = data.id;
-  emits("node-click");
+  emits("node-click", level);
 }
 
 /**

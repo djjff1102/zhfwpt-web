@@ -89,7 +89,7 @@ declare global {
    */
   interface OptionType {
     /** 值 */
-    value: string | number;
+    value: string | number | boolean;
     /** 文本 */
     label: string;
     /** 子列表  */

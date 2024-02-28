@@ -90,3 +90,18 @@ export const getUserColumns = (
     },
   ];
 };
+
+export const levelList: OptionType[] = [
+  {
+    value: "",
+    label: "全部",
+  },
+  {
+    value: true,
+    label: "本级",
+  },
+  {
+    value: false,
+    label: "下级",
+  },
+];
