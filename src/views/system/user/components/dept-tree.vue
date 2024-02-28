@@ -1,6 +1,7 @@
 <!-- 部门树 -->
 <template>
-  <el-card shadow="never">
+  <el-card shadow="never" class="dept-tree-container h-[100%]">
+    <div class="text-[18px] text-[#000] font-medium mb-[23px]">部门架构</div>
     <el-input
       v-model.trim="deptName"
       maxlength="20"
@@ -106,3 +107,9 @@ onMounted(() => {
   setDefaultValue();
 });
 </script>
+
+<style lang="scss" scoped>
+.dept-tree-container {
+  border-right: 1px solid #edf1fc !important;
+}
+</style>

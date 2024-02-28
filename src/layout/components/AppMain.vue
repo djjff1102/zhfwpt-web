@@ -23,8 +23,8 @@ const tagsViewStore = useTagsViewStore();
   position: relative;
   width: 100%;
 
-  /* 50= navbar  50  */
-  min-height: calc(100vh - 50px);
+  /* 64= navbar  64  */
+  min-height: calc(100vh - 64px);
   overflow: hidden;
   background-color: $pageBg;
 }

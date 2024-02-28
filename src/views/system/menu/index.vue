@@ -99,7 +99,7 @@ onMounted(() => {
 
 <template>
   <div class="app-container">
-    <el-card shadow="never" class="table-container">
+    <el-card shadow="never" class="table-container pt-[16px]">
       <template #header>
         <div class="flex justify-end items-center">
           <el-button type="primary" @click="openDialog()"> 新增</el-button>

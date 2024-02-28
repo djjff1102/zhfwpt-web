@@ -125,9 +125,9 @@ onMounted(() => {
 
 <template>
   <div class="app-container">
-    <el-row :gutter="20">
+    <el-row>
       <!-- 部门树 -->
-      <el-col :lg="6" :xs="24" class="mb-[12px]">
+      <el-col :lg="6" :xs="24">
         <dept-tree
           v-model="queryParams.organization_id"
           @node-click="handleNodeClick"
