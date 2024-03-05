@@ -81,6 +81,7 @@ export const getUserColumns = (
         },
         {
           label: "删除",
+          type: "danger",
           action: (scope) => {
             handleDelete(scope.row.id);
           },
@@ -89,3 +90,18 @@ export const getUserColumns = (
     },
   ];
 };
+
+export const levelList: OptionType[] = [
+  {
+    value: "",
+    label: "全部",
+  },
+  {
+    value: true,
+    label: "本级",
+  },
+  {
+    value: false,
+    label: "下级",
+  },
+];

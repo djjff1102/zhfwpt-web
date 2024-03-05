@@ -13,12 +13,27 @@
 }
 
 .search-container {
-  padding: 18px 0 0 10px;
-  margin-bottom: 10px;
+  padding: 18px 0 0 24px;
   background-color: var(--el-bg-color-overlay);
-  border: 1px solid var(--el-border-color-light);
   border-radius: 4px;
-  box-shadow: var(--el-box-shadow-light);
+}
+
+.el-card.table-container {
+  border: none;
+
+  .el-card__header {
+    padding: 0 26px;
+    border: none;
+  }
+
+  .el-card__body {
+    padding: 16px 26px 16px 24px;
+  }
+
+  .el-table th.el-table__cell {
+    color: #000;
+    background-color: #f2f3f5;
+  }
 }
 
 .table-container > .el-card__header {
@@ -38,4 +53,12 @@
 .w-btn-text[type="button"]:hover {
   background-color: transparent;
   color: blue;
+}
+.el-button {
+  border-radius: 2px !important;
+}
+
+// el-card
+.el-card {
+  border: none !important;
 }

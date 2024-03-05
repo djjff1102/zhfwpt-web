@@ -34,6 +34,7 @@ export const getDeptColumns = (
       },
       {
         label: "删除",
+        type: "danger",
         "v-has-perm": ["109"],
         action: (scope) => {
           handleDelete(scope.row.id);

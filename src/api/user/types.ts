@@ -49,7 +49,7 @@ export interface Organization {
  * 用户查询对象类型
  */
 export interface UserQuery extends PageQuery {
-  current?: boolean;
+  current?: boolean | string;
   role_id?: string;
   real_name?: string;
   name?: string;

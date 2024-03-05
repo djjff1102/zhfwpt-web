@@ -14,7 +14,7 @@ import { UserQuery, UserPageVO } from "@/api/user/types";
 
 import userFormDialog from "./userFormDialog.vue";
 import { RolePageVO } from "@/api/role/types";
-import { getUserColumns } from "./user.data";
+import { getUserColumns, levelList } from "./user.data";
 
 const queryFormRef = ref(ElForm); // 查询表单
 
@@ -26,11 +26,17 @@ const queryParams = reactive<UserQuery>({
   page_size: 10,
   organization_id: "1",
   system_type: 0,
+  current: "",
 });
 const totalCount = ref(0); // 数据总数
 const pageData = ref<UserPageVO[]>(); // 用户分页数据
 
 const roleList = useStorage("roleList", [] as RolePageVO[]); // 角色下拉数据源
+const filterLevelList = computed(() => {
+  return curSelectedTreeNodeLevel.value !== 3
+    ? levelList
+    : levelList.slice(0, 2);
+});
 
 /** 查询 */
 function handleQuery() {
@@ -97,6 +103,13 @@ function getRoleOptions() {
   });
 }
 
+const curSelectedTreeNodeLevel = ref(1);
+function handleNodeClick(curLevel: number) {
+  curSelectedTreeNodeLevel.value = curLevel;
+
+  handleQuery();
+}
+
 const userColumns = getUserColumns(
   handleStatusChange,
   resetPassword,
@@ -112,12 +125,12 @@ onMounted(() => {
 
 <template>
   <div class="app-container">
-    <el-row :gutter="20">
+    <el-row>
       <!-- 部门树 -->
-      <el-col :lg="6" :xs="24" class="mb-[12px]">
+      <el-col :lg="6" :xs="24">
         <dept-tree
           v-model="queryParams.organization_id"
-          @node-click="handleQuery"
+          @node-click="handleNodeClick"
         />
       </el-col>
 
@@ -125,10 +138,62 @@ onMounted(() => {
       <el-col :lg="18" :xs="24">
         <div class="search-container">
           <el-form ref="queryFormRef" :model="queryParams" :inline="true">
+            <el-form-item label="层级" prop="current" class="!w-[200px]">
+              <el-select
+                clearable
+                @clear="handleQuery"
+                v-model="queryParams.current"
+                placeholder="全部"
+              >
+                <el-option
+                  v-for="(item, index) in filterLevelList"
+                  :key="`level-${index}`"
+                  :value="item.value"
+                  :label="item.label"
+                />
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="角色" prop="role_id" class="!w-[200px]">
+              <el-select
+                clearable
+                @clear="handleQuery"
+                v-model="queryParams.role_id"
+                placeholder="全部"
+              >
+                <el-option
+                  v-for="(item, index) in roleList"
+                  :key="`role-${index}`"
+                  :value="item.id"
+                  :label="item.name"
+                />
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="真实姓名" prop="real_name">
+              <el-input
+                v-model.trim="queryParams.real_name"
+                placeholder="请输入真实姓名"
+                maxlength="40"
+                clearable
+                @keyup.enter="handleQuery"
+              />
+            </el-form-item>
+
             <el-form-item label="用户名称" prop="name">
               <el-input
                 v-model.trim="queryParams.name"
                 placeholder="请输入用户名称"
+                maxlength="40"
+                clearable
+                @keyup.enter="handleQuery"
+              />
+            </el-form-item>
+
+            <el-form-item label="手机号" prop="phone">
+              <el-input
+                v-model.trim="queryParams.phone"
+                placeholder="请输入手机号"
                 maxlength="40"
                 clearable
                 @keyup.enter="handleQuery"

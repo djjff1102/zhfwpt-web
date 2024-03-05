@@ -12,20 +12,20 @@
   </div>
 
   <!-- 用户头像 -->
-  <el-dropdown trigger="click">
-    <div class="avatar-container">
-      <div class="avatar_name text-[#FFF]">
-        欢迎您，{{ userStore.user.name }}
-      </div>
+  <div class="avatar-container">
+    <div class="avatar_name text-[#FFF]">欢迎您，{{ userStore.user.name }}</div>
+    <div class="avatar w-[36px] h-[36px] ml-[12px]">
+      <img
+        class="!w-full !h-full object-cover"
+        src="@/assets/base/avatar.png"
+        alt="avatar"
+      />
     </div>
-    <template #dropdown>
-      <el-dropdown-menu>
-        <el-dropdown-item @click="logout">
-          {{ $t("navbar.logout") }}
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </template>
-  </el-dropdown>
+    <i
+      @click="logout"
+      class="mr-[17px] ml-[14px] iconfont icon-close text-[#FFF]"
+    ></i>
+  </div>
 </template>
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -91,7 +91,6 @@ function logout() {
 .avatar-container {
   display: flex;
   place-items: center center;
-  margin: 0 5px;
   cursor: pointer;
 
   img {

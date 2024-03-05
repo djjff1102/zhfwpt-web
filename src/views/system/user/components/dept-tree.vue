@@ -1,6 +1,7 @@
 <!-- 部门树 -->
 <template>
-  <el-card shadow="never">
+  <el-card shadow="never" class="dept-tree-container h-[100%]">
+    <div class="text-[18px] text-[#000] font-medium mb-[23px]">部门架构</div>
     <el-input
       v-model.trim="deptName"
       maxlength="20"
@@ -30,6 +31,7 @@
 <script setup lang="ts">
 import { getDeptOptions } from "@/api/dept";
 import { OrganizationUnit } from "@/api/dept/types";
+import { ElTree } from "element-plus";
 
 const props = defineProps({
   modelValue: {
@@ -64,9 +66,10 @@ function handleFilter(value: string, data: any) {
 }
 
 /** 部门树节点 Click */
-function handleNodeClick(data: { [key: string]: any }) {
+function handleNodeClick(data: { [key: string]: any }, node: any) {
+  const { level } = node;
   deptId.value = data.id;
-  emits("node-click");
+  emits("node-click", level);
 }
 
 /**
@@ -104,3 +107,9 @@ onMounted(() => {
   setDefaultValue();
 });
 </script>
+
+<style lang="scss" scoped>
+.dept-tree-container {
+  border-right: 1px solid #edf1fc !important;
+}
+</style>

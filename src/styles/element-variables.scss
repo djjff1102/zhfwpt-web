@@ -2,6 +2,9 @@ $--colors: (
   "primary": (
     "base": #3470ff,
   ),
+  "danger": (
+    "base": #f74b4b,
+  ),
 );
 
 @forward "element-plus/theme-chalk/src/common/var.scss" with (

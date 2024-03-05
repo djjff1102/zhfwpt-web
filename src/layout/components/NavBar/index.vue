@@ -15,13 +15,16 @@ function toggleSideBar() {
   <!-- 顶部导航栏 -->
   <div class="navbar">
     <!-- 左侧面包屑 -->
-    <div class="flex">
+    <!-- <div class="flex">
       <hamburger
         :is-active="appStore.sidebar.opened"
         @toggle-click="toggleSideBar"
       />
       <breadcrumb />
-    </div>
+    </div> -->
+
+    <!-- 面包屑 -->
+    <breadcrumb />
 
     <!-- 右侧导航设置 -->
     <!-- <div class="flex">
@@ -38,5 +41,8 @@ function toggleSideBar() {
   height: 54px;
   // background-color: #fff;
   // box-shadow: 0 0 1px #0003;
+  height: 50px;
+  padding-left: 16px;
+  background-color: transparent;
 }
 </style>

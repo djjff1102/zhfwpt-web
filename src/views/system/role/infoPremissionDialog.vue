@@ -41,6 +41,7 @@ import {
   updateInfoPremissionById,
 } from "@/api/role";
 import { MenuPremissionTreeProps } from "@/api/role/types";
+import { ElTree } from "element-plus";
 defineOptions({
   name: "AuthorityDialog",
   inheritAttrs: false,

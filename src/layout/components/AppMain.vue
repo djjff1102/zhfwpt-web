@@ -26,6 +26,9 @@ const tagsViewStore = useTagsViewStore();
   width: 100%;
   /* 50= navbar  50  */
   height: calc(100vh - 118px);
+
+  /* 64= navbar  64  */
+  min-height: calc(100vh - 64px);
   overflow: hidden;
   background-color: $pageBg;
 }

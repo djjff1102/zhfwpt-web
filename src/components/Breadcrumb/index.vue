@@ -2,16 +2,22 @@
   <el-breadcrumb class="h-[50px] flex items-center">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="item.path">
-        <span
-          v-if="
-            item.redirect === 'noredirect' || index === breadcrumbs.length - 1
-          "
-          class="text-[var(--el-disabled-text-color)]"
-          >{{ translateRouteTitle(item.meta.title) }}</span
-        >
-        <a v-else @click.prevent="handleLink(item)">
-          {{ translateRouteTitle(item.meta.title) }}
-        </a>
+        <div class="flex">
+          <span
+            v-if="
+              item.redirect === 'noredirect' || index === breadcrumbs.length - 1
+            "
+            class="text-[#272A31]"
+            >{{ translateRouteTitle(item.meta.title) }}</span
+          >
+          <a class="!text-[#999999]" v-else @click.prevent="handleLink(item)">
+            {{ translateRouteTitle(item.meta.title) }}
+          </a>
+          <i
+            class="mx-[8px] text-[#B3B3B3] iconfont icon-xiayibu"
+            v-if="index < breadcrumbs.length - 1"
+          ></i>
+        </div>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>
@@ -89,6 +95,16 @@ onBeforeMount(() => {
   getBreadcrumb();
 });
 </script>
+
+<style lang="scss">
+.el-breadcrumb {
+  .el-breadcrumb__item {
+    .el-breadcrumb__separator {
+      display: none;
+    }
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .app-breadcrumb.el-breadcrumb {

@@ -20,6 +20,9 @@ import "@/styles/index.scss";
 import "uno.css";
 import "./styles/element-variables.scss";
 
+// iconfont
+import "./assets/iconfont/iconfont.css";
+
 const app = createApp(App);
 // 加载ElementUi-icon
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";

@@ -148,7 +148,6 @@ onMounted(() => {
         :tableData="operatorList"
         :columns="operatorColumns"
         :showIndexColumn="true"
-        :showSelectColumn="true"
         ref="dataTableRef"
         highlight-current-row
       />
