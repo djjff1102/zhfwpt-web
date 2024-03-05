@@ -12,7 +12,7 @@ const routes: RouteRecordRaw[] = [
       hidden: false,
       roles: ["ADMIN"],
       keepAlive: true,
-      code: [100],
+      code: [200],
     },
     children: [
       {
@@ -20,11 +20,12 @@ const routes: RouteRecordRaw[] = [
         component: () => import("@/views/riskMonitoring/index.vue"),
         name: "RiskMonitoring",
         meta: {
-          title: "RiskMonitoring",
+          title: "整体概况",
           icon: "tree",
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
+          code: [201],
         },
       },
       {
@@ -37,6 +38,20 @@ const routes: RouteRecordRaw[] = [
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
+          code: [202],
+        },
+      },
+      {
+        path: "attention",
+        component: () => import("@/views/riskMonitoring/attention.vue"),
+        name: "RiskMonitoringAttention",
+        meta: {
+          title: "风险企业列表",
+          icon: "tree",
+          hidden: false,
+          roles: ["ADMIN"],
+          keepAlive: true,
+          code: [203],
         },
       },
       {
@@ -44,11 +59,12 @@ const routes: RouteRecordRaw[] = [
         component: () => import("@/views/riskMonitoring/detail/index.vue"),
         name: "RiskMonitoringDetail",
         meta: {
-          title: "RiskMonitoringDetail",
+          title: "详情",
           icon: "tree",
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
+          code: [204],
         },
       },
     ],

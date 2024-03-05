@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import archives from "./archives";
 import warehousing from "./warehousing";
 import riskMonitoring from "./riskMonitoring";
+import intellApproval from "./intellApproval";
 
 export const Layout = () => import("@/layout/index.vue");
 
@@ -142,6 +143,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
   ...archives,
   ...warehousing,
   ...riskMonitoring,
+  ...intellApproval,
 ];
 
 /**

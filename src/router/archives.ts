@@ -12,7 +12,7 @@ const routes: RouteRecordRaw[] = [
       hidden: false,
       roles: ["ADMIN"],
       keepAlive: true,
-      code: [100],
+      code: [300],
     },
     children: [
       {
@@ -25,6 +25,7 @@ const routes: RouteRecordRaw[] = [
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
+          code: [301],
         },
       },
       {
@@ -38,6 +39,7 @@ const routes: RouteRecordRaw[] = [
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
+          code: [302],
         },
       },
       {
@@ -52,6 +54,7 @@ const routes: RouteRecordRaw[] = [
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
+          code: [303],
         },
       },
       {
@@ -68,6 +71,7 @@ const routes: RouteRecordRaw[] = [
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
+          code: [304],
         },
       },
       {
@@ -80,6 +84,7 @@ const routes: RouteRecordRaw[] = [
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
+          code: [305],
         },
       },
     ],
