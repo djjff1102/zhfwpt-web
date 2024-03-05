@@ -1,35 +1,20 @@
 <template>
-  <!-- 银行流水 -->
+  <!-- 风险点 -->
   <div class="container">
     <div class="search_box">
       <w-form :model="form" layout="inline">
-        <w-form-item field="name" label="付款日期">
-          <w-range-picker
-            class="w-250px"
-            :time-picker-props="{
-              defaultValue: [
-                dayjs('00:00:00', 'HH:mm:ss'),
-                dayjs('09:09:06', 'HH:mm:ss'),
-              ],
-            }"
-            format="YYYY-MM-DD"
-            @change="onChange"
-            @select="onSelect"
-            @ok="onOk"
-          />
+        <w-form-item field="name" label="风险名称">
+          <w-input v-model="form.name" placeholder="请输入风险名称" />
         </w-form-item>
-        <w-form-item field="name" label="银行网点">
-          <w-input v-model="form.name" placeholder="检索付款银行/收款银行" />
-        </w-form-item>
-        <w-form-item class="mr-16px" field="post" label="付款方">
-          <w-select v-model="form.post" placeholder="请输入付款方" />
+        <w-form-item class="mr-16px" field="post" label="风险程度">
+          <w-select v-model="form.post" placeholder="全部" />
         </w-form-item>
         <w-button type="primary" class="mr-8px">搜索</w-button>
         <w-button>重置</w-button>
       </w-form>
     </div>
     <div class="table-warp">
-      <w-table
+      <m-table
         style="height: 100%"
         :data="tableData"
         :columns="columns"
@@ -45,14 +30,15 @@
         <template v-slot:operations>
           <w-button type="text">详情</w-button>
         </template>
-      </w-table>
+      </m-table>
     </div>
   </div>
 </template>
 <script setup>
 import dayjs from "dayjs";
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
-
+const videoRef = ref();
+const dialogVisible = ref();
 const current = ref(1);
 const size = ref(10);
 const loading = ref(false);
@@ -65,56 +51,24 @@ const columns = reactive([
     fixed: "left",
   },
   {
-    title: "付款编号",
+    title: "风险名称",
+    dataIndex: "salary",
+    width: 180,
+  },
+  {
+    title: "风险描述",
     dataIndex: "name",
     width: 180,
-    fixed: "left",
   },
   {
-    title: "付款日期",
-    dataIndex: "salary",
-    fixed: "left",
+    title: "风险结果",
+    dataIndex: "name",
+    width: 180,
   },
   {
-    title: "付款状态",
-    dataIndex: "address",
-    fixed: "left",
-  },
-  {
-    title: "付款银行",
-    dataIndex: "email",
-  },
-  {
-    title: "付款额度",
-    dataIndex: "email",
-  },
-  {
-    title: "付款方",
-    dataIndex: "email",
-  },
-  {
-    title: "付款账号",
-    dataIndex: "email",
-  },
-  {
-    title: "收款时间",
-    dataIndex: "email",
-  },
-  {
-    title: "收款方",
-    dataIndex: "email",
-  },
-  {
-    title: "收款银行",
-    dataIndex: "email",
-  },
-  {
-    title: "收款账号",
-    dataIndex: "email",
-  },
-  {
-    title: "关联订单编号",
-    dataIndex: "email",
+    title: "风险建议",
+    dataIndex: "name",
+    width: 180,
   },
 ]);
 const pagination = ref({

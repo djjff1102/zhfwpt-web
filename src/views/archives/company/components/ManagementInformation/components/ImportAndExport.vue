@@ -20,7 +20,7 @@
     <el-descriptions-item label="信用等级"> Suzhou </el-descriptions-item>
   </el-descriptions>
   <div class="title">备案编码</div>
-  <w-table
+  <m-table
     style="height: 100%"
     :data="tableData"
     :columns="columns"
@@ -33,7 +33,7 @@
     <template v-slot:index="{ $index }">
       {{ $index + 1 }}
     </template>
-  </w-table>
+  </m-table>
 </template>
 <script lang="ts" setup>
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";

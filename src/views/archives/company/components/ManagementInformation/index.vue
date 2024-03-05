@@ -1,6 +1,6 @@
 <template >
   <!-- 经营信息 -->
-  <el-tabs type="border-card">
+  <el-tabs type="card">
     <el-tab-pane label="进出口信用">
       <ImportAndExport></ImportAndExport>
     </el-tab-pane>

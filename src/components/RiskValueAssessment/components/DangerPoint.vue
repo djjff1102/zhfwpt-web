@@ -1,38 +1,19 @@
 <template>
-  <!-- 订单信息 -->
-  <div class="container">
+  <div class="danger-point-container">
     <div class="search_box">
       <w-form :model="form" layout="inline">
-        <w-form-item class="mr-16px" field="post" label="商品类别">
+        <w-form-item field="name" label="风险名称">
+          <w-input v-model="form.name" placeholder="请输入风险名称" />
+        </w-form-item>
+        <w-form-item class="mr-16px" field="post" label="风险程度">
           <w-select v-model="form.post" placeholder="全部" />
-        </w-form-item>
-        <w-form-item class="mr-16px" field="post" label="订单创建日期">
-          <w-range-picker
-            class="w-250px"
-            :time-picker-props="{
-              defaultValue: [
-                dayjs('00:00:00', 'HH:mm:ss'),
-                dayjs('09:09:06', 'HH:mm:ss'),
-              ],
-            }"
-            format="YYYY-MM-DD"
-            @change="onChange"
-            @select="onSelect"
-            @ok="onOk"
-          />
-        </w-form-item>
-        <w-form-item field="name" label="买方名称">
-          <w-input v-model="form.name" placeholder="请输入买方名称" />
-        </w-form-item>
-        <w-form-item field="name" label="订单编号">
-          <w-input v-model="form.name" placeholder="请输入订单编号" />
         </w-form-item>
         <w-button type="primary" class="mr-8px">搜索</w-button>
         <w-button>重置</w-button>
       </w-form>
     </div>
     <div class="table-warp">
-      <w-table
+      <m-table
         style="height: 100%"
         :data="tableData"
         :columns="columns"
@@ -48,7 +29,7 @@
         <template v-slot:operations>
           <w-button type="text">详情</w-button>
         </template>
-      </w-table>
+      </m-table>
     </div>
   </div>
 </template>
@@ -69,58 +50,18 @@ const columns = reactive([
     fixed: "left",
   },
   {
-    title: "订单编号",
+    title: "风险分类",
     dataIndex: "name",
     width: 180,
-    fixed: "left",
   },
   {
-    title: "订单创建日期",
+    title: "风险名称",
     dataIndex: "salary",
-    fixed: "left",
+    width: 180,
   },
   {
-    title: "商品类别",
+    title: "风险描述",
     dataIndex: "address",
-    fixed: "left",
-  },
-  {
-    title: "买方名称",
-    dataIndex: "email",
-  },
-  {
-    title: "买方信用代码",
-    dataIndex: "email",
-  },
-  {
-    title: "卖方名称",
-    dataIndex: "email",
-  },
-  {
-    title: "卖方信用代码",
-    dataIndex: "email",
-  },
-  {
-    title: "商品所在地址",
-    dataIndex: "email",
-  },
-  {
-    title: "仓库名称",
-    dataIndex: "email",
-  },
-  {
-    title: "总金额",
-    dataIndex: "email",
-  },
-  {
-    title: "交易凭证（合同）编号",
-    dataIndex: "email",
-  },
-  {
-    title: "操作",
-    dataIndex: "operations",
-    slotName: "operations",
-    fixed: "right",
   },
 ]);
 const pagination = ref({
@@ -166,5 +107,9 @@ const init = async () => {};
 }
 .table-warp {
   height: calc(100% - 100px);
+}
+.search_box {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

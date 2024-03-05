@@ -32,7 +32,7 @@
       </w-form>
     </div>
     <div class="table-warp">
-      <w-table
+      <m-table
         style="height: 100%"
         :data="tableData"
         :columns="columns"
@@ -48,7 +48,7 @@
         <template v-slot:operations>
           <w-button type="text">详情</w-button>
         </template>
-      </w-table>
+      </m-table>
     </div>
     <div class="title">企业进销项发票趋势2</div>
   </div>

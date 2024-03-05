@@ -1,6 +1,6 @@
 <template >
   <!-- 发票信息 -->
-  <el-tabs type="border-card">
+  <el-tabs type="card">
     <el-tab-pane label="销项发票">
       <OutputInvoice></OutputInvoice>
     </el-tab-pane>

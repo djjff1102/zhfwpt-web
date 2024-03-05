@@ -1,6 +1,6 @@
 <template>
   <!-- 订单信息 -->
-  <div class="container">
+  <div class="order-container">
     <div class="search_box">
       <w-form :model="form" layout="inline">
         <w-form-item class="mr-16px" field="post" label="商品类别">
@@ -32,7 +32,7 @@
       </w-form>
     </div>
     <div class="table-warp">
-      <w-table
+      <m-table
         style="height: 100%"
         :data="tableData"
         :columns="columns"
@@ -48,7 +48,7 @@
         <template v-slot:operations>
           <w-button type="text">详情</w-button>
         </template>
-      </w-table>
+      </m-table>
     </div>
   </div>
 </template>
@@ -162,7 +162,9 @@ const init = async () => {};
 </script>
 
 <style lang="scss" scoped>
-.container {
+.order-container {
+  height: 100%;
+  overflow: auto;
 }
 .table-warp {
   height: calc(100% - 100px);

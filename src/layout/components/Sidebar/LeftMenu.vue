@@ -11,7 +11,14 @@ import { isExternal } from "@/utils/index";
 const settingsStore = useSettingsStore();
 const appStore = useAppStore();
 const currRoute = useRoute();
-const layout = computed(() => settingsStore.layout);
+const activeMenu = computed<string>(() => {
+  const { meta, path } = currRoute;
+  // if set path, the sidebar will highlight the path you set
+  if (meta.activeMenu) {
+    return meta.activeMenu;
+  }
+  return path;
+});
 const props = defineProps({
   menuList: {
     required: true,
@@ -46,7 +53,7 @@ function resolvePath(routePath: string) {
 </script>
 <template>
   <el-menu
-    :default-active="layout === 'top' ? '-' : currRoute.path"
+    :default-active="activeMenu"
     :collapse="!appStore.sidebar.opened"
     :background-color="variables.leftMenuBg"
     :text-color="variables.leftMenuText"

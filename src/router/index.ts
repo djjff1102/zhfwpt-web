@@ -1,5 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import archives from "./archives";
+import warehousing from "./warehousing";
+import riskMonitoring from "./riskMonitoring";
 
 export const Layout = () => import("@/layout/index.vue");
 
@@ -138,6 +140,8 @@ export const asyncRoutes: RouteRecordRaw[] = [
     ],
   },
   ...archives,
+  ...warehousing,
+  ...riskMonitoring,
 ];
 
 /**

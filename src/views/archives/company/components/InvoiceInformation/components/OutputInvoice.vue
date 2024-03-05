@@ -1,5 +1,5 @@
 <template>
-  <!-- 订单信息 -->
+  <!-- 发票信息 -->
   <div class="container">
     <div class="search_box">
       <w-form :model="form" layout="inline">
@@ -32,7 +32,7 @@
       </w-form>
     </div>
     <div class="table-warp">
-      <w-table
+      <m-table
         style="height: 100%"
         :data="tableData"
         :columns="columns"
@@ -48,13 +48,18 @@
         <template v-slot:operations>
           <w-button type="text">详情</w-button>
         </template>
-      </w-table>
+      </m-table>
     </div>
+
     <div class="title">企业进销项发票趋势1</div>
+    <div class="tendencyChart w-full h-400px">
+      <TendencyChart></TendencyChart>
+    </div>
   </div>
 </template>
 <script setup>
 import dayjs from "dayjs";
+import TendencyChart from "./TendencyChart/index.vue";
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
 
 const current = ref(1);

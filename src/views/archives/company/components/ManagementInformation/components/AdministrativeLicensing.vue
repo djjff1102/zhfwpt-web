@@ -1,6 +1,6 @@
 <template>
   <!-- 行政许可 -->
-  <el-tabs type="border-card">
+  <el-tabs type="card">
     <el-tab-pane label="进出口信用"> </el-tab-pane>
     <el-tab-pane label="进出口信用"> </el-tab-pane>
   </el-tabs>
@@ -14,7 +14,7 @@
     </w-form>
   </div>
   <div class="table-warp">
-    <w-table
+    <m-table
       style="height: 100%"
       :data="tableData"
       :columns="columns"
@@ -30,7 +30,7 @@
       <template v-slot:operations>
         <w-button type="text">详情</w-button>
       </template>
-    </w-table>
+    </m-table>
   </div>
 </template>
 <script setup>

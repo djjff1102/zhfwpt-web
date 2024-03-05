@@ -5,7 +5,12 @@ export default {
     document: "项目文档",
     search: "全局检索",
     attention: "我关注的",
-    companyDetail:"企业详情"
+    companyDetail: "企业详情",
+    orderDetail: "订单详情",
+    warehousingOrderDetail: "仓储订单详情",
+    LogisticsWarehousing: "仓储列表",
+    warehousingDetail: "仓储详情",
+    secondWarehousingDetail: "子仓库详情",
   },
   // 登录页面国际化
   login: {

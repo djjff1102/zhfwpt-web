@@ -1,6 +1,6 @@
 <template>
   <!-- 订单信息 -->
-  <div class="container">
+  <div class="output-invoice-container">
     <div class="search_box">
       <w-form :model="form" layout="inline">
         <w-form-item class="mr-16px" field="post" label="发票类别">
@@ -32,7 +32,7 @@
       </w-form>
     </div>
     <div class="table-warp">
-      <w-table
+      <m-table
         style="height: 100%"
         :data="tableData"
         :columns="columns"
@@ -48,7 +48,7 @@
         <template v-slot:operations>
           <w-button type="text">详情</w-button>
         </template>
-      </w-table>
+      </m-table>
     </div>
     <div class="title">企业进销项发票趋势1</div>
   </div>

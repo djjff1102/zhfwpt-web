@@ -2,7 +2,12 @@
 @import "./sidebar";
 @import "./reset";
 @import "./dark";
-
+::-webkit-scrollbar-thumb {
+  width: 0px;
+}
+::-webkit-scrollbar {
+  width: 0px;
+}
 .app-container {
   padding: 10px;
 }

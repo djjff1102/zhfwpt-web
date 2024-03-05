@@ -1,23 +1,35 @@
 <template>
-  <!-- 物流仓储信息 -->
-  <div class="container">
+  <!-- 订单信息 -->
+  <div class="input-invoice-container">
     <div class="search_box">
       <w-form :model="form" layout="inline">
-        <w-form-item class="mr-16px" field="post" label="所属地区">
-          <w-select v-model="form.post" placeholder="请输入角色编号" />
+        <w-form-item class="mr-16px" field="post" label="检测日期">
+          <w-range-picker
+            class="w-250px"
+            :time-picker-props="{
+              defaultValue: [
+                dayjs('00:00:00', 'HH:mm:ss'),
+                dayjs('09:09:06', 'HH:mm:ss'),
+              ],
+            }"
+            format="YYYY-MM-DD"
+            @change="onChange"
+            @select="onSelect"
+            @ok="onOk"
+          />
         </w-form-item>
-        <w-form-item field="name" label="仓库地址">
-          <w-input v-model="form.name" placeholder="请输入仓库地址" />
+        <w-form-item field="name" label="企业名称">
+          <w-input v-model="form.name" placeholder="请输入开票单位" />
         </w-form-item>
-        <w-form-item field="name" label="仓库简称">
-          <w-input v-model="form.name" placeholder="请输入仓库简称" />
+        <w-form-item class="mr-16px" field="post" label="风险等级">
+          <w-select v-model="form.post" placeholder="全部" />
         </w-form-item>
         <w-button type="primary" class="mr-8px">搜索</w-button>
         <w-button>重置</w-button>
       </w-form>
     </div>
     <div class="table-warp">
-      <w-table
+      <m-table
         style="height: 100%"
         :data="tableData"
         :columns="columns"
@@ -33,11 +45,12 @@
         <template v-slot:operations>
           <w-button type="text">详情</w-button>
         </template>
-      </w-table>
+      </m-table>
     </div>
   </div>
 </template>
-<script lang="ts" setup>
+<script setup>
+import dayjs from "dayjs";
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
 
 const current = ref(1);
@@ -52,42 +65,46 @@ const columns = reactive([
     fixed: "left",
   },
   {
-    title: "仓库简称",
+    title: "检测时间",
     dataIndex: "name",
     width: 180,
     fixed: "left",
   },
   {
-    title: "所属地区",
+    title: "企业名称",
     dataIndex: "salary",
+    width: 180,
     fixed: "left",
   },
   {
-    title: "仓库地址",
+    title: "企业风险等级",
+    width: 180,
     dataIndex: "address",
-    fixed: "left",
   },
   {
-    title: "涉及订单数量",
+    title: "风险值分数",
+    width: 180,
     dataIndex: "email",
   },
   {
-    title: "货物运输总金额",
+    title: "企业统一社会信息代码",
+    width: 220,
     dataIndex: "email",
   },
   {
-    title: "仓库企业名称",
+    title: "涉风险项",
+    width: 180,
     dataIndex: "email",
   },
   {
-    title: "企业纳税人识别号",
+    title: "涉风险细则",
+    width: 180,
     dataIndex: "email",
   },
   {
     title: "操作",
-    dataIndex: "operations",
-    slotName: "operations",
-    fixed: "right",
+    width: 180,
+    dataIndex: "email",
   },
 ]);
 const pagination = ref({
@@ -114,12 +131,33 @@ const changepage = (v) => {
   current.value = v;
   init();
 };
+function onSelect(dateString, date) {
+  console.log("onSelect", dateString, date);
+}
+
+function onChange(dateString, date) {
+  console.log("onChange: ", dateString, date);
+}
+
+function onOk(dateString, date) {
+  console.log("onOk: ", dateString, date);
+}
 const init = async () => {};
 </script>
 
 <style lang="scss" scoped>
+.title {
+  position: relative;
+  margin: 16px 0;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 16px;
+  color: #333333;
+  line-height: 22px;
+}
 .container {
 }
+
 .table-warp {
   height: calc(100% - 100px);
 }

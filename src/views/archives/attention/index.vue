@@ -1,5 +1,5 @@
 <template>
-  <div class="knowledge">
+  <div class="attention">
     <div class="search_box">
       <w-form :model="form" layout="inline">
         <w-form-item field="name" label="用户名称">
@@ -19,7 +19,7 @@
       <w-button type="primary" class="mr-8px">新增</w-button>
     </div>
     <div class="table-warp">
-      <w-table
+      <m-table
         style="height: 100%"
         :data="tableData"
         :columns="columns"
@@ -32,7 +32,7 @@
         <template v-slot:operations>
           <w-button type="text">详情</w-button>
         </template>
-      </w-table>
+      </m-table>
     </div>
   </div>
 </template>
@@ -138,7 +138,7 @@ const init = async () => {
 </script>
 
 <style lang="scss" scoped>
-.knowledge {
+.attention {
   padding: 24px;
   padding-bottom: 16px;
   height: 100%;
@@ -152,7 +152,7 @@ const init = async () => {
     height: calc(100% - 100px);
   }
 
-  ::v-deep .w-table-container {
+  ::v-deep .m-table-container {
     height: 100%;
   }
 }

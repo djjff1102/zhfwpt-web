@@ -21,6 +21,11 @@ import "uno.css";
 import "./styles/element-variables.scss";
 
 const app = createApp(App);
+// 加载ElementUi-icon
+import * as ElementPlusIconsVue from "@element-plus/icons-vue";
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component);
+}
 // 全局注册 自定义指令(directive)
 setupDirective(app);
 // 全局注册 状态管理(store)

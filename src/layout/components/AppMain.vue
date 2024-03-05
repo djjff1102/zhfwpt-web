@@ -31,6 +31,7 @@ const tagsViewStore = useTagsViewStore();
 }
 .app-wrap {
   height: 100%;
+  overflow: hidden;
 }
 .fixed-header + .app-main {
   padding-top: 34px;
@@ -66,14 +67,6 @@ const tagsViewStore = useTagsViewStore();
       height: calc(100vh - 118px);
       padding-top: 40px;
       padding: 54px 16px 16px 16px;
-    }
-  }
-}
-
-.isTop {
-  .hasTagsView {
-    .fixed-header + .app-main {
-      padding-top: 34px;
     }
   }
 }

@@ -33,8 +33,39 @@ const routes: RouteRecordRaw[] = [
         name: "CompanyDetail",
         meta: {
           title: "companyDetail",
+          activeMenu: "/archives/search",
           icon: "tree",
-          hidden: true,
+          hidden: false,
+          roles: ["ADMIN"],
+          keepAlive: true,
+        },
+      },
+      {
+        path: "orderDetail",
+        component: () =>
+          import("@/components/OrderInformation/detail/index.vue"),
+        name: "OrderDetail",
+        meta: {
+          title: "orderDetail",
+          activeMenu: "/archives/search",
+          icon: "tree",
+          hidden: false,
+          roles: ["ADMIN"],
+          keepAlive: true,
+        },
+      },
+      {
+        path: "warehousingOrderDetail",
+        component: () =>
+          import(
+            "@/components/LogisticsWarehousingInformation/SecondWarehousingDetail/index.vue"
+          ),
+        name: "WarehousingOrderDetail",
+        meta: {
+          title: "warehousingOrderDetail",
+          activeMenu: "/archives/search",
+          icon: "tree",
+          hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
         },
