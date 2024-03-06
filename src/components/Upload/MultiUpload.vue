@@ -14,6 +14,7 @@
     :on-preview="previewImg"
     :limit="props.limit"
   >
+    <el-button type="primary">Click to upload</el-button>
     <i-ep-plus />
   </el-upload>
 

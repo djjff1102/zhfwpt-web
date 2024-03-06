@@ -57,8 +57,62 @@
 .el-button {
   border-radius: 2px !important;
 }
+.w-btn-size-default {
+  height: 32px;
+}
 
 // el-card
 .el-card {
   border: none !important;
+}
+
+.flex-base-between {
+  display: flex;
+  justify-content: space-between;
+}
+.flex-base-start {
+  display: flex;
+  justify-content: flex-start;
+}
+.flex-base-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.flex-base-around {
+  display: flex;
+  justify-content: space-around;
+}
+.w-tabs {
+  position: static;
+}
+
+/*修改穿梭组件样式*/
+.el-transfer__buttons {
+  padding: 0 16px!important;
+}
+.el-transfer__button {
+  display: block;
+}
+.el-transfer__button:nth-child(2) {
+  margin-left: 0!important;
+  margin-top: 8px!important;
+}
+.el-transfer-panel {
+  width: 234px!important;
+}
+.el-dialog__header {
+  border-bottom: solid 1px #F0F0F0;
+}
+/**修改对话框默认样式*/
+.el-dialog {
+  padding: 0 !important;;
+}
+.el-dialog__header {
+  padding-left: 26px;
+  padding-bottom: 0;
+}
+.el-dialog__footer {
+  padding: 8px 24px!important;
+  border-top: solid 1px #F0F0F0;
 }

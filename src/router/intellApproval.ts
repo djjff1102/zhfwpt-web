@@ -28,6 +28,19 @@ const routes: RouteRecordRaw[] = [
           code: [501],
         },
       },
+      {
+        path: "operate",
+        component: () => import("@/views/intellApproval/add/index.vue"),
+        name: "IntellApprovalOperate",
+        meta: {
+          title: "申报新增",
+          icon: "tree",
+          hidden: true,
+          roles: ["ADMIN"],
+          keepAlive: true,
+          // code: [501],
+        },
+      },
     ],
   },
 ];
