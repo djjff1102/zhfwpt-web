@@ -116,3 +116,23 @@
   padding: 8px 24px!important;
   border-top: solid 1px #F0F0F0;
 }
+.base-title {
+  position: relative;
+  margin: 16px 0;
+  padding-left: 11px;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 500;
+  font-size: 18px;
+  color: #333333;
+  line-height: 22px;
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 18px;
+    background-color: #1890ff;
+  }
+}

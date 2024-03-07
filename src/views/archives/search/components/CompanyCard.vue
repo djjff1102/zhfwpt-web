@@ -45,6 +45,7 @@
             <span class="desc-value">-</span>
           </div>
         </div>
+      
         <div class="desc-info">
           <div class="desc-item">
             <span class="desc-label">地址：</span>
@@ -56,7 +57,7 @@
       </div>
       <w-button class="absolute right-0 top-39px" type="primary">
         <template #icon>
-          <icon-delete />
+        <i class="iconfont icon-guanzhu-xian"></i>
         </template>
         <template #default>关注</template>
       </w-button>

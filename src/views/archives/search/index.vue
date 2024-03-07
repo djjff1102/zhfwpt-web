@@ -4,8 +4,10 @@
       <h2 class="search-title">精准数据，助力商业决策每一步.</h2>
       <!-- <div class="search-input"> -->
       <w-input-search
+        v-model="searchPar.allContentSearch"
         :style="{ width: '60%' }"
         placeholder="请输入企业名称、人名、注册号、同一社会信"
+        @change="handleSearch"
       />
       <!-- </div> -->
     </div>
@@ -73,12 +75,7 @@
 
         <NoMatch v-if="isEmpty" class="mt-60px"></NoMatch>
         <div class="company-list">
-          <CompanyCard></CompanyCard>
-          <CompanyCard></CompanyCard>
-          <CompanyCard></CompanyCard>
-          <CompanyCard></CompanyCard>
-          <CompanyCard></CompanyCard>
-          <CompanyCard></CompanyCard>
+          <CompanyCard v-for="(item, i) in tableData" :key="i"></CompanyCard>
         </div>
       </div>
     </div>
@@ -87,23 +84,48 @@
 <script setup>
 import CompanyCard from "./components/CompanyCard.vue";
 import NoMatch from "./components/NoMatch.vue";
+import { companyList } from '@/api/archives/index'
+
 const isOver = ref(false);
 const isOpen = ref(true);
+const current = ref(1);
+const size = ref(10);
+const tableData = ref(new Array(10));
+const searchPar = ref({
+  pageSize: 10,
+  pageNumber: 1,
+  allContentSearch: '',  //综合查询输入
+  provinceShort: '' // 省份
+})
+
 const maxHeight = computed(() => (isOpen.value ? "auto" : "22px"));
+
 const isEmpty = computed(() => {
-  return tableData.length > 0;
+  // return tableData.value.length === 0;
+  return false
 });
+
 let toggleOpen = () => {
   isOpen.value = !isOpen.value;
 };
+
 let computeHeight = () => {
   const areaListDom = document.querySelector(".area-list");
   isOver.value = areaListDom.clientHeight > 30;
 };
 
-const current = ref(1);
-const size = ref(10);
-const tableData = reactive([]);
+
+// 企业搜索
+function handleSearch() {
+  companyList(searchPar.value).then(res => {
+    console.log('result==========----------=:', res.data)
+    tableData.value = res.data;
+  }).catch(err => {
+    
+  })
+}
+
+handleSearch();
 onMounted(() => {
   computeHeight();
 });

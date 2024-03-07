@@ -7,7 +7,7 @@
       <span><span style="color: rgba(51, 51, 51, 1)">审批状态：</span><span style="color: rgba(5, 148, 235, 1)">待审批</span></span>
     </div>
     <div class="section-sub flex-base-end">
-      <w-button style="margin-right: 8px;">审批记录</w-button>
+      <w-button style="margin-right: 8px;" @click="showRecord = true">审批记录</w-button>
       <w-button type="primary">审批</w-button>
     </div>
   </div>
@@ -118,6 +118,7 @@
   </div>
   <detail-com v-if="!initPageParam.edit"></detail-com>
   <add-apply-com :showAdd="showAdd" :defaultKey="defaultKey" @updateAdd="updateAdd"></add-apply-com>
+  <approval-record :showRecord="showRecord" @updateAdd="showRecord = false"></approval-record>
 </div>
 </template>
 
@@ -126,6 +127,7 @@ import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import addApplyCom from './addApplyCom.vue';
 import detailCom from './detailCom.vue'
+import ApprovalRecord from './ApprovalRecords.vue'
 
 const route = useRoute();
 const router = useRouter();
@@ -142,8 +144,10 @@ const form = ref({
   isRead: false,
 })
 const defaultKey = ref('3'); // 默认打开的tab
-const showAdd = ref(false);
+const showAdd = ref(false); // 新增资料弹窗
+const showRecord = ref(false); // 审批记录
 
+// 添加资料
 function handleAdd() {
   showAdd.value = true;
 }
