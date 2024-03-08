@@ -12,7 +12,7 @@
         <div class="head">
           <div class="btns">
             <w-button type="text">详情</w-button>
-            <w-button type="text" class="text-[#999999]!">导出PDF</w-button>
+            <w-button type="text" class="text-[#999999]!" @click="handleExport">导出PDF</w-button>
           </div>
         </div>
         <div class="info">
@@ -72,6 +72,10 @@ const scroll = ref({
   y: 800,
   x: 1080,
 });
+
+function handleExport() {
+  alert('导出')
+}
 </script>
 <style lang="scss" scoped>
 .container {

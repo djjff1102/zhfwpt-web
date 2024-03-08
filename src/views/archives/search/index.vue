@@ -1,5 +1,11 @@
 <template>
-  <div class="company-search-container">
+  <div
+    v-infinite-scroll="handleInfiniteOnLoad"
+    :infinite-scroll-immediate-check="false"
+    :infinite-scroll-disabled="scrollDisabled"
+    infinite-scroll-watch-disabled="scrollDisabled"
+    :infinite-scroll-distance="20"
+    class="company-search-container">
     <div class="search">
       <h2 class="search-title">精准数据，助力商业决策每一步.</h2>
       <!-- <div class="search-input"> -->
@@ -41,29 +47,7 @@
                 overflow: 'hidden',
               }"
             >
-              <span class="area-tag">北京市(130)</span>
-              <span class="area-tag">深圳市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
-              <span class="area-tag">上海市(130)</span>
+              <span v-for="(item, i) in [2,3,4]" :key="i" class="area-tag" @click="handleSearch">北京市(130)</span>
             </div>
           </div>
         </div>
@@ -75,7 +59,8 @@
 
         <NoMatch v-if="isEmpty" class="mt-60px"></NoMatch>
         <div class="company-list">
-          <CompanyCard v-for="(item, i) in tableData" :key="i"></CompanyCard>
+          <CompanyCard v-for="(item, i) in tableData" :key="i" :comData="item" :indexID="i" @refresh="refresh"></CompanyCard>
+          <div v-if="scrollDisabled">数据加载完毕</div>
         </div>
       </div>
     </div>
@@ -84,13 +69,14 @@
 <script setup>
 import CompanyCard from "./components/CompanyCard.vue";
 import NoMatch from "./components/NoMatch.vue";
-import { companyList } from '@/api/archives/index'
+import { companyList, attentionTotal, groupByProvince } from '@/api/archives/index'
+import { useUserStoreHook } from "@/store/modules/user";
+
+const userStore = useUserStoreHook();
 
 const isOver = ref(false);
 const isOpen = ref(true);
-const current = ref(1);
-const size = ref(10);
-const tableData = ref(new Array(10));
+const tableData = ref([]); // 企业列表
 const searchPar = ref({
   pageSize: 10,
   pageNumber: 1,
@@ -98,11 +84,14 @@ const searchPar = ref({
   provinceShort: '' // 省份
 })
 
+const total = ref(0) // 查询结果总数量
+const loading = ref(false); // 加载
+
+const scrollDisabled = computed(() => tableData.value.length >= total.value)
 const maxHeight = computed(() => (isOpen.value ? "auto" : "22px"));
 
 const isEmpty = computed(() => {
-  // return tableData.value.length === 0;
-  return false
+  return tableData.value.length === 0;
 });
 
 let toggleOpen = () => {
@@ -114,18 +103,62 @@ let computeHeight = () => {
   isOver.value = areaListDom.clientHeight > 30;
 };
 
+// 关注/取消关注后，本地刷新关注状态
+function refresh(i) {
+  tableData.value[i].attention = !tableData.value[i].attention;
+}
 
-// 企业搜索
+// 企业搜索 重置pageNum
 function handleSearch() {
-  companyList(searchPar.value).then(res => {
-    console.log('result==========----------=:', res.data)
-    tableData.value = res.data;
+  searchPar.value.pageNumber = 1;
+  loading.value = true;
+  scrollDisabled.value = false;
+  loadPage();
+}
+
+// 加载下一页数据
+function loadPage() {
+  companyList(searchPar.value.allContentSearch).then(res => {
+    tableData.value.push(...res.data)
+    total.value = res.total;
+    loading.value = false;
   }).catch(err => {
-    
+    loading.value = false;
   })
 }
 
-handleSearch();
+function getAttentionTotal() {
+  attentionTotal({
+    userId: userStore.user.id
+  }).then(res => {
+
+  }).catch(err => {
+
+  });
+}
+
+function getProvince() {
+  groupByProvince({
+    provinceShort: searchPar.value.provinceShort,
+    allContentSearch: searchPar.value.allContentSearch
+  }).then(res => {
+
+  }).catch(err => {
+
+  })
+}
+
+// 滚动加载
+function handleInfiniteOnLoad() {
+  if(loading.value || !scrollDisabled.value) return;
+  loading.value = true;
+  loadPage();
+}
+
+handleInfiniteOnLoad();
+getAttentionTotal(); // 获取关注统计
+getProvince(); // 获取省份地区分组统计
+
 onMounted(() => {
   computeHeight();
 });

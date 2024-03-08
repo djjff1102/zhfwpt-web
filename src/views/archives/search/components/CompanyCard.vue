@@ -1,44 +1,44 @@
 <template>
-  <div class="company-container">
+  <div class="company-container" @click="handleCompanyDetail">
     <div class="company-wrap">
       <div class="company-logo">
         <img src="" alt="" />
       </div>
       <div class="company-desc">
         <div class="company-name">
-          <span class="mr-12px">深圳前途科技有限公司</span>
-          <el-tag round effect="light" type="success">存续</el-tag>
+          <span class="mr-12px">{{ comData?.authority }}</span>
+          <el-tag round effect="light" type="success">{{comData?.companyStatus}}</el-tag>
         </div>
         <div class="company-tags">
-          <el-tag round effect="light" type="primary">小微企业</el-tag>
+          <el-tag round effect="light" type="primary">{{ comData?.companyType }}</el-tag>
         </div>
         <div class="desc-info">
           <div class="desc-item">
             <div class="desc-label">法定代表人：</div>
-            <div class="desc-value">张德正</div>
+            <div class="desc-value">{{ comData?.legalPersonCaption }}</div>
           </div>
           <div class="desc-item">
             <div class="desc-label">注册资本：</div>
-            <div class="desc-value">139798.5564万美元</div>
+            <div class="desc-value">{{ comData?.capital }}</div>
           </div>
           <div class="desc-item">
             <span class="desc-label">成立日期：</span>
-            <span class="desc-value">2019-10-21</span>
+            <span class="desc-value">{{ comData?.createTime }}</span>
           </div>
           <div class="desc-item">
             <span class="desc-label">统一社会信用代码：</span>
-            <span class="desc-value">91440300MA5FFW09283</span>
+            <span class="desc-value">{{ comData?.companyCode }}</span>
           </div>
         </div>
         <el-divider border-style="dashed" />
         <div class="desc-info">
           <div class="desc-item">
             <span class="desc-label">电话：</span>
-            <span class="desc-value">010-8912****</span>
+            <span class="desc-value">{{ comData?.companyPhone }}</span>
           </div>
           <div class="desc-item">
             <span class="desc-label">邮箱：</span>
-            <span class="desc-value">j****g@jd.com</span>
+            <span class="desc-value">{{ comData?.companyEmail }}</span>
           </div>
           <div class="desc-item">
             <span class="desc-label">官网：</span>
@@ -49,14 +49,14 @@
         <div class="desc-info">
           <div class="desc-item">
             <span class="desc-label">地址：</span>
-            <span class="desc-value"
-              >北京市北京经济技术开发区科创十一街18号C座2层201室</span
+            <span class="desc-value">{{ comData?.companyAddress }}</span
             >
           </div>
         </div>
       </div>
-      <w-button class="absolute right-0 top-39px" type="primary">
+      <w-button class="absolute right-0 top-39px" :type="btnType(comData?.attention)" @click.stop="handleAttention(comData)">
         <template #icon>
+        <i  v-if="comData?.attention" class="iconfont icon-guanzhu-mian"></i>
         <i class="iconfont icon-guanzhu-xian"></i>
         </template>
         <template #default>关注</template>
@@ -65,13 +65,59 @@
   </div>
 </template>
 <script setup>
-import { IconDelete } from "winbox-ui-next/es/icon";
+import { useRouter } from 'vue-router';
+import { payAttention } from '@/api/archives';
+import { useUserStoreHook } from "@/store/modules/user";
+
+const userStore = useUserStoreHook();
+const router = useRouter();
+
+const props = defineProps({
+  comData: {
+    default: {}
+  },
+  indexID: {
+    default: 0
+  }
+})
+
+const emits = defineEmits(['refresh'])
+
+function btnType(v) {
+  return v ? 'primary' : 'outline'
+}
+
+function handleCompanyDetail() {
+  // 跳转企业详情
+  router.push({ 
+    path: '/archives/companyDetail', 
+    query: {
+      
+    }
+  });
+}
+
+
+// 关注、取消关注
+function handleAttention(d) {
+  const data = {
+    companyIdList: [d?.companyId],
+    userId: userStore?.user?.id,
+    attention: !d?.attention
+  }
+  payAttention(data).then(res => {
+    emits('refresh', props.indexID); // 前端本地刷新数据
+  }).catch(err => {
+    
+  })
+}
 </script>
 <style lang="scss" scoped>
 .company-container {
   background-color: #fff;
   padding: 24px;
   border-bottom: 1px solid #eeeeee;
+  cursor: pointer;
 }
 .company-wrap {
   position: relative;

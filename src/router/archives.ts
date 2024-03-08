@@ -36,7 +36,7 @@ const routes: RouteRecordRaw[] = [
           title: "companyDetail",
           activeMenu: "/archives/search",
           icon: "tree",
-          hidden: false,
+          hidden: true,
           roles: ["ADMIN"],
           keepAlive: true,
           code: [302],
