@@ -62,3 +62,91 @@ export function groupByProvince(
   });
 }
 
+/**
+ * 主订单列表及详情
+*/
+export function qyzxOrder(
+  data: ProvinceSearch
+): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: "/base/qyzx_order",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 子订单查询
+*/
+export function qyzxOrderSub(
+  data: ProvinceSearch
+): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: "/base/qyzx_order_sub",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 发票信息查询
+*/
+export function qyzxInvoice(
+  data: ProvinceSearch
+): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: "/base/qyzx_invoice",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 物流仓储信息查询
+*/
+export function qyzxWarehouse(
+  data: ProvinceSearch
+): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: "/base/qyzx_warehouse",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 主营商品查询
+*/
+export function qyzxGood(data: ProvinceSearch): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: "/base/qyzx_good",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 交易凭证查询
+*/
+export function qyzxTransactionCertificate(
+  data: ProvinceSearch
+): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: "/base/qyzx_transaction_certificate",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 银行流水查询
+*/
+export function qyzxBankStatement(
+  data: ProvinceSearch
+): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: "/base/qyzx_bank_statement",
+    method: "post",
+    data,
+  });
+}

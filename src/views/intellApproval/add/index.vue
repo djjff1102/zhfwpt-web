@@ -160,7 +160,6 @@ function updateAdd() {
   showAdd.value = false;
 }
 
-console.log('111111113331', route.query)
 init()
 function init() {
   type.value = route.query.type;

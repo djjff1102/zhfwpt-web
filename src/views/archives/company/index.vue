@@ -1,17 +1,24 @@
 <template>
   <div class="company-detail">
-    <w-button class="absolute right-20px top-20px" type="primary">
+    <w-button class="absolute right-0 top-39px" :type="btnType(companyMsg?.attention)" @click.stop="handleAttention(companyMsg)">
+        <template #icon>
+        <i  v-if="comData?.attention" class="iconfont icon-guanzhu-mian"></i>
+        <i v-else class="iconfont icon-guanzhu-xian"></i>
+        </template>
+        <template #default>关注</template>
+      </w-button>
+    <!-- <w-button class="absolute right-20px top-20px" type="primary">
       <template #icon>
         <el-icon><StarFilled /></el-icon>
       </template>
       <template #default>关注</template>
-    </w-button>
-    <div class="company-name">莱佛金属（天津）有限公司</div>
+    </w-button> -->
+    <div class="company-name">{{ companyMsg?.companyName }}</div>
     <div class="company-content">
       <el-backtop target=".company-content" :right="40" :bottom="100" />
       <div id="BusinessInformation">
         <div class="title">企业工商信息</div>
-        <BusinessInformation></BusinessInformation>
+        <BusinessInformation :data="companyMsg"></BusinessInformation>
       </div>
       <div id="RiskValueAssessment">
         <div class="title">风险值评估</div>
@@ -27,7 +34,7 @@
       </div>
       <div id="OrderInformation">
         <div class="title">订单信息</div>
-        <OrderInformation></OrderInformation>
+        <OrderInformation ></OrderInformation>
       </div>
       <div id="InvoiceInformation">
         <div class="title">发票信息</div>
@@ -54,6 +61,7 @@
   </div>
 </template>
 <script setup>
+import { ref, reactive } from 'vue';
 import BusinessInformation from "./components/BusinessInformation.vue";
 import ExcessInvoiceApproval from "@/components/ExcessInvoiceApproval/index.vue";
 import RiskValueAssessment from "@/components/RiskValueAssessment/index.vue";
@@ -65,6 +73,62 @@ import ManagementInformation from "./components/ManagementInformation/index.vue"
 import InvoiceInformation from "./components/InvoiceInformation/index.vue";
 import GoodsInformation from "./components/GoodsInformation.vue";
 import SlideNav from "./components/SlideNav.vue";
+import { qyzxOrder, payAttention } from '@/api/archives'
+import { useRouter, useRoute } from 'vue-router';
+import { useUserStoreHook } from "@/store/modules/user";
+
+const userStore = useUserStoreHook();
+// const router = useRouter();
+const route = useRoute();
+
+const companyMsg = ref({}) // 公司信息
+const orderPar = reactive({
+  page_size: 10,
+  page: 1,
+  goodType: '', // 商品类别
+  orderCreateDateStart: '',
+  orderCreateDateEnd: '',
+  buyerCompanyName: '', // 买方名称
+  sellerCompnayName: '', // 上个页面带过来的公司名称
+  code: '' // 订单编号
+})
+
+// 关注按钮类型 已关注/未关注
+function btnType(v) {
+  return v ? 'primary' : 'outline'
+}
+
+// 关注、取消关注
+function handleAttention(d) {
+  const data = {
+    companyIdList: [d?.companyId],
+    userId: userStore?.user?.id,
+    attention: !d?.attention
+  }
+  payAttention(data).then(res => {
+    alert('关注')
+  }).catch(err => {
+    
+  })
+}
+
+// 获取主订单列表及详情
+function getqyzxOrder() {
+  qyzxOrder(orderPar).then(res => {
+
+  }).catch(err => {
+
+  })
+}
+
+function init() {
+  companyMsg.value =  JSON.parse(route.query.company);
+  orderPar.sellerCompnayName = companyMsg.value?.companyName;
+  getqyzxOrder()
+}
+
+// 页面初始化
+init()
 </script>
 <style lang="scss" scoped>
 .company-detail {

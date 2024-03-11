@@ -1,12 +1,12 @@
 <template>
-  <div class="company-container" @click="handleCompanyDetail">
+  <div class="company-container" @click="handleCompanyDetail(comData)">
     <div class="company-wrap">
       <div class="company-logo">
         <img src="" alt="" />
       </div>
       <div class="company-desc">
         <div class="company-name">
-          <span class="mr-12px">{{ comData?.authority }}</span>
+          <span class="mr-12px">{{ comData?.companyName }}</span>
           <el-tag round effect="light" type="success">{{comData?.companyStatus}}</el-tag>
         </div>
         <div class="company-tags">
@@ -27,7 +27,7 @@
           </div>
           <div class="desc-item">
             <span class="desc-label">统一社会信用代码：</span>
-            <span class="desc-value">{{ comData?.companyCode }}</span>
+            <span class="desc-value">{{ comData?.creditNo }}</span>
           </div>
         </div>
         <el-divider border-style="dashed" />
@@ -57,7 +57,7 @@
       <w-button class="absolute right-0 top-39px" :type="btnType(comData?.attention)" @click.stop="handleAttention(comData)">
         <template #icon>
         <i  v-if="comData?.attention" class="iconfont icon-guanzhu-mian"></i>
-        <i class="iconfont icon-guanzhu-xian"></i>
+        <i v-else class="iconfont icon-guanzhu-xian"></i>
         </template>
         <template #default>关注</template>
       </w-button>
@@ -87,12 +87,12 @@ function btnType(v) {
   return v ? 'primary' : 'outline'
 }
 
-function handleCompanyDetail() {
+function handleCompanyDetail(d) {
   // 跳转企业详情
   router.push({ 
     path: '/archives/companyDetail', 
     query: {
-      
+      company: JSON.stringify(d)
     }
   });
 }
@@ -100,6 +100,7 @@ function handleCompanyDetail() {
 
 // 关注、取消关注
 function handleAttention(d) {
+  console.log('关注list：', d)
   const data = {
     companyIdList: [d?.companyId],
     userId: userStore?.user?.id,

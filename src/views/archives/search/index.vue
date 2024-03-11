@@ -26,9 +26,9 @@
             <div class="label-value">
               <span
                 >当前关注企业
-                <span class="text-#3470FF">25</span> 家，其中风险等级较高的
-                <span class="text-#F76161">5</span> 家，风险等级一般的
-                <span class="text-#0594EB">5</span> 家</span
+                <span class="text-#3470FF">{{ attentResult.attentionCount }}</span> 家，其中风险等级较高的
+                <span class="text-#F76161">{{ attentResult.highRiskCount }}</span> 家，风险等级一般的
+                <span class="text-#0594EB">{{ attentResult.normalRiskCount }}</span> 家</span
               >
             </div>
           </div>
@@ -47,7 +47,7 @@
                 overflow: 'hidden',
               }"
             >
-              <span v-for="(item, i) in [2,3,4]" :key="i" class="area-tag" @click="handleSearch">北京市(130)</span>
+              <span v-for="(item, i) in provinceResult" :key="i" class="area-tag" @click="handleSearchProvince(item)">{{ item.province_short }}({{ item.count }})</span>
             </div>
           </div>
         </div>
@@ -59,7 +59,7 @@
 
         <NoMatch v-if="isEmpty" class="mt-60px"></NoMatch>
         <div class="company-list">
-          <CompanyCard v-for="(item, i) in [1,2]" :key="i" :comData="item" :indexID="i" @refresh="refresh"></CompanyCard>
+          <CompanyCard v-for="(item, i) in tableData" :key="i" :comData="item" :indexID="i" @refresh="refresh"></CompanyCard>
           <div v-if="scrollDisabled">数据加载完毕</div>
         </div>
       </div>
@@ -81,13 +81,20 @@ const searchPar = ref({
   pageSize: 10,
   pageNumber: 1,
   allContentSearch: '',  //综合查询输入
-  provinceShort: '' // 省份
+  provinceShort: '', // 省份
+  userId: userStore.user.id
 })
-
 const total = ref(0) // 查询结果总数量
 const loading = ref(false); // 加载
+const attentResult = ref({}) // 企业关注统计
+const provinceResult = ref() // 省份分布
 
-const scrollDisabled = computed(() => tableData.value.length >= total.value)
+const scrollDisabled = computed(() => {
+  if(tableData.value.length > 0) {
+    return tableData.value.length >= total.value;
+  }
+  return false;
+})
 const maxHeight = computed(() => (isOpen.value ? "auto" : "22px"));
 
 const isEmpty = computed(() => {
@@ -108,17 +115,25 @@ function refresh(i) {
   tableData.value[i].attention = !tableData.value[i].attention;
 }
 
+function handleSearchProvince(item) {
+  searchPar.value.provinceShort = item.province_short;
+  searchPar.value.pageNumber = 1;
+  loading.value = true;
+  tableData.value = [];
+  loadPage();
+}
+
 // 企业搜索 重置pageNum
 function handleSearch() {
   searchPar.value.pageNumber = 1;
   loading.value = true;
-  scrollDisabled.value = false;
+  tableData.value = [];
   loadPage();
 }
 
 // 加载下一页数据
 function loadPage() {
-  companyList(searchPar.value.allContentSearch).then(res => {
+  companyList(searchPar.value).then(res => {
     tableData.value.push(...res.data)
     total.value = res.total;
     loading.value = false;
@@ -131,7 +146,7 @@ function getAttentionTotal() {
   attentionTotal({
     userId: userStore.user.id
   }).then(res => {
-
+    attentResult.value = res.data;
   }).catch(err => {
 
   });
@@ -142,7 +157,7 @@ function getProvince() {
     provinceShort: searchPar.value.provinceShort,
     allContentSearch: searchPar.value.allContentSearch
   }).then(res => {
-
+    provinceResult.value = res.data;
   }).catch(err => {
 
   })
@@ -150,15 +165,16 @@ function getProvince() {
 
 // 滚动加载
 function handleInfiniteOnLoad() {
-  if(loading.value || !scrollDisabled.value) return;
-  loading.value = true;
-  loadPage();
+  // if(loading.value || scrollDisabled.value) return;
+  // loading.value = true;
+  // loadPage();
 }
 
-handleInfiniteOnLoad();
+
 getAttentionTotal(); // 获取关注统计
 getProvince(); // 获取省份地区分组统计
 
+loadPage();
 onMounted(() => {
   computeHeight();
 });
