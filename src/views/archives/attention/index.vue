@@ -41,6 +41,7 @@
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
 import { IconPlus } from "winbox-ui-next/es/icon";
 import { debounce } from "lodash-es";
+import { attentionCompanyQuery } from '@/api/archives'
 
 const current = ref(1);
 const size = ref(10);
@@ -49,40 +50,40 @@ const tableData = ref([]);
 const columns = reactive([
   {
     title: "统一社会信用代码",
-    dataIndex: "name",
+    dataIndex: "creditNo",
     width: 180,
   },
   {
     title: "企业名称",
-    dataIndex: "salary",
+    dataIndex: "companyName",
   },
   {
     title: "风险值评估",
-    dataIndex: "address",
+    dataIndex: "riskValue",
   },
   {
     title: "登记状态",
-    dataIndex: "email",
+    dataIndex: "companyStatus",
   },
   {
     title: "法定负责人",
-    dataIndex: "email",
+    dataIndex: "legalPerson",
   },
   {
     title: "联系方式",
-    dataIndex: "email",
+    dataIndex: "companyPhone",
   },
   {
     title: "登记机关",
-    dataIndex: "email",
+    dataIndex: "authority",
   },
   {
     title: "注册地址",
-    dataIndex: "email",
+    dataIndex: "companyAddress",
   },
   {
     title: "企业类型",
-    dataIndex: "email",
+    dataIndex: "companyType",
   },
   {
     title: "操作",
@@ -98,6 +99,12 @@ const pagination = ref({
   "show-page-size": true,
   "show-jumper": true,
 });
+const searchPar = ref({
+  page_size: 10,
+  page: 1,
+  companyName: '',
+  provinceShort: '' 
+})
 const scroll = ref({
   y: 800,
   x: 1080,
@@ -117,24 +124,36 @@ const changepage = (v) => {
   init();
 };
 
-const init = async () => {
-  loading.value = true;
-  let data = {
-    current: current.value,
-    size: size.value,
-    name: keyWords.value,
-    authority: categoryType.value,
-    role: roleValue.value,
-  };
-  let res = await knowledgePage(data);
-  if (res.code === 200) {
-    loading.value = false;
-    tableData.value = res.data.records;
-    pagination.value.total = res.data.total;
-  } else {
-    loading.value = false;
-  }
-};
+function getchangepage() {
+  attentionCompanyQuery(searchPar.value).then(res => {
+    tableData.value = res.data as  any;
+  }).catch(err => {})
+}
+
+function init() {
+  getchangepage();
+}
+
+init();
+
+// const init = async () => {
+//   loading.value = true;
+//   let data = {
+//     current: current.value,
+//     size: size.value,
+//     name: keyWords.value,
+//     authority: categoryType.value,
+//     role: roleValue.value,
+//   };
+//   let res = await knowledgePage(data);
+//   if (res.code === 200) {
+//     loading.value = false;
+//     tableData.value = res.data.records;
+//     pagination.value.total = res.data.total;
+//   } else {
+//     loading.value = false;
+//   }
+// };
 </script>
 
 <style lang="scss" scoped>

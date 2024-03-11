@@ -4,7 +4,9 @@
     <div class="search_box">
       <w-form :model="form" layout="inline">
         <w-form-item class="mr-16px" field="post" label="所属地区">
-          <w-select v-model="form.post" placeholder="请输入角色编号" />
+          <w-select v-model="form.post" placeholder="请选择地区">
+            <w-option v-for="(item ,i) in wareList" :key="i">{{ item }}</w-option>
+          </w-select>
         </w-form-item>
         <w-form-item field="name" label="仓库地址">
           <w-input v-model="form.name" placeholder="请输入仓库地址" />
@@ -39,7 +41,7 @@
 </template>
 <script lang="ts" setup>
 import { ref, reactive } from "vue";
-import { qyzxWarehouse } from '@/api/archives';
+import { qyzxWarehouse, warehouseDropDownBox } from '@/api/archives';
 import { Warehouse } from '@/api/archives/type'
 
 const props = defineProps({
@@ -114,6 +116,7 @@ const searchPar = ref({
   locationAddress: '', //仓库地址
   shortName: '' //仓库简称
 })
+const wareList = ref([])
 const scroll = ref({
   y: 800,
   x: 1080,
@@ -136,13 +139,25 @@ const changepage = (v) => {
 function getqyzxWarehouse() {
   qyzxWarehouse(searchPar.value).then(res => {
     const data = res.data;
-    tableData.value = data
+    tableData.value = data as any;
+  }).catch(err => {})
+}
+
+function getwarehouseDropDownBox() {
+  const data = {
+    page_size: 50,
+    page: 1,
+    companyName: props.companyName
+  }
+  warehouseDropDownBox(data).then(res => {
+    wareList.value = res.data as any;
   }).catch(err => {})
 }
 
 const init = async () => {
   searchPar.value.companyName = props.companyName;
   getqyzxWarehouse();
+  getwarehouseDropDownBox();
 };
 init();
 </script>

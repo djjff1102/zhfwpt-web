@@ -4,7 +4,9 @@
     <div class="search_box">
       <w-form :model="form" layout="inline">
         <w-form-item class="mr-16px" field="post" label="商品类别">
-          <w-select v-model="form.post" placeholder="全部" />
+          <w-select v-model="form.post" placeholder="全部">
+            <w-option v-for="(item,i) in orderList" :key="i">{{item}}</w-option>
+          </w-select>
         </w-form-item>
         <w-form-item class="mr-16px" field="post" label="订单创建日期">
           <w-range-picker
@@ -55,7 +57,7 @@
 <script setup>
 import dayjs from "dayjs";
 import { ref, reactive} from "vue";
-import { qyzxOrder } from '@/api/archives'
+import { qyzxOrder, orderDropDownBox } from '@/api/archives'
 import { useRouter } from 'vue-router'
 
 const router = useRouter();
@@ -150,6 +152,7 @@ const orderPar = reactive({
   sellerCompnayName: '', // 上个页面带过来的公司名称
   code: '' // 订单编号
 })
+const orderList = ref([]) // 订单商品类别
 const scroll = ref({
   y: 800,
   x: 1080,
@@ -193,6 +196,17 @@ function getqyzxOrder() {
   qyzxOrder(orderPar).then(res => {
     tableData.value.push(...res.data);
   }).catch(err => { })
+}
+
+function getorderDropDownBox() {
+  const data = {
+    page_size: 50,
+    page: 1,
+    sellerCompnayName: props.companyName
+  }
+  orderDropDownBox(data).then(res => {
+    orderList.value = res.data
+  }).catch(err => {})
 }
 
 const init = async () => {

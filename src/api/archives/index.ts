@@ -14,6 +14,10 @@ import {
   SelectSearch,
   SelectResult,
 } from "./type";
+import { useUserStoreHook } from "@/store/modules/user";
+
+const userStore = useUserStoreHook();
+let userId = userStore.user.id;
 
 /**
  * 企业资信档案库-企业搜索
@@ -230,6 +234,9 @@ export function attentionCompanyExport(
   return request({
     url: "/base/company_base/attentionCompanyExport",
     method: "post",
-    data,
+    data: {
+      userId: userId,
+      ...data,
+    },
   });
 }

@@ -8,7 +8,11 @@ import LeftMenu from "./components/Sidebar/LeftMenu.vue";
 import { useAppStore } from "@/store/modules/app";
 import { useSettingsStore } from "@/store/modules/settings";
 import { usePermissionStore } from "@/store/modules/permission";
+import { useRoute } from 'vue-router'
+
+const currentRoute = useRoute();
 const permissionStore = usePermissionStore();
+
 const { width } = useWindowSize();
 /**
  * 响应式布局容器固定宽度
@@ -41,6 +45,17 @@ watch(
   {
     deep: true,
     immediate: true,
+  }
+);
+
+const showMenu = ref(true)
+watch(
+  () => currentRoute,
+  (path) => {
+    showMenu.value = path.meta.showMenu as any;
+    console.log('1111111111111111111111---------path:', path.meta.showMenu);
+  },{
+    deep: true // 确保深度监听路由对象的每一个属性
   }
 );
 
@@ -90,7 +105,7 @@ function toggleSideBar() {
     <Sidebar class="sidebar-container" />
 
     <div v-if="layout === 'mix'" class="mix-wrapper" style="overflow: hidden;">
-      <div v-if="true" class="mix-wrapper__left">
+      <div v-if="showMenu" class="mix-wrapper__left">
         <LeftMenu :menu-list="mixLeftMenu" :base-path="activeTopMenu" />
         <!-- 展开/收缩侧边栏菜单 -->
         <!-- <div class="toggle-sidebar">

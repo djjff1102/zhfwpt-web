@@ -4,7 +4,9 @@
     <div class="search_box">
       <w-form :model="form" layout="inline">
         <w-form-item class="mr-16px" field="post" label="计量单位">
-          <w-select v-model="form.post" placeholder="请输入角色编号" />
+          <w-select v-model="form.post" placeholder="请输入角色编号">
+            <w-option v-for="(item, i) in goodList" :key="i">{{ item }}</w-option>
+          </w-select>
         </w-form-item>
         <w-form-item field="name" label="商品名称">
           <w-input v-model="form.name" placeholder="请输入用户名称" />
@@ -39,7 +41,7 @@
 </template>
 <script lang="ts" setup>
 import { ref, reactive } from "vue";
-import { qyzxGood } from '@/api/archives'
+import { qyzxGood, goodDropDownBox } from '@/api/archives'
 
 const props = defineProps({
   companyName: String
@@ -100,6 +102,7 @@ const searchPar = ref({
   standard: '', // 规格
   companyName: '' // 带过来的公司名称
 });
+const goodList = ref([]);
 const scroll = ref({
   y: 800,
   x: 1080,
@@ -125,9 +128,21 @@ function getqyzxGood() {
   }).catch(err => {})
 }
 
+function getgoodDropDownBox() {
+  const data = {
+    page_size:50,
+    page: 1,
+    companyName: props.companyName as any
+  }
+  goodDropDownBox(data).then(res => {
+    goodList.value = res.data as any;
+  }).catch(err => {})
+}
+
 const init = async () => {
   searchPar.value.companyName = props.companyName as any;
-  getqyzxGood()
+  getqyzxGood();
+  getgoodDropDownBox();
 };
 init();
 </script>
