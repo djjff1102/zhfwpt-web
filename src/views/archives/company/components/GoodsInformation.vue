@@ -27,8 +27,8 @@
         @page-size-change="changePagesize"
         :bordered="false"
       >
-        <template v-slot:index="{ $index }">
-          {{ $index + 1 }}
+        <template v-slot:index="{ rowIndex }">
+          {{ rowIndex + 1 }}
         </template>
         <template v-slot:operations>
           <w-button type="text">详情</w-button>
@@ -38,7 +38,12 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref, reactive, unref, computed, watch } from "vue";
+import { ref, reactive } from "vue";
+import { qyzxGood } from '@/api/archives'
+
+const props = defineProps({
+  companyName: String
+})
 
 const current = ref(1);
 const size = ref(10);
@@ -53,31 +58,31 @@ const columns = reactive([
   },
   {
     title: "商品名称",
-    dataIndex: "name",
+    dataIndex: "good",
     width: 180,
     fixed: "left",
   },
   {
     title: "规格型号",
-    dataIndex: "salary",
+    dataIndex: "standard",
     fixed: "left",
   },
   {
     title: "计量单位",
-    dataIndex: "address",
+    dataIndex: "measureUnit",
     fixed: "left",
   },
   {
     title: "最近一笔交易时间",
-    dataIndex: "email",
+    dataIndex: "lastestTransactionDate",
   },
   {
     title: "最近一笔订单售价",
-    dataIndex: "email",
+    dataIndex: "lastestOrderAmount",
   },
   {
     title: "市场单价",
-    dataIndex: "email",
+    dataIndex: "marketAmount",
   },
 ]);
 const pagination = ref({
@@ -86,6 +91,14 @@ const pagination = ref({
   "show-total": true,
   "show-page-size": true,
   "show-jumper": true,
+});
+const searchPar = ref({
+  page_size: 10,
+  page:1,
+  measureUnit: '', // 计量单位
+  good: '', // 商品名称
+  standard: '', // 规格
+  companyName: '' // 带过来的公司名称
 });
 const scroll = ref({
   y: 800,
@@ -104,7 +117,19 @@ const changepage = (v) => {
   current.value = v;
   init();
 };
-const init = async () => {};
+
+// 主营商品信息
+function getqyzxGood() {
+  qyzxGood(searchPar.value).then(res => {
+    tableData.value = res.data as any;
+  }).catch(err => {})
+}
+
+const init = async () => {
+  searchPar.value.companyName = props.companyName as any;
+  getqyzxGood()
+};
+init();
 </script>
 
 <style lang="scss" scoped>

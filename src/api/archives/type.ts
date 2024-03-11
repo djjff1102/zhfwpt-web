@@ -55,3 +55,53 @@ export interface ProvinBase {
 export interface ProvinceResult extends BaseResult {
   data: ProvinBase[];
 }
+
+export interface WarehouseSearch {
+  page_size: number;
+  page: number;
+  companyName: string;
+  locationProvince: string;
+  locationAddress: string;
+  shortName: string;
+}
+
+export interface Warehouse {
+  code: string;
+  companyName: string;
+  createDate: string;
+  creditNo: string;
+  deleteFlag: number;
+  id: string;
+  locationAddress: string;
+  locationCity: string;
+  locationProvince: string;
+  modifyDate: string;
+  page: number;
+  page_size: number;
+  reserveGoodType: string;
+  shortName: string;
+  tenantId: string;
+}
+
+export interface WarehouseResult extends BaseResult {
+  data: Warehouse[];
+}
+
+export interface GoodSearch {
+  page_size: number;
+  page: number;
+  measureUnit: string;
+  good: string;
+  standard: string;
+  companyName: string;
+}
+
+export interface SelectSearch {
+  page_size: number;
+  page: number;
+  companyName: String;
+}
+
+export interface SelectResult extends BaseResult {
+  data: string[];
+}

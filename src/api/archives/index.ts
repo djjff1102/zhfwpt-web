@@ -8,6 +8,11 @@ import {
   TotalAtentionResult,
   ProvinceSearch,
   ProvinceResult,
+  WarehouseSearch,
+  WarehouseResult,
+  GoodSearch,
+  SelectSearch,
+  SelectResult,
 } from "./type";
 
 /**
@@ -64,7 +69,7 @@ export function groupByProvince(
 
 /**
  * 主订单列表及详情
-*/
+ */
 export function qyzxOrder(
   data: ProvinceSearch
 ): CustomAxiosPromise<ProvinceResult> {
@@ -77,7 +82,7 @@ export function qyzxOrder(
 
 /**
  * 子订单查询
-*/
+ */
 export function qyzxOrderSub(
   data: ProvinceSearch
 ): CustomAxiosPromise<ProvinceResult> {
@@ -90,7 +95,7 @@ export function qyzxOrderSub(
 
 /**
  * 发票信息查询
-*/
+ */
 export function qyzxInvoice(
   data: ProvinceSearch
 ): CustomAxiosPromise<ProvinceResult> {
@@ -103,9 +108,9 @@ export function qyzxInvoice(
 
 /**
  * 物流仓储信息查询
-*/
+ */
 export function qyzxWarehouse(
-  data: ProvinceSearch
+  data: WarehouseSearch
 ): CustomAxiosPromise<ProvinceResult> {
   return request({
     url: "/base/qyzx_warehouse",
@@ -116,8 +121,8 @@ export function qyzxWarehouse(
 
 /**
  * 主营商品查询
-*/
-export function qyzxGood(data: ProvinceSearch): CustomAxiosPromise<ProvinceResult> {
+ */
+export function qyzxGood(data: GoodSearch): CustomAxiosPromise<ProvinceResult> {
   return request({
     url: "/base/qyzx_good",
     method: "post",
@@ -127,7 +132,7 @@ export function qyzxGood(data: ProvinceSearch): CustomAxiosPromise<ProvinceResul
 
 /**
  * 交易凭证查询
-*/
+ */
 export function qyzxTransactionCertificate(
   data: ProvinceSearch
 ): CustomAxiosPromise<ProvinceResult> {
@@ -140,12 +145,90 @@ export function qyzxTransactionCertificate(
 
 /**
  * 银行流水查询
-*/
+ */
 export function qyzxBankStatement(
   data: ProvinceSearch
-): CustomAxiosPromise<ProvinceResult> {
+): CustomAxiosPromise<WarehouseResult> {
   return request({
     url: "/base/qyzx_bank_statement",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 主营商品-下拉框
+ */
+export function goodDropDownBox(
+  data: SelectSearch
+): CustomAxiosPromise<SelectResult> {
+  return request({
+    url: "/base/qyzx_good/dropDownBox",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 物流仓储信息-下拉框
+ */
+export function warehouseDropDownBox(
+  data: SelectSearch
+): CustomAxiosPromise<SelectResult> {
+  return request({
+    url: "/base/qyzx_warehouse/dropDownBox",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 主订单查询-下拉框
+ */
+export function orderDropDownBox(
+  data: SelectSearch
+): CustomAxiosPromise<SelectResult> {
+  return request({
+    url: "/base/qyzx_order/dropDownBox",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 子订单查询-下拉框
+ */
+export function suborderDropDownBox(
+  data: SelectSearch
+): CustomAxiosPromise<SelectResult> {
+  return request({
+    url: "/base/qyzx_order_sub/dropDownBox",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 我关注的企业列表查询
+ */
+export function attentionCompanyQuery(
+  data: SelectSearch
+): CustomAxiosPromise<SelectResult> {
+  return request({
+    url: "/base/company_base/attentionCompanyQuery",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 我关注的企业导出
+ */
+export function attentionCompanyExport(
+  data: SelectSearch
+): CustomAxiosPromise<SelectResult> {
+  return request({
+    url: "/base/company_base/attentionCompanyExport",
     method: "post",
     data,
   });

@@ -42,11 +42,11 @@
         @page-size-change="changePagesize"
         :bordered="false"
       >
-        <template v-slot:index="{ $index }">
-          {{ $index + 1 }}
+        <template v-slot:index="{ rowIndex }">
+          {{ rowIndex + 1 }}
         </template>
         <template v-slot:operations>
-          <w-button type="text">详情</w-button>
+          <w-button type="text" disabled>详情</w-button>
         </template>
       </m-table>
     </div>
@@ -55,6 +55,11 @@
 <script setup>
 import dayjs from "dayjs";
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
+import { qyzxTransactionCertificate } from '@/api/archives'
+
+const props = defineProps({
+  companyName: String
+})
 
 const current = ref(1);
 const size = ref(10);
@@ -69,31 +74,31 @@ const columns = reactive([
   },
   {
     title: "合同编号",
-    dataIndex: "name",
+    dataIndex: "code",
     width: 180,
     fixed: "left",
   },
   {
     title: "甲方（买方/采购方/需方）",
-    dataIndex: "salary",
+    dataIndex: "partyA",
     fixed: "left",
   },
   {
     title: "乙方（卖方/销售方/供方）",
-    dataIndex: "address",
+    dataIndex: "partyB",
     fixed: "left",
   },
   {
     title: "签订地点",
-    dataIndex: "email",
+    dataIndex: "signAddress",
   },
   {
     title: "签订日期",
-    dataIndex: "email",
+    dataIndex: "signDate",
   },
   {
     title: "合同金额",
-    dataIndex: "email",
+    dataIndex: "amount",
   },
   {
     title: "操作",
@@ -109,6 +114,16 @@ const pagination = ref({
   "show-page-size": true,
   "show-jumper": true,
 });
+const searchPar = ref({
+  page_size: 10,
+  page: 1,
+  signDateStart: '',
+  signDateEnd: '',
+  code: '',
+  companyName: '', // 传过来的公司名称
+  partyA: '', // 甲方
+  partyB: '' // 乙方
+})
 const scroll = ref({
   y: 800,
   x: 1080,
@@ -138,7 +153,19 @@ function onChange(dateString, date) {
 function onOk(dateString, date) {
   console.log("onOk: ", dateString, date);
 }
-const init = async () => {};
+
+// 交易凭证
+function getqyzxTransactionCertificate() {
+  qyzxTransactionCertificate(searchPar.value).then(res => {
+    tableData.value = res.data;
+  }).catch(err => {})
+}
+
+const init = async () => {
+  searchPar.value.companyName = props.companyName
+  getqyzxTransactionCertificate()
+};
+init();
 </script>
 
 <style lang="scss" scoped>

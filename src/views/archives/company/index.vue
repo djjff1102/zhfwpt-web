@@ -34,7 +34,7 @@
       </div>
       <div id="OrderInformation">
         <div class="title">订单信息</div>
-        <OrderInformation ></OrderInformation>
+        <OrderInformation :companyName="companyMsg?.companyName"></OrderInformation>
       </div>
       <div id="InvoiceInformation">
         <div class="title">发票信息</div>
@@ -42,26 +42,26 @@
       </div>
       <div id="LogisticsWarehousingInformation">
         <div class="title">物流仓储信息</div>
-        <LogisticsWarehousingInformation></LogisticsWarehousingInformation>
+        <LogisticsWarehousingInformation :companyName="companyMsg?.companyName"></LogisticsWarehousingInformation>
       </div>
       <div id="GoodsInformation">
         <div class="title">主营商品信息</div>
-        <GoodsInformation></GoodsInformation>
+        <GoodsInformation :companyName="companyMsg?.companyName"></GoodsInformation>
       </div>
       <div id="TransactionVoucher">
         <div class="title">交易凭证</div>
-        <TransactionVoucher></TransactionVoucher>
+        <TransactionVoucher :companyName="companyMsg?.companyName"></TransactionVoucher>
       </div>
       <div id="AccountStatement">
         <div class="title">银行流水</div>
-        <AccountStatement></AccountStatement>
+        <AccountStatement :companyName="companyMsg?.companyName"></AccountStatement>
       </div>
     </div>
     <SlideNav></SlideNav>
   </div>
 </template>
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 import BusinessInformation from "./components/BusinessInformation.vue";
 import ExcessInvoiceApproval from "@/components/ExcessInvoiceApproval/index.vue";
 import RiskValueAssessment from "@/components/RiskValueAssessment/index.vue";
@@ -73,7 +73,7 @@ import ManagementInformation from "./components/ManagementInformation/index.vue"
 import InvoiceInformation from "./components/InvoiceInformation/index.vue";
 import GoodsInformation from "./components/GoodsInformation.vue";
 import SlideNav from "./components/SlideNav.vue";
-import { qyzxOrder, payAttention } from '@/api/archives'
+import { payAttention } from '@/api/archives'
 import { useRouter, useRoute } from 'vue-router';
 import { useUserStoreHook } from "@/store/modules/user";
 
@@ -82,16 +82,6 @@ const userStore = useUserStoreHook();
 const route = useRoute();
 
 const companyMsg = ref({}) // 公司信息
-const orderPar = reactive({
-  page_size: 10,
-  page: 1,
-  goodType: '', // 商品类别
-  orderCreateDateStart: '',
-  orderCreateDateEnd: '',
-  buyerCompanyName: '', // 买方名称
-  sellerCompnayName: '', // 上个页面带过来的公司名称
-  code: '' // 订单编号
-})
 
 // 关注按钮类型 已关注/未关注
 function btnType(v) {
@@ -112,19 +102,8 @@ function handleAttention(d) {
   })
 }
 
-// 获取主订单列表及详情
-function getqyzxOrder() {
-  qyzxOrder(orderPar).then(res => {
-
-  }).catch(err => {
-
-  })
-}
-
 function init() {
   companyMsg.value =  JSON.parse(route.query.company);
-  orderPar.sellerCompnayName = companyMsg.value?.companyName;
-  getqyzxOrder()
 }
 
 // 页面初始化

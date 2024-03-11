@@ -1,17 +1,29 @@
 <template>
   <div class="order-detail-container">
     <div class="title">基本信息</div>
-    <BaseInfo></BaseInfo>
+    <BaseInfo :order="order"></BaseInfo>
     <div class="title">子仓库信息</div>
-    <SecondWarehousing></SecondWarehousing>
+    <SecondWarehousing :parentCode="order.code"></SecondWarehousing>
     <div class="title">关联发票列表</div>
     <InvoiceInformation></InvoiceInformation>
   </div>
 </template>
 <script setup>
+import  { ref, reactive } from 'vue';
 import BaseInfo from "./components/BaseInfo.vue";
 import SecondWarehousing from "./components/SecondWarehousing.vue";
 import InvoiceInformation from "@/components/InvoiceInformation/components/InputInvoice.vue";
+import { useRoute } from 'vue-router'
+
+const route = useRoute();
+
+const order = ref({}) // 订单信息
+
+function init() {
+  order.value = JSON.parse(route.query.order);
+}
+
+init()
 </script>
 <style lang="scss" scoped>
 .title {

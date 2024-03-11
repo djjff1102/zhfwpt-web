@@ -39,11 +39,11 @@
         @page-size-change="changePagesize"
         :bordered="false"
       >
-        <template v-slot:index="{ $index }">
-          {{ $index + 1 }}
+        <template v-slot:index="{ rowIndex }">
+          {{ rowIndex + 1 }}
         </template>
         <template v-slot:operations>
-          <w-button type="text">详情</w-button>
+          <w-button type="text" disabled>详情</w-button>
         </template>
       </m-table>
     </div>
@@ -51,7 +51,12 @@
 </template>
 <script setup>
 import dayjs from "dayjs";
-import { onMounted, ref, reactive, unref, computed, watch } from "vue";
+import { ref, reactive } from "vue";
+import { qyzxBankStatement } from '@/api/archives'
+
+const props = defineProps({
+  companyName: String
+})
 
 const current = ref(1);
 const size = ref(10);
@@ -66,55 +71,55 @@ const columns = reactive([
   },
   {
     title: "付款编号",
-    dataIndex: "name",
+    dataIndex: "paymentCode",
     width: 180,
     fixed: "left",
   },
   {
     title: "付款日期",
-    dataIndex: "salary",
+    dataIndex: "paymentDate",
     fixed: "left",
   },
   {
     title: "付款状态",
-    dataIndex: "address",
+    dataIndex: "paymentStatus",
     fixed: "left",
   },
   {
     title: "付款银行",
-    dataIndex: "email",
+    dataIndex: "paymentBank",
   },
   {
     title: "付款额度",
-    dataIndex: "email",
+    dataIndex: "paymentAmount",
   },
   {
     title: "付款方",
-    dataIndex: "email",
+    dataIndex: "paymentCompany",
   },
   {
     title: "付款账号",
-    dataIndex: "email",
+    dataIndex: "paymentAccount",
   },
   {
     title: "收款时间",
-    dataIndex: "email",
+    dataIndex: "collectionDate",
   },
   {
     title: "收款方",
-    dataIndex: "email",
+    dataIndex: "collectionCompany",
   },
   {
     title: "收款银行",
-    dataIndex: "email",
+    dataIndex: "collectionBank",
   },
   {
     title: "收款账号",
-    dataIndex: "email",
+    dataIndex: "collectionAccount",
   },
   {
     title: "关联订单编号",
-    dataIndex: "email",
+    dataIndex: "orderCode",
   },
 ]);
 const pagination = ref({
@@ -124,6 +129,16 @@ const pagination = ref({
   "show-page-size": true,
   "show-jumper": true,
 });
+
+const searchPar = ref({
+  page_size: 10,
+  page: 1,
+  paymentDateStart: '',
+  paymentDateEnd: '',
+  paymentCompany: '', // 付款方
+  bank: '', // 银行网点
+  companyName: '' // 带过来的参数
+})
 const scroll = ref({
   y: 800,
   x: 1080,
@@ -152,7 +167,19 @@ function onChange(dateString, date) {
 function onOk(dateString, date) {
   console.log("onOk: ", dateString, date);
 }
-const init = async () => {};
+
+// 银行流水
+function getqyzxBankStatement() {
+  qyzxBankStatement(searchPar.value).then(res => {
+    tableData.value = res.data;
+  }).catch(err => {})
+}
+
+const init = async () => {
+  searchPar.value.companyName = props.companyName
+  getqyzxBankStatement()
+};
+init();
 </script>
 
 <style lang="scss" scoped>

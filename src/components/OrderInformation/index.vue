@@ -42,11 +42,11 @@
         @page-size-change="changePagesize"
         :bordered="false"
       >
-        <template v-slot:index="{ $index }">
-          {{ $index + 1 }}
+        <template v-slot:index="{rowIndex}">
+            <div>{{ rowIndex + 1 }}</div>
         </template>
-        <template v-slot:operations>
-          <w-button type="text">详情</w-button>
+        <template v-slot:operations="{rowIndex}">
+          <w-button type="text" @click="toOrderDetail(tableData[rowIndex])">详情</w-button>
         </template>
       </m-table>
     </div>
@@ -54,9 +54,19 @@
 </template>
 <script setup>
 import dayjs from "dayjs";
-import { onMounted, ref, reactive, unref, computed, watch } from "vue";
-const videoRef = ref();
-const dialogVisible = ref();
+import { ref, reactive} from "vue";
+import { qyzxOrder } from '@/api/archives'
+import { useRouter } from 'vue-router'
+
+const router = useRouter();
+
+const props = defineProps({
+  companyName: {
+    type: String,
+    default: ''
+  }
+})
+
 const current = ref(1);
 const size = ref(10);
 const loading = ref(false);
@@ -70,51 +80,51 @@ const columns = reactive([
   },
   {
     title: "订单编号",
-    dataIndex: "name",
+    dataIndex: "code",
     width: 180,
     fixed: "left",
   },
   {
     title: "订单创建日期",
-    dataIndex: "salary",
+    dataIndex: "orderCreateDate",
     fixed: "left",
   },
   {
     title: "商品类别",
-    dataIndex: "address",
+    dataIndex: "goodType",
     fixed: "left",
   },
   {
     title: "买方名称",
-    dataIndex: "email",
+    dataIndex: "buyerCompanyName",
   },
   {
     title: "买方信用代码",
-    dataIndex: "email",
+    dataIndex: "buyerCreditNo",
   },
   {
     title: "卖方名称",
-    dataIndex: "email",
+    dataIndex: "sellerCompnayName",
   },
   {
     title: "卖方信用代码",
-    dataIndex: "email",
+    dataIndex: "sellerCreditNo",
   },
   {
     title: "商品所在地址",
-    dataIndex: "email",
+    dataIndex: "goodAddress",
   },
   {
     title: "仓库名称",
-    dataIndex: "email",
+    dataIndex: "warehouseName",
   },
   {
     title: "总金额",
-    dataIndex: "email",
+    dataIndex: "totalMoney",
   },
   {
     title: "交易凭证（合同）编号",
-    dataIndex: "email",
+    dataIndex: "certificateCode",
   },
   {
     title: "操作",
@@ -130,6 +140,16 @@ const pagination = ref({
   "show-page-size": true,
   "show-jumper": true,
 });
+const orderPar = reactive({
+  page_size: 10,
+  page: 1,
+  goodType: '', // 商品类别
+  orderCreateDateStart: '',
+  orderCreateDateEnd: '',
+  buyerCompanyName: '', // 买方名称
+  sellerCompnayName: '', // 上个页面带过来的公司名称
+  code: '' // 订单编号
+})
 const scroll = ref({
   y: 800,
   x: 1080,
@@ -158,7 +178,28 @@ function onChange(dateString, date) {
 function onOk(dateString, date) {
   console.log("onOk: ", dateString, date);
 }
-const init = async () => {};
+// 跳转订单详情
+function toOrderDetail(d) {
+  router.push({
+    path: '/archives/orderDetail',
+    query: {
+      order: JSON.stringify(d)
+    }
+  })
+}
+
+// 获取主订单列表及详情
+function getqyzxOrder() {
+  qyzxOrder(orderPar).then(res => {
+    tableData.value.push(...res.data);
+  }).catch(err => { })
+}
+
+const init = async () => {
+  orderPar.sellerCompnayName = props.companyName;
+  getqyzxOrder()
+};
+init();
 </script>
 
 <style lang="scss" scoped>

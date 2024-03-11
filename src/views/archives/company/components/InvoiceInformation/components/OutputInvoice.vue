@@ -21,7 +21,7 @@
             @ok="onOk"
           />
         </w-form-item>
-        <w-form-item field="name" label="开票单位">
+        <w-form-item field="name" label="收票单位">
           <w-input v-model="form.name" placeholder="请输入开票单位" />
         </w-form-item>
         <w-form-item field="name" label="发票号码">
@@ -42,8 +42,8 @@
         @page-size-change="changePagesize"
         :bordered="false"
       >
-        <template v-slot:index="{ $index }">
-          {{ $index + 1 }}
+        <template v-slot:index="{ rowIndex }">
+          {{ rowIndex + 1 }}
         </template>
         <template v-slot:operations>
           <w-button type="text">详情</w-button>
@@ -60,7 +60,11 @@
 <script setup>
 import dayjs from "dayjs";
 import TendencyChart from "./TendencyChart/index.vue";
-import { onMounted, ref, reactive, unref, computed, watch } from "vue";
+import { ref, reactive } from "vue";
+import { qyzxInvoice } from '@/api/archives'
+import { useRouter, useRoute } from 'vue-router';
+
+const route = useRoute();
 
 const current = ref(1);
 const size = ref(10);
@@ -75,84 +79,84 @@ const columns = reactive([
   },
   {
     title: "发票号码",
-    dataIndex: "name",
+    dataIndex: "code",
     width: 180,
     fixed: "left",
   },
   {
     title: "开票日期",
-    dataIndex: "salary",
+    dataIndex: "invoicing_date",
     width: 180,
     fixed: "left",
   },
   {
     title: "发票类别",
-    dataIndex: "address",
+    dataIndex: "type",
     width: 180,
   },
   {
     title: "开票单位",
-    dataIndex: "email",
+    dataIndex: "invoicing_company_name",
     width: 180,
   },
   {
     title: "开票单位统一社会信用代码",
-    dataIndex: "email",
+    dataIndex: "invoicing_credit_no",
     width: 220,
   },
   {
     title: "收票单位",
-    dataIndex: "email",
+    dataIndex: "receiving_company_name",
     width: 180,
   },
   {
     title: "收票单位统一社会信用代码",
     width: 220,
-    dataIndex: "email",
+    dataIndex: "receiving_credit_no",
   },
   {
     title: "项目名称",
-    dataIndex: "email",
+    dataIndex: "good_name",
     width: 180,
   },
   {
     title: "规格型号",
-    dataIndex: "email",
+    dataIndex: "standard",
     width: 180,
   },
   {
     title: "数量",
-    dataIndex: "email",
+    dataIndex: "quantity",
     width: 180,
   },
   {
     title: "计量单位",
-    dataIndex: "email",
+    dataIndex: "measure_unit",
     width: 180,
   },
   {
     title: "含税金额",
-    dataIndex: "email",
+    dataIndex: "amount_include_tax",
     width: 180,
   },
   {
     title: "税率",
-    dataIndex: "email",
+    dataIndex: "tax_rate",
     width: 180,
   },
   {
     title: "税额",
-    dataIndex: "email",
+    dataIndex: "tax_amount",
     width: 180,
   },
   {
     title: "单价",
-    dataIndex: "email",
+    dataIndex: "unit_price",
     width: 180,
   },
   {
     title: "价税合计",
-    dataIndex: "email",
+    dataIndex: "amount_total",
     width: 180,
   },
 ]);
@@ -163,6 +167,18 @@ const pagination = ref({
   "show-page-size": true,
   "show-jumper": true,
 });
+
+const searchPar = ref({
+  page_size: 10,
+  page: 1,
+  invoiceDateStart: '',
+  invoiceDateEnd: '',
+  type: '',
+  code: '',
+  receivingCompanyName: '', // 收票单位（查询）
+  invoicingCompanyName: '' // 开票单位(自己)
+})
+
 const scroll = ref({
   y: 800,
   x: 1080,
@@ -191,7 +207,18 @@ function onChange(dateString, date) {
 function onOk(dateString, date) {
   console.log("onOk: ", dateString, date);
 }
-const init = async () => {};
+
+function getqyzxInvoice() {
+  qyzxInvoice(searchPar.value).then(res => {
+    tableData.value.push(...res.data);
+  }).catch(err => {})
+}
+
+const init = async () => {
+  searchPar.value.invoicingCompanyName = JSON.parse(route.query.company).companyName
+  getqyzxInvoice();
+};
+init();
 </script>
 
 <style lang="scss" scoped>

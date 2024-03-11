@@ -42,8 +42,8 @@
         @page-size-change="changePagesize"
         :bordered="false"
       >
-        <template v-slot:index="{ $index }">
-          {{ $index + 1 }}
+        <template v-slot:index="{ rowIndex }">
+          {{ rowIndex + 1 }}
         </template>
         <template v-slot:operations>
           <w-button type="text">详情</w-button>
@@ -55,8 +55,16 @@
 <script setup>
 import dayjs from "dayjs";
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
-const videoRef = ref();
-const dialogVisible = ref();
+import { qyzxOrderSub } from  '@/api/archives'
+
+const props = defineProps({
+  parentCode: {
+    type: String,
+    default: ''
+  }
+})
+
+
 const current = ref(1);
 const size = ref(10);
 const loading = ref(false);
@@ -70,46 +78,46 @@ const columns = reactive([
   },
   {
     title: "子订单编号",
-    dataIndex: "name",
+    dataIndex: "code",
     width: 180,
     fixed: "left",
   },
   {
     title: "订单创建日期",
-    dataIndex: "salary",
+    dataIndex: "orderCreateDate",
     fixed: "left",
   },
   {
     title: "商品类别",
-    dataIndex: "address",
+    dataIndex: "goodType",
     fixed: "left",
   },
   {
     title: "规格",
-    dataIndex: "address",
+    dataIndex: "standards",
     fixed: "left",
   },
   {
     title: "数量",
-    dataIndex: "address",
+    dataIndex: "quantity",
     fixed: "left",
   },
   {
     title: "单位",
-    dataIndex: "address",
+    dataIndex: "unit",
     fixed: "left",
   },
   {
     title: "总金额",
-    dataIndex: "email",
+    dataIndex: "totalMoney",
   },
   {
     title: "币种",
-    dataIndex: "email",
+    dataIndex: "currency",
   },
   {
     title: "金额单位",
-    dataIndex: "operations",
+    dataIndex: "amountUnit",
   },
 ]);
 const pagination = ref({
@@ -119,6 +127,15 @@ const pagination = ref({
   "show-page-size": true,
   "show-jumper": true,
 });
+const searchPar = ref({
+  page_size: 10,
+  page: 1,
+  goodType: '',
+  orderCreateDateStart: '',
+  orderCreateDateEnd: '',
+  parentOrderCode: '', // 主订单编号
+  code: '' // 子订单编号
+})
 const scroll = ref({
   y: 800,
   x: 1080,
@@ -147,7 +164,20 @@ function onChange(dateString, date) {
 function onOk(dateString, date) {
   console.log("onOk: ", dateString, date);
 }
-const init = async () => {};
+
+// 子订单信息
+function getqyzxOrderSub() {
+  qyzxOrderSub(searchPar.value).then(res => {
+    tableData.value.push(...res.data)
+  }).catch(err => {})
+}
+
+const init = async () => {
+  searchPar.value.parentOrderCode = props.parentCode;
+  getqyzxOrderSub();
+};
+
+init();
 </script>
 
 <style lang="scss" scoped>

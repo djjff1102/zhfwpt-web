@@ -27,23 +27,32 @@
         @page-size-change="changePagesize"
         :bordered="false"
       >
-        <template v-slot:index="{ $index }">
-          {{ $index + 1 }}
+        <template v-slot:index="{ rowIndex }">
+          {{ rowIndex + 1 }}
         </template>
         <template v-slot:operations>
-          <w-button type="text">详情</w-button>
+          <w-button type="text" disabled>详情</w-button>
         </template>
       </m-table>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref, reactive, unref, computed, watch } from "vue";
+import { ref, reactive } from "vue";
+import { qyzxWarehouse } from '@/api/archives';
+import { Warehouse } from '@/api/archives/type'
+
+const props = defineProps({
+  companyName: {
+    type: String,
+    default: ''
+  }
+})
 
 const current = ref(1);
 const size = ref(10);
 const loading = ref(false);
-const tableData = ref([]);
+const tableData = ref<Warehouse[]>([]);
 const columns = reactive([
   {
     title: "序号",
@@ -53,18 +62,18 @@ const columns = reactive([
   },
   {
     title: "仓库简称",
-    dataIndex: "name",
+    dataIndex: "shortName",
     width: 180,
     fixed: "left",
   },
   {
     title: "所属地区",
-    dataIndex: "salary",
+    dataIndex: "locationProvince",
     fixed: "left",
   },
   {
     title: "仓库地址",
-    dataIndex: "address",
+    dataIndex: "locationAddress",
     fixed: "left",
   },
   {
@@ -77,11 +86,11 @@ const columns = reactive([
   },
   {
     title: "仓库企业名称",
-    dataIndex: "email",
+    dataIndex: "companyName",
   },
   {
     title: "企业纳税人识别号",
-    dataIndex: "email",
+    dataIndex: "creditNo",
   },
   {
     title: "操作",
@@ -97,6 +106,14 @@ const pagination = ref({
   "show-page-size": true,
   "show-jumper": true,
 });
+const searchPar = ref({
+  page_size: 10,
+  page: 1,
+  companyName: '', // 带过来的公司名称
+  locationProvince: '', // 所属地区
+  locationAddress: '', //仓库地址
+  shortName: '' //仓库简称
+})
 const scroll = ref({
   y: 800,
   x: 1080,
@@ -114,7 +131,20 @@ const changepage = (v) => {
   current.value = v;
   init();
 };
-const init = async () => {};
+
+// 仓储物流信息
+function getqyzxWarehouse() {
+  qyzxWarehouse(searchPar.value).then(res => {
+    const data = res.data;
+    tableData.value = data
+  }).catch(err => {})
+}
+
+const init = async () => {
+  searchPar.value.companyName = props.companyName;
+  getqyzxWarehouse();
+};
+init();
 </script>
 
 <style lang="scss" scoped>
