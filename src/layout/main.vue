@@ -1,12 +1,26 @@
 <script lang="ts" setup>
-import { computed, watchEffect } from "vue";
+import { computed, watchEffect, watch, ref } from "vue";
 import { useWindowSize } from "@vueuse/core";
 import { AppMain, Navbar, Settings, TagsView } from "./components/index";
 import RightPanel from "@/components/RightPanel/index.vue";
+import { useRoute } from "vue-router";
 
 import { useAppStore } from "@/store/modules/app";
 import { useSettingsStore } from "@/store/modules/settings";
+
 const { width } = useWindowSize();
+const currentRoute = useRoute();
+
+const showMenu = ref(true)
+watch(
+  () => currentRoute,
+  (path) => {
+    showMenu.value = path.meta.showMenu
+    console.log('1111111111111111111111---------path:', path.meta.showMenu);
+  },{
+    deep: true // 确保深度监听路由对象的每一个属性
+  }
+);
 
 /**
  * 响应式布局容器固定宽度
@@ -44,7 +58,7 @@ watchEffect(() => {
 </script>
 <template>
   <div :class="{ hasTagsView: showTagsView }" class="main-container">
-    <div :class="{ 'fixed-header': fixedHeader, device: device }">
+    <div v-if="showMenu" :class="{ 'fixed-header': fixedHeader, device: device }">
       <navbar v-if="layout === 'mix'" />
       <!-- <tags-view v-if="showTagsView" /> -->
     </div>
@@ -59,7 +73,7 @@ watchEffect(() => {
 
 <style lang="scss" scoped>
 .fixed-header {
-  position: fixed;
+  // position: fixed;
   top: 0;
   right: 0;
   z-index: 9;

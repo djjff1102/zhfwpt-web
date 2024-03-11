@@ -59,7 +59,7 @@
 
         <NoMatch v-if="isEmpty" class="mt-60px"></NoMatch>
         <div class="company-list">
-          <CompanyCard v-for="(item, i) in tableData" :key="i" :comData="item" :indexID="i" @refresh="refresh"></CompanyCard>
+          <CompanyCard v-for="(item, i) in [1,2]" :key="i" :comData="item" :indexID="i" @refresh="refresh"></CompanyCard>
           <div v-if="scrollDisabled">数据加载完毕</div>
         </div>
       </div>

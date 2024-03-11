@@ -22,55 +22,61 @@ const tagsViewStore = useTagsViewStore();
 
 <style lang="scss" scoped>
 .app-main {
-  position: relative;
-  width: 100%;
-  /* 50= navbar  50  */
-  height: calc(100vh - 118px);
-
-  /* 64= navbar  64  */
-  min-height: calc(100vh - 64px);
-  overflow: hidden;
-  background-color: $pageBg;
+  height: calc(100vh - 100px)!important;
+  overflow: scroll;
+  padding-left: 16px;
+  padding-right: 16px;
 }
-.app-wrap {
-  height: 100%;
-  overflow: hidden;
-}
-.fixed-header + .app-main {
-  padding-top: 34px;
-}
+// .app-main {
+//   position: relative;
+//   width: 100%;
+//   /* 50= navbar  50  */
+//   height: calc(100vh - 118px);
 
-.hasTagsView {
-  .app-main {
-    /* 84 = navbar + tags-view = 50 + 34 */
-    min-height: calc(100vh - 84px);
-  }
+//   /* 64= navbar  64  */
+//   min-height: calc(100vh - 64px);
+//   overflow: hidden;
+//   background-color: $pageBg;
+// }
+// .app-wrap {
+//   height: 100%;
+//   overflow: hidden;
+// }
+// .fixed-header + .app-main {
+//   padding-top: 34px;
+// }
 
-  .fixed-header + .app-main {
-    padding-top: 84px;
-  }
-}
+// .hasTagsView {
+//   .app-main {
+//     /* 84 = navbar + tags-view = 50 + 34 */
+//     min-height: calc(100vh - 84px);
+//   }
 
-.isMix {
-  .app-main {
-    margin-top: 54px;
-    height: calc(100vh - 118px);
-    padding-top: 40px;
-    padding: 0px 16px 16px 16px;
-    overflow-y: auto;
-  }
+//   .fixed-header + .app-main {
+//     padding-top: 84px;
+//   }
+// }
 
-  .hasTagsView {
-    .app-main {
-      /* 98 = navbar + tags-view = 64 + 34 */
-      height: calc(100vh - 64px);
-    }
+// .isMix {
+//   .app-main {
+//     margin-top: 54px;
+//     height: calc(100vh - 118px);
+//     padding-top: 40px;
+//     padding: 0px 16px 16px 16px;
+//     overflow-y: auto;
+//   }
 
-    .fixed-header + .app-main {
-      height: calc(100vh - 118px);
-      padding-top: 40px;
-      padding: 54px 16px 16px 16px;
-    }
-  }
-}
+//   .hasTagsView {
+//     .app-main {
+//       /* 98 = navbar + tags-view = 64 + 34 */
+//       height: calc(100vh - 64px);
+//     }
+
+//     .fixed-header + .app-main {
+//       height: calc(100vh - 118px);
+//       padding-top: 40px;
+//       padding: 54px 16px 16px 16px;
+//     }
+//   }
+// }
 </style>

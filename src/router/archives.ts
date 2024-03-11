@@ -26,6 +26,7 @@ const routes: RouteRecordRaw[] = [
           roles: ["ADMIN"],
           keepAlive: true,
           code: [301],
+          showMenu: true,
         },
       },
       {
@@ -36,10 +37,11 @@ const routes: RouteRecordRaw[] = [
           title: "companyDetail",
           activeMenu: "/archives/search",
           icon: "tree",
-          hidden: true,
+          hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
           code: [302],
+          showMenu: false,
         },
       },
       {
@@ -55,6 +57,7 @@ const routes: RouteRecordRaw[] = [
           roles: ["ADMIN"],
           keepAlive: true,
           code: [303],
+          showMenu: false,
         },
       },
       {
@@ -72,6 +75,7 @@ const routes: RouteRecordRaw[] = [
           roles: ["ADMIN"],
           keepAlive: true,
           code: [304],
+          showMenu: false,
         },
       },
       {
@@ -85,6 +89,7 @@ const routes: RouteRecordRaw[] = [
           roles: ["ADMIN"],
           keepAlive: true,
           code: [305],
+          showMenu: false,
         },
       },
     ],

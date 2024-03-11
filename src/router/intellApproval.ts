@@ -26,6 +26,7 @@ const routes: RouteRecordRaw[] = [
           roles: ["ADMIN"],
           keepAlive: true,
           code: [501],
+          showMenu: true,
         },
       },
       {
@@ -39,6 +40,7 @@ const routes: RouteRecordRaw[] = [
           roles: ["ADMIN"],
           keepAlive: true,
           // code: [501],
+          showMenu: false,
         },
       },
     ],
