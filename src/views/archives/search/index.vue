@@ -35,7 +35,7 @@
           <div class="result-count mb-10px">
             <span class="label">检索结果：</span>
             <span class="label-value">
-              为您找到 <span class="text-#3470FF">25</span> 条相关结果
+              为您找到 <span class="text-#3470FF">{{ total }}</span> 条相关结果
             </span>
           </div>
           <div class="area">
@@ -47,7 +47,8 @@
                 overflow: 'hidden',
               }"
             >
-              <span v-for="(item, i) in provinceResult" :key="i" class="area-tag" @click="handleSearchProvince(item)">{{ item.province_short }}({{ item.count }})</span>
+              <span class="area-tag" :class="{'active-province': !curProvince}" @click="handleSearchProvince">全部</span>
+              <span v-for="(item, i) in provinceResult" :key="i" class="area-tag" :class="{'active-province': curProvince === item.province_short }" @click="handleSearchProvince(item)">{{ item.province_short }}({{ item.count }})</span>
             </div>
           </div>
         </div>
@@ -88,6 +89,7 @@ const total = ref(0) // 查询结果总数量
 const loading = ref(false); // 加载
 const attentResult = ref({}) // 企业关注统计
 const provinceResult = ref() // 省份分布
+const curProvince = ref('')
 
 const scrollDisabled = computed(() => {
   if(tableData.value.length > 0) {
@@ -116,7 +118,14 @@ function refresh(i) {
 }
 
 function handleSearchProvince(item) {
-  searchPar.value.provinceShort = item.province_short;
+  if(!item) {
+    searchPar.value.provinceShort = '';
+    curProvince.value = '';
+  } else {
+    searchPar.value.provinceShort = item.province_short;
+    curProvince.value = item.province_short;
+    
+  }
   searchPar.value.pageNumber = 1;
   loading.value = true;
   tableData.value = [];
@@ -180,6 +189,9 @@ onMounted(() => {
 });
 </script>
 <style lang="scss" scoped>
+.active-province {
+  color: rgba(52, 112, 255, 1);
+}
 .company-search-container {
   height: 100%;
   overflow: auto;
