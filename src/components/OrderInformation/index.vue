@@ -2,9 +2,9 @@
   <!-- 订单信息 -->
   <div class="order-container">
     <div class="search_box">
-      <w-form :model="form" layout="inline">
-        <w-form-item class="mr-16px" field="post" label="商品类别">
-          <w-select v-model="form.post" placeholder="全部">
+      <w-form :model="orderPar" layout="inline">
+        <w-form-item class="mr-16px" field="goodType" label="商品类别">
+          <w-select v-model="orderPar.goodType" placeholder="全部" clearable>
             <w-option v-for="(item,i) in orderList" :key="i">{{item}}</w-option>
           </w-select>
         </w-form-item>
@@ -19,18 +19,16 @@
             }"
             format="YYYY-MM-DD"
             @change="onChange"
-            @select="onSelect"
-            @ok="onOk"
           />
         </w-form-item>
-        <w-form-item field="name" label="买方名称">
-          <w-input v-model="form.name" placeholder="请输入买方名称" />
+        <w-form-item field="buyerCompanyName" label="买方名称">
+          <w-input v-model="orderPar.buyerCompanyName" placeholder="请输入买方名称" clearable/>
         </w-form-item>
-        <w-form-item field="name" label="订单编号">
-          <w-input v-model="form.name" placeholder="请输入订单编号" />
+        <w-form-item field="code" label="订单编号">
+          <w-input v-model="orderPar.code" placeholder="请输入订单编号" clearable/>
         </w-form-item>
-        <w-button type="primary" class="mr-8px">搜索</w-button>
-        <w-button>重置</w-button>
+        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+        <w-button @click="reset">重置</w-button>
       </w-form>
     </div>
     <div class="table-warp">
@@ -69,8 +67,7 @@ const props = defineProps({
   }
 })
 
-const current = ref(1);
-const size = ref(10);
+const dateRange = ref([])
 const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
@@ -142,7 +139,7 @@ const pagination = ref({
   "show-page-size": true,
   "show-jumper": true,
 });
-const orderPar = reactive({
+const orderPar = ref({
   page_size: 10,
   page: 1,
   goodType: '', // 商品类别
@@ -157,30 +154,51 @@ const scroll = ref({
   y: 800,
   x: 1080,
 });
-const form = ref({
-  name: "",
-  post: "",
-});
+
 const changePagesize = (v) => {
-  size.value = v;
+  orderPar.value.page_size = v;
   pagination.value.pageSize = v;
-  init();
+  getqyzxOrder()
 };
 const changepage = (v) => {
-  current.value = v;
-  init();
+  orderPar.value.page = v;
+  getqyzxOrder();
 };
-function onSelect(dateString, date) {
-  console.log("onSelect", dateString, date);
-}
 
+// 选择时间
 function onChange(dateString, date) {
-  console.log("onChange: ", dateString, date);
+  if(dateString && dateString.length > 0) {
+    orderPar.value.orderCreateDateStart = dateString[0];
+    orderPar.value.orderCreateDateEnd = dateString[1];
+  } else {
+    orderPar.value.orderCreateDateStart = '';
+    orderPar.value.orderCreateDateEnd = '';
+  }
 }
 
-function onOk(dateString, date) {
-  console.log("onOk: ", dateString, date);
+// 搜索-重置分页
+function search() {
+  orderPar.value.page = 1;
+  getqyzxOrder();
 }
+
+// 重置
+function reset() {
+  pagination.value.pageSize = 10;
+
+  orderPar.value = {
+    page_size: 10,
+    page: 1,
+    goodType: '', // 商品类别
+    orderCreateDateStart: '',
+    orderCreateDateEnd: '',
+    buyerCompanyName: '', // 买方名称
+    sellerCompnayName: props.companyName, // 上个页面带过来的公司名称
+    code: '' // 订单编号
+  }
+  getqyzxOrder();
+}
+
 // 跳转订单详情
 function toOrderDetail(d) {
   router.push({
@@ -193,9 +211,15 @@ function toOrderDetail(d) {
 
 // 获取主订单列表及详情
 function getqyzxOrder() {
-  qyzxOrder(orderPar).then(res => {
-    tableData.value.push(...res.data);
-  }).catch(err => { })
+  if(loading.value) return
+  loading.value = true;
+  qyzxOrder(orderPar.value).then(res => {
+    tableData.value = res.data
+    pagination.value.total = res.total;
+    loading.value = false;
+  }).catch(err => {
+    loading.value = false;
+  })
 }
 
 function getorderDropDownBox() {
@@ -210,7 +234,7 @@ function getorderDropDownBox() {
 }
 
 const init = async () => {
-  orderPar.sellerCompnayName = props.companyName;
+  orderPar.value.sellerCompnayName = props.companyName;
   getqyzxOrder()
 };
 init();

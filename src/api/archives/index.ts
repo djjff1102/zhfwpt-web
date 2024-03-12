@@ -221,7 +221,10 @@ export function attentionCompanyQuery(
   return request({
     url: "/base/company_base/attentionCompanyQuery",
     method: "post",
-    data,
+    data: {
+      userId: userId,
+      ...data,
+    },
   });
 }
 

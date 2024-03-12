@@ -2,9 +2,10 @@
   <!-- 发票信息 -->
   <div class="container">
     <div class="search_box">
-      <w-form :model="form" layout="inline">
-        <w-form-item class="mr-16px" field="post" label="发票类别">
-          <w-select v-model="form.post" placeholder="全部" />
+      <w-form :model="searchPar" layout="inline">
+        <w-form-item class="mr-16px" field="type" label="发票类别">
+          <w-input v-model="searchPar.type" placeholder="请输入发票类别" ></w-input>
+          <!-- <w-select v-model="searchPar.type" placeholder="全部" /> -->
         </w-form-item>
         <w-form-item class="mr-16px" field="post" label="开票日期">
           <w-range-picker
@@ -17,18 +18,16 @@
             }"
             format="YYYY-MM-DD"
             @change="onChange"
-            @select="onSelect"
-            @ok="onOk"
           />
         </w-form-item>
-        <w-form-item field="name" label="收票单位">
-          <w-input v-model="form.name" placeholder="请输入开票单位" />
+        <w-form-item field="receivingCompanyName" label="收票单位">
+          <w-input v-model="searchPar.receivingCompanyName" placeholder="请输入收票单位" />
         </w-form-item>
-        <w-form-item field="name" label="发票号码">
-          <w-input v-model="form.name" placeholder="请输入发票号码" />
+        <w-form-item field="code" label="发票号码">
+          <w-input v-model="searchPar.code" placeholder="请输入发票号码" />
         </w-form-item>
-        <w-button type="primary" class="mr-8px">搜索</w-button>
-        <w-button>重置</w-button>
+        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+        <w-button @click="reset">重置</w-button>
       </w-form>
     </div>
     <div class="table-warp">
@@ -62,7 +61,7 @@ import dayjs from "dayjs";
 import TendencyChart from "./TendencyChart/index.vue";
 import { ref, reactive } from "vue";
 import { qyzxInvoice } from '@/api/archives'
-import { useRouter, useRoute } from 'vue-router';
+import { useRoute } from 'vue-router';
 
 const route = useRoute();
 
@@ -183,35 +182,63 @@ const scroll = ref({
   y: 800,
   x: 1080,
 });
-const form = ref({
-  name: "",
-  post: "",
-});
+
 const changePagesize = (v) => {
-  size.value = v;
   pagination.value.pageSize = v;
-  init();
+  searchPar.value.page = 1;
+  searchPar.value.page_size = v;
+  getqyzxInvoice();
 };
 const changepage = (v) => {
-  current.value = v;
-  init();
+  searchPar.value.page = v;
+  getqyzxInvoice();
 };
-function onSelect(dateString, date) {
-  console.log("onSelect", dateString, date);
-}
 
+// 时间选择
 function onChange(dateString, date) {
-  console.log("onChange: ", dateString, date);
+  if(dateString && dateString.length > 0) {
+    searchPar.value.invoiceDateStart = dateString[0];
+    searchPar.value.invoiceDateEnd = dateString[1];
+  } else {
+    searchPar.value.invoiceDateStart = '';
+    searchPar.value.invoiceDateEnd = '';
+  }
 }
 
-function onOk(dateString, date) {
-  console.log("onOk: ", dateString, date);
+// 搜索
+function search() {
+  searchPar.value.page = 1;
+  getqyzxInvoice();
+}
+
+// 重置
+function reset() {
+  let name = searchPar.value.invoicingCompanyName
+  pagination.value.pageSize = 10;
+  searchPar.value = {
+    page_size: 10,
+    page: 1,
+    invoiceDateStart: '',
+    invoiceDateEnd: '',
+    type: '',
+    code: '',
+    receivingCompanyName: '', // 收票单位（查询）
+    invoicingCompanyName: name
+  }
+  pagination.value.pageSize = 10;
+  getqyzxInvoice();
 }
 
 function getqyzxInvoice() {
+  if(loading.value) return;
+  loading.value = true;
   qyzxInvoice(searchPar.value).then(res => {
-    tableData.value.push(...res.data);
-  }).catch(err => {})
+    tableData.value = res.data;
+    pagination.value.total = res.total;
+    loading.value = false;
+  }).catch(err => {
+    loading.value = false;
+  })
 }
 
 const init = async () => {

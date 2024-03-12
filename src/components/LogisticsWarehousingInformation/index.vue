@@ -2,20 +2,21 @@
   <!-- 物流仓储信息 -->
   <div class="warehousing-container">
     <div class="search_box">
-      <w-form :model="form" layout="inline">
-        <w-form-item class="mr-16px" field="post" label="所属地区">
-          <w-select v-model="form.post" placeholder="请选择地区">
+      <w-form :model="searchPar" layout="inline">
+        <w-form-item class="mr-16px" field="locationProvince" label="所属地区">
+          <w-input v-model="searchPar.locationProvince" laceholder="请输入地区"></w-input>
+          <!-- <w-select v-model="form.post" placeholder="请选择地区">
             <w-option v-for="(item ,i) in wareList" :key="i">{{ item }}</w-option>
-          </w-select>
+          </w-select> -->
         </w-form-item>
-        <w-form-item field="name" label="仓库地址">
-          <w-input v-model="form.name" placeholder="请输入仓库地址" />
+        <w-form-item field="locationAddress" label="仓库地址">
+          <w-input v-model="searchPar.locationAddress" placeholder="请输入仓库地址" />
         </w-form-item>
-        <w-form-item field="name" label="仓库简称">
-          <w-input v-model="form.name" placeholder="请输入仓库简称" />
+        <w-form-item field="shortName" label="仓库简称">
+          <w-input v-model="searchPar.shortName" placeholder="请输入仓库简称" />
         </w-form-item>
-        <w-button type="primary" class="mr-8px">搜索</w-button>
-        <w-button>重置</w-button>
+        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+        <w-button @click="reset">重置</w-button>
       </w-form>
     </div>
     <div class="table-warp">
@@ -121,26 +122,49 @@ const scroll = ref({
   y: 800,
   x: 1080,
 });
-const form = ref({
-  name: "",
-  post: "",
-});
+
 const changePagesize = (v) => {
-  size.value = v;
   pagination.value.pageSize = v;
-  init();
+  searchPar.value.page_size = v;
+  searchPar.value.page = 1;
+  getqyzxWarehouse();
 };
+
 const changepage = (v) => {
-  current.value = v;
-  init();
+  searchPar.value.page = v;
+  getqyzxWarehouse();
 };
+
+function search() {
+  searchPar.value.page = 1;
+  getqyzxWarehouse();
+}
+
+function reset() {
+  let name = searchPar.value.companyName
+  searchPar.value = {
+    page_size: 10,
+    page: 1,
+    companyName: name, // 带过来的公司名称
+    locationProvince: '', // 所属地区
+    locationAddress: '', //仓库地址
+    shortName: '' //仓库简称
+  }
+  searchPar.value.page = 1;
+  getqyzxWarehouse();
+}
 
 // 仓储物流信息
 function getqyzxWarehouse() {
+  if(loading.value) return
+  loading.value = true
   qyzxWarehouse(searchPar.value).then(res => {
     const data = res.data;
     tableData.value = data as any;
-  }).catch(err => {})
+    loading.value = false
+  }).catch(err => {
+    loading.value = false
+  })
 }
 
 function getwarehouseDropDownBox() {

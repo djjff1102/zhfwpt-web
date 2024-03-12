@@ -53,7 +53,6 @@ watch(
   () => currentRoute,
   (path) => {
     showMenu.value = path.meta.showMenu as any;
-    console.log('1111111111111111111111---------path:', path.meta.showMenu);
   },{
     deep: true // 确保深度监听路由对象的每一个属性
   }

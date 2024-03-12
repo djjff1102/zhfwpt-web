@@ -1,23 +1,41 @@
 <template>
   <div class="attention">
     <div class="search_box">
-      <w-form :model="form" layout="inline">
-        <w-form-item field="name" label="用户名称">
-          <w-input v-model="form.name" placeholder="请输入用户名称" />
+      <w-form :model="searchPar" layout="inline">
+        <w-form-item field="companyName" label="企业名称" >
+          <w-input v-model="searchPar.companyName" placeholder="请输入企业名称" clearable/>
         </w-form-item>
-        <w-form-item field="post" label="角色编号">
-          <w-input v-model="form.post" placeholder="请输入角色编号" />
+        <w-form-item field="provinceShort" label="省份地区">
+          <w-select v-model="searchPar.provinceShort" placeholder="请选择省份地区" clearable>
+            <w-option v-for="(item, i) in provinceResult" :key="i">{{ item.province_short }}</w-option>
+          </w-select>
         </w-form-item>
-        <w-form-item class="mr-16px" field="post" label="状态">
-          <w-select v-model="form.post" placeholder="请输入角色编号" />
+        <w-form-item class="mr-16px" field="post" label="登记状态">
+          <w-select placeholder="请选择登记状态" clearable>
+            <w-option v-for="(item, i) in provinceResult" :key="i">{{ item.province_short }}</w-option>
+          </w-select>
         </w-form-item>
-        <w-button type="primary" class="mr-8px">搜索</w-button>
-        <w-button>重置</w-button>
+        <w-form-item field="legalPerson" label="法人" >
+          <w-input v-model="searchPar.legalPerson" placeholder="请输入法人" clearable/>
+        </w-form-item>
+        <w-form-item field="creditNo" label="统一社会信用代码" >
+          <w-input v-model="searchPar.creditNo" placeholder="请输入统一社会信用代码" clearable/>
+        </w-form-item>
+        <w-form-item class="mr-16px" label="企业类型">
+          <w-select placeholder="请选择企业类型" clearable>
+            <w-option v-for="(item, i) in provinceResult" :key="i">{{ item.province_short }}</w-option>
+          </w-select>
+        </w-form-item>
+        <w-form-item field="companyAddress" label="注册地址">
+          <w-input v-model="searchPar.companyAddress" placeholder="请输入注册地址" clearable/>
+        </w-form-item>
+        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+        <w-button @click="reset">重置</w-button>
       </w-form>
     </div>
-    <div class="oper">
+    <!-- <div class="oper">
       <w-button type="primary" class="mr-8px">新增</w-button>
-    </div>
+    </div> -->
     <div class="table-warp">
       <m-table
         style="height: 100%"
@@ -38,13 +56,10 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, reactive, unref, computed, watch } from "vue";
-import { IconPlus } from "winbox-ui-next/es/icon";
+import { ref, reactive } from "vue";
 import { debounce } from "lodash-es";
-import { attentionCompanyQuery } from '@/api/archives'
+import { attentionCompanyQuery, groupByProvince } from '@/api/archives'
 
-const current = ref(1);
-const size = ref(10);
 const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
@@ -102,36 +117,76 @@ const pagination = ref({
 const searchPar = ref({
   page_size: 10,
   page: 1,
-  companyName: '',
-  provinceShort: '' 
+  companyName: '', // 企业名称
+  provinceShort: '' , // 省份
+  legalPerson: '', // 法人
+  creditNo: '', // 统一社会信用代码
+  companyAddress: '', // 注册地址
 })
+const provinceResult = ref([])
 const scroll = ref({
   y: 800,
   x: 1080,
 });
-const form = ref({
-  name: "",
-  post: "",
-});
-const changePagesize = (v) => {
-  size.value = v;
+
+const changePagesize = (v: any) => {
   pagination.value.pageSize = v;
-  init();
+  searchPar.value.page_size = v;
+  getpage();
 };
 
-const changepage = (v) => {
-  current.value = v;
-  init();
+const changepage = (v: any) => {
+  searchPar.value.page = v;
+  getpage();
 };
 
-function getchangepage() {
+// 重置搜索条件
+function reset() {
+  pagination.value.pageSize = 10;
+  searchPar.value = {
+    page_size: 10,
+    page: 1,
+    companyName: '', // 企业名称
+    provinceShort: '' , // 省份
+    legalPerson: '', // 法人
+    creditNo: '', // 统一社会信用代码
+    companyAddress: '', // 注册地址
+  }
+  getpage();
+}
+
+// 搜索-重置分页
+function search() {
+  searchPar.value.page = 1;
+  getpage();
+}
+
+// 我关注的企业
+function getpage() {
+  if(loading.value) return;
+  loading.value = true;
   attentionCompanyQuery(searchPar.value).then(res => {
     tableData.value = res.data as  any;
+    pagination.value.total = res.total as any;
+    loading.value = false;
+  }).catch(err => {
+    loading.value = false;
+  })
+}
+
+// 获取省份
+function getProvince() {
+  groupByProvince({
+    provinceShort: '',
+    allContentSearch: ''
+  }).then(res => {
+    provinceResult.value = res.data;
   }).catch(err => {})
 }
 
 function init() {
-  getchangepage();
+  getpage();
+  getProvince();
 }
 
 init();

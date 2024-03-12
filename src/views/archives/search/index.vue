@@ -3,9 +3,10 @@
     v-infinite-scroll="handleInfiniteOnLoad"
     :infinite-scroll-immediate-check="false"
     :infinite-scroll-disabled="scrollDisabled"
-    infinite-scroll-watch-disabled="scrollDisabled"
+    :infinite-scroll-watch-disabled="scrollDisabled"
     :infinite-scroll-distance="20"
-    class="company-search-container">
+    class="company-search-container"
+    style="overflow: hidden">
     <div class="search">
       <h2 class="search-title">精准数据，助力商业决策每一步.</h2>
       <!-- <div class="search-input"> -->
@@ -92,10 +93,11 @@ const provinceResult = ref() // 省份分布
 const curProvince = ref('')
 
 const scrollDisabled = computed(() => {
-  if(tableData.value.length > 0) {
-    return tableData.value.length >= total.value;
-  }
-  return false;
+  return tableData.value.length >= total.value;
+  // if(tableData.value.length > 0) {
+  //   return tableData.value.length >= total.value;
+  // }
+  // return false;
 })
 const maxHeight = computed(() => (isOpen.value ? "auto" : "22px"));
 
@@ -174,9 +176,9 @@ function getProvince() {
 
 // 滚动加载
 function handleInfiniteOnLoad() {
-  // if(loading.value || scrollDisabled.value) return;
-  // loading.value = true;
-  // loadPage();
+  if(loading.value || scrollDisabled.value) return;
+  loading.value = true;
+  loadPage();
 }
 
 

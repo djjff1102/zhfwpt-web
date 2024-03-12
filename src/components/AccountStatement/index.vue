@@ -2,7 +2,7 @@
   <!-- 银行流水 -->
   <div class="container">
     <div class="search_box">
-      <w-form :model="form" layout="inline">
+      <w-form :model="searchPar" layout="inline">
         <w-form-item field="name" label="付款日期">
           <w-range-picker
             class="w-250px"
@@ -14,18 +14,16 @@
             }"
             format="YYYY-MM-DD"
             @change="onChange"
-            @select="onSelect"
-            @ok="onOk"
           />
         </w-form-item>
-        <w-form-item field="name" label="银行网点">
-          <w-input v-model="form.name" placeholder="检索付款银行/收款银行" />
+        <w-form-item field="bank" label="银行网点">
+          <w-input v-model="searchPar.bank" placeholder="请输入银行网点" />
         </w-form-item>
-        <w-form-item class="mr-16px" field="post" label="付款方">
-          <w-select v-model="form.post" placeholder="请输入付款方" />
+        <w-form-item class="mr-16px" field="paymentCompany" label="付款方">
+          <w-input v-model="searchPar.paymentCompany" placeholder="请输入付款方" />
         </w-form-item>
-        <w-button type="primary" class="mr-8px">搜索</w-button>
-        <w-button>重置</w-button>
+        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+        <w-button @click="reset">重置</w-button>
       </w-form>
     </div>
     <div class="table-warp">
@@ -148,31 +146,58 @@ const form = ref({
   post: "",
 });
 const changePagesize = (v) => {
-  size.value = v;
+  searchPar.value.page_size = v;
+  searchPar.value.page = 1;
   pagination.value.pageSize = v;
-  init();
+  getqyzxBankStatement()
 };
 const changepage = (v) => {
-  current.value = v;
-  init();
+  searchPar.value.page = v;
+  getqyzxBankStatement();
 };
-function onSelect(dateString, date) {
-  console.log("onSelect", dateString, date);
-}
 
+// 时间选择
 function onChange(dateString, date) {
-  console.log("onChange: ", dateString, date);
+  if(dateString && dateString.length > 0) {
+    searchPar.value.paymentDateStart = dateString[0];
+    searchPar.value.paymentDateEnd = dateString[1];
+  } else {
+    searchPar.value.paymentDateStart = '';
+    searchPar.value.paymentDateEnd = '';
+  }
 }
 
-function onOk(dateString, date) {
-  console.log("onOk: ", dateString, date);
+function search() {
+  searchPar.value.page = 1;
+  getqyzxBankStatement();
+}
+
+function reset() {
+  let name = searchPar.value.companyName;
+  pagination.value.pageSize = 10;
+  searchPar.value = {
+    page_size: 10,
+    page: 1,
+    paymentDateStart: '',
+    paymentDateEnd: '',
+    paymentCompany: '', // 付款方
+    bank: '', // 银行网点
+    companyName: name // 带过来的参数
+  }
+  getqyzxBankStatement();
 }
 
 // 银行流水
 function getqyzxBankStatement() {
+  if(loading.value) return
+  loading.value = true
   qyzxBankStatement(searchPar.value).then(res => {
     tableData.value = res.data;
-  }).catch(err => {})
+    pagination.value.total = res.total;
+    loading.value = false
+  }).catch(err => {
+    loading.value = false
+  })
 }
 
 const init = async () => {

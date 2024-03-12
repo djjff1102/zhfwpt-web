@@ -2,15 +2,15 @@
   <!-- 交易凭证 -->
   <div class="container">
     <div class="search_box">
-      <w-form :model="form" layout="inline">
-        <w-form-item field="name" label="合同编号">
-          <w-input v-model="form.name" placeholder="请输入合同编号" />
+      <w-form :model="searchPar" layout="inline">
+        <w-form-item field="code" label="合同编号">
+          <w-input v-model="searchPar.code" placeholder="请输入合同编号" />
         </w-form-item>
-        <w-form-item class="mr-16px" field="post" label="甲方">
-          <w-select v-model="form.post" placeholder="请输入关键字" />
+        <w-form-item class="mr-16px" field="partyA" label="甲方">
+          <w-input v-model="searchPar.partyA" placeholder="请输入关键字" />
         </w-form-item>
-        <w-form-item class="mr-16px" field="post" label="乙方">
-          <w-select v-model="form.post" placeholder="请输入关键字" />
+        <w-form-item class="mr-16px" field="partyB" label="乙方">
+          <w-input v-model="searchPar.partyB" placeholder="请输入关键字" />
         </w-form-item>
         <w-form-item class="mr-16px" field="post" label="签订日期">
           <w-range-picker
@@ -23,12 +23,10 @@
             }"
             format="YYYY-MM-DD"
             @change="onChange"
-            @select="onSelect"
-            @ok="onOk"
           />
         </w-form-item>
-        <w-button type="primary" class="mr-8px">搜索</w-button>
-        <w-button>重置</w-button>
+        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+        <w-button @click="reset">重置</w-button>
       </w-form>
     </div>
     <div class="table-warp">
@@ -128,37 +126,61 @@ const scroll = ref({
   y: 800,
   x: 1080,
 });
-const form = ref({
-  name: "",
-  post: "",
-});
+
 const changePagesize = (v) => {
-  size.value = v;
+  searchPar.value.page_size = v;
   pagination.value.pageSize = v;
-  init();
+  searchPar.value.page = 1;
+  getqyzxTransactionCertificate();
 };
 const changepage = (v) => {
-  current.value = v;
-  init();
+  searchPar.value.page = v;
+  getqyzxTransactionCertificate();
 };
 
-function onSelect(dateString, date) {
-  console.log("onSelect", dateString, date);
-}
-
+// 时间选择
 function onChange(dateString, date) {
-  console.log("onChange: ", dateString, date);
+  if(dateString && dateString.length > 0) {
+    searchPar.value.signDateStart = dateString[0];
+    searchPar.value.signDateEnd = dateString[1];
+  } else {
+    searchPar.value.signDateStart = '';
+    searchPar.value.signDateEnd = '';
+  }
 }
 
-function onOk(dateString, date) {
-  console.log("onOk: ", dateString, date);
+function search() {
+  searchPar.value.page = 1;
+  getqyzxTransactionCertificate();
+}
+
+function reset() {
+  pagination.value.pageSize = 10;
+  let name = searchPar.value.companyName;
+  searchPar.value = {
+    page_size: 10,
+    page: 1,
+    signDateStart: '',
+    signDateEnd: '',
+    code: '',
+    companyName: name, // 传过来的公司名称
+    partyA: '', // 甲方
+    partyB: '' // 乙方
+  }
+  getqyzxTransactionCertificate()
 }
 
 // 交易凭证
 function getqyzxTransactionCertificate() {
+  if(loading.value) return
+  loading.value = true
   qyzxTransactionCertificate(searchPar.value).then(res => {
     tableData.value = res.data;
-  }).catch(err => {})
+    loading.value = false
+    pagination.value.total = res.total;
+  }).catch(err => {
+    loading.value = false
+  })
 }
 
 const init = async () => {
