@@ -89,7 +89,7 @@ const routes: RouteRecordRaw[] = [
           roles: ["ADMIN"],
           keepAlive: true,
           code: [304],
-          showMenu: false,
+          showMenu: true,
         },
       },
     ],
