@@ -1,5 +1,6 @@
 <template>
-  <div
+  <Teleport to="body">
+      <div
     class="slide-nav"
     :style="{
       transform: `translateX(${isShowSlideNav ? '0px' : '142px'})`,
@@ -34,6 +35,8 @@
       </div>
     </div>
   </div>
+  </Teleport>
+
 </template>
 <script setup>
 let navList = ref([

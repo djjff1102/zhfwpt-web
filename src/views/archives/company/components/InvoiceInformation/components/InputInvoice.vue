@@ -9,6 +9,7 @@
         </w-form-item>
         <w-form-item class="mr-16px" field="post" label="开票日期">
           <w-range-picker
+            v-model="curDate"
             class="w-250px"
             :time-picker-props="{
               defaultValue: [
@@ -44,22 +45,25 @@
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
         </template>
-        <template v-slot:operations>
-          <w-button type="text">详情</w-button>
+       <template v-slot:operations="{rowIndex}">
+          <w-button type="text" @click="handleDetail(tableData[rowIndex])">详情</w-button>
         </template>
       </m-table>
     </div>
-    <div class="title">企业进销项发票趋势2</div>
+    <!-- TODO: 未开发 -->
+    <!-- <div class="title">企业进销项发票趋势2</div> -->
   </div>
 </template>
 <script setup>
 import dayjs from "dayjs";
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
 import { qyzxInvoice } from '@/api/archives'
-import { useRouter, useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
+const router = useRouter();
 
+const curDate = ref([])
 const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
@@ -77,7 +81,7 @@ const columns = reactive([
   },
   {
     title: "开票日期",
-    dataIndex: "invoicing_date",
+    dataIndex: "invoicingDate",
     width: 180,
     fixed: "left",
   },
@@ -88,68 +92,75 @@ const columns = reactive([
   },
   {
     title: "开票单位",
-    dataIndex: "invoicing_company_name",
+    dataIndex: "invoicingCompanyName",
     width: 180,
   },
   {
     title: "开票单位统一社会信用代码",
-    dataIndex: "invoicing_credit_no",
+    dataIndex: "invoicingCreditNo",
     width: 220,
   },
   {
     title: "收票单位",
-    dataIndex: "receiving_company_name",
+    dataIndex: "receivingCompanyName",
     width: 180,
   },
   {
     title: "收票单位统一社会信用代码",
     width: 220,
-    dataIndex: "receiving_credit_no",
+    dataIndex: "receivingCreditNo",
   },
   {
     title: "项目名称",
-    dataIndex: "good_name",
+    dataIndex: "goodName",
     width: 180,
   },
   {
     title: "规格型号",
     dataIndex: "standard",
-    width: 180,
+    width: 80,
   },
   {
     title: "数量",
     dataIndex: "quantity",
-    width: 180,
+    width: 80,
   },
   {
     title: "计量单位",
-    dataIndex: "measure_unit",
-    width: 180,
+    dataIndex: "measureUnit",
+    width: 100,
   },
   {
     title: "含税金额",
-    dataIndex: "amount_include_tax",
+    dataIndex: "amountIncludeTax",
     width: 180,
   },
   {
     title: "税率",
-    dataIndex: "tax_rate",
+    dataIndex: "taxRate",
     width: 180,
   },
   {
     title: "税额",
-    dataIndex: "tax_amount",
+    dataIndex: "taxAmount",
     width: 180,
   },
   {
     title: "单价",
-    dataIndex: "unit_price",
+    dataIndex: "unitPrice",
     width: 180,
   },
   {
     title: "价税合计",
-    dataIndex: "amount_total",
+    dataIndex: "amountTotal",
     width: 180,
+  },
+  {
+    title: "操作",
+     width: 100,
+    dataIndex: "operations",
+    slotName: "operations",
+    fixed: "right",
   },
 ]);
 const pagination = ref({
@@ -173,6 +184,17 @@ const scroll = ref({
   y: 800,
   x: 1080,
 });
+
+// 跳转订单详情
+function handleDetail(d) {
+  router.push({
+    path: '/archives/orderDetail',
+    query: {
+      fapiao: JSON.stringify(d),
+      fromOrder: false
+    }
+  })
+}
 
 const changePagesize = (v) => {
   pagination.value.pageSize = v;
@@ -204,6 +226,7 @@ function search() {
 
 // 重置
 function reset() {
+  curDate.value = [];
   let name = searchPar.value.receivingCompanyName;
   pagination.value.pageSize = 10;
   searchPar.value = {

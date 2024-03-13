@@ -10,6 +10,7 @@
         </w-form-item>
         <w-form-item class="mr-16px" field="post" label="订单创建日期">
           <w-range-picker
+            v-model="curDate"
             class="w-250px"
             :time-picker-props="{
               defaultValue: [
@@ -67,7 +68,7 @@ const props = defineProps({
   }
 })
 
-const dateRange = ref([])
+const curDate = ref([])
 const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
@@ -185,7 +186,7 @@ function search() {
 // 重置
 function reset() {
   pagination.value.pageSize = 10;
-
+  curDate.value = [];
   orderPar.value = {
     page_size: 10,
     page: 1,
@@ -204,7 +205,8 @@ function toOrderDetail(d) {
   router.push({
     path: '/archives/orderDetail',
     query: {
-      order: JSON.stringify(d)
+      order: JSON.stringify(d),
+      fromOrder: true
     }
   })
 }
@@ -236,6 +238,7 @@ function getorderDropDownBox() {
 const init = async () => {
   orderPar.value.sellerCompnayName = props.companyName;
   getqyzxOrder()
+  getorderDropDownBox();
 };
 init();
 </script>

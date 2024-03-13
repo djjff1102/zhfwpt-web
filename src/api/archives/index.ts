@@ -13,6 +13,7 @@ import {
   GoodSearch,
   SelectSearch,
   SelectResult,
+  ExportSearch,
 } from "./type";
 import { useUserStoreHook } from "@/store/modules/user";
 
@@ -232,10 +233,26 @@ export function attentionCompanyQuery(
  * 我关注的企业导出
  */
 export function attentionCompanyExport(
-  data: SelectSearch
+  data: ExportSearch
 ): CustomAxiosPromise<SelectResult> {
   return request({
+    responseType: "blob",
     url: "/base/company_base/attentionCompanyExport",
+    method: "post",
+    data: {
+      userId: userId,
+      ...data,
+    },
+  });
+}
+/**
+ * 关联发票列表
+ */
+export function qyzxInvoic(
+  data: ProvinceSearch
+): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: "/base/qyzx_invoice",
     method: "post",
     data: {
       userId: userId,

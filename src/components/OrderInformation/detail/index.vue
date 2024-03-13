@@ -1,26 +1,39 @@
 <template>
   <div class="order-detail-container">
     <div class="title">基本信息</div>
-    <BaseInfo :order="order"></BaseInfo>
+    <BaseInfo v-if="fromOrder == 'true'" :order="order"></BaseInfo>
+    <BaseInfoFP v-else :order="fapiao"></BaseInfoFP>
     <div class="title">子仓库信息</div>
-    <SecondWarehousing :parentCode="order.code"></SecondWarehousing>
-    <div class="title">关联发票列表</div>
-    <InvoiceInformation></InvoiceInformation>
-  </div>
+    <SecondWarehousing :parentCode="code"></SecondWarehousing>
+    <div v-if="fromOrder == 'true'">
+      <div class="title">关联发票列表</div>
+      <InvoiceInformation :parentCode="order.code"></InvoiceInformation></div>
+    </div>
 </template>
 <script setup>
-import  { ref, reactive } from 'vue';
-import BaseInfo from "./components/BaseInfo.vue";
+import  { ref } from 'vue';
+import BaseInfo from "./components/BaseInfo.vue"
 import SecondWarehousing from "./components/SecondWarehousing.vue";
 import InvoiceInformation from "@/components/InvoiceInformation/components/InputInvoice.vue";
+import BaseInfoFP from './components/BaseInfoFP.vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute();
 
 const order = ref({}) // 订单信息
+const fapiao = ref({}) // 发票信息
+const fromOrder = ref(false) // 从发票跳转、订单跳转
+const code = ref(); // 订单编号
 
 function init() {
-  order.value = JSON.parse(route.query.order);
+  fromOrder.value = route.query.fromOrder;
+  if(fromOrder.value == 'true') {
+    order.value = JSON.parse(route.query.order);
+    code.value = order.value.code;
+  } else {
+    fapiao.value = JSON.parse(route.query.fapiao);
+    code.value = fapiao.value.orderCode;
+  }
 }
 
 init()

@@ -9,6 +9,7 @@
         </w-form-item>
         <w-form-item class="mr-16px" field="post" label="开票日期">
           <w-range-picker
+            v-model="curDate"
             class="w-250px"
             :time-picker-props="{
               defaultValue: [
@@ -44,16 +45,17 @@
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
         </template>
-        <template v-slot:operations>
-          <w-button type="text">详情</w-button>
+        <template v-slot:operations="{rowIndex}">
+          <w-button type="text" @click="handleDetail(tableData[rowIndex])">详情</w-button>
         </template>
       </m-table>
     </div>
 
-    <div class="title">企业进销项发票趋势1</div>
+    <!-- TODO: 未开发 -->
+    <!-- <div class="title">企业进销项发票趋势1</div>
     <div class="tendencyChart w-full h-400px">
       <TendencyChart></TendencyChart>
-    </div>
+    </div> -->
   </div>
 </template>
 <script setup>
@@ -61,12 +63,12 @@ import dayjs from "dayjs";
 import TendencyChart from "./TendencyChart/index.vue";
 import { ref, reactive } from "vue";
 import { qyzxInvoice } from '@/api/archives'
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
+const router = useRouter();
 
-const current = ref(1);
-const size = ref(10);
+const curDate = ref([])
 const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
@@ -84,79 +86,85 @@ const columns = reactive([
   },
   {
     title: "开票日期",
-    dataIndex: "invoicing_date",
-    width: 180,
-    fixed: "left",
+     width: 180,
+    dataIndex: "invoicingDate",
   },
   {
     title: "发票类别",
+     width: 180,
     dataIndex: "type",
-    width: 180,
   },
   {
     title: "开票单位",
-    dataIndex: "invoicing_company_name",
-    width: 180,
+     width: 180,
+    dataIndex: "invoicingCompanyName",
   },
   {
     title: "开票单位统一社会信用代码",
-    dataIndex: "invoicing_credit_no",
-    width: 220,
+     width: 220,
+    dataIndex: "invoicingCreditNo",
   },
   {
     title: "收票单位",
-    dataIndex: "receiving_company_name",
-    width: 180,
+     width: 180,
+    dataIndex: "receivingCompanyName",
   },
   {
     title: "收票单位统一社会信用代码",
     width: 220,
-    dataIndex: "receiving_credit_no",
+    dataIndex: "receivingCreditNo",
   },
   {
     title: "项目名称",
-    dataIndex: "good_name",
-    width: 180,
+     width: 180,
+    dataIndex: "goodName",
   },
   {
     title: "规格型号",
+     width: 80,
     dataIndex: "standard",
-    width: 180,
   },
   {
     title: "数量",
+     width: 80,
     dataIndex: "quantity",
-    width: 180,
   },
   {
     title: "计量单位",
-    dataIndex: "measure_unit",
-    width: 180,
+     width: 100,
+    dataIndex: "measureUnit",
   },
   {
     title: "含税金额",
-    dataIndex: "amount_include_tax",
-    width: 180,
+     width: 180,
+    dataIndex: "amountIncludeTax",
   },
   {
     title: "税率",
-    dataIndex: "tax_rate",
+    dataIndex: "taxRate",
     width: 180,
   },
   {
     title: "税额",
-    dataIndex: "tax_amount",
-    width: 180,
+     width: 180,
+    dataIndex: "taxAmount",
   },
   {
     title: "单价",
-    dataIndex: "unit_price",
-    width: 180,
+     width: 180,
+    dataIndex: "unitPrice",
   },
   {
     title: "价税合计",
-    dataIndex: "amount_total",
-    width: 180,
+     width: 180,
+    dataIndex: "amountTotal",
+  },
+  {
+    title: "操作",
+     width: 100,
+    dataIndex: "operations",
+    slotName: "operations",
+    fixed: "right",
   },
 ]);
 const pagination = ref({
@@ -183,12 +191,24 @@ const scroll = ref({
   x: 1080,
 });
 
+// 跳转订单详情
+function handleDetail(d) {
+  router.push({
+    path: '/archives/orderDetail',
+    query: {
+      fapiao: JSON.stringify(d),
+      fromOrder: false
+    }
+  })
+}
+
 const changePagesize = (v) => {
   pagination.value.pageSize = v;
   searchPar.value.page = 1;
   searchPar.value.page_size = v;
   getqyzxInvoice();
 };
+
 const changepage = (v) => {
   searchPar.value.page = v;
   getqyzxInvoice();
@@ -213,6 +233,7 @@ function search() {
 
 // 重置
 function reset() {
+  curDate.value = [];
   let name = searchPar.value.invoicingCompanyName
   pagination.value.pageSize = 10;
   searchPar.value = {

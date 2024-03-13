@@ -105,3 +105,11 @@ export interface SelectSearch {
 export interface SelectResult extends BaseResult {
   data: string[];
 }
+
+export interface ExportSearch {
+  companyName: string;
+  provinceShort: string;
+  legalPerson: string;
+  creditNo: string;
+  companyAddress: string;
+}

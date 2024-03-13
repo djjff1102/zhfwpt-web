@@ -37,6 +37,9 @@
       <w-button type="primary" class="mr-8px">新增</w-button>
     </div> -->
     <div class="table-warp">
+      <div class="export-btn">
+        <w-button type="primary" @click="handleExport">导出</w-button>
+      </div>
       <m-table
         style="height: 100%"
         :data="tableData"
@@ -59,7 +62,7 @@
 import { ref, reactive } from "vue";
 import { useRouter } from 'vue-router';
 import { debounce } from "lodash-es";
-import { attentionCompanyQuery, groupByProvince } from '@/api/archives'
+import { attentionCompanyQuery, groupByProvince, attentionCompanyExport } from '@/api/archives'
 
 const router = useRouter();
 
@@ -142,6 +145,35 @@ const changepage = (v: any) => {
   searchPar.value.page = v;
   getpage();
 };
+
+// 导出
+ function handleExport() {
+  const data = {
+    companyName: searchPar.value.companyName,
+    provinceShort: searchPar.value.provinceShort,
+    legalPerson: searchPar.value.legalPerson,
+    creditNo: searchPar.value.creditNo,
+    companyAddress: searchPar.value.companyAddress
+  }
+  attentionCompanyExport(data).then(res => {
+    exportBlob(res);
+  }).catch(err => {})
+}
+
+// 导出
+function exportBlob(b: any) {
+  const fileName = decodeURIComponent(b.headers["content-disposition"].split('filename*=utf-8')[1])
+  const typeValue = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+  const blob = new Blob([b.data], { type: typeValue});
+  const a = document.createElement('a');
+  a.download = fileName;
+  a.href = URL.createObjectURL(blob);
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  URL.revokeObjectURL(a.href);
+  document.body.removeChild(a);
+}
 
 function handleCompanyDetail(d) {
   // 跳转企业详情
@@ -242,6 +274,11 @@ init();
   ::v-deep .m-table-container {
     height: 100%;
   }
+}
+.export-btn {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 0;
 }
 </style>
 

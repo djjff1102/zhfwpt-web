@@ -62,7 +62,7 @@
         <NoMatch v-if="isEmpty" class="mt-60px"></NoMatch>
         <div class="company-list">
           <CompanyCard v-for="(item, i) in tableData" :key="i" :comData="item" :indexID="i" @refresh="refresh"></CompanyCard>
-          <div v-if="scrollDisabled">数据加载完毕</div>
+          <div v-if="scrollDisabled && tableData.length > 0" class="load-finish">数据加载完</div>
         </div>
       </div>
     </div>
@@ -258,7 +258,7 @@ onMounted(() => {
 }
 
 .search-result {
-  height: calc(100vh - 200px);
+  height: calc(100vh - 316px);
   overflow: auto;
   padding: 20px 14px;
   z-index: 1;
@@ -267,5 +267,13 @@ onMounted(() => {
   // margin: 0 23px;
   border-radius: 4px;
   background-color: #fff;
+}
+.no-match {
+  height: auto;
+}
+.load-finish {
+  text-align: center;
+  font-size: 14px;
+  color: #BFC4CD;
 }
 </style>
