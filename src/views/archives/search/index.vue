@@ -1,10 +1,5 @@
 <template>
   <div
-    v-infinite-scroll="handleInfiniteOnLoad"
-    :infinite-scroll-immediate-check="false"
-    :infinite-scroll-disabled="scrollDisabled"
-    :infinite-scroll-watch-disabled="scrollDisabled"
-    :infinite-scroll-distance="20"
     class="company-search-container"
     style="overflow: hidden">
     <div class="search">
@@ -19,8 +14,13 @@
       <!-- </div> -->
     </div>
     <!-- 外面这层解决top为负数，导致底部缺一块 -->
-    <div class="bg-#fff mx-23px">
-      <div class="search-result">
+    <div class="bg-#fff mx-23px result-wrap" >
+      <div class="search-result"
+        v-infinite-scroll="handleInfiniteOnLoad"
+        :infinite-scroll-immediate-check="false"
+        :infinite-scroll-disabled="scrollDisabled"
+        :infinite-scroll-watch-disabled="scrollDisabled"
+        :infinite-scroll-distance="20">
         <div class="search-brief">
           <div class="attention mb-10px">
             <span class="label">关注企业：</span>
@@ -198,17 +198,19 @@ onMounted(() => {
   height: 100%;
   overflow: auto;
 }
+
 .search {
   width: 100%;
-  height: 270px;
+  height: 190px;
   flex-direction: column;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   background: url("@/assets/images/banner.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   border-radius: 4px;
+  padding-bottom: 64px;
   .search-title {
     font-weight: bold;
     font-size: 28px;
@@ -256,12 +258,12 @@ onMounted(() => {
 }
 
 .search-result {
-  // height: calc(100% - 270px + 40px);
+  height: calc(100vh - 200px);
   overflow: auto;
   padding: 20px 14px;
   z-index: 1;
   position: relative;
-  top: -40px;
+  top: -23px;
   // margin: 0 23px;
   border-radius: 4px;
   background-color: #fff;

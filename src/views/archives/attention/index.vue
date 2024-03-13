@@ -47,8 +47,8 @@
         @page-size-change="changePagesize"
         :bordered="false"
       >
-        <template v-slot:operations>
-          <w-button type="text">详情</w-button>
+        <template v-slot:operations="{rowIndex}">
+          <w-button type="text" @click="handleCompanyDetail(tableData[rowIndex])">详情</w-button>
         </template>
       </m-table>
     </div>
@@ -57,8 +57,11 @@
 
 <script lang="ts" setup>
 import { ref, reactive } from "vue";
+import { useRouter } from 'vue-router';
 import { debounce } from "lodash-es";
 import { attentionCompanyQuery, groupByProvince } from '@/api/archives'
+
+const router = useRouter();
 
 const loading = ref(false);
 const tableData = ref([]);
@@ -139,6 +142,16 @@ const changepage = (v: any) => {
   searchPar.value.page = v;
   getpage();
 };
+
+function handleCompanyDetail(d) {
+  // 跳转企业详情
+  router.push({ 
+    path: '/archives/companyDetail', 
+    query: {
+      company: JSON.stringify(d)
+    }
+  });
+}
 
 // 重置搜索条件
 function reset() {

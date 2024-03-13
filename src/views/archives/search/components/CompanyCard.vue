@@ -2,7 +2,7 @@
   <div class="company-container" @click="handleCompanyDetail(comData)">
     <div class="company-wrap">
       <div class="company-logo">
-        <img src="" alt="" />
+         <img src="../../../../assets/base/default.png" alt="" />
       </div>
       <div class="company-desc">
         <div class="company-name">

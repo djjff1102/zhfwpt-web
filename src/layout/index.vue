@@ -104,7 +104,7 @@ function toggleSideBar() {
     <Sidebar class="sidebar-container" />
 
     <div v-if="layout === 'mix'" class="mix-wrapper" style="overflow: hidden;">
-      <div v-if="showMenu" class="mix-wrapper__left">
+      <div class="mix-wrapper__left">
         <LeftMenu :menu-list="mixLeftMenu" :base-path="activeTopMenu" />
         <!-- 展开/收缩侧边栏菜单 -->
         <!-- <div class="toggle-sidebar">
