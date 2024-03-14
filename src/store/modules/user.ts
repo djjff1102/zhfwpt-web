@@ -18,6 +18,7 @@ export const useUserStore = defineStore("user", () => {
     roleId: [],
     roleName: [],
     id: "", // 用户id
+    organization: {},
   };
 
   const token = useStorage("accessToken", "");

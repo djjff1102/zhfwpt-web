@@ -23,3 +23,298 @@ export const statusList = [
     label: "驳回",
   },
 ];
+
+export enum pro {
+  HT = "1", // 合同
+  DD = "2", // 订单
+  FP = "3", // 发票
+  CC = "4", // 仓储
+  YH = "5", // 银行流水
+}
+
+export const nameMap = {
+  [pro.HT]: "合同",
+  [pro.DD]: "订单",
+  [pro.FP]: "发票",
+  [pro.CC]: "仓储",
+  [pro.YH]: "银行流水",
+};
+
+// 适配穿梭组件自定义属性
+export const prosMap = {
+  [pro.HT]: {
+    key: "code",
+    label: "contractName",
+  },
+  [pro.DD]: {
+    key: "code",
+    label: "sellerCompnayName",
+  },
+  [pro.FP]: {
+    key: "code",
+    label: "invoicingCompanyName",
+  },
+  [pro.CC]: {
+    key: "code",
+    label: "companyName",
+  },
+  [pro.YH]: {
+    key: "orderCode",
+    label: "collectionCompany",
+  },
+};
+export const columnsHT = reactive([
+  {
+    title: "序号",
+    width: 80,
+    slotName: "index",
+    fixed: "left",
+  },
+  {
+    title: "合同编号",
+    dataIndex: "code",
+    fixed: "left",
+  },
+  {
+    title: "甲方（买方/采购方/需方）",
+    dataIndex: "partyA",
+    fixed: "left",
+  },
+  {
+    title: "乙方（卖方/销售方/供方）",
+    dataIndex: "partyB",
+    fixed: "left",
+  },
+  {
+    title: "签订地点",
+    dataIndex: "signAddress",
+  },
+  {
+    title: "签订日期",
+    dataIndex: "signDate",
+  },
+  {
+    title: "合同金额",
+    dataIndex: "amount",
+  },
+]);
+
+export const columnsDD = reactive([
+  {
+    title: "序号",
+    width: 80,
+    slotName: "index",
+    fixed: "left",
+  },
+  {
+    title: "订单编号",
+    dataIndex: "code",
+    width: 180,
+    fixed: "left",
+  },
+  {
+    title: "订单创建日期",
+    dataIndex: "orderCreateDate",
+    fixed: "left",
+  },
+  {
+    title: "商品类别",
+    dataIndex: "goodType",
+    fixed: "left",
+  },
+  {
+    title: "买方名称",
+    dataIndex: "buyerCompanyName",
+  },
+  {
+    title: "买方信用代码",
+    dataIndex: "buyerCreditNo",
+  },
+  {
+    title: "卖方名称",
+    dataIndex: "sellerCompnayName",
+  },
+  {
+    title: "卖方信用代码",
+    dataIndex: "sellerCreditNo",
+  },
+  {
+    title: "商品所在地址",
+    dataIndex: "goodAddress",
+  },
+  {
+    title: "仓库名称",
+    dataIndex: "warehouseName",
+  },
+  {
+    title: "总金额",
+    dataIndex: "totalMoney",
+  },
+  {
+    title: "交易凭证（合同）编号",
+    dataIndex: "certificateCode",
+  },
+]);
+
+export const columnsFP = reactive([
+  {
+    title: "序号",
+    width: 80,
+    slotName: "index",
+    fixed: "left",
+  },
+  {
+    title: "发票号码",
+    dataIndex: "name",
+    fixed: "left",
+  },
+  {
+    title: "开票日期",
+    dataIndex: "salary",
+    fixed: "left",
+  },
+  {
+    title: "发票类别",
+
+    dataIndex: "address",
+  },
+  {
+    title: "开票单位",
+    dataIndex: "email",
+  },
+  {
+    title: "开票单位统一社会信用代码",
+    dataIndex: "email",
+  },
+  {
+    title: "商品类别",
+    dataIndex: "email",
+  },
+  {
+    title: "数量",
+    dataIndex: "email",
+  },
+  {
+    title: "计量单位",
+    dataIndex: "email",
+  },
+  {
+    title: "含税金额",
+
+    dataIndex: "email",
+  },
+  {
+    title: "税率",
+    dataIndex: "email",
+  },
+  {
+    title: "税额",
+    dataIndex: "email",
+  },
+  {
+    title: "单价",
+    dataIndex: "email",
+  },
+]);
+
+export const columnsCC = reactive([
+  {
+    title: "序号",
+    width: 80,
+    slotName: "index",
+    fixed: "left",
+  },
+  {
+    title: "仓库简称",
+    dataIndex: "shortName",
+    width: 180,
+    fixed: "left",
+  },
+  {
+    title: "所属地区",
+    dataIndex: "locationProvince",
+    fixed: "left",
+  },
+  {
+    title: "仓库地址",
+    dataIndex: "locationAddress",
+    fixed: "left",
+  },
+  {
+    title: "涉及订单数量",
+    dataIndex: "email",
+  },
+  {
+    title: "货物运输总金额",
+    dataIndex: "email",
+  },
+  {
+    title: "仓库企业名称",
+    dataIndex: "companyName",
+  },
+  {
+    title: "企业纳税人识别号",
+    dataIndex: "creditNo",
+  },
+]);
+
+export const columnsYH = reactive([
+  {
+    title: "序号",
+    width: 80,
+    slotName: "index",
+    fixed: "left",
+  },
+  {
+    title: "付款编号",
+    dataIndex: "paymentCode",
+    width: 180,
+    fixed: "left",
+  },
+  {
+    title: "付款日期",
+    dataIndex: "paymentDate",
+    fixed: "left",
+  },
+  {
+    title: "付款状态",
+    dataIndex: "paymentStatus",
+    fixed: "left",
+  },
+  {
+    title: "付款银行",
+    dataIndex: "paymentBank",
+  },
+  {
+    title: "付款额度",
+    dataIndex: "paymentAmount",
+  },
+  {
+    title: "付款方",
+    dataIndex: "paymentCompany",
+  },
+  {
+    title: "付款账号",
+    dataIndex: "paymentAccount",
+  },
+  {
+    title: "收款时间",
+    dataIndex: "collectionDate",
+  },
+  {
+    title: "收款方",
+    dataIndex: "collectionCompany",
+  },
+  {
+    title: "收款银行",
+    dataIndex: "collectionBank",
+  },
+  {
+    title: "收款账号",
+    dataIndex: "collectionAccount",
+  },
+  {
+    title: "关联订单编号",
+    dataIndex: "orderCode",
+  },
+]);

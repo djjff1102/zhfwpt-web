@@ -63,6 +63,7 @@ import { ref, reactive } from "vue";
 import { useRouter } from 'vue-router';
 import { debounce } from "lodash-es";
 import { attentionCompanyQuery, groupByProvince, attentionCompanyExport } from '@/api/archives'
+import dayjs from "dayjs";
 
 const router = useRouter();
 
@@ -162,7 +163,9 @@ const changepage = (v: any) => {
 
 // 导出
 function exportBlob(b: any) {
-  const fileName = decodeURIComponent(b.headers["content-disposition"].split('filename*=utf-8')[1])
+   const now = dayjs().format('YYYY-MM-DD');
+  const fileName = `我关注的企业信息${now}`
+  // const fileName = decodeURIComponent(b.headers["content-disposition"].split('filename*=utf-8')[1])
   const typeValue = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
   const blob = new Blob([b.data], { type: typeValue});
   const a = document.createElement('a');

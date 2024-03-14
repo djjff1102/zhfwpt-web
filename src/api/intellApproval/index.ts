@@ -50,3 +50,27 @@ export function update(data: SearchInvoice): CustomAxiosPromise<DetailResult> {
     data,
   });
 }
+
+/**
+ * 发票智能审批-导出
+ */
+export function approvalExport(data: SearchInvoice): CustomAxiosPromise<DetailResult> {
+  return request({
+    responseType: "blob",
+    url: "/base/fpsp_report/export",
+    method: "post",
+    data,
+  });
+}
+/**
+ * 发票智能审批-获取当前企业基本信息
+ */
+export function getOneByCompanyName(
+  data: SearchInvoice
+): CustomAxiosPromise<DetailResult> {
+  return request({
+    url: "/base/company_base/getOneByCompanyName",
+    method: "post",
+    data,
+  });
+}

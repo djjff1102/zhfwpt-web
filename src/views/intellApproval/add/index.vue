@@ -80,8 +80,6 @@
       :defaultKey = "defaultKey"
       @handleTab="handleTab"
     >
-      <template v-slot:applycontent>
-      </template>
     </card-tab>
     <w-row class="grid-demo">
       <w-col :span="20">
@@ -94,10 +92,18 @@
         <div class="flex-base-end"><w-button type="primary" @click="handleAdd">新增</w-button></div>
       </w-col>
     </w-row>
-    <m-table></m-table>
+    <m-table
+      :data="dataList"
+      :columns="columns"
+      :virtual-list-props="{height: 'auto'}" 
+      :pagination="false">
+      <template v-slot:index="{rowIndex}">
+        <div>{{ rowIndex +1 }}</div>
+      </template>
+    </m-table>
     <div class="flex-base-start sum-line">
-      <div style="margin-right: 16px">合同已选：<span class="num-light">9</span></div>
-      <div>金额合计：<span class="num-light">3232</span></div>
+      <div style="margin-right: 16px">{{ nameMap[curTab] }}已选：<span class="num-light">{{ dataList.length }}</span></div>
+      <div>金额合计：<span class="num-light">{{ totalMoney }}</span></div>
     </div>
   </div>
   <div class="com-section">
@@ -119,7 +125,7 @@
     <w-button type="primary" @click="handleSave(2)">提交</w-button>
   </div>
   <detail-com v-if="!initPageParam.edit"></detail-com>
-  <add-apply-com :showAdd="showAdd" :defaultKey="defaultKey" @updateAdd="updateAdd"></add-apply-com>
+  <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com>
   <approval-record :showRecord="showRecord" @updateAdd="showRecord = false"></approval-record>
 </div>
 </template>
@@ -130,54 +136,119 @@ import { useRouter, useRoute } from 'vue-router';
 import addApplyCom from './addApplyCom.vue';
 import detailCom from './detailCom.vue'
 import ApprovalRecord from './ApprovalRecords.vue'
-import { searcht, add, update } from '@/api/intellApproval'
+import { searcht, add, update, getOneByCompanyName } from '@/api/intellApproval'
 import { useUserStoreHook } from "@/store/modules/user";
+import { pro, columnsHT,columnsDD, columnsFP, columnsCC, columnsYH, nameMap } from '../type'
 
 const userStore = useUserStoreHook();
 let userId = userStore.user.id;
+let companyName = userStore?.user?.organization?.name;
 
 const route = useRoute();
 const router = useRouter();
 
 const type = ref('add')
+const dataList = ref([])
+const columns = ref([])
+const dataHT = ref([]) // 已选的合同list
+const dataDD = ref([]) // 已选的订单list
+const dataFP = ref([]) // 已选的发票list
+const dataCC = ref([]) // 已选的仓储list
+const dataYH = ref([]) // 已选的银行流水list
 const initPageParam = reactive({
   title: '新增',
   edit: true,
-  type: 2 // 1有详情数据-更新   2无详情数据-新增
+  type: 2, // 1有详情数据-更新   2无详情数据-新增
+  id: ''
 })
 const dateRange = ref([])
 const form = ref({
-  taxAuthority: '1', // 主管税务机关
+  taxAuthority: '', // 主管税务机关
   limitType: '', // 申请额度调整类型
-  companyName: '1', // 申请单位
+  companyName: companyName, // 申请单位
   adjustType:'', // 发票短期调整类型
-  registerAddress: '1', // 注册地址
+  registerAddress: '', // 注册地址
   validDateStart: '', // 起始有效期-开始
   validDateEnd: '', // 起始有效期-结束
-  applyUserName: '1', // 操作人
+  applyUserName: '', // 操作人
   reason: '', // 申请理由
-  bankStatementMapResponseList: [], // 银行流水
-  invoiceMapResponseList: [], // 发票
-  orderMapResponseList: [], // 订单
-  transactionCertificateMapResponseList: [], // 合同
-  warehouseMapResponseList: [], // 仓储
-  otherMaterialsResponseList: [], // 其他资料
+  transactionCertificateMapRequestList: [], // 合同
+  orderMapRequestList: [], // 订单
+  invoiceMapRequestList: [], // 发票
+  warehouseMapRequestList: [], // 仓储
+  bankStatementMapRequestList: [], // 银行流水
+  otherMaterialsRequestList: [], // 其他资料
 })
-const defaultKey = ref('3'); // 默认打开的tab
+const defaultKey = ref('1'); // 默认打开的tab
+const curTab = ref('1') // 当前打开的tab
 const showAdd = ref(false); // 新增资料弹窗
 const showRecord = ref(false); // 审批记录
+const totalMoney = ref(0);
 
 // 添加资料
 function handleAdd() {
   showAdd.value = true;
 }
 
-function handleTab(v: any) {
-  console.log('当前的tab：', v)
+function getSum(key: string) {
+  let sum = 0;
+  dataList.value.forEach((item: any) => {
+    sum += item[key]
+  })
+  totalMoney.value = sum;
 }
 
-function updateAdd() {
+function handleTab(v: any) {
+  curTab.value = v;
+  updateTable(dataHT.value, dataDD.value, dataFP.value, dataCC.value, dataYH.value);
+}
+
+function updateTable(HT:any, DD:any, FP:any, CC:any, YH:any,) {
+    switch(curTab.value) {
+    case pro.HT:
+      dataList.value = HT;
+      columns.value = columnsHT as any;
+      getSum('amount');
+      break;
+    case pro.DD:
+      columns.value = columnsDD as any;
+      dataList.value = DD;
+      getSum('totalMoney')
+      break;
+     case pro.FP:
+      columns.value = columnsFP as any;
+      dataList.value = FP;
+      getSum('amountTotal')
+      break;
+    case pro.CC:
+      columns.value = columnsCC as any;
+      dataList.value = CC;
+      totalMoney.value = 0;
+      break;
+     case pro.YH:
+      columns.value = columnsYH as any;
+      dataList.value = YH;
+      getSum('paymentAmount')
+      break;
+  }
+}
+
+function updateData(HT:any, DD:any, FP:any, CC:any, YH:any,) {
+  dataHT.value = HT
+  dataDD.value = DD
+  dataFP.value = FP
+  dataCC.value = CC
+  dataYH.value = YH 
+  updateTable(HT, DD, FP, CC, YH);
+}
+
+function updateAdd(codeHT:any, codeDD: any, codeFP: any, codeCC: any, codeYH: any) {
   showAdd.value = false;
+  form.value.transactionCertificateMapRequestList = codeHT  // 合同
+  form.value.orderMapRequestList = codeDD   // 订单
+  form.value.bankStatementMapRequestList = codeYH // 银行流水
+  form.value.invoiceMapRequestList = codeFP   // 发票
+  form.value.warehouseMapRequestList = codeCC    // 仓储
 }
 
 // 新增暂存、新增提交
@@ -200,6 +271,7 @@ function handleUpdate() {
   })
 }
 
+// 新增
 function handleAddNew() {
   add(form.value).then(res => {
 
@@ -225,7 +297,21 @@ function getDetail(d) {
       initPageParam.type = 1
       initPageParam.id = res.data.id
       form.value = res.data as any
+    } else {
+      getgetOneByCompanyName() // 当前返回数据为空，新增，且无暂存，则查询企业基本信息
     }
+  }).catch(err => {})
+}
+
+// 公司基本信息
+function getgetOneByCompanyName() {
+  getOneByCompanyName({
+    companyName: form.value.companyName
+  }).then(res => {
+  form.value.taxAuthority = res.data.taxAuthority;
+  form.value.companyName = res.data.companyName;
+  form.value.registerAddress = res.data.companyAddress;
+  form.value.applyUserName = res.data.legalPerson
   }).catch(err => {})
 }
 

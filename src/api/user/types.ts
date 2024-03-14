@@ -27,6 +27,7 @@ export interface UserInfo {
   username?: string;
   workNo?: string;
   workPhone?: string;
+  companyName: string;
 }
 
 export interface Authority {

@@ -30,6 +30,7 @@
     </div>
     <div class="oper">
       <w-button type="primary" class="mr-8px" @click="operate('add')">新增</w-button>
+      <w-button type="primary" class="mr-8px" @click="handleExport">导出</w-button>
     </div>
     <div class="table-warp">
       <m-table
@@ -59,7 +60,7 @@
 import {  ref, reactive } from "vue";
 import { debounce } from "lodash-es";
 import { useRouter } from 'vue-router';
-import { fpspReport } from '@/api/intellApproval'
+import { fpspReport, approvalExport } from '@/api/intellApproval'
 import { approveStatus, statusList } from './type.ts'
 import dayjs from "dayjs";
 
@@ -156,6 +157,35 @@ const scroll = ref({
   y: 800,
   x: 1080,
 });
+
+// 导出
+ function handleExport() {
+  const data = {
+    companyName: searchPar.value.companyName,
+    approveStatus: searchPar.value.approveStatus,
+    startTime: searchPar.value.startTime,
+    endTime: searchPar.value.endTime
+  }
+  approvalExport(data).then(res => {
+    exportBlob(res);
+  }).catch(err => {})
+}
+
+// 导出
+function exportBlob(b: any) {
+  const now = dayjs().format('YYYY-MM-DD');
+  const fileName = `发票申报${now}`
+  const typeValue = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+  const blob = new Blob([b.data], { type: typeValue});
+  const a = document.createElement('a');
+  a.download = fileName;
+  a.href = URL.createObjectURL(blob);
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  URL.revokeObjectURL(a.href);
+  document.body.removeChild(a);
+}
 
 function operate(type: string, data: any) {
   router.push({ 

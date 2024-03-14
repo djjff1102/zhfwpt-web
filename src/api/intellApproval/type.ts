@@ -23,4 +23,5 @@ export interface DetailList {
 export interface DetailResult {
   data: DetailList[];
   result: number;
+  [tye: string]: any;
 }
