@@ -8,7 +8,7 @@
     </div>
     <div class="section-sub flex-base-end">
       <w-button style="margin-right: 8px;" @click="showRecord = true">审批记录</w-button>
-      <w-button type="primary">审批</w-button>
+      <w-button type="primary" @click="toApproval">审批</w-button>
     </div>
   </div>
   <div class="section">
@@ -37,6 +37,7 @@
               <div>请填写在税务申报系统提交申报的日期</div>
             </template>
           </w-date-picker>
+          <!-- <img src="/download?file_name=${filename}"> -->
            <div v-else>{{ form.applyTime }}</div>
         </w-form-item>
       </w-form>
@@ -109,16 +110,9 @@
   <div class="com-section">
     <div class="title-sub title-sub-sub">其他资料</div>
     <div v-if="initPageParam.edit">
-      <w-upload action="/" :limit="3">
-        <template #upload-button>
-          <w-button type="primary" style="margin-right: 16px;">上传文件</w-button>
-          <span class="upload-msg">支持上传的文件格式包含：pdf、png、gif、zip, 最多支持上传5个。</span>
-        </template>
-      </w-upload>
+      <MultiUpload @updateUpload="updateUpload"></MultiUpload>
     </div>
-    <div>
-      未开发：在线查看资料
-    </div>
+    <FileList v-if="!initPageParam.edit" :file="fileList"></FileList>
   </div>
   <div v-if="initPageParam.edit" class="bottom flex-base-end">
     <w-button style="margin-right: 20px" @click="handleSave(1)">暂存</w-button>
@@ -127,6 +121,7 @@
   <detail-com v-if="!initPageParam.edit"></detail-com>
   <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com>
   <approval-record :showRecord="showRecord" @updateAdd="showRecord = false"></approval-record>
+  <ApprovalDo></ApprovalDo>
 </div>
 </template>
 
@@ -139,6 +134,8 @@ import ApprovalRecord from './ApprovalRecords.vue'
 import { searcht, add, update, getOneByCompanyName } from '@/api/intellApproval'
 import { useUserStoreHook } from "@/store/modules/user";
 import { pro, columnsHT,columnsDD, columnsFP, columnsCC, columnsYH, nameMap } from '../type'
+import FileList from './FileList.vue';
+import ApprovalDo from './ApprovalDo.vue';
 
 const userStore = useUserStoreHook();
 let userId = userStore.user.id;
@@ -184,6 +181,16 @@ const curTab = ref('1') // 当前打开的tab
 const showAdd = ref(false); // 新增资料弹窗
 const showRecord = ref(false); // 审批记录
 const totalMoney = ref(0);
+const fileList = ref([]) // 已经提交的文件
+
+function toApproval() {
+  
+}
+
+// 更新上传的文件
+function updateUpload(file) {
+  form.value.otherMaterialsRequestList = file;
+}
 
 // 添加资料
 function handleAdd() {
@@ -278,7 +285,6 @@ function handleAddNew() {
   })
 }
 
-
 // 时间选择
 function onChange(dateString, date) {
   if(dateString && dateString.length > 0) {
@@ -296,6 +302,12 @@ function getDetail(d) {
     if(JSON.stringify(res.data) != '{}') {
       initPageParam.type = 1
       initPageParam.id = res.data.id
+      dataHT.value = res.data.transactionCertificateMapResponseList
+      dataDD.value = res.data.orderMapResponseList
+      dataFP.value = res.data.invoiceMapResponseList
+      dataCC.value = res.data.warehouseMapResponseList
+      dataYH.value = res.data.bankStatementMapResponseList
+      fileList.value = res.data.otherMaterialsResponseList
       form.value = res.data as any
     } else {
       getgetOneByCompanyName() // 当前返回数据为空，新增，且无暂存，则查询企业基本信息

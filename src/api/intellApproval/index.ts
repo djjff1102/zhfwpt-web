@@ -74,3 +74,41 @@ export function getOneByCompanyName(
     data,
   });
 }
+
+/**
+ * 发票智能审批-审批列表
+ */
+export function fpspApproveDetail(
+  data: SearchInvoice
+): CustomAxiosPromise<DetailResult> {
+  return request({
+    url: "/base/fpsp_approve_detail",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 发票智能审批-审批
+ */
+export function approveSave(
+  data: SearchInvoice
+): CustomAxiosPromise<DetailResult> {
+  return request({
+    url: "/base/fpsp_approve_detail/save",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 发票申报历史
+ */
+export function reporthistroy(data: SearchInvoice): CustomAxiosPromise<DetailResult> {
+  return request({
+    url: "/base/fpsp_report/histroy",
+    method: "post",
+    data,
+  });
+}
+

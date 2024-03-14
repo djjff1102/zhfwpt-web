@@ -3,7 +3,7 @@ import { AxiosPromise } from "axios";
 import { FileInfo } from "./types";
 
 /**
- * 上传文件
+ * 上传文件-多文件
  *
  * @param file
  */
@@ -11,7 +11,7 @@ export function uploadFileApi(file: File): AxiosPromise<FileInfo> {
   const formData = new FormData();
   formData.append("file", file);
   return request({
-    url: "/api/v1/files",
+    url: "/base/minio/batch/upload",
     method: "post",
     data: formData,
     headers: {
@@ -21,14 +21,34 @@ export function uploadFileApi(file: File): AxiosPromise<FileInfo> {
 }
 
 /**
- * 删除文件
+ * 上传文件-单文件
  *
- * @param filePath 文件完整路径
+ * @param file
  */
-export function deleteFileApi(filePath?: string) {
+export function singleuploadFileApi(file: File): AxiosPromise<FileInfo> {
+  const formData = new FormData();
+  formData.append("file", file);
   return request({
-    url: "/api/v1/files",
-    method: "delete",
-    params: { filePath: filePath },
+    url: "/base/minio/upload",
+    method: "post",
+    data: formData,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
+
+
+/**
+ * 下载
+ *
+ * @param file load
+ */
+export function download(file: any): AxiosPromise<FileInfo> {
+  return request({
+    responseType: "blob",
+    url: "/base/minio/download",
+    method: "get",
+    params: file,
   });
 }

@@ -5,22 +5,34 @@
 -->
 
 <template>
-  <el-upload
-    v-model:file-list="fileList"
-    list-type="picture-card"
-    :before-upload="handleBeforeUpload"
-    :http-request="handleUpload"
-    :on-remove="handleRemove"
-    :on-preview="previewImg"
-    :limit="props.limit"
-  >
-    <el-button type="primary">Click to upload</el-button>
-    <i-ep-plus />
-  </el-upload>
-
-  <el-dialog v-model="dialogVisible">
+  <div>
+    <el-upload
+      :before-upload="handleBeforeUpload"
+      :http-request="handleUpload"
+      :on-exceed="handleExceed"
+      :limit="5"
+      :show-file-list="false"
+      multiple
+    >
+      <div class="flex-base-start ">
+        <w-button type="primary">上传文件</w-button>
+        <div class="upload-msg">支持上传的文件格式包含：pdf、png、gif、zip、ppt、xlsx、doc、docx等。单个文件上传不超过100M；最多支持上传5个。</div>
+      </div>
+      
+    </el-upload>
+    <div class="file-wrap">
+      <div class="flie-item" v-for="(item, i) in fileList" :key="item">
+        <img src="../../assets/base/file.png">
+        <div class="file-name">{{ item }}</div>
+        <img class="close" style="width: 20px" src="../../assets/base/cha.png" @click="handleDel(i)"/> 
+        <img class="success" style="width: 20px" src="../../assets/base/right.png">
+      </div>
+    </div>
+  </div>
+    
+  <!-- <el-dialog v-model="dialogVisible">
     <img w-full :src="previewImgUrl" alt="Preview Image" />
-  </el-dialog>
+  </el-dialog> -->
 </template>
 
 <script setup lang="ts">
@@ -31,9 +43,9 @@ import {
   UploadFile,
   UploadProps,
 } from "element-plus";
-import { uploadFileApi, deleteFileApi } from "@/api/file";
+import { uploadFileApi, deleteFileApi, singleuploadFileApi} from "@/api/file";
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(['updateUpload']);
 
 const props = defineProps({
   /**
@@ -48,14 +60,14 @@ const props = defineProps({
    */
   limit: {
     type: Number,
-    default: 10,
+    default: 2,
   },
 });
 
-const previewImgUrl = ref("");
 const dialogVisible = ref(false);
 
 const fileList = ref([] as UploadUserFile[]);
+const allFileList = ref([])
 watch(
   () => props.modelValue,
   (newVal: string[]) => {
@@ -77,46 +89,29 @@ watch(
   { immediate: true }
 );
 
+function handleDel(i: any) {
+  fileList.value.splice(i, 1)
+  allFileList.value.slice(i, 1)
+}
+
+async function handleExceed() {
+  if(fileList.value.length > 5){
+    ElMessage.warning("最多上传5个文件");
+    return false;
+  }
+}
 /**
  * 自定义图片上传
  *
  * @param params
  */
-async function handleUpload(options: UploadRequestOptions): Promise<any> {
+async function handleUpload(options: UploadRequestOptions, f): Promise<any> {
   // 上传API调用
-  const { data: fileInfo } = await uploadFileApi(options.file);
-
-  // 上传成功需手动替换文件路径为远程URL，否则图片地址为预览地址 blob:http://
-  const fileIndex = fileList.value.findIndex(
-    (file) => file.uid == (options.file as any).uid
-  );
-
-  fileList.value.splice(fileIndex, 1, {
-    name: fileInfo.name,
-    url: fileInfo.url,
-  } as UploadUserFile);
-
-  emit(
-    "update:modelValue",
-    fileList.value.map((file) => file.url)
-  );
-}
-
-/**
- * 删除图片
- */
-function handleRemove(removeFile: UploadFile) {
-  const filePath = removeFile.url;
-
-  if (filePath) {
-    deleteFileApi(filePath).then(() => {
-      // 删除成功回调
-      emit(
-        "update:modelValue",
-        fileList.value.map((file) => file.url)
-      );
-    });
-  }
+  const res = await singleuploadFileApi(options.file);
+  allFileList.value.push(res.data);
+  let name = res.data.split('@quesoar@')[1]
+  fileList.value.push(name)
+  emit('updateUpload', allFileList.value)
 }
 
 /**
@@ -130,11 +125,50 @@ function handleBeforeUpload(file: UploadRawFile) {
   return true;
 }
 
-/**
- * 预览图片
- */
-const previewImg: UploadProps["onPreview"] = (uploadFile) => {
-  previewImgUrl.value = uploadFile.url!;
-  dialogVisible.value = true;
-};
 </script>
+
+<style lang="scss" scoped>
+.file-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.flie-item {
+  width: 48%;
+  background: #F5FCFF;
+  display: flex;
+  align-items: center;
+  padding: 20px 24px;
+  margin-top: 16px;
+  &:hover {
+    .success {
+      display: none;
+    }
+    .close {
+      cursor: pointer;
+      display: block;
+    } 
+  }
+}
+.success {
+  display: block;
+}
+.close {
+  display: none;
+} 
+.file-name {
+  flex-grow: 1;
+  font-size: 16px;
+  color: #272A31;
+}
+.upload-msg {
+  width: 477px;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 14px;
+  color: #BFC4CD;
+  text-align: left;
+  font-style: normal;
+  padding-left: 16px;
+}
+</style>
