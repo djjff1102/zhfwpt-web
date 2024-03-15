@@ -112,3 +112,14 @@ export function reporthistroy(data: SearchInvoice): CustomAxiosPromise<DetailRes
   });
 }
 
+/**
+ * 发票-删除
+ */
+export function delReport(params: any): CustomAxiosPromise<DetailResult> {
+  return request({
+    url: `/base/fpsp_report/delete/${params.id}`,
+    method: "get",
+    params,
+  });
+}
+

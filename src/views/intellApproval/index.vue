@@ -47,25 +47,29 @@
             <div>{{ approveStatus[tableData[rowIndex].approveStatus] }}</div>
         </template>
         <template v-slot:operations="{rowIndex}">
+          <el-button type="text" @click="approval(tableData[rowIndex])">审批</el-button>
           <el-button type="text" @click="operate('operate', tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == 2">编辑</el-button>
           <el-button type="text" @click="operate('detail', tableData[rowIndex])">详情</el-button>
           <el-button type="text" @click="del(tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == 2">删除</el-button>
         </template>
       </m-table>
     </div>
+    <ApprovalDo :showAdd="showApproval" @updateAdd="updateApprval" :reportId="reportId" @updateData="getfpspReport"></ApprovalDo>
   </div>
 </template>
 
 <script lang="ts" setup>
 import {  ref, reactive } from "vue";
+import ApprovalDo from './add/ApprovalDo.vue';
 import { debounce } from "lodash-es";
 import { useRouter } from 'vue-router';
-import { fpspReport, approvalExport } from '@/api/intellApproval'
+import { fpspReport, approvalExport, delReport } from '@/api/intellApproval'
 import { approveStatus, statusList } from './type.ts'
 import dayjs from "dayjs";
 
 const router = useRouter();
 
+const showApproval = ref(false)
 const curDate = ref([])
 const loading = ref(false);
 const tableData = ref();
@@ -125,12 +129,6 @@ const columns = reactive([
     width: 180,
   },
   {
-    title: "审批操作-指定操作的人才能看到",
-    dataIndex: "status",
-    slotName: 'approvalstatus',
-    width: 180,
-  },
-  {
     title: "操作",
     dataIndex: "operations",
     slotName: "operations",
@@ -157,6 +155,31 @@ const scroll = ref({
   y: 800,
   x: 1080,
 });
+
+const reportId = ref('') // 报告id
+
+function updateApprval() {
+  showApproval.value = false;
+}
+
+function approval(d) {
+  reportId.value = d.id;
+  showApproval.value = true;
+}
+
+function del(row: any) {
+  if(loading.value) return;
+  loading.value = true;
+  delReport({
+    id: row.id
+  }).then(res => {
+    loading.value = false;
+    ElMessage.success("删除成功！");
+    getfpspReport();
+  }).catch(err => {
+    loading.value = false;
+  })
+}
 
 // 导出
  function handleExport() {

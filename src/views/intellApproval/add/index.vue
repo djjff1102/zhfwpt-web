@@ -6,7 +6,7 @@
       <span style="color: rgba(153, 153, 153, 1);padding-right: 30px;">申请编号：1000</span>
       <span><span style="color: rgba(51, 51, 51, 1)">审批状态：</span><span style="color: rgba(5, 148, 235, 1)">待审批</span></span>
     </div>
-    <div class="section-sub flex-base-end">
+    <div v-if="initPageParam.title == '详情'" class="section-sub flex-base-end">
       <w-button style="margin-right: 8px;" @click="showRecord = true">审批记录</w-button>
       <w-button type="primary" @click="toApproval">审批</w-button>
     </div>
@@ -46,29 +46,34 @@
       <div class="title-sub">申报额度信息</div>
       <w-form :model="form" layout="vertical">
         <w-form-item field="limitType" label="申请调整额度类型" required>
-          <w-select v-if="initPageParam.edit" v-model="form.limitType" placeholder="请选择申请调整额度类型" style="height: 30px">
-            <w-option value="1">长期</w-option>
-            <w-option value="2">短期</w-option>
+          <w-select v-if="initPageParam.edit" v-model="form.limitType" placeholder="请选择申请调整额度类型" style="height: 30px" @change="handleLone">
+            <w-option :value="1" label="长期"></w-option>
+            <w-option :value="2" label="短期"></w-option>
           </w-select>
-           <div v-else>{{ form.limitType }}</div>
+           <div v-else>{{ form.limitType == '1' ? '长期' : '短期' }}</div>
         </w-form-item>
-        <w-form-item field="adjustType" label="发票短期调整类型" required>
-          <w-select v-if="initPageParam.edit" v-model="form.adjustType" placeholder="请选择发票短期调整类型" style="height: 30px">
-            <w-option value="1">Beijing</w-option>
-            <w-option value="2">Shanghai</w-option>
+        <w-form-item v-if="form.limitType == '2'" field="adjustType" label="发票短期调整类型" required>
+          <w-select v-if="initPageParam.edit" v-model="form.adjustType" placeholder="请选择发票短期调整类型" style="height: 30px" @change="handleLone">
+            <w-option :value="1" labbel="当月">当月</w-option>
+            <w-option :value="2" labbel="指定时间">指定时间</w-option>
           </w-select>
-           <div v-else>{{ form.adjustType }}</div>
+           <div v-else>{{ form.adjustType == '1' ? '当月' : '指定时间' }}</div>
         </w-form-item>
+        <!-- 指定时间 -->
         <w-form-item field="validDateStart" label="起止有效期" required>
-          <w-range-picker v-if="initPageParam.edit"
+          <w-range-picker 
+            v-if="initPageParam.edit"
+            :popup-visible="popupVisible"
             v-model="dateRange"
             style="width: 100%; height: 30px;"
             @change="onChange"
+            @select="dataSelect"
+            @popup-visible-change="popupVisibleChange"
           />
-           <div v-else>{{ form.name }}</div>
+           <div v-else>{{ form.validDateStart }} - {{ form.validDateEnd }}</div>
         </w-form-item>
         <w-form-item field="reason" label="申请理由" required>
-           <w-textarea v-if="initPageParam.edit" v-model="form.reason" placeholder="Please enter something"/>
+           <w-textarea v-if="initPageParam.edit" v-model="form.reason" placeholder="请输入申请理由"/>
             <div v-else>{{ form.reason }}</div>
         </w-form-item>
       </w-form>
@@ -120,11 +125,10 @@
   </div>
   <detail-com v-if="!initPageParam.edit"></detail-com>
   <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com>
-  <approval-record :showRecord="showRecord" @updateAdd="showRecord = false"></approval-record>
-  <ApprovalDo></ApprovalDo>
+  <approval-record :showRecord="showRecord" :reportId="route.query.id" @updateAdd="showRecord = false"></approval-record>
+  <ApprovalDo :showAdd="showApproval" @updateAdd="updateApprval" :reportId="route.query.id"></ApprovalDo>
 </div>
 </template>
-
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
@@ -136,14 +140,19 @@ import { useUserStoreHook } from "@/store/modules/user";
 import { pro, columnsHT,columnsDD, columnsFP, columnsCC, columnsYH, nameMap } from '../type'
 import FileList from './FileList.vue';
 import ApprovalDo from './ApprovalDo.vue';
+import dayjs from "dayjs";
+import { rangeArr } from 'element-plus';
+
 
 const userStore = useUserStoreHook();
 let userId = userStore.user.id;
+let username = userStore.user.name;
 let companyName = userStore?.user?.organization?.name;
 
 const route = useRoute();
 const router = useRouter();
 
+const popupVisible = ref(false)
 const type = ref('add')
 const dataList = ref([])
 const columns = ref([])
@@ -160,6 +169,9 @@ const initPageParam = reactive({
 })
 const dateRange = ref([])
 const form = ref({
+  companyId: '', // 企业ID
+  applyUserId: '', // 申请人ID :TODO
+
   taxAuthority: '', // 主管税务机关
   limitType: '', // 申请额度调整类型
   companyName: companyName, // 申请单位
@@ -180,11 +192,21 @@ const defaultKey = ref('1'); // 默认打开的tab
 const curTab = ref('1') // 当前打开的tab
 const showAdd = ref(false); // 新增资料弹窗
 const showRecord = ref(false); // 审批记录
+const showApproval = ref(false) // 审批窗口
 const totalMoney = ref(0);
 const fileList = ref([]) // 已经提交的文件
 
+// 切换长qi
+function handleLone(v) {
+  dateRange.value = []
+}
+
+function updateApprval() {
+  showApproval.value = false;
+}
+
 function toApproval() {
-  
+  showApproval.value = true;
 }
 
 // 更新上传的文件
@@ -262,6 +284,8 @@ function updateAdd(codeHT:any, codeDD: any, codeFP: any, codeCC: any, codeYH: an
 function handleSave(type: any) {
   // 1暂存 2提交
   form.value.dataStatus = type;
+  form.value.validDateStart = dateRange.value[0];
+  form.value.validDateEnd = dateRange.value[1]
   if(initPageParam.type == 1) {
     // 更新
     form.value.id = initPageParam.id
@@ -272,21 +296,50 @@ function handleSave(type: any) {
   }
 }
 
+// 编辑新增成功，返回列表页
+function backToList() {
+  router.push({ 
+    path: '/intellApproval', 
+ });
+}
+
 function handleUpdate() {
   update(form.value).then(res => {
-
-  })
+    ElMessage.success("编辑成功！");
+    setTimeout(()=>{
+      backToList()
+    },500)
+  }).catch(err => {})
 }
 
 // 新增
 function handleAddNew() {
   add(form.value).then(res => {
+    ElMessage.success("保存成功！");
+    setTimeout(()=>{
+      backToList()
+    },500)
+  }).catch(err => {})
+}
 
-  })
+function dataSelect(d:any) {
+  if(form.value.limitType == '1') { // 长期
+    dateRange.value = [d[0], '2099-12-31']
+    popupVisibleChange()
+  } else if(form.value.limitType == '2' && form.value.adjustType == '1') { // 当月
+    let nextMonth = dayjs(d[0]).add(30, 'day')
+    dateRange.value = [d[0], nextMonth]
+    popupVisibleChange()
+  }
+}
+
+function popupVisibleChange() {
+  popupVisible.value = !popupVisible.value
 }
 
 // 时间选择
 function onChange(dateString, date) {
+  // dateRange.value = [d, 2024-03-13 00:00:00]
   if(dateString && dateString.length > 0) {
     form.value.validDateStart = dateString[0];
     form.value.validDateEnd = dateString[1];
@@ -309,6 +362,7 @@ function getDetail(d) {
       dataYH.value = res.data.bankStatementMapResponseList
       fileList.value = res.data.otherMaterialsResponseList
       form.value = res.data as any
+      dateRange.value = [res.data.validDateStart, res.data.validDateEnd]
     } else {
       getgetOneByCompanyName() // 当前返回数据为空，新增，且无暂存，则查询企业基本信息
     }
@@ -320,17 +374,18 @@ function getgetOneByCompanyName() {
   getOneByCompanyName({
     companyName: form.value.companyName
   }).then(res => {
-  form.value.taxAuthority = res.data.taxAuthority;
-  form.value.companyName = res.data.companyName;
-  form.value.registerAddress = res.data.companyAddress;
-  form.value.applyUserName = res.data.legalPerson
+    form.value.taxAuthority = res.data.taxAuthority;
+    form.value.companyName = res.data.companyName;
+    form.value.registerAddress = res.data.companyAddress;
+    form.value.applyUserName = username as any
+    form.value.applyUserId = userId as any
+    form.value.companyId = res.data.companyId
   }).catch(err => {})
 }
 
 function init() {
   type.value = route.query.type as any;
   let id = route.query.id // 申请人发票ID
-  let applyUserId = route.query.applyUserId; // 申请人ID
   if(type.value === 'detail') {
     initPageParam.edit = false;
     initPageParam.title = '详情'

@@ -4,7 +4,7 @@
       <img src="@/assets/base/file.png">
       <div class="file-name">{{ item.fileName }}</div>
       <el-button type="text" @click="checkFile(item)">在线查看</el-button>
-      <span type="text" @click="load(item)">下载</span>
+      <span class="file-load" type="text" @click="load(item)">下载</span>
     </div>
   </div>
 </template>
@@ -49,6 +49,20 @@ function exportBlob(b,name) {
 </script>
 
 <style scoped lang="scss">
+.file-load {
+  width: 28px;
+  height: 20px;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 14px;
+  color: #BFC4CD;
+  line-height: 20px;
+  text-align: left;
+  font-style: normal;
+  display: block;
+  margin-left: 16px;
+  cursor: pointer;
+}
 .file-wrap {
   display: flex;
   justify-content: space-between;

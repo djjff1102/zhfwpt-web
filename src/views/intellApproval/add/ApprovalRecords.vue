@@ -38,6 +38,10 @@ const props = defineProps({
   showRecord: {
     type: Boolean,
     default: false
+  },
+  reportId: {
+    type: String,
+    default: ''
   }
 })
 
@@ -86,6 +90,7 @@ const visible = ref(false)
 const searchPar = ref({
   page_size: 10,
   page: 1,
+  reportId: props.reportId
 })
 
 const emits = defineEmits(['updateAdd'])
