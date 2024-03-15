@@ -1,25 +1,12 @@
 <template>
   <div class="danger-point-container">
-    <div class="title">风险点</div>
-    <div class="search_box">
-      <w-form :model="form" layout="inline">
-        <w-form-item field="name" label="风险名称">
-          <w-input v-model="form.name" placeholder="请输入风险名称" />
-        </w-form-item>
-        <w-form-item class="mr-16px" field="post" label="风险程度">
-          <w-select v-model="form.post" placeholder="全部" />
-        </w-form-item>
-        <w-button type="primary" class="mr-8px">搜索</w-button>
-        <w-button>重置</w-button>
-      </w-form>
-    </div>
     <div class="table-warp">
       <m-table
-        style="height: 100%"
+        style="height: 160px"
         :data="tableData"
         :columns="columns"
         :scroll="scroll"
-        :pagination="pagination"
+        :pagination="false"
         @page-change="changepage"
         @page-size-change="changePagesize"
         :bordered="false"
@@ -37,23 +24,21 @@
 <script setup>
 import dayjs from "dayjs";
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
-import { queryRiskInfoByCompanyInfo } from '@/api/archives'
 
 const props = defineProps({
   data: {
     default: []
-  },
-  companyId: {},
-  companyName: {}
+  }
 })
 
 watch(
-  () => props.companyId,
+  () => props.data,
   (v) => {
-    alert(v)
-    // if(v && v.length > 0) {
-    //   tableData.value = v
-    // }
+    if(v && v.length > 0) {
+      tableData.value = v
+    }
+  }, {
+    deep: true
   }
 );
 
@@ -69,6 +54,11 @@ const columns = reactive([
     fixed: "left",
   },
   {
+    title: "风险分类",
+    dataIndex: "secondCategory",
+    width: 180,
+  },
+  {
     title: "风险名称",
     dataIndex: "name",
     width: 180,
@@ -76,15 +66,6 @@ const columns = reactive([
   {
     title: "风险描述",
     dataIndex: "description",
-  },
-  {
-    title: "扫描结果",
-    dataIndex: "result",
-    width: 180,
-  },
-  {
-    title: "风险建议",
-    dataIndex: "recommend",
   },
 ]);
 const pagination = ref({
@@ -94,12 +75,6 @@ const pagination = ref({
   "show-page-size": true,
   "show-jumper": true,
 });
-
-const searchPar = ref({ // 查询参数-以公司维度查询风险信息
-  companyName: '',
-  companyId: '',
-  riskType: 0
-})
 const scroll = ref({
   y: 800,
   x: 1080,
@@ -128,45 +103,17 @@ function onChange(dateString, date) {
 function onOk(dateString, date) {
   console.log("onOk: ", dateString, date);
 }
-
-// 公司维度查询风险信息
-function getqueryRiskInfoByCompanyInfo() {
-  queryRiskInfoByCompanyInfo(searchPar.value).then(res => {
-    tableData.value = res.data;
-  }).catch(err => {})
-}
-
-
 const init = async () => {};
 </script>
 
 <style lang="scss" scoped>
+.container {
+}
 .table-warp {
   height: calc(100% - 100px);
 }
 .search_box {
   display: flex;
-  justify-content: flex-start;
-}
-.title {
-  position: relative;
-  margin: 16px 0;
-  padding-left: 11px;
-  font-family: PingFangSC, PingFang SC;
-  font-weight: 500;
-  font-size: 18px;
-  color: #333333;
-  line-height: 22px;
-  margin-top: -20px;
-  &::before {
-    content: "";
-    position: absolute;
-    left: 0px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 18px;
-    background-color: #1890ff;
-  }
+  justify-content: flex-end;
 }
 </style>

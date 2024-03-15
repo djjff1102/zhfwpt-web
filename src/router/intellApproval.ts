@@ -34,7 +34,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import("@/views/intellApproval/add/index.vue"),
         name: "IntellApprovalOperate",
         meta: {
-          title: "申报新增",
+          title: "申报",
           icon: "tree",
           hidden: true,
           roles: ["ADMIN"],

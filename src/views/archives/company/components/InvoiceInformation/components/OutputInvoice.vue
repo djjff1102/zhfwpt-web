@@ -51,19 +51,21 @@
       </m-table>
     </div>
 
-    <!-- TODO: 未开发 -->
-    <!-- <div class="title">企业进销项发票趋势1</div>
+    <div class="title">企业用票需求预测</div>
+    <PredictCom :data="echartData.sum"></PredictCom>
     <div class="tendencyChart w-full h-400px">
-      <TendencyChart></TendencyChart>
-    </div> -->
+      <TendencyChart :dataList="echartData.x" :time="echartData.y"></TendencyChart>
+    </div>
   </div>
 </template>
 <script setup>
 import dayjs from "dayjs";
 import TendencyChart from "./TendencyChart/index.vue";
+import PredictCom from './PredictCom.vue'
 import { ref, reactive } from "vue";
-import { qyzxInvoice } from '@/api/archives'
+import { qyzxInvoice, groupByInvoiceDate } from '@/api/archives'
 import { useRoute, useRouter } from 'vue-router';
+import { formatData } from '@/utils/common'
 
 const route = useRoute();
 const router = useRouter();
@@ -186,6 +188,12 @@ const searchPar = ref({
   invoicingCompanyName: '' // 开票单位(自己)
 })
 
+const echartData = ref({
+  x:[],
+  y: [],
+  sum : 0
+})
+
 const scroll = ref({
   y: 800,
   x: 1080,
@@ -255,16 +263,25 @@ function getqyzxInvoice() {
   loading.value = true;
   qyzxInvoice(searchPar.value).then(res => {
     tableData.value = res.data;
-    pagination.value.total = res.total;
+    pagination.value.total = Number(res.total);
     loading.value = false;
   }).catch(err => {
     loading.value = false;
   })
 }
 
+function getgroupByInvoiceDate() {
+  groupByInvoiceDate({
+    invoicingCompanyName: searchPar.value.invoicingCompanyName
+  }).then(res => {
+    echartData.value = formatData(res.data.data);
+  }).catch(err => {})
+}
+
 const init = async () => {
   searchPar.value.invoicingCompanyName = JSON.parse(route.query.company).companyName
   getqyzxInvoice();
+  getgroupByInvoiceDate();
 };
 init();
 </script>

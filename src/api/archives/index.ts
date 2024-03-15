@@ -260,3 +260,40 @@ export function qyzxInvoic(
     },
   });
 }
+
+/**
+ *  企业用票需求预测 - 销项、进项
+ */
+export function groupByInvoiceDate(
+  data: ProvinceSearch
+): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: "/base/qyzx_invoice/groupByInvoiceDate",
+    method: "post",
+    data
+  });
+}
+
+/**
+ *  评估建议和风险项
+ */
+export function suggestion(data: ProvinceSearch): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: "/base/fxjk_index_fxzph/suggestion",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ *  公司维度查询风险信息
+ */
+export function queryRiskInfoByCompanyInfo(
+  data: ProvinceSearch
+): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: "/base/fxjk_index_data/queryRiskInfoByCompanyInfo",
+    method: "post",
+    data,
+  });
+}

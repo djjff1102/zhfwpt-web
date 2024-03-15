@@ -3,18 +3,84 @@
 </template>
 <script setup>
 import * as echarts from "echarts";
-import { onMounted } from "vue";
+import { onMounted, watch } from "vue";
 import option from "./option";
 
-onMounted(() => {
+const props = defineProps({
+  time: {
+    default: [1,2,3,4]
+  },
+  dataList: {
+    default: [10,15,20,24]
+  }
+})
+
+const echartData = ref({
+    title: {
+      text: "近12个月开票总额度",
+      left: "left",
+      textStyle: {
+        fontSize: 14,
+        color: "#999",
+        fontWeight: 500,
+        fontStyle: "normal",
+      },
+    },
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        animation: false,
+      },
+    },
+    grid: [
+      {
+        left: 60,
+        right: 50,
+      },
+    ],
+    xAxis: [
+      {
+        type: "category",
+        boundaryGap: false,
+        data: [],
+      },
+    ],
+    yAxis: [
+      {
+        name: "",
+        type: "value",
+      },
+    ],
+    series: [
+      {
+        name: "Evaporation",
+        type: "line",
+        symbolSize: 8,
+        data: [12, 0, 23, 2, 45],
+      },
+    ],
+  })
+
+watch(
+  () => props.dataList,
+  (v) => {
+    echartData.value.series[0].data = v;
+    echartData.value.xAxis[0].data = props.time;
+    init()
+  }, {
+    deep: true,
+  }
+);
+
+function init() {
   const tendencyDom = document.querySelector("#tendencyChart");
   const tendencyChart = echarts.init(tendencyDom, null, {
     width: "auto",
     height: "400",
   });
+  tendencyChart.setOption(echartData.value);
+}
 
-  tendencyChart.setOption(option());
-});
 </script>
 <style lang="scss">
 </style>

@@ -22,7 +22,7 @@
       </div>
       <div id="RiskValueAssessment">
         <div class="title">风险值评估</div>
-        <RiskValueAssessment></RiskValueAssessment>
+        <RiskValueAssessment :companyName="companyMsg?.companyName" :companyId="companyMsg?.companyId"></RiskValueAssessment>
       </div>
       <div id="ExcessInvoiceApproval">
         <div class="title">发票超限量审批</div>
