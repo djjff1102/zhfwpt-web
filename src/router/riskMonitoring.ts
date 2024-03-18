@@ -13,6 +13,7 @@ const routes: RouteRecordRaw[] = [
       roles: ["ADMIN"],
       keepAlive: true,
       code: [200],
+      activeMenu: "/riskMonitoring",
     },
     children: [
       {
@@ -27,6 +28,7 @@ const routes: RouteRecordRaw[] = [
           keepAlive: true,
           code: [201],
           showMenu: true,
+          activeMenu: "/riskMonitoring",
         },
       },
       {
@@ -41,6 +43,7 @@ const routes: RouteRecordRaw[] = [
           keepAlive: true,
           code: [202],
           showMenu: true,
+          activeMenu: "/riskMonitoring",
         },
       },
       // {
@@ -69,6 +72,7 @@ const routes: RouteRecordRaw[] = [
           keepAlive: true,
           code: [204],
           showMenu: false,
+          activeMenu: "/riskMonitoring",
         },
       },
     ],

@@ -13,6 +13,7 @@ const routes: RouteRecordRaw[] = [
       roles: ["ADMIN"],
       keepAlive: true,
       code: [400],
+      activeMenu: "/warehousing",
     },
     children: [
       {
@@ -27,6 +28,7 @@ const routes: RouteRecordRaw[] = [
           keepAlive: true,
           code: [401],
           showMenu: true,
+          activeMenu: "/warehousing",
         },
       },
       {
@@ -39,7 +41,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: "warehousingDetail",
           icon: "tree",
-          activeMenu: "/warehousing/index",
+          activeMenu: "/warehousing",
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
@@ -57,7 +59,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: "secondWarehousingDetail",
           icon: "tree",
-          activeMenu: "/warehousing/index",
+          activeMenu: "/warehousing",
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,

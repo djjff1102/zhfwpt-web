@@ -29,7 +29,7 @@
 </template>
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router";
 import { useAppStore } from "@/store/modules/app";
 import { useTagsViewStore } from "@/store/modules/tagsView";
 import { useUserStore } from "@/store/modules/user";
@@ -63,10 +63,11 @@ function logout() {
         tagsViewStore.delAllViews();
       })
       .then(() => {
-        router.push(`/login?redirect=${route.fullPath}`);
+        router.push(`/login?redirect=${route.meta.activeMenu}`);
       });
   });
 }
+
 </script>
 <style lang="scss" scoped>
 .setting-container {

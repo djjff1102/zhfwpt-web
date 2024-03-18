@@ -44,6 +44,7 @@ export const constantRoutes: RouteRecordRaw[] = [
           affix: true,
           keepAlive: true,
           alwaysShow: false,
+          activeMenu: "/",
         },
       },
       {
@@ -72,6 +73,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
       roles: ["ADMIN"],
       keepAlive: true,
       code: [100],
+      activeMenu: "/system",
     },
     children: [
       {
@@ -86,6 +88,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
           keepAlive: true,
           code: [101],
           showMenu: true,
+          activeMenu: "/system",
         },
       },
       {
@@ -100,6 +103,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
           keepAlive: true,
           code: [102],
           showMenu: true,
+          activeMenu: "/system",
         },
       },
       {
@@ -114,6 +118,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
           keepAlive: true,
           code: [103],
           showMenu: true,
+          activeMenu: "/system",
         },
       },
       {
@@ -128,6 +133,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
           keepAlive: true,
           code: [104],
           showMenu: true,
+          activeMenu: "/system",
         },
       },
       {
@@ -141,6 +147,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
           roles: ["ADMIN"],
           keepAlive: true,
           showMenu: true,
+          activeMenu: "/system",
         },
       },
     ],

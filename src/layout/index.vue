@@ -8,9 +8,10 @@ import LeftMenu from "./components/Sidebar/LeftMenu.vue";
 import { useAppStore } from "@/store/modules/app";
 import { useSettingsStore } from "@/store/modules/settings";
 import { usePermissionStore } from "@/store/modules/permission";
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const currentRoute = useRoute();
+const router = useRouter();
 const permissionStore = usePermissionStore();
 
 const { width } = useWindowSize();
@@ -54,6 +55,7 @@ watch(
   (path) => {
     showMenu.value = path.meta.showMenu as any;
   },{
+    immediate: true,
     deep: true // 确保深度监听路由对象的每一个属性
   }
 );
@@ -94,30 +96,13 @@ function toggleSideBar() {
 
 <template>
   <div :class="classObj" class="app-wrapper">
-    <!-- 手机设备侧边栏打开遮罩层 -->
-    <div
-      v-if="classObj.mobile && classObj.openSidebar"
-      class="drawer__background"
-      @click="handleOutsideClick"
-    ></div>
-
     <Sidebar class="sidebar-container" />
-
-    <div v-if="layout === 'mix'" class="mix-wrapper" style="overflow: hidden;">
-      <div class="mix-wrapper__left">
+    <div class="mix-wrapper" style="overflow: hidden;">
+      <div v-if="showMenu" class="mix-wrapper__left">
         <LeftMenu :menu-list="mixLeftMenu" :base-path="activeTopMenu" />
-        <!-- 展开/收缩侧边栏菜单 -->
-        <!-- <div class="toggle-sidebar">
-          <hamburger
-            :is-active="appStore.sidebar.opened"
-            @toggle-click="toggleSideBar"
-          />
-        </div> -->
       </div>
-      <Main />
+      <Main :showMenu="showMenu"/>
     </div>
-
-    <Main v-else />
   </div>
 </template>
 

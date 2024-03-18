@@ -70,7 +70,7 @@ export const useUserStore = defineStore("user", () => {
   function logout() {
     return new Promise<void>((resolve, reject) => {
       token.value = "";
-      location.reload(); // 清空路由
+      // location.reload(); // 清空路由
       resolve();
     });
   }

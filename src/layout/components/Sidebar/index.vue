@@ -25,26 +25,13 @@ watch(
 </script>
 
 <template>
-  <div
-    :class="{ 'has-logo': sidebarLogo }"
-    class="menu-wrap"
-    v-if="layout !== 'mix'"
-  >
+<div :class="{ 'has-logo': sidebarLogo }" class="menu-wrap">
+  <div class="header">
     <logo v-if="sidebarLogo" :collapse="!appStore.sidebar.opened" />
-    <el-scrollbar v-if="showContent">
-      <LeftMenu :menu-list="permissionStore.routes" base-path="" />
-    </el-scrollbar>
-    <NavRight v-if="layout === 'top'" />
+    <TopMenu />
+    <NavRight />
   </div>
-  <template v-else>
-    <div :class="{ 'has-logo': sidebarLogo }" class="menu-wrap">
-      <div class="header">
-        <logo v-if="sidebarLogo" :collapse="!appStore.sidebar.opened" />
-        <TopMenu />
-        <NavRight />
-      </div>
-    </div>
-  </template>
+</div>
 </template>
 <style lang="scss" scoped>
 :deep(.setting-container) {

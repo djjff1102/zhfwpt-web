@@ -3,13 +3,19 @@ import { computed, watchEffect, watch, ref } from "vue";
 import { useWindowSize } from "@vueuse/core";
 import { AppMain, Navbar, Settings, TagsView } from "./components/index";
 import RightPanel from "@/components/RightPanel/index.vue";
-import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 
 import { useAppStore } from "@/store/modules/app";
 import { useSettingsStore } from "@/store/modules/settings";
 
+const props = defineProps({
+  showMenu: {
+    default: true
+  }
+})
+
 const { width } = useWindowSize();
-const currentRoute = useRoute();
+const router = useRouter();
 
 /**
  * 响应式布局容器固定宽度
@@ -44,23 +50,35 @@ watchEffect(() => {
     }
   }
 });
+
+// 返回上一页
+function goBack() {
+  router.go(-1);
+}
 </script>
 <template>
   <div :class="{ hasTagsView: showTagsView }" class="main-container">
     <div :class="{ 'fixed-header': fixedHeader, device: device }">
-      <navbar v-if="layout === 'mix'" />
-      <!-- <tags-view v-if="showTagsView" /> -->
+      <navbar  v-if="showMenu"/>
+      <div v-else class="back-nar"><el-button type="text" @click="goBack">返回</el-button></div>
     </div>
     <!--主页面-->
     <app-main />
     <!-- 设置面板 -->
-    <RightPanel v-if="showSettings">
+    <!-- <RightPanel v-if="showSettings">
       <settings />
-    </RightPanel>
+    </RightPanel> -->
   </div>
 </template>
 
 <style lang="scss" scoped>
+.back-nar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 50px;
+  padding-left: 16px;
+}
 .fixed-header {
   // position: fixed;
   top: 0;

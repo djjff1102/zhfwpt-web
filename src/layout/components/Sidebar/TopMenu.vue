@@ -3,10 +3,25 @@ import { usePermissionStore } from "@/store/modules/permission";
 import variables from "@/styles/variables.module.scss";
 import { useAppStore } from "@/store/modules/app";
 import { translateRouteTitle } from "@/utils/i18n";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
+
 const appStore = useAppStore();
-const activePath = computed(() => appStore.activeTopMenu);
+const route = useRoute();
 const router = useRouter();
+
+watch(
+  () => route,
+  (path) => {
+    if(path.meta.activeMenu != activePath.value) {
+      appStore.changeTopActive(path.meta.activeMenu as string);
+    }
+  },{
+    deep: true // 确保深度监听路由对象的每一个属性
+  }
+);
+
+const activePath = computed(() => appStore.activeTopMenu);
+
 // 递归跳转
 const goFirst = (menu: any[]) => {
   if (!menu.length) return;

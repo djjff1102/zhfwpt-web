@@ -13,6 +13,7 @@ const routes: RouteRecordRaw[] = [
       roles: ["ADMIN"],
       keepAlive: true,
       code: [500],
+      activeMenu: "/intellApproval",
     },
     children: [
       {
@@ -27,6 +28,7 @@ const routes: RouteRecordRaw[] = [
           keepAlive: true,
           code: [501],
           showMenu: true,
+          activeMenu: "/intellApproval",
         },
       },
       {
@@ -41,6 +43,7 @@ const routes: RouteRecordRaw[] = [
           keepAlive: true,
           // code: [501],
           showMenu: false,
+          activeMenu: "/intellApproval",
         },
       },
     ],
