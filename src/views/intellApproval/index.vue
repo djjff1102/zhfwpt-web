@@ -46,6 +46,9 @@
         <template v-slot:approvalstatus="{rowIndex}">
             <div>{{ approveStatus[tableData[rowIndex].approveStatus] }}</div>
         </template>
+        <template v-slot:taskStatus="{rowIndex}">
+            <div>{{ taskStatus[tableData[rowIndex].taskStatus] }}</div>
+        </template>
         <template v-slot:operations="{rowIndex}">
           <el-button type="text" @click="approval(tableData[rowIndex])">审批</el-button>
           <el-button type="text" @click="operate('operate', tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == 2">编辑</el-button>
@@ -64,7 +67,7 @@ import ApprovalDo from './add/ApprovalDo.vue';
 import { debounce } from "lodash-es";
 import { useRouter } from 'vue-router';
 import { fpspReport, approvalExport, delReport } from '@/api/intellApproval'
-import { approveStatus, statusList } from './type.ts'
+import { approveStatus, statusList, taskStatus } from './type.ts'
 import dayjs from "dayjs";
 
 const router = useRouter();
@@ -126,6 +129,7 @@ const columns = reactive([
   {
     title: "风险评估任务",
     dataIndex: "taskStatus",
+    slotName: 'taskStatus',
     width: 180,
   },
   {

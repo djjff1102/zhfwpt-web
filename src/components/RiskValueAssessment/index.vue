@@ -1,19 +1,17 @@
 <template>
-  <div>
+  <div id="suggestdom">
     <div class="container">
       <div class="chart">
-        <RiskChart />
+        <RiskChart :riskData="riskData"/>
       </div>
       <div class="information">
         <div class="suggest">
-          <div class="icon">
-            <img :src="suggest" alt="" />
-            评估建议
-          </div>
-          <div class="head">
-            <div class="btns">
-              <w-button type="text" class="text-[#999999]!" @click="handleExport">导出PDF</w-button>
-            </div>
+          <div class="icon flex-base-start">
+            <span style="flex-grow: 1;">
+               <img :src="suggest" alt="" />
+              评估建议
+            </span>
+            <Exportpdf domId="suggestdom" title="风险值评估"></Exportpdf>
           </div>
           <div class="info">
             <p>
@@ -58,8 +56,10 @@
           :data="tableData"
           :columns="columns"
           :scroll="scroll"
-          :pagination="false"
+          :pagination="pagination"
           :bordered="false"
+          @page-change="changepage"
+          @page-size-change="changePagesize"
         >
           <template v-slot:index="{ rowIndex }">
             {{ rowIndex + 1 }}
@@ -109,10 +109,20 @@ const props = defineProps({
   }
 })
 
+const riskData = ref(0)
+const pagination = ref({
+  total: 0,
+  pageSize: 10,
+  "show-total": true,
+  "show-page-size": true,
+  "show-jumper": true,
+});
 const loading = ref(false)
 const suggestData = ref({});
 const tableData = ref([]);
 const searchPar = ref({ // 查询参数-以公司维度查询风险信息
+  page_size: 10,
+  page: 1,
   companyName: '',
   companyId: '',
   riskType: '',
@@ -149,6 +159,18 @@ function handleExport() {
   alert('导出')
 }
 
+const changePagesize = (v) => {
+  pagination.value.pageSize = v;
+  searchPar.value.page = 1;
+  searchPar.value.page_size = v;
+  getqueryRiskInfoByCompanyInfo()
+};
+
+const changepage = (v) => {
+  searchPar.value.page = v;
+  getqueryRiskInfoByCompanyInfo()
+};
+
 function search() {
   getqueryRiskInfoByCompanyInfo()
 }
@@ -170,6 +192,7 @@ function getsuggestion() {
     companyName: props.companyName,
   }).then(res => {
     suggestData.value = res.data;
+    riskData.value = res.data.riskScore
   }).catch(err => {})
 }
 
@@ -181,11 +204,14 @@ function getqueryRiskInfoByCompanyInfo() {
     companyName: searchPar.value.companyName,
     companyId: searchPar.value.companyId,
     riskType: searchPar.value.riskType || 0,
-    name: searchPar.value.name
+    name: searchPar.value.name,
+    page_size: searchPar.value.page_size,
+    page: searchPar.value.page,
   }
   queryRiskInfoByCompanyInfo(par).then(res => {
     tableData.value = res.data;
     loading.value = false
+    pagination.value.total = res.total;
   }).catch(err => {
     loading.value = false
   })

@@ -115,7 +115,7 @@
   <div class="com-section">
     <div class="title-sub title-sub-sub">其他资料</div>
     <div v-if="initPageParam.edit">
-      <MultiUpload @updateUpload="updateUpload"></MultiUpload>
+      <MultiUpload @updateUpload="updateUpload" :file="fileList"></MultiUpload>
     </div>
     <FileList v-if="!initPageParam.edit" :file="fileList"></FileList>
   </div>
@@ -123,7 +123,7 @@
     <w-button style="margin-right: 20px" @click="handleSave(1)">暂存</w-button>
     <w-button type="primary" @click="handleSave(2)">提交</w-button>
   </div>
-  <detail-com v-if="!initPageParam.edit"></detail-com>
+  <detail-com v-if="!initPageParam.edit" :companyId="form.companyId" :companyName="form.companyName" ></detail-com>
   <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com>
   <approval-record :showRecord="showRecord" :reportId="route.query.id" @updateAdd="showRecord = false"></approval-record>
   <ApprovalDo :showAdd="showApproval" @updateAdd="updateApprval" :reportId="route.query.id"></ApprovalDo>
@@ -361,6 +361,8 @@ function getDetail(d) {
       dataCC.value = res.data.warehouseMapResponseList
       dataYH.value = res.data.bankStatementMapResponseList
       fileList.value = res.data.otherMaterialsResponseList
+      dataList.value = res.data.transactionCertificateMapResponseList
+      columns.value = columnsHT
       form.value = res.data as any
       dateRange.value = [res.data.validDateStart, res.data.validDateEnd]
     } else {

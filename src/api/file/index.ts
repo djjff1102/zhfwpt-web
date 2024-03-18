@@ -52,3 +52,17 @@ export function download(file: any): AxiosPromise<FileInfo> {
     params: file,
   });
 }
+
+/**
+ * 下载 ArrayBuffer
+ *
+ * @param file load
+ */
+export function downloadBuffer(file: any): AxiosPromise<FileInfo> {
+  return request({
+    responseType: "arraybuffer",
+    url: "/base/minio/download",
+    method: "get",
+    params: file,
+  });
+}

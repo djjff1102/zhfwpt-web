@@ -30,7 +30,7 @@ service.interceptors.response.use(
       return response.data;
     }
     // 响应数据为二进制流处理(Excel导出)
-    if (response.data instanceof Blob) {
+    if (response.data instanceof Blob || response.data instanceof ArrayBuffer) {
       return response;
     }
 

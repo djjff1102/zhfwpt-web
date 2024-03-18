@@ -42,6 +42,12 @@ import dayjs from "dayjs";
 import { ref, reactive} from "vue";
 import { reporthistroy } from '@/api/intellApproval'
 
+const props = defineProps({
+  companyId: {
+    default: ''
+  }
+})
+
 const current = ref(1);
 const size = ref(10);
 const loading = ref(false);
@@ -127,7 +133,8 @@ const searchPar = ref({
   page: 1,
   approveStatus: '', // 审批状态
   startTime: '',
-  endTime: ''
+  endTime: '',
+  companyId: props.companyId
 })
 const scroll = ref({
   y: 800,

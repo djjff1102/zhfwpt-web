@@ -21,7 +21,7 @@
       
     </el-upload>
     <div class="file-wrap">
-      <div class="flie-item" v-for="(item, i) in fileList" :key="item">
+      <div class="flie-item" v-for="(item, i) in fileList" :key="item.name">
         <img src="../../assets/base/file.png">
         <div class="file-name">{{ item }}</div>
         <img class="close" style="width: 20px" src="../../assets/base/cha.png" @click="handleDel(i)"/> 
@@ -29,10 +29,6 @@
       </div>
     </div>
   </div>
-    
-  <!-- <el-dialog v-model="dialogVisible">
-    <img w-full :src="previewImgUrl" alt="Preview Image" />
-  </el-dialog> -->
 </template>
 
 <script setup lang="ts">
@@ -43,18 +39,11 @@ import {
   UploadFile,
   UploadProps,
 } from "element-plus";
-import { uploadFileApi, deleteFileApi, singleuploadFileApi} from "@/api/file";
+import { singleuploadFileApi} from "@/api/file";
 
 const emit = defineEmits(['updateUpload']);
 
 const props = defineProps({
-  /**
-   * 文件路径集合
-   */
-  modelValue: {
-    type: Array<string>,
-    default: () => [],
-  },
   /**
    * 文件上传数量限制
    */
@@ -62,32 +51,35 @@ const props = defineProps({
     type: Number,
     default: 2,
   },
+  file: {
+    default: []
+  }
 });
 
 const dialogVisible = ref(false);
 
-const fileList = ref([] as UploadUserFile[]);
-const allFileList = ref([])
+const fileList = ref<string[]>([]);
+const allFileList = ref<string[]>([]);
 watch(
-  () => props.modelValue,
+  () => props.file,
   (newVal: string[]) => {
-    const filePaths = fileList.value.map((file) => file.url);
-    // 监听modelValue文件集合值未变化时，跳过赋值
-    if (
-      filePaths.length > 0 &&
-      filePaths.length === newVal.length &&
-      filePaths.every((x) => newVal.some((y) => y === x)) &&
-      newVal.every((y) => filePaths.some((x) => x === y))
-    ) {
-      return;
-    }
-
-    fileList.value = newVal.map((filePath) => {
-      return { url: filePath } as UploadUserFile;
-    });
+ init()
   },
   { immediate: true }
 );
+
+
+function init() {
+  let arr:string[]= []
+  let all: string[] = []
+  props.file.forEach(item => {
+    console.log('4444444444444444444444:', item)
+    arr.push(item?.fileName)
+    all.push(item?.fileUrl)
+  })
+  fileList.value = arr
+  allFileList.value = all
+}
 
 function handleDel(i: any) {
   fileList.value.splice(i, 1)
@@ -111,6 +103,7 @@ async function handleUpload(options: UploadRequestOptions, f): Promise<any> {
   allFileList.value.push(res.data);
   let name = res.data.split('@quesoar@')[1]
   fileList.value.push(name)
+  console.log('全部文件------------：', allFileList.value)
   emit('updateUpload', allFileList.value)
 }
 

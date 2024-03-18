@@ -2,13 +2,13 @@
   <div>
     <div id="RiskValueAssessment">
       <div class="title base-title">风险值评估</div>
-      <RiskValueAssessment></RiskValueAssessment>
+      <RiskValueAssessment v-bind="$attrs" ></RiskValueAssessment>
       <div class="title base-title">企业进销项发票趋势</div>
       <div class="tendencyChart w-full h-400px">
         <TendencyChart :dataList="echartData.x" :time="echartData.y"></TendencyChart>
       </div>
       <div class="title base-title">历史审批</div>
-      <historyList></historyList>
+      <historyList v-bind="$attrs"></historyList>
     </div>
   </div>
 </template>

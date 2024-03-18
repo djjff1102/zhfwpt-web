@@ -3,7 +3,11 @@
     <div class="flie-item" v-for="(item, i) in file" :key="i">
       <img src="@/assets/base/file.png">
       <div class="file-name">{{ item.fileName }}</div>
-      <el-button type="text" @click="checkFile(item)">在线查看</el-button>
+      <Online-check :fileUrl="item.fileUrl"></Online-check>
+      <!-- <online-excel :fileUrl="item.fileUrl"></online-excel>
+      <online-word :fileUrl="item.fileUrl"></online-word>
+      <online-pdf :fileUrl="item.viewFileUrl"></online-pdf> -->
+      <!-- <el-button type="text" @click="checkFile(item)">在线查看</el-button> -->
       <span class="file-load" type="text" @click="load(item)">下载</span>
     </div>
   </div>
