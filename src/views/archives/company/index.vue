@@ -30,7 +30,7 @@
       </div>
       <div id="ManagementInformation">
         <div class="title">经营信息</div>
-        <ManagementInformation></ManagementInformation>
+        <ManagementInformation :companyName="companyMsg?.companyName"></ManagementInformation>
       </div>
       <div id="OrderInformation">
         <div class="title">订单信息</div>

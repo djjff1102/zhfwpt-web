@@ -5,10 +5,10 @@
       <ImportAndExport></ImportAndExport>
     </el-tab-pane>
     <el-tab-pane label="行政许可">
-      <AdministrativeLicensing></AdministrativeLicensing>
+      <AdministrativeLicensing v-bind="$attrs"></AdministrativeLicensing>
     </el-tab-pane>
     <el-tab-pane label="纳税人资质">
-      <TaxpayerQualification></TaxpayerQualification>
+      <TaxpayerQualification v-bind="$attrs"></TaxpayerQualification>
     </el-tab-pane>
     <el-tab-pane label="企业图谱">
       <CompanyGraph></CompanyGraph>

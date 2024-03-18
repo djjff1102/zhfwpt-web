@@ -297,3 +297,29 @@ export function queryRiskInfoByCompanyInfo(
     data,
   });
 }
+
+/**
+ *  行政许可
+ */
+export function companyLicenseInfoCreditchinaNew(
+  data: ProvinceSearch
+): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: "/base/company_license_info_creditchina_new",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ *  一般纳税人
+ */
+export function tbGeneralTaxpayer(
+  data: ProvinceSearch
+): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: "/base/tb_general_taxpayer",
+    method: "post",
+    data,
+  });
+}

@@ -68,12 +68,10 @@ watch(
   { immediate: true }
 );
 
-
 function init() {
   let arr:string[]= []
   let all: string[] = []
   props.file.forEach(item => {
-    console.log('4444444444444444444444:', item)
     arr.push(item?.fileName)
     all.push(item?.fileUrl)
   })

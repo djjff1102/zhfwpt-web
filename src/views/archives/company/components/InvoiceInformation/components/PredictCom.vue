@@ -6,6 +6,7 @@
 </template>
 
 <script setup>
+import { numFormat, numThousand } from '@/utils/common'
 const props = defineProps({
   data: {
     type: Number,
