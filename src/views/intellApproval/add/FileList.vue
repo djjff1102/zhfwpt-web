@@ -3,7 +3,7 @@
     <div class="flie-item" v-for="(item, i) in file" :key="i">
       <img src="@/assets/base/file.png">
       <div class="file-name">{{ item.fileName }}</div>
-      <Online-check :fileUrl="item.fileUrl"></Online-check>
+      <Online-check :fileUrl="item.fileUrl" :viewFileUrl="item.viewFileUrl"></Online-check>
       <!-- <online-excel :fileUrl="item.fileUrl"></online-excel>
       <online-word :fileUrl="item.fileUrl"></online-word>
       <online-pdf :fileUrl="item.viewFileUrl"></online-pdf> -->
@@ -36,12 +36,10 @@ function load(item) {
 
 // 导出
 function exportBlob(b,name) {
-  const fileName =name
-  const typeValue = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-  const blob = new Blob([b.data], { type: typeValue});
+  const fileName = name
   const a = document.createElement('a');
   a.download = fileName;
-  a.href = URL.createObjectURL(blob);
+  a.href = URL.createObjectURL(b);
   a.style.display = 'none';
   document.body.appendChild(a);
   a.click();
@@ -49,11 +47,12 @@ function exportBlob(b,name) {
   document.body.removeChild(a);
 }
 
-
 </script>
 
 <style scoped lang="scss">
 .file-load {
+  flex-shrink: 0;
+  display: block;
   width: 28px;
   height: 20px;
   font-family: PingFangSC, PingFang SC;
@@ -73,12 +72,14 @@ function exportBlob(b,name) {
   align-items: flex-start;
 }
 .flie-item {
-  width: 48%;
+  width:33%;
   background: #F5FCFF;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 20px 24px;
   margin-top: 16px;
+  flex-wrap: wrap;
   &:hover {
     .success {
       display: none;

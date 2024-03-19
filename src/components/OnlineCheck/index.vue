@@ -1,16 +1,24 @@
 <template>
   <div>
-    <!-- <el-button v-if="checkFileType('pdf')" type="text" @click="load('pdf')">在线查看1</el-button> -->
+    <el-image
+    v-if="checkFileType('img')"
+    alt="img"
+    style="width: 100px; height: 100px"
+    src="@/assets/iconfont/close.png"
+    :preview-src-list="[viewFileUrl]"
+  ></el-image>
+    <el-button v-if="checkFileType('pdf')" type="text" @click="load('pdf')">在线查看1</el-button>
     <el-button v-if="checkFileType('word')" type="text" @click="load('word')">在线查看</el-button>
     <el-button v-if="checkFileType('excel')" type="text" @click="load('excel')">在线查看</el-button>
-    <!-- <el-button v-if="checkFileType('img')" type="text" @click="load('img')">在线查看4</el-button> -->
+    <el-button v-if="checkFileType('img')" type="text" @click="loadImg('img')">在线查看4</el-button>
     <el-dialog
         v-model="excelShow"
-        width="80%"
+        width="100%"
+        :fullscreen="true"
         :before-close="handleClose"
       >
       <div class="content" v-if="type=='excel'">
-         <el-table :data="excelData" style="width: 100%">
+         <el-table :data="excelData" style="width: 1400px">
             <el-table-column
                 v-for="(value, key, index) in excelData[2]"
                 :key="index"
@@ -21,6 +29,9 @@
       </div>
       <div class="content" v-if="type=='word'">
         <div id="wordView" v-html="vHtml"></div>
+      </div>
+      <div class="content" v-if="type=='img'">
+        <img :src="viewFileUrl">
       </div>
       <template #header>
        <div style="padding-top: 16px;">在线查看</div>
@@ -43,6 +54,9 @@ import { fileType } from './type'
 const props = defineProps({
   fileUrl: {
     default: ''
+  },
+  viewFileUrl: {
+    default: ''
   }
 })
 const excelShow = ref(false)
@@ -62,6 +76,9 @@ function checkFileType(n) {
 
 function handleClose() {
   excelShow.value = false
+}
+function loadImg() {
+  excelShow.value = true
 }
 
 function load(type) {
@@ -98,6 +115,34 @@ function exportExcel(d) {
 .content {
   display: flex;
   justify-content: center;
-  padding-bottom: 24px;
+  padding: 24px;
+  img {
+    max-width: 1400px;
+  }
+}
+
+:deep(.el-dialog) {
+  background: rgba(0,0,0,0);
+}
+:deep(.el-dialog__header) {
+  border: none;
+  height: 110px;
+}
+:deep(.el-dialog__headerbtn) {
+  width: 40px;
+  height: 40px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 50%;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 24px;;
+}
+:deep(.el-dialog__body) {
+  height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
