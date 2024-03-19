@@ -323,3 +323,16 @@ export function tbGeneralTaxpayer(
     data,
   });
 }
+
+/**
+ *  进出口信用
+ */
+export function companybusinessimportexportcredit(
+  data: ProvinceSearch
+): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: "/base/company_business_import_export_credit",
+    method: "post",
+    data,
+  });
+}
