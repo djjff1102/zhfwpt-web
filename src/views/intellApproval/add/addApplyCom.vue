@@ -1,15 +1,15 @@
 <template>
-  <el-dialog v-model="visible" :before-close="handleBeforeClose" :width="600">
+  <el-dialog v-model="visible" :before-close="handleBeforeClose" :width="1200">
     <w-spin :loading="loading">
     <div class="dia-content">
       <card-tab
         :showExtra="false"
-        :defaultKey = "defaultKey"
+        :defaultKey="defaultKey"
         @handleTab="handleTab"
       >
       </card-tab>
       <div style="margin-top: 12px; margin-left: 3px;">
-        <m-transfer
+        <!-- <m-transfer
           v-show="curTab == pro.HT"
           :dataList="dataHT"
           :transferProps="prosMap[pro.HT]"
@@ -26,8 +26,8 @@
           :rightDefaultChecked="codeDD"
           @updateChecked="updateChecked"
            @load="load"
-        ></m-transfer>
-        <m-transfer
+        ></m-transfer> -->
+        <!-- <m-transfer
           v-show="curTab == pro.FP"
           :dataList="dataFP"
           :total="totalFP"
@@ -53,7 +53,57 @@
           :rightDefaultChecked="codeYH"
           @updateChecked="updateChecked"
           @load="load"
-        ></m-transfer>
+        ></m-transfer> -->
+        <m-table
+          v-show="curTab == pro.HT"
+          :data="dataHT"
+          row-key="code"
+          :columns="columnsHT"
+          :pagination="objectHT.pagination"
+          :row-selection="rowSelection"
+          @page-change="changepage"
+          @selection-change="handleSelectionChange"
+        ></m-table>
+        <m-table
+          v-show="curTab == pro.DD"
+          :data="dataDD"
+          :columns="columnsDD"
+          row-key="code"
+          :row-selection="rowSelection"
+          :pagination="objectDD.pagination"
+          @page-change="changepage"
+          @selection-change="handleSelectionChange"
+        ></m-table>
+        <m-table
+          v-show="curTab == pro.FP"
+          :data="dataFP"
+          :columns="columnsFP"
+          :row-selection="rowSelection"
+          row-key="code"
+          :pagination="objectFP.pagination"
+          @page-change="changepage"
+          @selection-change="handleSelectionChange"
+        ></m-table>
+        <m-table
+          v-show="curTab == pro.CC"
+          :data="dataCC"
+          :columns="columnsCC"
+          :row-selection="rowSelection"
+          row-key="code"
+          :pagination="objectCC.pagination"
+          @page-change="changepage"
+          @selection-change="handleSelectionChange"
+        ></m-table>
+        <m-table
+          v-show="curTab == pro.YH"
+          :data="dataYH"
+          :columns="columnsYH"
+          :row-selection="rowSelection"
+          row-key="orderCode"
+          :pagination="objectYH.pagination"
+          @page-change="changepage"
+          @selection-change="handleSelectionChange"
+        ></m-table>
       </div>
     </div>
     </w-spin>
@@ -72,7 +122,7 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
 import { qyzxTransactionCertificate, qyzxOrder, qyzxInvoice, qyzxWarehouse, qyzxBankStatement } from '@/api/archives'
-import { pro, prosMap } from '../type'
+import { pro, prosMap, columnsHT, columnsDD, columnsFP, columnsCC, columnsYH } from '../type'
 
 const props = defineProps({
   showAdd: {
@@ -98,6 +148,76 @@ watch(() => props.showAdd, (newValue) => {
     init(props.defaultKey)
   }
 })
+
+const rowSelection = ref({
+  type: 'checkbox',
+  showCheckedAll: true
+})
+const objectHT = ref({
+  data:[], // 存储所有数据
+  insertCurrent: 1, // 记录将要存储的页码
+  pagination: {
+      total: 0,
+      pageSize: 10,
+      current: 1,
+      "show-total": true,
+      // "show-page-size": true,
+      "show-jumper": true,
+  }
+})
+
+const objectDD = ref({
+  data:[], // 存储所有数据
+  insertCurrent: 1, // 记录将要存储的页码
+  pagination: {
+      total: 0,
+      pageSize: 10,
+      current: 1,
+      "show-total": true,
+      // "show-page-size": true,
+      "show-jumper": true,
+  }
+})
+
+const objectFP = ref({
+  data:[], // 存储所有数据
+  insertCurrent: 1, // 记录将要存储的页码
+  pagination: {
+      total: 0,
+      pageSize: 10,
+      current: 1,
+      "show-total": true,
+      // "show-page-size": true,
+      "show-jumper": true,
+  }
+})
+
+const objectCC = ref({
+  data:[], // 存储所有数据
+  insertCurrent: 1, // 记录将要存储的页码
+  pagination: {
+      total: 0,
+      pageSize: 10,
+      current: 1,
+      "show-total": true,
+      // "show-page-size": true,
+      "show-jumper": true,
+  }
+})
+
+const objectYH = ref({
+  data:[], // 存储所有数据
+  insertCurrent: 1, // 记录将要存储的页码
+  pagination: {
+      total: 0,
+      pageSize: 10,
+      current: 1,
+      "show-total": true,
+      // "show-page-size": true,
+      "show-jumper": true,
+  }
+})
+
 
 const rightDefaultChecked = ref([]) // 穿梭组件默认选中的
 const curTab = ref('') // 当前选中的tab
@@ -149,43 +269,54 @@ const totalFP = ref(0)
 const totalCC = ref(0)
 const totalYH = ref(0)
 
-// TODO:未开发
-function load(code) {
+// 存储选中的code
+function handleSelectionChange(code) {
   switch(curTab.value) {
     case pro.HT:
+      codeHT.value = code;
       break;
     case pro.DD:
       codeDD.value = code
       break;
-     case pro.FP:
+    case pro.FP:
       codeFP.value = code
       break;
     case pro.CC:
       codeCC.value = code
       break;
-     case pro.YH:
+    case pro.YH:
       codeYH.value = code
       break;
   }
 }
 
-// 更新穿梭组件选中的code
-function updateChecked(code: any) {
+// 切换分页
+function changepage(v) {
   switch(curTab.value) {
     case pro.HT:
-      codeHT.value = code
+      searchHT.value.page = v;
+      objectHT.value.pagination.current = v
+      getList(qyzxTransactionCertificate, searchHT.value)
       break;
     case pro.DD:
-      codeDD.value = code
+      searchDD.value.page = v;
+      objectDD.value.pagination.current = v
+      getList(qyzxOrder, searchDD.value)
       break;
-     case pro.FP:
-      codeFP.value = code
+    case pro.FP:
+      searchFP.value.page = v;
+      objectFP.value.pagination.current = v
+      getList(qyzxInvoice, searchFP.value)
       break;
     case pro.CC:
-      codeCC.value = code
+      searchCC.value.page = v;
+      objectCC.value.pagination.current = v
+      getList(qyzxWarehouse, searchCC.value)
       break;
-     case pro.YH:
-      codeYH.value = code
+    case pro.YH:
+      searchYH.value.page = v;
+      objectYH.value.pagination.current = v
+      getList(qyzxBankStatement, searchYH.value)
       break;
   }
 }
@@ -193,28 +324,18 @@ function updateChecked(code: any) {
 function init(i: any) {
   switch(i) {
     case pro.HT:
-      transferProps.value = prosMap[pro.HT]
-      rightDefaultChecked.value = codeHT.value
       getList(qyzxTransactionCertificate, searchHT.value)
       break;
     case pro.DD:
-      transferProps.value = prosMap[pro.DD]
-      rightDefaultChecked.value = codeDD.value
       getList(qyzxOrder, searchDD.value)
       break;
      case pro.FP:
-      transferProps.value = prosMap[pro.FP]
-      rightDefaultChecked.value = codeFP.value
       getList(qyzxInvoice, searchFP.value)
       break;
     case pro.CC:
-      transferProps.value = prosMap[pro.CC]
-      rightDefaultChecked.value = codeCC.value
       getList(qyzxWarehouse, searchCC.value)
       break;
      case pro.YH:
-      transferProps.value = prosMap[pro.YH]
-      rightDefaultChecked.value = codeYH.value
       getList(qyzxBankStatement, searchYH.value)
       break;
   }
@@ -223,7 +344,7 @@ function init(i: any) {
 // 获取数据list
 function getList(fun: any, par: any) {
   fun(par).then((res: any) => {
-    updataDataList(res.data, res.total);
+    updataDataList(res.data, Number(res.total));
   }).catch((err: any) => {})
 }
 
@@ -231,24 +352,44 @@ function getList(fun: any, par: any) {
 function updataDataList(data: any, total: any) {
   switch(curTab.value) {
     case pro.HT:
-      totalHT.value = total
+      objectHT.value.pagination.total = total
       dataHT.value = data
+      if(objectHT.value.insertCurrent == objectHT.value.pagination.current) {
+        objectHT.value.data.push(...data);
+        objectHT.value.insertCurrent++;
+      }
       break;
     case pro.DD:
-      totalDD.value = total
+      objectDD.value.pagination.total = total
       dataDD.value = data
+      if(objectDD.value.insertCurrent == objectDD.value.pagination.current) {
+        objectDD.value.data.push(...data);
+        objectDD.value.insertCurrent++;
+      }
       break;
-     case pro.FP:
-      totalFP.value = total
+    case pro.FP:
+      objectFP.value.pagination.total = total
       dataFP.value = data
+      if(objectFP.value.insertCurrent == objectFP.value.pagination.current) {
+        objectFP.value.data.push(...data);
+        objectFP.value.insertCurrent++;
+      }
       break;
     case pro.CC:
-      totalCC.value = total
+      objectCC.value.pagination.total = total
       dataCC.value = data
+      if(objectCC.value.insertCurrent == objectCC.value.pagination.current) {
+        objectCC.value.data.push(...data);
+        objectCC.value.insertCurrent++;
+      }
       break;
      case pro.YH:
-      totalYH.value = total
+      objectYH.value.pagination.total = total
       dataYH.value = data
+      if(objectYH.value.insertCurrent == objectYH.value.pagination.current) {
+        objectYH.value.data.push(...data);
+        objectYH.value.insertCurrent++;
+      }
       break;
   }
 }
@@ -259,7 +400,6 @@ function handleTab(i: any) {
   // 点击确定时，将已选的code和完整数据回传到编辑、添加页面回显
   curTab.value = i;
   checkLoadList(i);
-  init(i)
 }
 
 function checkLoadList(i: any) {
@@ -301,7 +441,7 @@ function filterData(data: any, code: any) {
 }
 
 function handleOk() {
-  emits('updateData', filterData(dataHT.value, codeHT.value), filterData(dataDD.value, codeDD.value), filterData(dataFP.value, codeFP.value), filterData(dataCC.value, codeCC.value), filterData(dataYH.value, codeYH.value)  )
+  emits('updateData', filterData(objectHT.value.data, codeHT.value), filterData(objectDD.value.data, codeDD.value), filterData(objectFP.value.data, codeFP.value), filterData(objectCC.value.data, codeCC.value), filterData(objectYH.value.data, codeYH.value)  )
   emits('updateAdd', codeHT.value, codeDD.value, codeFP.value, codeCC.value, codeYH.value)
 }
 

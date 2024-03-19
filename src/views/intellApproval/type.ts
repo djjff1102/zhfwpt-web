@@ -161,22 +161,22 @@ export const columnsDD = reactive([
     title: "卖方信用代码",
     dataIndex: "sellerCreditNo",
   },
-  {
-    title: "商品所在地址",
-    dataIndex: "goodAddress",
-  },
-  {
-    title: "仓库名称",
-    dataIndex: "warehouseName",
-  },
-  {
-    title: "总金额",
-    dataIndex: "totalMoney",
-  },
-  {
-    title: "交易凭证（合同）编号",
-    dataIndex: "certificateCode",
-  },
+  // {
+  //   title: "商品所在地址",
+  //   dataIndex: "goodAddress",
+  // },
+  // {
+  //   title: "仓库名称",
+  //   dataIndex: "warehouseName",
+  // },
+  // {
+  //   title: "总金额",
+  //   dataIndex: "totalMoney",
+  // },
+  // {
+  //   title: "交易凭证（合同）编号",
+  //   dataIndex: "certificateCode",
+  // },
 ]);
 
 export const columnsFP = reactive([
@@ -188,56 +188,93 @@ export const columnsFP = reactive([
   },
   {
     title: "发票号码",
-    dataIndex: "name",
+    dataIndex: "code",
+    //width: 180,
     fixed: "left",
   },
   {
     title: "开票日期",
-    dataIndex: "salary",
+    dataIndex: "invoicingDate",
+    //width: 180,
     fixed: "left",
   },
   {
     title: "发票类别",
-
-    dataIndex: "address",
+    dataIndex: "type",
+    width: 180,
   },
   {
     title: "开票单位",
-    dataIndex: "email",
+    dataIndex: "invoicingCompanyName",
+    //width: 180,
   },
   {
     title: "开票单位统一社会信用代码",
-    dataIndex: "email",
+    dataIndex: "invoicingCreditNo",
+    //width: 220,
   },
   {
-    title: "商品类别",
-    dataIndex: "email",
+    title: "收票单位",
+    dataIndex: "receivingCompanyName",
+    //width: 180,
   },
   {
-    title: "数量",
-    dataIndex: "email",
+    title: "收票单位统一社会信用代码",
+    //width: 220,
+    dataIndex: "receivingCreditNo",
   },
-  {
-    title: "计量单位",
-    dataIndex: "email",
-  },
-  {
-    title: "含税金额",
-
-    dataIndex: "email",
-  },
-  {
-    title: "税率",
-    dataIndex: "email",
-  },
-  {
-    title: "税额",
-    dataIndex: "email",
-  },
-  {
-    title: "单价",
-    dataIndex: "email",
-  },
+  // {
+  //   title: "项目名称",
+  //   dataIndex: "goodName",
+  //   //width: 180,
+  // },
+  // {
+  //   title: "规格型号",
+  //   dataIndex: "standard",
+  //   // width: 80,
+  // },
+  // {
+  //   title: "数量",
+  //   dataIndex: "quantity",
+  //   width: 80,
+  // },
+  // {
+  //   title: "计量单位",
+  //   dataIndex: "measureUnit",
+  //   width: 100,
+  // },
+  // {
+  //   title: "含税金额",
+  //   dataIndex: "amountIncludeTax",
+  //   width: 180,
+  // },
+  // {
+  //   title: "税率",
+  //   dataIndex: "taxRate",
+  //   width: 180,
+  // },
+  // {
+  //   title: "税额",
+  //   dataIndex: "taxAmount",
+  //   width: 180,
+  // },
+  // {
+  //   title: "单价",
+  //   dataIndex: "unitPrice",
+  //   width: 180,
+  // },
+  // {
+  //   title: "价税合计",
+  //   dataIndex: "amountTotal",
+  //   width: 180,
+  // },
+  // {
+  //   title: "操作",
+  //   width: 100,
+  //   dataIndex: "operations",
+  //   slotName: "operations",
+  //   fixed: "right",
+  // },
 ]);
 
 export const columnsCC = reactive([
@@ -265,11 +302,11 @@ export const columnsCC = reactive([
   },
   {
     title: "涉及订单数量",
-    dataIndex: "email",
+    dataIndex: "",
   },
   {
     title: "货物运输总金额",
-    dataIndex: "email",
+    dataIndex: "",
   },
   {
     title: "仓库企业名称",
@@ -320,24 +357,24 @@ export const columnsYH = reactive([
     title: "付款账号",
     dataIndex: "paymentAccount",
   },
-  {
-    title: "收款时间",
-    dataIndex: "collectionDate",
-  },
-  {
-    title: "收款方",
-    dataIndex: "collectionCompany",
-  },
-  {
-    title: "收款银行",
-    dataIndex: "collectionBank",
-  },
-  {
-    title: "收款账号",
-    dataIndex: "collectionAccount",
-  },
-  {
-    title: "关联订单编号",
-    dataIndex: "orderCode",
-  },
+  // {
+  //   title: "收款时间",
+  //   dataIndex: "collectionDate",
+  // },
+  // {
+  //   title: "收款方",
+  //   dataIndex: "collectionCompany",
+  // },
+  // {
+  //   title: "收款银行",
+  //   dataIndex: "collectionBank",
+  // },
+  // {
+  //   title: "收款账号",
+  //   dataIndex: "collectionAccount",
+  // },
+  // {
+  //   title: "关联订单编号",
+  //   dataIndex: "orderCode",
+  // },
 ]);
