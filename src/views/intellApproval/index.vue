@@ -219,6 +219,8 @@ function operate(type: string, data: any) {
     name: 'IntellApprovalOperate', 
     query: {
       id: data?.id || '-1',
+      reportCode: data?.reportCode,
+      approveStatus: approveStatus[data?.approveStatus],
       applyUserId: data?.applyUserId || '-1',
       type
     }

@@ -1,16 +1,9 @@
 <template>
   <div>
-    <el-image
-    v-if="checkFileType('img')"
-    alt="img"
-    style="width: 100px; height: 100px"
-    src="@/assets/iconfont/close.png"
-    :preview-src-list="[viewFileUrl]"
-  ></el-image>
-    <el-button v-if="checkFileType('pdf')" type="text" @click="load('pdf')">在线查看1</el-button>
+    <el-button v-if="checkFileType('pdf')" type="text" @click="load('pdf')">在线查看</el-button>
     <el-button v-if="checkFileType('word')" type="text" @click="load('word')">在线查看</el-button>
     <el-button v-if="checkFileType('excel')" type="text" @click="load('excel')">在线查看</el-button>
-    <el-button v-if="checkFileType('img')" type="text" @click="loadImg('img')">在线查看4</el-button>
+    <el-button v-if="checkFileType('img')" type="text" @click="loadImg('img')">在线查看</el-button>
     <el-dialog
         v-model="excelShow"
         width="100%"

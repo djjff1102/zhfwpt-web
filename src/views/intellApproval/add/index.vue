@@ -2,9 +2,9 @@
 <div class="operate-wrap">
   <div class="title">企业用户申报{{ initPageParam.title }}</div>
   <div class="section section-detail-header">
-    <div class="section-sub">
-      <span style="color: rgba(153, 153, 153, 1);padding-right: 30px;">申请编号：1000</span>
-      <span><span style="color: rgba(51, 51, 51, 1)">审批状态：</span><span style="color: rgba(5, 148, 235, 1)">待审批</span></span>
+    <div v-if="queryPar.reportCode" class="section-sub">
+      <span style="color: rgba(153, 153, 153, 1);padding-right: 30px;">申请编号：{{ queryPar?.reportCode }}</span>
+      <span><span style="color: rgba(51, 51, 51, 1)">审批状态：</span><span style="color: rgba(5, 148, 235, 1)">{{ queryPar?.approveStatus }}</span></span>
     </div>
     <div v-if="initPageParam.title == '详情'" class="section-sub flex-base-end">
       <el-button style="margin-right: 8px;" @click="showRecord = true">审批记录</el-button>
@@ -195,6 +195,7 @@ const showRecord = ref(false); // 审批记录
 const showApproval = ref(false) // 审批窗口
 const totalMoney = ref(0);
 const fileList = ref([]) // 已经提交的文件
+const queryPar = ref({}) // 路由查询参数
 
 // 切换长qi
 function handleLone(v) {
@@ -387,6 +388,7 @@ function getgetOneByCompanyName() {
 
 function init() {
   type.value = route.query.type as any;
+  queryPar.value = route.query;
   let id = route.query.id // 申请人发票ID
   if(type.value === 'detail') {
     initPageParam.edit = false;
