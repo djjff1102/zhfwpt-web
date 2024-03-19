@@ -44,7 +44,7 @@
     </el-descriptions>
   </div>
   <el-divider>
-    <span @click="isOpen = !isOpen" class="text-[#3470FF]"
+    <span @click="isOpen = !isOpen" class="text-[#3470FF] open-btn"
       >{{ isOpen ? "收起" : "展开" }}详情</span
     >
   </el-divider>
@@ -57,5 +57,8 @@ const props = defineProps({
 })
 const isOpen = ref(false);
 </script>
-<style lang="">
+<style lang="scss">
+.open-btn {
+  cursor: pointer;
+}
 </style>

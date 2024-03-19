@@ -1,6 +1,5 @@
 <template>
-  <Teleport to="body">
-      <div
+  <div
     class="slide-nav"
     :style="{
       transform: `translateX(${isShowSlideNav ? '0px' : '142px'})`,
@@ -35,8 +34,6 @@
       </div>
     </div>
   </div>
-  </Teleport>
-
 </template>
 <script setup>
 let navList = ref([
@@ -125,9 +122,9 @@ const toggleShow = (nav, isShow) => {
     ? "block"
     : "none";
   nav.show = isShow;
-  nextTick(() => {
-    getOffsetTop(navList);
-  });
+  // nextTick(() => {
+  //   getOffsetTop(navList);
+  // });
 };
 const toggleNav = () => {
   return (isShowSlideNav.value = !isShowSlideNav.value);
@@ -138,7 +135,10 @@ const scollEvent = () => {
       return;
     }
     navList.value.map((item) => {
-      if (e.target.scrollTop + 10 >= item.scoll && item.show) {
+      const element = document.getElementById(item.id);
+      const distanceToTop = element.offsetTop;
+      console.log('滑动的组件---------------------------', item.name, distanceToTop)
+      if (e.target.scrollTop + 100 >= distanceToTop && item.show) {
         activeNav.value = item.id;
       }
     });
@@ -146,15 +146,17 @@ const scollEvent = () => {
   document.querySelector(".company-content").addEventListener("scroll", event);
 };
 
-let getOffsetTop = (navList) => {
-  navList.value.map((item) => {
-    item.scoll = document.getElementById(item.id).offsetTop;
-  });
-};
+// let getOffsetTop = (navList) => {
+//   console.log('我被调用了-------------')
+//   navList.value.map((item) => {
+//     item.scoll = document.getElementById(item.id).offsetTop;
+//   });
+// };
 onMounted(() => {
   nextTick(() => {
     scollEvent();
-    getOffsetTop(navList);
+    // getOffsetTop(navList);
+    // setTimeout(() => {getOffsetTop(navList);}, 2000)
   });
 });
 </script>

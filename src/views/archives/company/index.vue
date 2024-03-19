@@ -80,7 +80,6 @@ import { useUserStoreHook } from "@/store/modules/user";
 const userStore = useUserStoreHook();
 // const router = useRouter();
 const route = useRoute();
-
 const companyMsg = ref({}) // 公司信息
 
 // 关注按钮类型 已关注/未关注
@@ -111,7 +110,8 @@ init()
 </script>
 <style lang="scss" scoped>
 .company-detail {
-  height: 100%;
+  height: calc(100vh - 120px);
+  overflow-y: hidden;
   transform: translate(0);
   position: relative;
   background-color: #fff;
