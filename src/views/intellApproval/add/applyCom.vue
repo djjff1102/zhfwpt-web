@@ -1,7 +1,7 @@
 <template>
   <w-tabs type="card-gutter">
     <template #extra>
-      <w-button type="primary">新增</w-button>
+      <el-button type="primary">新增</el-button>
     </template>
     <w-tab-pane key="1" title="合同">
       hetong

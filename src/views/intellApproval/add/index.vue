@@ -7,8 +7,8 @@
       <span><span style="color: rgba(51, 51, 51, 1)">审批状态：</span><span style="color: rgba(5, 148, 235, 1)">待审批</span></span>
     </div>
     <div v-if="initPageParam.title == '详情'" class="section-sub flex-base-end">
-      <w-button style="margin-right: 8px;" @click="showRecord = true">审批记录</w-button>
-      <w-button type="primary" @click="toApproval">审批</w-button>
+      <el-button style="margin-right: 8px;" @click="showRecord = true">审批记录</el-button>
+      <el-button type="primary" @click="toApproval">审批</el-button>
     </div>
   </div>
   <div class="section">
@@ -91,11 +91,11 @@
       <w-col :span="20">
         <div class="base-flex-start">
           <w-input :style="{width: '532px', height: '32px', marginRight:'16px'}" placeholder="请输入搜索内容"></w-input>
-          <w-button type="primary">搜索</w-button>
+          <el-button type="primary">搜索</el-button>
         </div>
       </w-col>
       <w-col v-if="initPageParam.edit" :span="4">
-        <div class="flex-base-end"><w-button type="primary" @click="handleAdd">新增</w-button></div>
+        <div class="flex-base-end"><el-button type="primary" @click="handleAdd">新增</el-button></div>
       </w-col>
     </w-row>
     <m-table
@@ -120,8 +120,8 @@
     <FileList v-if="!initPageParam.edit" :file="fileList"></FileList>
   </div>
   <div v-if="initPageParam.edit" class="bottom flex-base-end">
-    <w-button style="margin-right: 20px" @click="handleSave(1)">暂存</w-button>
-    <w-button type="primary" @click="handleSave(2)">提交</w-button>
+    <el-button style="margin-right: 20px" @click="handleSave(1)">暂存</el-button>
+    <el-button type="primary" @click="handleSave(2)">提交</el-button>
   </div>
   <detail-com v-if="!initPageParam.edit" :companyId="form.companyId" :companyName="form.companyName" ></detail-com>
   <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com>

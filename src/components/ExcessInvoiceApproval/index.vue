@@ -21,8 +21,8 @@
         <w-form-item class="mr-16px" field="post" label="风险程度">
           <w-select v-model="form.post" placeholder="请输入角色编号" />
         </w-form-item>
-        <w-button type="primary" class="mr-8px">搜索</w-button>
-        <w-button>重置</w-button>
+        <el-button type="primary" class="mr-8px">搜索</el-button>
+        <el-button>重置</el-button>
       </w-form>
     </div>
     <div class="table-warp">
@@ -42,7 +42,7 @@
           <el-tag type="danger">驳回</el-tag>
         </template>
         <template v-slot:operations>
-          <w-button type="text">详情</w-button>
+          <el-button type="text">详情</el-button>
         </template>
       </m-table>
     </div>

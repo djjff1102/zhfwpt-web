@@ -29,16 +29,16 @@
         <w-form-item field="companyAddress" label="注册地址">
           <w-input v-model="searchPar.companyAddress" placeholder="请输入注册地址" clearable/>
         </w-form-item>
-        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
-        <w-button @click="reset">重置</w-button>
+        <el-button type="primary" class="mr-8px" @click="search">搜索</el-button>
+        <el-button @click="reset">重置</el-button>
       </w-form>
     </div>
     <!-- <div class="oper">
-      <w-button type="primary" class="mr-8px">新增</w-button>
+      <el-button type="primary" class="mr-8px">新增</el-button>
     </div> -->
     <div class="table-warp">
       <div class="export-btn">
-        <w-button type="primary" @click="handleExport">导出</w-button>
+        <el-button type="primary" @click="handleExport">导出</el-button>
       </div>
       <m-table
         style="height: 100%"
@@ -51,7 +51,7 @@
         :bordered="false"
       >
         <template v-slot:operations="{rowIndex}">
-          <w-button type="text" @click="handleCompanyDetail(tableData[rowIndex])">详情</w-button>
+          <el-button type="text" @click="handleCompanyDetail(tableData[rowIndex])">详情</el-button>
         </template>
       </m-table>
     </div>

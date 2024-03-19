@@ -24,8 +24,8 @@
     </template>
     <template #footer>
       <span class="dialog-footer">
-        <w-button @click="handleCancel">取消</w-button>
-        <w-button type="primary" @click="handleOk" style="margin-left: 16px;">确定</w-button>
+        <el-button @click="handleCancel">取消</el-button>
+        <el-button type="primary" @click="handleOk" style="margin-left: 16px;">确定</el-button>
       </span>
     </template>
   </el-dialog>

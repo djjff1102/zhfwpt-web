@@ -25,8 +25,8 @@
             @change="onChange"
           />
         </w-form-item>
-        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
-        <w-button @click="reset">重置</w-button>
+        <el-button type="primary" class="mr-8px" @click="search">搜索</el-button>
+        <el-button @click="reset">重置</el-button>
       </w-form>
     </div>
     <div class="table-warp">
@@ -44,7 +44,7 @@
           {{ rowIndex + 1 }}
         </template>
         <template v-slot:operations>
-          <w-button type="text" disabled>详情</w-button>
+          <el-button type="text" disabled>详情</el-button>
         </template>
       </m-table>
     </div>
