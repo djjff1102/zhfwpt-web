@@ -174,4 +174,13 @@ function handleAttention(d) {
 ::v-deep .el-divider--horizontal {
   margin: 6px 0;
 }
+:deep(.el-tag) {
+  border: none;
+}
+:deep(.el-tag--success) {
+  background: rgba(43, 194, 171, 0.10);
+}
+:deep(.el-tag--primary) {
+  background: rgba(122, 193, 234, 0.10);
+}
 </style>

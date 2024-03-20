@@ -30,9 +30,10 @@
     </div>
     <div class="oper">
       <el-button type="primary" class="mr-8px" @click="operate('add')">新增</el-button>
-      <el-button type="primary" class="mr-8px" @click="handleExport">导出</el-button>
+      <el-button :loading="loadingExport" type="primary" class="mr-8px" @click="handleExport">导出</el-button>
     </div>
-    <div class="table-warp">
+    <spin :loading="loading">
+      <div class="table-warp">
       <m-table
         style="height: 100%"
         :data="tableData"
@@ -57,6 +58,8 @@
         </template>
       </m-table>
     </div>
+    </spin>
+    
     <ApprovalDo :showAdd="showApproval" @updateAdd="updateApprval" :reportId="reportId" @updateData="getfpspReport"></ApprovalDo>
   </div>
 </template>
@@ -185,8 +188,11 @@ function del(row: any) {
   })
 }
 
+const loadingExport = ref(false)
 // 导出
  function handleExport() {
+  if(loadingExport.value) return
+  loadingExport.value = true
   const data = {
     companyName: searchPar.value.companyName,
     approveStatus: searchPar.value.approveStatus,
@@ -195,7 +201,10 @@ function del(row: any) {
   }
   approvalExport(data).then(res => {
     exportBlob(res);
-  }).catch(err => {})
+    loadingExport.value = false
+  }).catch(err => {
+    loadingExport.value = false
+  })
 }
 
 // 导出

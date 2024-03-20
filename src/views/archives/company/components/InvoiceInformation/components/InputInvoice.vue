@@ -1,11 +1,17 @@
 <template>
   <!-- 订单信息 -->
-  <div class="container">
+  <div>
     <div class="search_box">
       <w-form :model="searchPar" layout="inline">
         <w-form-item class="mr-16px" field="post" label="发票类别">
-          <!-- <w-select v-model="searchPar" placeholder="全部" /> -->
-          <w-input v-model="searchPar.type"></w-input>
+          <w-select v-model="searchPar.type" placeholder="全部">
+            <w-option>专用发票</w-option>
+            <w-option>普通发票</w-option>
+            <w-option>手写发票</w-option>
+            <w-option>定额发票</w-option>
+            <w-option>统一发票</w-option>
+          </w-select>
+          <!-- <w-input v-model="searchPar.type"></w-input> -->
         </w-form-item>
         <w-form-item class="mr-16px" field="post" label="开票日期">
           <w-range-picker
@@ -50,7 +56,6 @@
         </template>
       </m-table>
     </div>
-    <!-- TODO: 未开发 -->
     <div class="title">企业用票需求预测</div>
     <PredictCom :data="echartData.sum"></PredictCom>
     <div class="tendencyChart w-full h-400px">
@@ -90,7 +95,6 @@ const columns = reactive([
     title: "开票日期",
     dataIndex: "invoicingDate",
     width: 180,
-    fixed: "left",
   },
   {
     title: "发票类别",

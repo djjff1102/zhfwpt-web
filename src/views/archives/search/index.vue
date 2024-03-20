@@ -67,6 +67,8 @@
           ></CompanyCard>
           <div v-if="scrollDisabled && tableData.length > 0" class="load-finish">数据加载完</div>
         </div>
+        <el-backtop target=".search-result" :right="40" :bottom="100">
+        </el-backtop>
       </div>
     </div>
   </div>

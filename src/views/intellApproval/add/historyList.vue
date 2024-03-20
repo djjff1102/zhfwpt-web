@@ -48,6 +48,15 @@ const props = defineProps({
   }
 })
 
+watch(
+  () => props.companyId,
+  (v) => {
+    if(v) {
+      init();
+    }
+  }
+);
+
 const current = ref(1);
 const size = ref(10);
 const loading = ref(false);
@@ -59,7 +68,7 @@ const columns = reactive([
     width: 180,
   },
   {
-    title: '创建日期',
+    title: '申报日期',
     dataIndex: 'createDate',
     width: 180,
     sortable: {
@@ -134,7 +143,7 @@ const searchPar = ref({
   approveStatus: '', // 审批状态
   startTime: '',
   endTime: '',
-  companyId: props.companyId
+  companyId: ''
 })
 const scroll = ref({
   y: 800,
@@ -170,6 +179,7 @@ function onChange(dateString, date) {
 function getreporthistroy() {
   if(loading.value) return
   loading.value = true
+  searchPar.value.companyId = props.companyId
   reporthistroy(searchPar.value).then(res => {
     tableData.value = res.data
     pagination.value.total = res.total
@@ -182,7 +192,6 @@ function getreporthistroy() {
 const init = async () => {
   getreporthistroy()
 };
-init();
 </script>
 
 <style lang="scss" scoped>

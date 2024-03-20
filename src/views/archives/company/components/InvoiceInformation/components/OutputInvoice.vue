@@ -1,11 +1,17 @@
 <template>
   <!-- 发票信息 -->
-  <div class="container">
+  <div>
     <div class="search_box">
       <w-form :model="searchPar" layout="inline">
         <w-form-item class="mr-16px" field="type" label="发票类别">
-          <w-input v-model="searchPar.type" placeholder="请输入发票类别" ></w-input>
-          <!-- <w-select v-model="searchPar.type" placeholder="全部" /> -->
+          <!-- <w-input v-model="searchPar.type" placeholder="请输入发票类别" ></w-input> -->
+          <w-select v-model="searchPar.type" placeholder="全部">
+            <w-option>专用发票</w-option>
+            <w-option>普通发票</w-option>
+            <w-option>手写发票</w-option>
+            <w-option>定额发票</w-option>
+            <w-option>统一发票</w-option>
+          </w-select>
         </w-form-item>
         <w-form-item class="mr-16px" field="post" label="开票日期">
           <w-range-picker

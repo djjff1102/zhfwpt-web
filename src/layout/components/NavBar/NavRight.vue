@@ -52,7 +52,7 @@ const { isFullscreen, toggle } = useFullscreen();
  * 注销
  */
 function logout() {
-  ElMessageBox.confirm("确定注销并退出系统吗？", "提示", {
+  ElMessageBox.confirm("请确认是否退出登录？", "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",

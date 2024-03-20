@@ -83,7 +83,6 @@ const pagination = ref({
   total: 0,
   pageSize: 10,
   "show-total": true,
-  "show-page-size": true,
   "show-jumper": true,
 });
 const visible = ref(false)

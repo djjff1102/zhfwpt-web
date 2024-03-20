@@ -46,14 +46,14 @@
       <div class="title-sub">申报额度信息</div>
       <w-form :model="form" layout="vertical">
         <w-form-item field="limitType" label="申请调整额度类型" required>
-          <w-select v-if="initPageParam.edit" v-model="form.limitType" placeholder="请选择申请调整额度类型" style="height: 30px" @change="handleLone">
+          <w-select v-if="initPageParam.edit" v-model="form.limitType" placeholder="请选择申请调整额度类型" style="height: 30px" @change="handleLone(1)">
             <w-option :value="1" label="长期"></w-option>
             <w-option :value="2" label="短期"></w-option>
           </w-select>
            <div v-else>{{ form.limitType == '1' ? '长期' : '短期' }}</div>
         </w-form-item>
         <w-form-item v-if="form.limitType == '2'" field="adjustType" label="发票短期调整类型" required>
-          <w-select v-if="initPageParam.edit" v-model="form.adjustType" placeholder="请选择发票短期调整类型" style="height: 30px" @change="handleLone">
+          <w-select v-if="initPageParam.edit" v-model="form.adjustType" placeholder="请选择发票短期调整类型" style="height: 30px" @change="handleLone(2)">
             <w-option :value="1" labbel="当月">当月</w-option>
             <w-option :value="2" labbel="指定时间">指定时间</w-option>
           </w-select>
@@ -200,6 +200,9 @@ const queryPar = ref({}) // 路由查询参数
 // 切换长qi
 function handleLone(v) {
   dateRange.value = []
+  if(v==1 || (v==2 && form.value.adjustType == '1')) {
+    dateRange.value[0]= dayjs()
+  }
 }
 
 function updateApprval() {
