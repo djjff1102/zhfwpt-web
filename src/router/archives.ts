@@ -1,6 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
 export const Layout = () => import("@/layout/index.vue");
-
 const routes: RouteRecordRaw[] = [
   {
     path: "/archives",
@@ -22,7 +21,7 @@ const routes: RouteRecordRaw[] = [
         name: "Search",
         meta: {
           title: "search",
-          icon: "tree",
+          icon: "icon-quanjujiansuo",
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
@@ -86,7 +85,7 @@ const routes: RouteRecordRaw[] = [
         name: "Attention",
         meta: {
           title: "attention",
-          icon: "tree",
+          icon: "icon-woguanzhude",
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,

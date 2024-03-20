@@ -22,7 +22,7 @@ const routes: RouteRecordRaw[] = [
         name: "IntellApproval",
         meta: {
           title: "申报列表",
-          icon: "tree",
+          icon: "icon-shenbaoliebiao",
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,

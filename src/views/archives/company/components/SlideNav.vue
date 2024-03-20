@@ -1,5 +1,6 @@
 <template>
-  <div
+  <!-- <Teleport to="body"> -->
+      <div
     class="slide-nav"
     :style="{
       transform: `translateX(${isShowSlideNav ? '0px' : '142px'})`,
@@ -34,6 +35,8 @@
       </div>
     </div>
   </div>
+  <!-- </Teleport> -->
+
 </template>
 <script setup>
 let navList = ref([
@@ -146,17 +149,16 @@ const scollEvent = () => {
   document.querySelector(".company-content").addEventListener("scroll", event);
 };
 
-// let getOffsetTop = (navList) => {
-//   console.log('我被调用了-------------')
-//   navList.value.map((item) => {
-//     item.scoll = document.getElementById(item.id).offsetTop;
-//   });
-// };
+let getOffsetTop = (navList) => {
+  navList.value.map((item) => {
+    item.scoll = document.getElementById(item.id).offsetTop;
+  });
+};
 onMounted(() => {
   nextTick(() => {
     scollEvent();
-    // getOffsetTop(navList);
-    // setTimeout(() => {getOffsetTop(navList);}, 2000)
+    getOffsetTop(navList);
+    setTimeout(() => {getOffsetTop(navList);}, 2000)
   });
 });
 </script>

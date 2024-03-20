@@ -14,9 +14,9 @@ const currRoute = useRoute();
 const activeMenu = computed<string>(() => {
   const { meta, path } = currRoute;
   // if set path, the sidebar will highlight the path you set
-  if (meta.activeMenu) {
-    return meta.activeMenu;
-  }
+  // if (meta.activeMenu) {
+  //   return meta.activeMenu;
+  // }
   return path;
 });
 const props = defineProps({
