@@ -15,19 +15,20 @@
           </div>
           <div class="info">
             <p>
-              本次评估分值为 {{ suggestData.riskScore }}
-              分，该分值处玉低风险层级，以下为风险点，请根据实际情况研判额度申报。
+              本次评估分值为 <span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ suggestData.riskScore || '--' }}</span>
+              分，该分值处于<span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ suggestData?.riskLevel && fxtype[suggestData?.riskLevel].label || '--' }}</span>，以下为风险点，请根据实际情况研判额度申报。
             </p>
             <p>
-              风险点总结：本次评估检测到 {{ suggestData.highRiskNum + suggestData.mediumRiskNum + suggestData.lowRiskNum }} 个风险点，高风险 {{ suggestData.highRiskNum }} 个，中风险 {{ suggestData.mediumRiskNum }}
-              个，低风险 {{ suggestData.lowRiskNum }} 个
+              风险点总结：本次评估检测到 {{ suggestData.highRiskNum + suggestData.mediumRiskNum + suggestData.lowRiskNum }} 个风险点，高风险
+              <span class="leval-1">{{ suggestData.highRiskNum }}</span>个，中风险 <span class="leval-2">{{ suggestData.mediumRiskNum }}</span>
+              个，低风险 <span class="leval-3">{{ suggestData.lowRiskNum }}</span> 个
             </p>
           </div>
         </div>
         <div class="danger-point">
           <div class="danger-point-title">
             <img :src="highPoint" alt="" />
-            风险点
+            风险分类展示
           </div>
           <Dangershow :data="suggestData.riskInfoVoList"></Dangershow>
         </div>
@@ -35,7 +36,7 @@
     </div>
     <!-- <DangerPoint :data="tableData" :companyName="companyName" :companyId="companyId"></DangerPoint> -->
     <div class="danger-point-container">
-      <div class="title">风险分类展示</div>
+      <div class="title">风险点</div>
       <div class="search_box">
         <w-form :model="searchPar" layout="inline">
           <w-form-item field="name" label="风险名称">
@@ -155,10 +156,6 @@ const columns = reactive([
   },
 ]);
 
-function handleExport() {
-  alert('导出')
-}
-
 const changePagesize = (v) => {
   pagination.value.pageSize = v;
   searchPar.value.page = 1;
@@ -179,7 +176,7 @@ function reset() {
   searchPar.value = {
     companyName: '',
     companyId: '',
-    riskType: 0,
+    riskType: '',
     name: '' // 风险名称
   }
   getqueryRiskInfoByCompanyInfo()
@@ -225,6 +222,18 @@ function init() {
 init()
 </script>
 <style lang="scss" scoped>
+.leval-1 {
+  color: rgba(247, 97, 97, 1);
+}
+
+.leval-2 {
+  color: rgba(230, 174, 3, 1);
+}
+
+.leval-3 {
+  color: rgba(52, 112, 255, 1);
+}
+
 .container {
   display: flex;
 }

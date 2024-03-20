@@ -20,7 +20,7 @@
         </div>
         <div class="slide-item">
           <img :src="fpcxlsp" alt="" />
-          <span class="module-name">发票超限量审批</span>
+          <span class="module-name">发票审批信息</span>
         </div>
         <div class="slide-item">
           <img :src="jyxx" alt="" />
@@ -44,7 +44,7 @@
         </div>
         <div class="slide-item">
           <img :src="jjpz" alt="" />
-          <span class="module-name">交易凭证</span>
+          <span class="module-name">合同信息</span>
         </div>
         <div class="slide-item">
           <img :src="yhls" alt="" />
@@ -58,7 +58,7 @@
 import RiskValueAssessment from "@/components/RiskValueAssessment/index.vue";
 import qygsxx from "@/assets/images/moduleIcon/企业工商信息.png";
 import fxzpg from "@/assets/images/moduleIcon/风险值评估.png";
-import fpcxlsp from "@/assets/images/moduleIcon/发票超限量审批.png";
+import fpcxlsp from "@/assets/images/moduleIcon/发票审批信息.png";
 import jyxx from "@/assets/images/moduleIcon/经营信息.png";
 import ddxx from "@/assets/images/moduleIcon/订单信息.png";
 import fpxx from "@/assets/images/moduleIcon/发票信息.png";

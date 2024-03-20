@@ -101,7 +101,6 @@ async function handleUpload(options: UploadRequestOptions, f): Promise<any> {
   allFileList.value.push(res.data);
   let name = res.data.split('@quesoar@')[1]
   fileList.value.push(name)
-  console.log('全部文件------------：', allFileList.value)
   emit('updateUpload', allFileList.value)
 }
 
@@ -109,8 +108,8 @@ async function handleUpload(options: UploadRequestOptions, f): Promise<any> {
  * 限制用户上传文件的格式和大小
  */
 function handleBeforeUpload(file: UploadRawFile) {
-  if (file.size > 2 * 1048 * 1048) {
-    ElMessage.warning("上传图片不能大于2M");
+  if (file.size > 100 * 1024 * 1024) {
+    ElMessage.warning("上传文件不能大于100M");
     return false;
   }
   return true;

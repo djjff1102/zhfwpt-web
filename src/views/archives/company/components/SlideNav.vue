@@ -48,13 +48,13 @@ let navList = ref([
   },
   {
     id: "RiskValueAssessment",
-    name: "风控值评估",
+    name: "风险值评估",
     scoll: 0,
     show: true,
   },
   {
     id: "ExcessInvoiceApproval",
-    name: "超额开票审批",
+    name: "审批信息",
     scoll: 0,
     show: true,
   },
@@ -91,7 +91,7 @@ let navList = ref([
 
   {
     id: "TransactionVoucher",
-    name: "交易凭证",
+    name: "合同信息",
     scoll: 0,
     show: true,
   },

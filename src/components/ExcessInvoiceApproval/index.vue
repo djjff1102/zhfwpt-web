@@ -1,9 +1,9 @@
 <template>
-  <!-- 发票超额审批 -->
+  <!-- 审批信息 -->
   <div class="container">
     <div class="search_box">
       <w-form :model="form" layout="inline">
-        <w-form-item class="mr-16px" field="post" label="订单创建日期">
+        <w-form-item class="mr-16px" field="post" label="申报日期">
           <w-range-picker
             class="w-250px"
             :time-picker-props="{
@@ -18,7 +18,7 @@
             @ok="onOk"
           />
         </w-form-item>
-        <w-form-item class="mr-16px" field="post" label="风险程度">
+        <w-form-item class="mr-16px" field="post" label="审批状态">
           <w-select v-model="form.post" placeholder="请输入角色编号" />
         </w-form-item>
         <el-button type="primary" class="mr-8px">搜索</el-button>

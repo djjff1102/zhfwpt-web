@@ -81,3 +81,10 @@ export function clearObject(obj) {
     }
   }
 }
+
+// 针对搜索结果命中的词高亮
+export function highlightSearchTerm(str,key){
+	var reg = new RegExp((`(${key})`), "gi");
+	var replace = '<span style="color:#FD463E;font-weight:bold;">$1</span>';
+	return `<span>${str.replace(reg, replace)}</span>`;
+}

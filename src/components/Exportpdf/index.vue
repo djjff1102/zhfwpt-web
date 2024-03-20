@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="text" @click="exportPDF">导出PDF</el-button>
+    <el-button :loading="loading" type="text" @click="exportPDF">导出PDF</el-button>
   </div>
 </template>
  

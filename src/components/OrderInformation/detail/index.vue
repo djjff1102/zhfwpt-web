@@ -3,7 +3,7 @@
     <div class="title">基本信息</div>
     <BaseInfo v-if="fromOrder == 'true'" :order="order"></BaseInfo>
     <BaseInfoFP v-else :order="fapiao"></BaseInfoFP>
-    <div class="title">子仓库信息</div>
+    <div class="title">子订单信息</div>
     <SecondWarehousing :parentCode="code"></SecondWarehousing>
     <div v-if="fromOrder == 'true'">
       <div class="title">关联发票列表</div>
@@ -29,6 +29,7 @@ function init() {
   fromOrder.value = route.query.fromOrder;
   if(fromOrder.value == 'true') {
     order.value = JSON.parse(route.query.order);
+    console.log('订单---------------：', order.value)
     code.value = order.value.code;
   } else {
     fapiao.value = JSON.parse(route.query.fapiao);

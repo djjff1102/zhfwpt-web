@@ -174,7 +174,7 @@ export const columnsDD = reactive([
   //   dataIndex: "totalMoney",
   // },
   // {
-  //   title: "交易凭证（合同）编号",
+  //   title: "合同编号",
   //   dataIndex: "certificateCode",
   // },
 ]);

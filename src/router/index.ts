@@ -62,6 +62,10 @@ export const constantRoutes: RouteRecordRaw[] = [
 ];
 
 export const asyncRoutes: RouteRecordRaw[] = [
+  ...riskMonitoring,
+  ...intellApproval,
+  ...archives,
+  ...warehousing,
   {
     path: "/system",
     component: Layout,
@@ -152,10 +156,6 @@ export const asyncRoutes: RouteRecordRaw[] = [
       },
     ],
   },
-  ...archives,
-  ...warehousing,
-  ...riskMonitoring,
-  ...intellApproval,
 ];
 
 /**

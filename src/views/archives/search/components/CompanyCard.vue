@@ -59,7 +59,7 @@
         <i  v-if="comData?.attention" class="iconfont icon-guanzhu-mian"></i>
         <i v-else class="iconfont icon-guanzhu-xian"></i>
         </template>
-        <template #default>关注</template>
+        <template #default>{{ comData?.attention ? '已关注' : '关注' }}</template>
       </el-button>
     </div>
   </div>
@@ -78,6 +78,9 @@ const props = defineProps({
   },
   indexID: {
     default: 0
+  },
+  search: {
+    default: ''
   }
 })
 
@@ -100,13 +103,17 @@ function handleCompanyDetail(d) {
 
 // 关注、取消关注
 function handleAttention(d) {
-  console.log('关注list：', d)
   const data = {
     companyIdList: [d?.companyId],
     userId: userStore?.user?.id,
     attention: !d?.attention
   }
   payAttention(data).then(res => {
+    if(d?.attention) {
+      ElMessage.warning("已取消关注该企业");
+    } else {
+      ElMessage.success("已关注该企业, 您关注的企业收录在[ 我关注的]模块");
+    }
     emits('refresh', props.indexID); // 前端本地刷新数据
   }).catch(err => {
     

@@ -8,7 +8,7 @@
       <w-input-search
         v-model="searchPar.allContentSearch"
         :style="{ width: '60%' }"
-        placeholder="请输入企业名称、人名、注册号、同一社会信"
+        placeholder="请输入企业名称、法定代表人、工商注册号、统一社会信用代码"
         @change="handleSearch"
       />
       <!-- </div> -->
@@ -61,7 +61,13 @@
 
         <NoMatch v-if="isEmpty" class="mt-60px"></NoMatch>
         <div class="company-list">
-          <CompanyCard v-for="(item, i) in tableData" :key="i" :comData="item" :indexID="i" @refresh="refresh"></CompanyCard>
+          <CompanyCard v-for="(item, i) in tableData" 
+            :key="i" 
+            :comData="item" 
+            :indexID="i" 
+            :search="searchPar.allContentSearch" 
+            @refresh="refresh"
+          ></CompanyCard>
           <div v-if="scrollDisabled && tableData.length > 0" class="load-finish">数据加载完</div>
         </div>
       </div>
@@ -140,6 +146,7 @@ function handleSearch() {
   loading.value = true;
   tableData.value = [];
   loadPage();
+  getProvince();
 }
 
 // 加载下一页数据
@@ -184,8 +191,8 @@ function handleInfiniteOnLoad() {
 
 getAttentionTotal(); // 获取关注统计
 getProvince(); // 获取省份地区分组统计
-
 loadPage();
+
 onMounted(() => {
   computeHeight();
 });

@@ -24,7 +24,7 @@
       <el-descriptions-item label="所属行业"> {{ data?.industry }} </el-descriptions-item>
       <el-descriptions-item label="人员规模"> {{ data?.personQuantity }} </el-descriptions-item>
       <el-descriptions-item label="企业类型">{{ data?.companyType }} </el-descriptions-item>
-      <el-descriptions-item label="所属地区">所属地区？？ </el-descriptions-item>
+      <el-descriptions-item label="所属地区">{{ data.provinceShort }}</el-descriptions-item>
 
       <el-descriptions-item label="主管税务机关"> {{ data?.taxAuthority }} </el-descriptions-item>
       <el-descriptions-item label="纳税人资质"> {{ data?.taxType }} </el-descriptions-item>

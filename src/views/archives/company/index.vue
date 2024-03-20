@@ -25,7 +25,7 @@
         <RiskValueAssessment :companyName="companyMsg?.companyName" :companyId="companyMsg?.companyId"></RiskValueAssessment>
       </div>
       <div id="ExcessInvoiceApproval">
-        <div class="title">发票超限量审批</div>
+        <div class="title">审批信息</div>
         <ExcessInvoiceApproval></ExcessInvoiceApproval>
       </div>
       <div id="ManagementInformation">
@@ -49,7 +49,7 @@
         <GoodsInformation :companyName="companyMsg?.companyName"></GoodsInformation>
       </div>
       <div id="TransactionVoucher">
-        <div class="title">交易凭证</div>
+        <div class="title">合同信息</div>
         <TransactionVoucher :companyName="companyMsg?.companyName"></TransactionVoucher>
       </div>
       <div id="AccountStatement">

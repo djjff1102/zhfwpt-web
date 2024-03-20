@@ -25,7 +25,7 @@
       {{ order?.goodAddress }}
     </el-descriptions-item>
     <el-descriptions-item label="仓库名称"> {{ order?.warehouseName }} </el-descriptions-item>
-    <el-descriptions-item label="交易凭证（合同）编号">
+    <el-descriptions-item label="合同编号">
      {{ order?.certificateCode }}
     </el-descriptions-item>
     <el-descriptions-item label="总金额"> {{ order?.totalMoney }} </el-descriptions-item>
