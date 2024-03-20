@@ -25,9 +25,9 @@ const logo = ref(new URL(`../../../assets/logo.png`, import.meta.url).href);
         <img
           v-if="settingsStore.sidebarLogo"
           :src="logo"
-          class="w-10 h-10 ml-[23px] mr-[9px]"
+          class="logo"
         />
-        <img src="@/assets/base/title.png" alt="" class="h-[22px]" />
+        <img src="@/assets/base/title.png" alt="" class="title" />
       </router-link>
     </transition>
   </div>
@@ -44,4 +44,14 @@ const logo = ref(new URL(`../../../assets/logo.png`, import.meta.url).href);
 .sidebarLogoFade-leave-to {
   opacity: 0;
 }
+.logo {
+  width: 35px;
+  display: block;
+  margin-left: 16px;
+  margin-right: 14px;
+}
+.title {
+  width: 286px;
+}
+
 </style>

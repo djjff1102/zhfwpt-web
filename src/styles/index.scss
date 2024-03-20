@@ -2,6 +2,12 @@
 @import "./sidebar";
 @import "./reset";
 @import "./dark";
+@import "./default.scss";
+
+@font-face {
+  font-family: myFontALHT;
+  src: url('@/assets/iconfont/aliht.ttf')
+}
 ::-webkit-scrollbar-thumb {
   width: 0px;
 }

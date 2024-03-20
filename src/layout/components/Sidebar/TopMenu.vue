@@ -84,4 +84,11 @@ onMounted(() => {
   padding-left: 84px;
   font-size: 18px;
 }
+:deep(.el-menu-item) {
+  font-size: 18px;
+  font-weight: 500;
+}
+:deep(.el-menu-item.is-active::after) {
+  border-radius: 2px;
+}
 </style>

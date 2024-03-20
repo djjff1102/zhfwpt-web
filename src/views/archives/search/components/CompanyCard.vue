@@ -123,7 +123,7 @@ function handleAttention(d) {
 <style lang="scss" scoped>
 .company-container {
   background-color: #fff;
-  padding: 24px;
+  padding: 24px 0;
   border-bottom: 1px solid #eeeeee;
   cursor: pointer;
 }

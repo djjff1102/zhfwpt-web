@@ -3,13 +3,14 @@
     class="company-search-container"
     style="overflow: hidden">
     <div class="search">
-      <h2 class="search-title">精准数据，助力商业决策每一步.</h2>
+      <h2 class="search-title">精准数据助力商业决策每一步</h2>
       <!-- <div class="search-input"> -->
       <w-input-search
         v-model="searchPar.allContentSearch"
         :style="{ width: '60%' }"
         placeholder="请输入企业名称、法定代表人、工商注册号、统一社会信用代码"
         @change="handleSearch"
+        @search="handleSearch"
       />
       <!-- </div> -->
     </div>
@@ -53,11 +54,7 @@
             </div>
           </div>
         </div>
-        <el-divider>
-          <span v-if="isOver" @click="toggleOpen" class="text-[#3470FF]"
-            >{{ isOpen ? "收起" : "展开" }}详情</span
-          >
-        </el-divider>
+        <el-divider></el-divider>
 
         <NoMatch v-if="isEmpty" class="mt-60px"></NoMatch>
         <div class="company-list">
@@ -198,6 +195,9 @@ onMounted(() => {
 });
 </script>
 <style lang="scss" scoped>
+.company-list {
+  padding: 0 24px;
+}
 .active-province {
   color: rgba(52, 112, 255, 1);
 }
@@ -225,10 +225,11 @@ onMounted(() => {
     line-height: 22px;
     letter-spacing: 1px;
     text-align: center;
+    font-family: myFontALHT;
   }
 }
 .search-brief {
-  padding-bottom: 10px;
+  padding: 20px 24px 15px 24px;
   .label {
     display: inline-block;
     font-weight: 500;
@@ -267,7 +268,7 @@ onMounted(() => {
 .search-result {
   height: calc(100vh - 316px);
   overflow: auto;
-  padding: 20px 14px;
+  // padding: 20px 14px;
   z-index: 1;
   position: relative;
   top: -23px;
@@ -282,5 +283,34 @@ onMounted(() => {
   text-align: center;
   font-size: 14px;
   color: #BFC4CD;
+}
+:deep(.w-icon-hover) {
+  &::before {
+    display: none;
+  }
+}
+:deep(.w-icon-hover) {
+  position: static;
+  svg{
+    color: #BFC4CD;
+  }
+}
+
+:deep(.w-icon-hover:hover) {
+  background: rgba(0,0,0,0);
+  svg{
+    color: #3470ff;
+    background: rgba(0,0,0,0);
+  }
+}
+
+:deep(.w-icon-hover:active) {
+  svg{
+    color: #1346c0;
+  }
+}
+
+:deep(.w-input) {
+  border-right: solid 1px rgba(237, 241, 252, 1)
 }
 </style>
