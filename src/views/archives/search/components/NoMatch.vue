@@ -16,5 +16,8 @@ import noMath from "@/assets/images/no-match.png";
   width: 100%;
   height: 100%;
   text-align: center;
+  img {
+    width: 250px;
+  }
 }
 </style>

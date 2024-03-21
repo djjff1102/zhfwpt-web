@@ -30,9 +30,9 @@
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
         </template>
-        <!-- <template v-slot:operations>
-          <el-button type="text">详情</el-button>
-        </template> -->
+        <template v-slot:approvalstatus="{rowIndex}">
+            <div>{{ approveStatus[tableData[rowIndex].approveStatus] }}</div>
+        </template>
       </m-table>
     </div>
   </div>
@@ -41,6 +41,7 @@
 import dayjs from "dayjs";
 import { ref, reactive} from "vue";
 import { reporthistroy } from '@/api/intellApproval'
+import { approveStatus } from '../type'
 
 const props = defineProps({
   companyId: {
@@ -75,11 +76,11 @@ const columns = reactive([
       sortDirections: ['ascend', 'descend']
     }
   },
-  {
-    title: "申报单位",
-    dataIndex: "companyName",
-    width: 180
-  },
+  // {
+  //   title: "申报单位",
+  //   dataIndex: "companyName",
+  //   width: 180
+  // },
   {
     title: '申报额度',
     dataIndex: 'money',
@@ -112,16 +113,21 @@ const columns = reactive([
     width: 100,
   },
   {
-    title: "风险评估任务",
-    dataIndex: "taskStatus",
-    width: 180,
+    title: "备注",
+    dataIndex: "approveRemark",
+    width: 100,
   },
-  {
-    title: "审批操作-指定操作的人才能看到",
-    dataIndex: "status",
-    slotName: 'approvalstatus',
-    width: 180,
-  },
+  // {
+  //   title: "风险评估任务",
+  //   dataIndex: "taskStatus",
+  //   width: 180,
+  // },
+  // {
+  //   title: "审批操作-指定操作的人才能看到",
+  //   dataIndex: "status",
+  //   slotName: 'approvalstatus',
+  //   width: 180,
+  // },
   // {
   //   title: "操作",
   //   dataIndex: "operations",

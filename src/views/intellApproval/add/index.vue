@@ -4,7 +4,7 @@
   <div class="section section-detail-header">
     <div v-if="queryPar.reportCode" class="section-sub">
       <span style="color: rgba(153, 153, 153, 1);padding-right: 30px;">申请编号：{{ queryPar?.reportCode }}</span>
-      <span><span style="color: rgba(51, 51, 51, 1)">审批状态：</span><span style="color: rgba(5, 148, 235, 1)">{{ queryPar?.approveStatus }}</span></span>
+      <span><span style="color: rgba(51, 51, 51, 1)">审批状态：</span><span style="color: rgba(5, 148, 235, 1)">{{ approveStatus[form?.approveStatus] }}</span></span>
     </div>
     <div v-if="initPageParam.title == '详情'" class="section-sub flex-base-end">
       <el-button v-hasPerm="btnApprovalCode.approvallist" style="margin-right: 8px;" @click="showRecord = true">审批记录</el-button>
@@ -131,7 +131,7 @@
   <detail-com v-if="!initPageParam.edit" :companyId="form.companyId" :companyName="form.companyName" ></detail-com>
   <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com>
   <approval-record :showRecord="showRecord" :reportId="route.query.id" @updateAdd="showRecord = false"></approval-record>
-  <ApprovalDo :showAdd="showApproval" @updateAdd="updateApprval" :reportId="route.query.id"></ApprovalDo>
+  <ApprovalDo :showAdd="showApproval" @updateAdd="updateApprval" @updateData="updateApprovalStatus" :reportId="route.query.id"></ApprovalDo>
 </div>
 </template>
 <script lang="ts" setup>
@@ -147,6 +147,7 @@ import FileList from './FileList.vue';
 import ApprovalDo from './ApprovalDo.vue';
 import dayjs from "dayjs";
 import { btnApprovalCode } from '@/router/permissionCode'
+import { approveStatus } from '../type'
 
 const userStore = useUserStoreHook();
 let userId = userStore.user.id;
@@ -224,6 +225,14 @@ function handleLone(v) {
     form.value.validDateStart = dayjs() as any;
     form.value.validDateEnd = nextMonth as  any
   }
+}
+
+// 更新审批状态
+function updateApprovalStatus() {
+  let id = route.query.id // 申请人发票ID
+  getDetail({
+    id,
+  });
 }
 
 function updateApprval() {

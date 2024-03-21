@@ -16,5 +16,10 @@ import noData from "@/assets/images/no-data.png";
   width: 100%;
   height: 100%;
   text-align: center;
+  img {
+    width: 250px;
+    height: 120px;
+  }
 }
+
 </style>

@@ -7,56 +7,55 @@
       <div class="company-desc">
         <div class="company-name">
           <span class="mr-12px">{{ comData?.companyName }}</span>
-          <el-tag round effect="light" type="success">{{comData?.companyStatus}}</el-tag>
+          <el-tag round effect="light" type="success">{{comData?.companyStatus || '-'}}</el-tag>
         </div>
         <div class="company-tags">
-          <el-tag round effect="light" type="primary">{{ comData?.companyType }}</el-tag>
+          <el-tag round effect="light" type="primary">{{ comData?.companyType || '-' }}</el-tag>
         </div>
         <div class="desc-info">
           <div class="desc-item">
             <div class="desc-label">法定代表人：</div>
-            <div class="desc-value">{{ comData?.legalPersonCaption }}</div>
+            <div class="desc-value">{{ comData?.legalPersonCaption || '-' }}</div>
           </div>
           <div class="desc-item">
             <div class="desc-label">注册资本：</div>
-            <div class="desc-value">{{ comData?.capital }}</div>
+            <div class="desc-value">{{ comData?.capital || '-' }}</div>
           </div>
           <div class="desc-item">
             <span class="desc-label">成立日期：</span>
-            <span class="desc-value">{{ comData?.createTime }}</span>
+            <span class="desc-value">{{ comData?.createTime || '-' }}</span>
           </div>
           <div class="desc-item">
             <span class="desc-label">统一社会信用代码：</span>
-            <span class="desc-value">{{ comData?.creditNo }}</span>
+            <span class="desc-value">{{ comData?.creditNo || '-' }}</span>
           </div>
         </div>
         <el-divider border-style="dashed" />
         <div class="desc-info">
           <div class="desc-item">
             <span class="desc-label">电话：</span>
-            <span class="desc-value">{{ comData?.companyPhone }}</span>
+            <span class="desc-value">{{ comData?.companyPhone || '-' }}</span>
           </div>
           <div class="desc-item">
             <span class="desc-label">邮箱：</span>
-            <span class="desc-value">{{ comData?.companyEmail }}</span>
+            <span class="desc-value">{{ comData?.companyEmail || '-' }}</span>
           </div>
           <div class="desc-item">
             <span class="desc-label">官网：</span>
-            <span class="desc-value">-</span>
+            <span class="desc-value">{{ comData?.websiteUrl || '-' }}</span>
           </div>
         </div>
-      
         <div class="desc-info">
           <div class="desc-item">
             <span class="desc-label">地址：</span>
-            <span class="desc-value">{{ comData?.companyAddress }}</span
+            <span class="desc-value">{{ comData?.companyAddress || '--' }}</span
             >
           </div>
         </div>
       </div>
       <el-button class="absolute right-0 top-39px" :type="btnType(comData?.attention)" @click.stop="handleAttention(comData)">
         <template #icon>
-        <i  v-if="comData?.attention" class="iconfont icon-guanzhu-mian"></i>
+        <i v-if="comData?.attention" class="iconfont icon-guanzhu-mian"></i>
         <i v-else class="iconfont icon-guanzhu-xian"></i>
         </template>
         <template #default>{{ comData?.attention ? '已关注' : '关注' }}</template>

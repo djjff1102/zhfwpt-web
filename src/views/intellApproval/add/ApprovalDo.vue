@@ -1,11 +1,10 @@
 <template>
   <el-dialog v-model="visible" :before-close="handleBeforeClose" :width="600">
     <div class="proval-content">
-       <w-form :model="form" >
+       <w-form ref="baseForm" :model="form" :rules="rules">
           <w-form-item field="approveResult" label="审批结果" required>
             <el-select v-model="form.approveResult" placeholder="请选择审批结果" style="height: 30px">
               <el-option v-for="(item, i) in appravalResultList" :key="i" :value="item.value" :label="item.label"></el-option>
-              <!-- <el-option :value="3" >驳回</el-option> -->
             </el-select>
           </w-form-item>
           <w-form-item field="approveOpinion" label="审批意见" required>
@@ -32,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch, reactive } from 'vue'
 import { appravalResultList } from '../type'
 import { approveSave } from '@/api/intellApproval'
 import { useRouter } from 'vue-router';
@@ -48,6 +47,16 @@ const props = defineProps({
   }
 })
 
+const baseForm = ref()
+const rules = reactive({
+  approveResult: [{ required: true, message: "请选择审批结果", trigger: "blur" }],
+  approveOpinion: [
+    { required: true, message: "请输入审批意见", trigger: ["blur", "change"] },
+  ],
+  approveRemark: [
+    { required: true, message: "请输入备注", trigger: "blur" },
+  ]
+});
 const visible = ref(false)
 const form = ref({
   reportId: '', // 申报id
@@ -56,6 +65,7 @@ const form = ref({
   approveRemark: '', // 审批备注
   fileUrl: '', // 附件路径
 })
+const loading = ref(false)
 
 const emits = defineEmits(['updateAdd', 'updateData'])
 
@@ -68,12 +78,26 @@ function handleCancel (v: any) {
 }
 
 function handleOk() {
-  form.value.reportId = props.reportId;
-  approveSave(form.value).then(res => {
-    emits('updateData')
-    emits('updateAdd')
-    ElMessage.success("审批成功！");
-  }).catch(err => {})
+  baseForm.value.validate(v => {
+    if(!v) {
+      if(loading.value) return;
+      loading.value = true
+      form.value.reportId = props.reportId;
+      approveSave(form.value).then(res => {
+        emits('updateData')
+        emits('updateAdd')
+        ElMessage.success("审批成功！");
+        loading.value = false
+      }).catch(err => {
+        loading.value = false
+      })
+    } else {
+      ElMessage.warning("请确认必填信息");
+    }
+  })
+
+
+  
   
 }
 

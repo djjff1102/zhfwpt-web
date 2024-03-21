@@ -1,9 +1,13 @@
 <template>
-  <w-spin :loading="loading">
-    <el-tabs type="card" v-modl="activeTab"  @tab-click="handleChange">
+  <!-- <w-spin :loading="loading"> -->
+    <!-- <el-tabs type="card" v-modl="activeTab"  @tab-click="handleChange">
       <el-tab-pane label="行政许可" name="0"> </el-tab-pane>
       <el-tab-pane label="历史行政许可" name="1"> </el-tab-pane>
-    </el-tabs>
+    </el-tabs> -->
+    <div class="tab-wrap">
+      <div class="tab-item" :class="{'tab-item-active': activeTab == '0'}" @click="handleChange('0')">行政许可</div>
+      <div class="tab-item" :class="{'tab-item-active': activeTab == '1'}" @click="handleChange('1')">历史行政许可</div>
+    </div>
     <div class="search_box">
       <w-form :model="form" layout="inline">
         <w-form-item class="mr-16px" field="post" label="许可机关">
@@ -24,15 +28,15 @@
         @page-size-change="changePagesize"
         :bordered="false"
       >
-        <template v-slot:index="{ $index }">
-          {{ $index + 1 }}
+        <template v-slot:index="{ rowIndex }">
+          {{ rowIndex + 1 }}
         </template>
         <template v-slot:operations>
           <el-button type="text" disabled>详情</el-button>
         </template>
       </m-table>
     </div>
-  </w-spin>
+  <!-- </w-spin> -->
   <!-- 行政许可 -->
 
 </template>
@@ -86,6 +90,7 @@ const columns = reactive([
   },
   {
     title: "操作",
+    width: 100,
     dataIndex: "operations",
     slotName: "operations",
     fixed: "right",
@@ -115,13 +120,14 @@ const form = ref({
   post: "",
 });
 
-function handleChange(tab, event) {
-  activeTab.value = tab.index
+function handleChange(tab) {
+  activeTab.value = tab
   searchPar.page = 1;
   pagination.value.current = 1
   searchPar.value.isHistory = Number(activeTab.value);
   init();
 }
+
 const changePagesize = (v) => {
   searchPar.value.page_size = v
   searchPar.value.page = 1
@@ -129,22 +135,12 @@ const changePagesize = (v) => {
   pagination.value.pageSize = v;
   init();
 };
+
 const changepage = (v) => {
   searchPar.value.page = v
   pagination.value.current = v
   init();
 };
-function onSelect(dateString, date) {
-  console.log("onSelect", dateString, date);
-}
-
-function onChange(dateString, date) {
-  console.log("onChange: ", dateString, date);
-}
-
-function onOk(dateString, date) {
-  console.log("onOk: ", dateString, date);
-}
 
 function init () {
   if(loading.value) return
@@ -167,5 +163,30 @@ init();
 }
 .table-warp {
   height: calc(100% - 100px);
+}
+.tab-wrap {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 12px;
+  .tab-item {
+    width: 176px;
+    height: 48px;
+    line-height: 48px;
+    background: #F8F8F8;
+    border-radius: 4px;
+    margin-right: 4px;
+    font-weight: 400;
+    font-size: 16px;
+    color: #6A6A6A;
+    text-align: center;
+    font-style: normal;
+    cursor: pointer;
+  }
+
+  .tab-item-active {
+    font-weight: 500;
+    background: #F7FAFF;
+    color: rgba(52, 112, 255, 1);
+  }
 }
 </style>

@@ -4,6 +4,7 @@
       <div class="title base-title">风险值评估</div>
       <RiskValueAssessment v-bind="$attrs" ></RiskValueAssessment>
       <div class="title base-title">企业进销项发票趋势</div>
+      <PredictCom :data="echartData.sum"></PredictCom>
       <div class="tendencyChart w-full h-400px">
         <TendencyChart :dataList="echartData.x" :time="echartData.y"></TendencyChart>
       </div>

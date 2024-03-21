@@ -3,7 +3,7 @@
     class="company-search-container"
     style="overflow: hidden">
     <div class="search">
-      <h2 class="search-title">精准数据助力商业决策每一步</h2>
+      <h2 class="search-title">精准数据，助力商业决策每一步</h2>
       <!-- <div class="search-input"> -->
       <w-input-search
         v-model="searchPar.allContentSearch"
@@ -314,5 +314,17 @@ onMounted(() => {
 
 :deep(.w-input) {
   border-right: solid 1px rgba(237, 241, 252, 1)
+}
+
+:deep(.w-input-wrapper) {
+  padding-right: 8px;
+}
+
+:deep(.w-input-wrapper .w-input-suffix) {
+  padding-left: 8px;
+  svg {
+    width: 18px;
+    height: 18px;
+  }
 }
 </style>
