@@ -215,10 +215,14 @@ const queryPar = ref({}) // 路由查询参数
 // 切换长qi
 function handleLone(v) {
   dateRange.value = []
-  if(v==1) {
+  if(v==1 && form.value.limitType == '1') {
     dateRange.value= [dayjs(), '2099-12-31']
     form.value.validDateStart = dayjs() as any;
     form.value.validDateEnd = '2099-12-31'
+  } else if(v==1 && form.value.limitType == '2') {
+    dateRange.value= []
+    form.value.validDateStart = '';
+    form.value.validDateEnd = ''
   } else if((v==2 && form.value.adjustType == '1')) {
     let nextMonth = dayjs(dayjs()).add(30, 'day')
     dateRange.value = [dayjs(), nextMonth] as any

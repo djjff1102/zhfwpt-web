@@ -1,10 +1,11 @@
 <template>
-  <div id="tendencyChart"></div>
+  <div id="tendencyChart">
+      <no-data></no-data>
+  </div>
 </template>
 <script setup>
 import * as echarts from "echarts";
 import { onMounted, watch } from "vue";
-import option from "./option";
 
 const props = defineProps({
   time: {
@@ -80,6 +81,9 @@ function init() {
   });
   tendencyChart.setOption(echartData.value);
 }
+// onMounted(() => {
+//   init()
+// })
 
 </script>
 <style lang="scss">

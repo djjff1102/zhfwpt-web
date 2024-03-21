@@ -2,18 +2,28 @@
   <!-- 风险点 -->
   <div class="container">
     <div class="search_box">
-      <w-form :model="form" layout="inline">
+      <w-form :model="searchPar" layout="inline">
         <w-form-item field="name" label="申报日期">
-           <w-range-picker
+          <w-range-picker
+            v-model="curDate"
+            class="w-250px"
+            :time-picker-props="{
+              defaultValue: [
+                dayjs('00:00:00', 'HH:mm:ss'),
+                dayjs('09:09:06', 'HH:mm:ss'),
+              ],
+            }"
+            format="YYYY-MM-DD"
             @change="onChange"
-            style="width: 254px; margin-bottom: 20px;"
           />
         </w-form-item>
         <w-form-item class="mr-16px" field="post" label="审批状态">
-          <w-select v-model="form.post" placeholder="全部" />
+          <w-select v-model="searchPar.approveStatus" placeholder="请选择审批状态" style="width: 160px">
+            <w-option v-for="(item, i) in statusList" :key="i" :value="item.value">{{ item.label }}</w-option>
+          </w-select>
         </w-form-item>
-        <el-button type="primary" class="mr-8px">搜索</el-button>
-        <el-button>重置</el-button>
+        <el-button type="primary" class="mr-8px" @click="search">搜索</el-button>
+        <el-button @click="reset">重置</el-button>
       </w-form>
     </div>
     <div class="table-warp">
@@ -41,7 +51,7 @@
 import dayjs from "dayjs";
 import { ref, reactive} from "vue";
 import { reporthistroy } from '@/api/intellApproval'
-import { approveStatus } from '../type'
+import { approveStatus, statusList } from '../type'
 
 const props = defineProps({
   companyId: {
@@ -58,8 +68,7 @@ watch(
   }
 );
 
-const current = ref(1);
-const size = ref(10);
+const curDate = ref([])
 const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
@@ -166,6 +175,7 @@ const changePagesize = (v) => {
 };
 
 const changepage = (v) => {
+  pagination.value.current = v
   searchPar.value.page = v
   getreporthistroy();
 };
@@ -173,12 +183,26 @@ const changepage = (v) => {
 // 选择时间
 function onChange(dateString, date) {
   if(dateString && dateString.length > 0) {
-    orderPar.value.startTime = dateString[0];
-    orderPar.value.endTime = dateString[1];
+    searchPar.value.startTime = dateString[0];
+    searchPar.value.endTime = dateString[1];
   } else {
-    orderPar.value.startTime = '';
-    orderPar.value.endTime = '';
+    searchPar.value.startTime = '';
+    searchPar.value.endTime = '';
   }
+}
+
+function reset() {
+  pagination.value.current = 1;
+  searchPar.value.page = 1;
+  searchPar.value.approveStatus = ''
+  searchPar.value.startTime = ''
+  searchPar.value.endTime = ''
+  curDate.value = []
+  getreporthistroy();
+}
+
+function search() {
+  getreporthistroy()
 }
 
 // 申报历史
