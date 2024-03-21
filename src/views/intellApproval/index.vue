@@ -29,8 +29,8 @@
       </w-form>
     </div>
     <div class="oper">
-      <el-button type="primary" class="mr-8px" @click="operate('add')">新增</el-button>
-      <el-button :loading="loadingExport" type="primary" class="mr-8px" @click="handleExport">导出</el-button>
+      <el-button v-hasPerm="btnApprovalCode.add" type="primary" class="mr-8px" @click="operate('add')">新增</el-button>
+      <el-button v-hasPerm="btnApprovalCode.export" :loading="loadingExport" type="primary" class="mr-8px" @click="handleExport">导出</el-button>
     </div>
     <spin :loading="loading">
       <div class="table-warp">
@@ -51,10 +51,10 @@
             <div>{{ taskStatus[tableData[rowIndex].taskStatus] }}</div>
         </template>
         <template v-slot:operations="{rowIndex}">
-          <el-button type="text" @click="approval(tableData[rowIndex])">审批</el-button>
-          <el-button type="text" @click="operate('operate', tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == 2">编辑</el-button>
-          <el-button type="text" @click="operate('detail', tableData[rowIndex])">详情</el-button>
-          <el-button type="text" @click="del(tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == 2">删除</el-button>
+          <el-button v-hasPerm="btnApprovalCode.approval" type="text" @click="approval(tableData[rowIndex])">审批</el-button>
+          <el-button v-hasPerm="btnApprovalCode.edit" type="text" @click="operate('operate', tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == 2">编辑</el-button>
+          <el-button v-hasPerm="btnApprovalCode.detail" type="text" @click="operate('detail', tableData[rowIndex])">详情</el-button>
+          <el-button v-hasPerm="btnApprovalCode.del" type="text" @click="del(tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == 2">删除</el-button>
         </template>
       </m-table>
     </div>
@@ -67,11 +67,11 @@
 <script lang="ts" setup>
 import {  ref, reactive } from "vue";
 import ApprovalDo from './add/ApprovalDo.vue';
-import { debounce } from "lodash-es";
 import { useRouter } from 'vue-router';
 import { fpspReport, approvalExport, delReport } from '@/api/intellApproval'
 import { approveStatus, statusList, taskStatus } from './type.ts'
 import dayjs from "dayjs";
+import { btnApprovalCode } from '@/router/permissionCode'
 
 const router = useRouter();
 

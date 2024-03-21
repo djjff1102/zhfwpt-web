@@ -7,14 +7,14 @@
       <span><span style="color: rgba(51, 51, 51, 1)">审批状态：</span><span style="color: rgba(5, 148, 235, 1)">{{ queryPar?.approveStatus }}</span></span>
     </div>
     <div v-if="initPageParam.title == '详情'" class="section-sub flex-base-end">
-      <el-button style="margin-right: 8px;" @click="showRecord = true">审批记录</el-button>
-      <el-button type="primary" @click="toApproval">审批</el-button>
+      <el-button v-hasPerm="btnApprovalCode.approvallist" style="margin-right: 8px;" @click="showRecord = true">审批记录</el-button>
+      <el-button v-hasPerm="btnApprovalCode.approval" type="primary" @click="toApproval">审批</el-button>
     </div>
   </div>
-  <div class="section">
+  <div v-hasPerm="btnApprovalCode.approvaluser" class="section">
     <div class="section-sub">
       <div class="title-sub">申报人信息</div>
-      <w-form :model="form" layout="vertical">
+      <w-form ref="basefrom1" :model="form" layout="vertical" :rules="rules">
         <w-form-item field="taxAuthority"  label="主管税务机关" disabled required>
           <w-input v-if="initPageParam.edit" style="height: 30px" v-model="form.taxAuthority" placeholder="please enter your username..." />
           <div v-else>{{ form?.taxAuthority }}</div>
@@ -31,7 +31,7 @@
           <w-input v-if="initPageParam.edit" style="height: 30px" v-model="form.applyUserName" placeholder="please enter your post..." />
            <div v-else>{{ form.applyUserName }}</div>
         </w-form-item>
-        <w-form-item field="applyTime" label="申请日期" required>
+        <w-form-item field="applyTime" label="申请日期">
           <w-date-picker v-if="initPageParam.edit" v-model="form.applyTime" style="width: 100%;height: 30px;" placeholder="请选择日期">
             <template #extra>
               <div>请填写在税务申报系统提交申报的日期</div>
@@ -44,7 +44,12 @@
     </div>
     <div class="section-sub">
       <div class="title-sub">申报额度信息</div>
-      <w-form :model="form" layout="vertical">
+      <w-form ref="basefrom2" :model="form" layout="vertical" :rules="rules">
+         <w-form-item field="money" label="申请额度" required>
+          <w-input-number v-if="initPageParam.edit" v-model="form.money" placeholder="请输入额度" style="height: 30px">
+          </w-input-number>
+           <div v-else>{{ form.money }}</div>
+        </w-form-item>
         <w-form-item field="limitType" label="申请调整额度类型" required>
           <w-select v-if="initPageParam.edit" v-model="form.limitType" placeholder="请选择申请调整额度类型" style="height: 30px" @change="handleLone(1)">
             <w-option :value="1" label="长期"></w-option>
@@ -60,7 +65,7 @@
            <div v-else>{{ form.adjustType == '1' ? '当月' : '指定时间' }}</div>
         </w-form-item>
         <!-- 指定时间 -->
-        <w-form-item field="validDateStart" label="起止有效期" required>
+        <w-form-item v-if="form.limitType" field="validDateStart" label="起止有效期" required>
           <w-range-picker 
             v-if="initPageParam.edit"
             :popup-visible="popupVisible"
@@ -79,7 +84,7 @@
       </w-form>
     </div>
   </div>
-  <div class="com-section">
+  <div class="com-section" v-hasPerm="btnApprovalCode.approvalexcute">
     <div class="title-sub">申报资料</div>
     <card-tab
       :showExtra="false"
@@ -112,7 +117,7 @@
       <div>金额合计：<span class="num-light">{{ totalMoney }}</span></div>
     </div>
   </div>
-  <div class="com-section">
+  <div v-hasPerm="btnApprovalCode.approvaluser" class="com-section">
     <div class="title-sub title-sub-sub">其他资料</div>
     <div v-if="initPageParam.edit">
       <MultiUpload @updateUpload="updateUpload" :file="fileList"></MultiUpload>
@@ -120,8 +125,8 @@
     <FileList v-if="!initPageParam.edit" :file="fileList"></FileList>
   </div>
   <div v-if="initPageParam.edit" class="bottom flex-base-end">
-    <el-button style="margin-right: 20px" @click="handleSave(1)">暂存</el-button>
-    <el-button type="primary" @click="handleSave(2)">提交</el-button>
+    <el-button v-hasPerm="btnApprovalCode.save" style="margin-right: 20px" @click="handleSave(1)">暂存</el-button>
+    <el-button v-hasPerm="btnApprovalCode.submit" type="primary" @click="handleSave(2)">提交</el-button>
   </div>
   <detail-com v-if="!initPageParam.edit" :companyId="form.companyId" :companyName="form.companyName" ></detail-com>
   <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com>
@@ -141,8 +146,7 @@ import { pro, columnsHT,columnsDD, columnsFP, columnsCC, columnsYH, nameMap } fr
 import FileList from './FileList.vue';
 import ApprovalDo from './ApprovalDo.vue';
 import dayjs from "dayjs";
-import { rangeArr } from 'element-plus';
-
+import { btnApprovalCode } from '@/router/permissionCode'
 
 const userStore = useUserStoreHook();
 let userId = userStore.user.id;
@@ -152,6 +156,16 @@ let companyName = userStore?.user?.organization?.name;
 const route = useRoute();
 const router = useRouter();
 
+const basefrom1 = ref();
+const basefrom2 = ref();
+const rules = reactive({
+  applyTime: [{ required: true, message: '申报日期不能为空', trigger: 'focus' }],
+  money: [{ required: true, message: '请输入申请额度', trigger: 'focus' }],
+  limitType: [{ required: true, message: '请选择调整类型' }],
+  adjustType: [{ required: true, message: '请选择短期调整类型' }],
+  validDateStart: [{ required: true, message: '请选择起止有效期',trigger: ['blur', 'change'] }],
+  reason: [{ required: true, message: '请输入申请理由', trigger: 'blur' }],
+})
 const popupVisible = ref(false)
 const type = ref('add')
 const dataList = ref([])
@@ -171,7 +185,7 @@ const dateRange = ref([])
 const form = ref({
   companyId: '', // 企业ID
   applyUserId: '', // 申请人ID :TODO
-
+  money: 0,
   taxAuthority: '', // 主管税务机关
   limitType: '', // 申请额度调整类型
   companyName: companyName, // 申请单位
@@ -200,8 +214,15 @@ const queryPar = ref({}) // 路由查询参数
 // 切换长qi
 function handleLone(v) {
   dateRange.value = []
-  if(v==1 || (v==2 && form.value.adjustType == '1')) {
-    dateRange.value[0]= dayjs()
+  if(v==1) {
+    dateRange.value= [dayjs(), '2099-12-31']
+    form.value.validDateStart = dayjs() as any;
+    form.value.validDateEnd = '2099-12-31'
+  } else if((v==2 && form.value.adjustType == '1')) {
+    let nextMonth = dayjs(dayjs()).add(30, 'day')
+    dateRange.value = [dayjs(), nextMonth] as any
+    form.value.validDateStart = dayjs() as any;
+    form.value.validDateEnd = nextMonth as  any
   }
 }
 
@@ -286,7 +307,23 @@ function updateAdd(codeHT:any, codeDD: any, codeFP: any, codeCC: any, codeYH: an
 
 // 新增暂存、新增提交
 function handleSave(type: any) {
-  // 1暂存 2提交
+  basefrom1.value.validate(v => {
+    if(!v) {
+      basefrom2.value.validate(k => {
+        if(!k) {
+          checkSave(type)
+        } else {
+          ElMessage.warning("请核实必填信息");
+        }
+      })
+    } else {
+      ElMessage.warning("请核实必填信息");
+    }
+  })
+}
+
+function checkSave(type: any) {
+    // 1暂存 2提交
   form.value.dataStatus = type;
   form.value.validDateStart = dateRange.value[0];
   form.value.validDateEnd = dateRange.value[1]
@@ -329,10 +366,14 @@ function handleAddNew() {
 function dataSelect(d:any) {
   if(form.value.limitType == '1') { // 长期
     dateRange.value = [d[0], '2099-12-31']
+    form.value.validDateStart = d[0]
+    form.value.validDateEnd = '2099-12-31'
     popupVisibleChange()
   } else if(form.value.limitType == '2' && form.value.adjustType == '1') { // 当月
     let nextMonth = dayjs(d[0]).add(30, 'day')
     dateRange.value = [d[0], nextMonth]
+     form.value.validDateStart = d[0]
+    form.value.validDateEnd = nextMonth
     popupVisibleChange()
   }
 }

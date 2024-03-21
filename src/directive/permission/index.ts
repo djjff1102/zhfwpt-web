@@ -1,23 +1,24 @@
 import { useUserStoreHook } from "@/store/modules/user";
 import { Directive, DirectiveBinding } from "vue";
 
+const userStore = useUserStoreHook();
 /**
  * 按钮权限
  */
 export const hasPerm: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
+    console.log("权限吗111---------------：", binding);
     const { value } = binding;
-    if (value) {
-      if (!checkPermission(value)) {
-        el.parentNode && el.parentNode.removeChild(el);
-      }
+    if (!value) return;
+    let code = userStore.user.authorityCode;
+    const curValue = binding.value;
+    console.log("权限吗---------------：", curValue);
+    // 可根据自己的业务修改此处实现逻辑
+    if (!code.includes(curValue)) {
+      el.style.display = "none";
     } else {
-      throw new Error(
-        "need perms! Like v-has-perm=\"['100', '101']\" v-has-perm=\"'101'\""
-      );
+      el.style.display = "auto";
     }
-
-    return true;
   },
 };
 
