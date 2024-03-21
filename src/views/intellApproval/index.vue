@@ -173,16 +173,24 @@ function approval(d) {
 
 function del(row: any) {
   if(loading.value) return;
-  loading.value = true;
-  delReport({
-    id: row.id
-  }).then(res => {
-    loading.value = false;
-    ElMessage.success("删除成功！");
-    getfpspReport();
-  }).catch(err => {
-    loading.value = false;
-  })
+    ElMessageBox.confirm("确认删除该申请吗?", "警告", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    })
+    .then(() => {
+        loading.value = true;
+        delReport({
+          id: row.id
+        }).then(res => {
+          loading.value = false;
+          ElMessage.success("删除成功！");
+          getfpspReport();
+        }).catch(err => {
+          loading.value = false;
+        })
+    })
+    .catch(() => ElMessage.info("已取消删除"));
 }
 
 const loadingExport = ref(false)

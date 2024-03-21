@@ -162,10 +162,11 @@ const basefrom2 = ref();
 const rules = reactive({
   applyTime: [{ required: true, message: '申报日期不能为空', trigger: 'focus' }],
   money: [{ required: true, message: '请输入申请额度', trigger: 'focus' }],
+  reason: [{ required: true, message: '请输入申请理由', trigger: 'blur' }],
   limitType: [{ required: true, message: '请选择调整类型' }],
   adjustType: [{ required: true, message: '请选择短期调整类型' }],
   validDateStart: [{ required: true, message: '请选择起止有效期',trigger: ['blur', 'change'] }],
-  reason: [{ required: true, message: '请输入申请理由', trigger: 'blur' }],
+  
 })
 const popupVisible = ref(false)
 const type = ref('add')

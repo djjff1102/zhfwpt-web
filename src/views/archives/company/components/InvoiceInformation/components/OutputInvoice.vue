@@ -205,13 +205,13 @@ const scroll = ref({
   x: 1080,
 });
 
-// 跳转订单详情
+// 跳转发票详情
 function handleDetail(d) {
   router.push({
-    path: '/archives/orderDetail',
+    path: '/archives/fpdetail',
     query: {
       fapiao: JSON.stringify(d),
-      fromOrder: false
+      name:'销项发票'
     }
   })
 }

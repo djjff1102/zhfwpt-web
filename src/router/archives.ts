@@ -94,6 +94,21 @@ const routes: RouteRecordRaw[] = [
           activeMenu: "/archives",
         },
       },
+      {
+        path: "fpdetail",
+        component: () => import("@/views/archives/fpdetail/index.vue"),
+        name: "Fpdetail",
+        meta: {
+          title: "发票详情",
+          icon: "icon-woguanzhude",
+          hidden: true,
+          roles: ["ADMIN"],
+          keepAlive: true,
+          code: [304],
+          activeMenu: "/archives",
+          showMenu: false,
+        },
+      },
     ],
   },
 ];

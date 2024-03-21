@@ -56,7 +56,7 @@
         </div>
         <el-divider></el-divider>
 
-        <NoMatch v-if="isEmpty" class="mt-60px"></NoMatch>
+        <NoMatch v-if="isEmpty && !loading" class="mt-60px"></NoMatch>
         <div class="company-list">
           <CompanyCard v-for="(item, i) in tableData" 
             :key="i" 
@@ -231,7 +231,11 @@ onMounted(() => {
   }
 }
 .search-brief {
+  position: sticky;
+  top: 0;
   padding: 20px 24px 15px 24px;
+  background-color: #fff;
+  z-index:9;
   .label {
     display: inline-block;
     font-weight: 500;

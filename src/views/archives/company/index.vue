@@ -5,7 +5,7 @@
         <i  v-if="comData?.attention" class="iconfont icon-guanzhu-mian"></i>
         <i v-else class="iconfont icon-guanzhu-xian"></i>
         </template>
-        <template #default>关注</template>
+        <template #default>{{ companyMsg?.attention ? '已关注' : '关注' }}</template>
       </el-button>
     <!-- <el-button class="absolute right-20px top-20px" type="primry">
       <template #icon>
@@ -17,43 +17,43 @@
     <div class="company-content">
       <el-backtop target=".company-content" :right="40" :bottom="100" />
       <div id="BusinessInformation">
-        <div class="title">企业工商信息</div>
+        <div class="title"><img :src="qygsxx">企业工商信息</div>
         <BusinessInformation :data="companyMsg"></BusinessInformation>
       </div>
       <div id="RiskValueAssessment">
-        <div class="title">风险值评估</div>
+        <div class="title"><img :src="fxzpg">风险值评估</div>
         <RiskValueAssessment :companyName="companyMsg?.companyName" :companyId="companyMsg?.companyId"></RiskValueAssessment>
       </div>
       <div id="ExcessInvoiceApproval">
-        <div class="title">发票审批信息</div>
+        <div class="title"><img :src="fpcxlsp">发票审批信息</div>
         <ExcessInvoiceApproval></ExcessInvoiceApproval>
       </div>
       <div id="ManagementInformation">
-        <div class="title">经营信息</div>
+        <div class="title"><img :src="jyxx">经营信息</div>
         <ManagementInformation :companyName="companyMsg?.companyName"></ManagementInformation>
       </div>
       <div id="OrderInformation">
-        <div class="title">订单信息</div>
+        <div class="title"><img :src="ddxx">订单信息</div>
         <OrderInformation :companyName="companyMsg?.companyName"></OrderInformation>
       </div>
       <div id="InvoiceInformation">
-        <div class="title">发票信息</div>
+        <div class="title"><img :src="fpxx">发票信息</div>
         <InvoiceInformation></InvoiceInformation>
       </div>
       <div id="LogisticsWarehousingInformation">
-        <div class="title">物流仓储信息</div>
+        <div class="title"><img :src="wlccxx">物流仓储信息</div>
         <LogisticsWarehousingInformation :companyName="companyMsg?.companyName"></LogisticsWarehousingInformation>
       </div>
       <div id="GoodsInformation">
-        <div class="title">主营商品信息</div>
+        <div class="title"><img :src="zyspxx">主营商品信息</div>
         <GoodsInformation :companyName="companyMsg?.companyName"></GoodsInformation>
       </div>
       <div id="TransactionVoucher">
-        <div class="title">合同信息</div>
+        <div class="title"><img :src="jjpz">合同信息</div>
         <TransactionVoucher :companyName="companyMsg?.companyName"></TransactionVoucher>
       </div>
       <div id="AccountStatement">
-        <div class="title">银行流水</div>
+        <div class="title"><img :src="yhls">银行流水</div>
         <AccountStatement :companyName="companyMsg?.companyName"></AccountStatement>
       </div>
     </div>
@@ -76,6 +76,16 @@ import SlideNav from "./components/SlideNav.vue";
 import { payAttention } from '@/api/archives'
 import { useRouter, useRoute } from 'vue-router';
 import { useUserStoreHook } from "@/store/modules/user";
+import qygsxx from "@/assets/images/moduleIcon/企业工商信息.png";
+import fxzpg from "@/assets/images/moduleIcon/风险值评估.png";
+import fpcxlsp from "@/assets/images/moduleIcon/发票审批信息.png";
+import jyxx from "@/assets/images/moduleIcon/经营信息.png";
+import ddxx from "@/assets/images/moduleIcon/订单信息.png";
+import fpxx from "@/assets/images/moduleIcon/发票信息.png";
+import wlccxx from "@/assets/images/moduleIcon/物流仓储信息.png";
+import zyspxx from "@/assets/images/moduleIcon/主营商品信息.png";
+import jjpz from "@/assets/images/moduleIcon/交易凭证.png";
+import yhls from "@/assets/images/moduleIcon/银行流水.png";
 
 const userStore = useUserStoreHook();
 // const router = useRouter();
@@ -95,7 +105,11 @@ function handleAttention(d) {
     attention: !d?.attention
   }
   payAttention(data).then(res => {
-    alert('关注')
+    if(d?.attention) {
+      ElMessage.warning("已取消关注该企业");
+    } else {
+      ElMessage.success("已关注该企业, 您关注的企业收录在[ 我关注的]模块");
+    }
   }).catch(err => {
     
   })
@@ -126,24 +140,31 @@ init()
   border-bottom: 1px solid #edf1fc;
 }
 .title {
-  position: relative;
-  margin: 16px 0;
-  padding-left: 11px;
+  display: flex;
+  align-items: center;
+  // position: relative;
+  margin: 32px 0 16px 0;
+  // padding-left: 11px;
   font-family: PingFangSC, PingFang SC;
   font-weight: 500;
   font-size: 18px;
   color: #333333;
   line-height: 22px;
-  &::before {
-    content: "";
-    position: absolute;
-    left: 0px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 18px;
-    background-color: #1890ff;
+  img {
+    width: 22px;
+    display: block;
+    margin-right: 8px;;
   }
+  // &::before {
+  //   content: "";
+  //   position: absolute;
+  //   left: 0px;
+  //   top: 50%;
+  //   transform: translateY(-50%);
+  //   width: 3px;
+  //   height: 18px;
+  //   background-color: #1890ff;
+  // }
 }
 .company-content {
   position: relative;
