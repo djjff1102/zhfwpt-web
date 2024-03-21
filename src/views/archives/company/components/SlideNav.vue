@@ -54,7 +54,7 @@ let navList = ref([
   },
   {
     id: "ExcessInvoiceApproval",
-    name: "审批信息",
+    name: "发票审批信息",
     scoll: 0,
     show: true,
   },

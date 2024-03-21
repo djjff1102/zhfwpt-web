@@ -1,6 +1,6 @@
 <template>
   <!-- 主营商品信息 -->
-  <div class="container">
+  <div >
     <div class="search_box">
       <w-form :model="searchPar" layout="inline">
         <w-form-item class="mr-16px" field="post" label="计量单位">

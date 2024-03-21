@@ -1,6 +1,6 @@
 <template>
   <!-- 交易凭证 -->
-  <div class="container">
+  <div>
     <div class="search_box">
       <w-form :model="searchPar" layout="inline">
         <w-form-item field="code" label="合同编号">

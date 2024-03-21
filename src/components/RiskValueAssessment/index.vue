@@ -1,6 +1,6 @@
 <template>
   <div id="suggestdom">
-    <div class="container">
+    <div class="container-risk-wrap">
       <div class="chart">
         <RiskChart :riskData="riskData"/>
       </div>
@@ -222,6 +222,9 @@ function init() {
 init()
 </script>
 <style lang="scss" scoped>
+.container-risk-wrap {
+  display: flex;
+}
 .leval-1 {
   color: rgba(247, 97, 97, 1);
 }

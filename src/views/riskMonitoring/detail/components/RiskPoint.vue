@@ -1,6 +1,6 @@
 <template>
   <!-- 风险点 -->
-  <div class="container">
+  <div >
     <div class="search_box">
       <w-form :model="form" layout="inline">
         <w-form-item field="name" label="风险名称">

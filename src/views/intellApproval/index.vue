@@ -32,7 +32,6 @@
       <el-button v-hasPerm="btnApprovalCode.add" type="primary" class="mr-8px" @click="operate('add')">新增</el-button>
       <el-button v-hasPerm="btnApprovalCode.export" :loading="loadingExport" type="primary" class="mr-8px" @click="handleExport">导出</el-button>
     </div>
-    <spin :loading="loading">
       <div class="table-warp">
       <m-table
         style="height: 100%"
@@ -58,8 +57,6 @@
         </template>
       </m-table>
     </div>
-    </spin>
-    
     <ApprovalDo :showAdd="showApproval" @updateAdd="updateApprval" :reportId="reportId" @updateData="getfpspReport"></ApprovalDo>
   </div>
 </template>

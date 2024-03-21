@@ -1,6 +1,6 @@
 <template>
   <!-- 银行流水 -->
-  <div class="container">
+  <div>
     <div class="search_box">
       <w-form :model="searchPar" layout="inline">
         <w-form-item field="name" label="付款日期">

@@ -1,6 +1,6 @@
 <template>
   <!-- 物流仓储信息 -->
-  <div class="container">
+  <div>
     <div class="search_box">
       <w-form :model="form" layout="inline">
         <w-form-item class="mr-16px" field="post" label="所属地区">

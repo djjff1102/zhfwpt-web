@@ -1,6 +1,6 @@
 <template>
   <!-- 审批信息 -->
-  <div class="container">
+  <div>
     <div class="search_box">
       <w-form :model="form" layout="inline">
         <w-form-item class="mr-16px" field="post" label="申报日期">
@@ -19,7 +19,10 @@
           />
         </w-form-item>
         <w-form-item class="mr-16px" field="post" label="审批状态">
-          <w-select v-model="form.post" placeholder="请输入角色编号" />
+          <w-select v-model="form.approveStatus" placeholder="请选择审批状态" style="width: 160px">
+            <w-option v-for="(item, i) in statusList" :key="i" :value="item.value">{{ item.label }}</w-option>
+          </w-select>
+          <!-- <w-select v-model="form.post" placeholder="请输入审批状态" /> -->
         </w-form-item>
         <el-button type="primary" class="mr-8px">搜索</el-button>
         <el-button>重置</el-button>
@@ -27,7 +30,7 @@
     </div>
     <div class="table-warp">
       <m-table
-        style="height: 100%"
+        style="width: 100%"
         :data="tableData"
         :columns="columns"
         :scroll="scroll"
@@ -51,6 +54,7 @@
 <script setup>
 import dayjs from "dayjs";
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
+import { statusList } from '@/typings/typeMap'
 
 const current = ref(1);
 const size = ref(10);
