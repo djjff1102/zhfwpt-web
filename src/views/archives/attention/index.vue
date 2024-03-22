@@ -179,11 +179,11 @@ function exportBlob(b: any) {
 }
 
 function handleCompanyDetail(d) {
-  // 跳转企业详情
   router.push({ 
     path: '/archives/companyDetail', 
     query: {
-      company: JSON.stringify(d)
+      companyId: d.companyId,
+      companyName: d.companyName
     }
   });
 }

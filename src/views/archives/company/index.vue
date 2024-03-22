@@ -22,19 +22,19 @@
       </div>
       <div id="RiskValueAssessment">
         <div class="title"><img :src="fxzpg">风险值评估</div>
-        <RiskValueAssessment :companyName="companyMsg?.companyName" :companyId="companyMsg?.companyId"></RiskValueAssessment>
+        <RiskValueAssessment :companyName="companyName" :companyId="id"></RiskValueAssessment>
       </div>
       <div id="ExcessInvoiceApproval">
         <div class="title"><img :src="fpcxlsp">发票审批信息</div>
-        <ExcessInvoiceApproval :companyId="companyMsg?.companyId"></ExcessInvoiceApproval>
+        <ExcessInvoiceApproval :companyId="id"></ExcessInvoiceApproval>
       </div>
       <div id="ManagementInformation">
         <div class="title"><img :src="jyxx">经营信息</div>
-        <ManagementInformation :companyName="companyMsg?.companyName"></ManagementInformation>
+        <ManagementInformation :companyName="companyName"></ManagementInformation>
       </div>
       <div id="OrderInformation">
         <div class="title"><img :src="ddxx">订单信息</div>
-        <OrderInformation :companyName="companyMsg?.companyName"></OrderInformation>
+        <OrderInformation :companyName="companyName"></OrderInformation>
       </div>
       <div id="InvoiceInformation">
         <div class="title"><img :src="fpxx">发票信息</div>
@@ -42,19 +42,19 @@
       </div>
       <div id="LogisticsWarehousingInformation">
         <div class="title"><img :src="wlccxx">物流仓储信息</div>
-        <LogisticsWarehousingInformation :companyName="companyMsg?.companyName"></LogisticsWarehousingInformation>
+        <LogisticsWarehousingInformation :companyName="companyName"></LogisticsWarehousingInformation>
       </div>
       <div id="GoodsInformation">
         <div class="title"><img :src="zyspxx">主营商品信息</div>
-        <GoodsInformation :companyName="companyMsg?.companyName"></GoodsInformation>
+        <GoodsInformation :companyName="companyName"></GoodsInformation>
       </div>
       <div id="TransactionVoucher">
         <div class="title"><img :src="jjpz">合同信息</div>
-        <TransactionVoucher :companyName="companyMsg?.companyName"></TransactionVoucher>
+        <TransactionVoucher :companyName="companyName"></TransactionVoucher>
       </div>
       <div id="AccountStatement">
         <div class="title"><img :src="yhls">银行流水</div>
-        <AccountStatement :companyName="companyMsg?.companyName"></AccountStatement>
+        <AccountStatement :companyName="companyName"></AccountStatement>
       </div>
     </div>
     <SlideNav></SlideNav>
@@ -92,6 +92,7 @@ const userStore = useUserStoreHook();
 const route = useRoute();
 const companyMsg = ref({}) // 公司信息
 const id = ref('') // 公司id
+const companyName = ref('')
 
 // 关注按钮类型 已关注/未关注
 function btnType(v) {
@@ -119,6 +120,7 @@ function handleAttention(d) {
 
 function init() {
   id.value = route.query.companyId;
+  companyName.value = route.query.companyName
   getCompany({
     id: id.value
   }).then(res => {

@@ -280,7 +280,7 @@ function getgroupByInvoiceDate() {
 }
 
 const init = async () => {
-  searchPar.value.receivingCompanyName = JSON.parse(route.query.company).companyName
+  searchPar.value.receivingCompanyName = route.query.companyName
   getqyzxInvoice();
   getgroupByInvoiceDate();
 };
