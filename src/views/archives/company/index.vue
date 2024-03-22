@@ -73,7 +73,7 @@ import ManagementInformation from "./components/ManagementInformation/index.vue"
 import InvoiceInformation from "./components/InvoiceInformation/index.vue";
 import GoodsInformation from "./components/GoodsInformation.vue";
 import SlideNav from "./components/SlideNav.vue";
-import { payAttention } from '@/api/archives'
+import { payAttention, getCompany } from '@/api/archives'
 import { useRouter, useRoute } from 'vue-router';
 import { useUserStoreHook } from "@/store/modules/user";
 import qygsxx from "@/assets/images/moduleIcon/企业工商信息.png";
@@ -91,6 +91,7 @@ const userStore = useUserStoreHook();
 // const router = useRouter();
 const route = useRoute();
 const companyMsg = ref({}) // 公司信息
+const id = ref('') // 公司id
 
 // 关注按钮类型 已关注/未关注
 function btnType(v) {
@@ -105,6 +106,7 @@ function handleAttention(d) {
     attention: !d?.attention
   }
   payAttention(data).then(res => {
+    init()
     if(d?.attention) {
       ElMessage.warning("已取消关注该企业");
     } else {
@@ -116,7 +118,12 @@ function handleAttention(d) {
 }
 
 function init() {
-  companyMsg.value =  JSON.parse(route.query.company);
+  id.value = route.query.companyId;
+  getCompany({
+    id: id.value
+  }).then(res => {
+    companyMsg.value = res.data
+  }).catch(err => {})
 }
 
 // 页面初始化

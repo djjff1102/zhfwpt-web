@@ -348,3 +348,25 @@ export function BDaeegmnopprrttuy(
     data,
   });
 }
+
+// 公司基本信息
+export function getCompany(params: any): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: `/base/company_base/${params.id}`,
+    method: "get",
+    params,
+  });
+}
+
+/**
+ * 商品查询
+ */
+export function goods(
+  data: ProvinceSearch
+): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: "/base/qyzx_invoice_good",
+    method: "post",
+    data,
+  });
+}

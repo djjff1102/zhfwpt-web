@@ -4,7 +4,7 @@
     <BaseInfo v-if="name == '销项发票'" :order="fapiao"></BaseInfo>
     <BaseInfoIN :order="fapiao"></BaseInfoIN>
     <div class="title">商品单信息</div>
-    <SecondWarehousing :parentCode="code"></SecondWarehousing>
+    <SecondWarehousing :id="fapiao.id"></SecondWarehousing>
   </div>
 </template>
 <script setup>

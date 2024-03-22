@@ -18,7 +18,7 @@
         </w-form-item>
         <w-form-item class="mr-16px" field="post" label="审批状态">
           <w-select v-model="searchPar.approveStatus" placeholder="请选择审批状态" style="width: 160px">
-            <w-option v-for="(item, i) in statusList" :key="i" :value="item.value">{{ item.label }}</w-option>
+            <w-option v-for="(item, i) in statusListHis" :key="i" :value="item.value">{{ item.label }}</w-option>
           </w-select>
         </w-form-item>
         <el-button type="primary" class="mr-8px" @click="search">搜索</el-button>
@@ -50,7 +50,7 @@
 import dayjs from "dayjs";
 import { ref, reactive} from "vue";
 import { reporthistroy } from '@/api/intellApproval'
-import { approveStatus, statusList } from '../type'
+import { approveStatus, statusListHis } from '../type'
 
 const props = defineProps({
   companyId: {

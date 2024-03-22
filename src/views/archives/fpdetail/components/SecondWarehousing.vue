@@ -3,7 +3,7 @@
   <div class="second-warehousing-container">
     <div class="mount-sum">
       <span class="mount-sum-item">金额总计：{{ jine }} </span>
-      <span> 税额总计：？？</span>
+      <span> 税额总计：{{ shuie }}</span>
     </div>
     <!-- <div class="search_box">
       <w-form :model="form" layout="inline">
@@ -61,10 +61,11 @@
 <script setup>
 import dayjs from "dayjs";
 import { ref, reactive } from "vue";
-import { qyzxOrderSub, suborderDropDownBox } from  '@/api/archives'
+import { qyzxOrderSub,goods,  suborderDropDownBox } from  '@/api/archives'
+import { pro } from "@/components/ExcessInvoiceApproval/type";
 
 const props = defineProps({
-  parentCode: {
+  id: {
     type: String,
     default: ''
   }
@@ -100,25 +101,25 @@ const columns = reactive([
     fixed: "left",
   },
    {
-    title: "单价？",
-    dataIndex: "",
+    title: "单价",
+    dataIndex: "unitPrice",
     fixed: "left",
   },
   {
     title: "金额",
-    dataIndex: "totalMoney",
+    dataIndex: "amountIncludeTax",
   },
   {
-    title: "税率？",
-    dataIndex: "",
+    title: "税率",
+    dataIndex: "taxRate",
   },
   {
-    title: "税额？",
-    dataIndex: "",
+    title: "税额",
+    dataIndex: "taxAmount",
   },
   {
-    title: "税收分类编码？",
-    dataIndex: "",
+    title: "税收分类编码",
+    dataIndex: "taxClassificationCode",
   },
 ]);
 const pagination = ref({
@@ -134,8 +135,6 @@ const searchPar = ref({
   goodType: '',
   orderCreateDateStart: '',
   orderCreateDateEnd: '',
-  parentOrderCode: '', // 主订单编号
-  code: '' // 子订单编号
 })
 const scroll = ref({
   y: 800,
@@ -146,6 +145,7 @@ const form = ref({
   post: "",
 });
 const jine = ref(0) // 金额总计
+const shuie = ref(0) // 税额
 const changePagesize = (v) => {
   pagination.value.pageSize = v;
   pagination.value.current = 1;
@@ -161,15 +161,20 @@ const changepage = (v) => {
 
 function getSum(data) {
   let sum = 0;
+let n = 0
   data.forEach(e => {
-    sum += e.totalMoney;
+    let total = e.amountIncludeTax || 0
+    let taxAmount = e.taxAmount || 0
+    sum += total;
+    n += taxAmount
   });
   jine.value = sum
+  shuie.value = n
 }
 
 // 子订单信息
 function getqyzxOrderSub() {
-  qyzxOrderSub(searchPar.value).then(res => {
+  goods(searchPar.value).then(res => {
     tableData.value = res.data;
     getSum(res.data)
     pagination.value.total = res.total

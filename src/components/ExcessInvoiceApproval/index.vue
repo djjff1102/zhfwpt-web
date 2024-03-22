@@ -51,9 +51,8 @@
 <script setup>
 import dayjs from "dayjs";
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
-import { statusList } from '@/typings/typeMap'
 import { reporthistroy } from '@/api/intellApproval'
-import { approveStatus } from './type'
+import { approveStatus, statusList } from './type'
 
 const props = defineProps({
   companyId: {

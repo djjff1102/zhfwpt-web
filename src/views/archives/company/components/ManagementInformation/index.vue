@@ -1,6 +1,6 @@
 <template >
   <!-- 经营信息 -->
-  <el-tabs type="card">
+  <el-tabs type="card" >
     <el-tab-pane label="进出口信用">
       <ImportAndExport v-bind="$attrs"></ImportAndExport>
     </el-tab-pane>
@@ -30,4 +30,7 @@ import EquityPenetration from "./components/EquityPenetration.vue";
 import SupplyChainAnalysis from "./components/SupplyChainAnalysis.vue";
 </script>
 <style lang="scss" scoped>
+:deep(.el-tabs__header) {
+  margin-bottom: 8px !important;
+}
 </style>

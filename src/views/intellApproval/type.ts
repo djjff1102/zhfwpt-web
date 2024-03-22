@@ -35,6 +35,17 @@ export const statusList = [
   },
 ];
 
+export const statusListHis = [
+  {
+    value: 2,
+    label: "通过",
+  },
+  {
+    value: 3,
+    label: "驳回",
+  },
+];
+
 export enum pro {
   HT = "1", // 合同
   DD = "2", // 订单

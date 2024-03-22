@@ -4,7 +4,7 @@
       <el-tab-pane label="行政许可" name="0"> </el-tab-pane>
       <el-tab-pane label="历史行政许可" name="1"> </el-tab-pane>
     </el-tabs> -->
-    <div class="tab-wrap">
+    <div class="tab-wrap" style="margin-bottom: 8px;">
       <div class="tab-item" :class="{'tab-item-active': activeTab == '0'}" @click="handleChange('0')">行政许可</div>
       <div class="tab-item" :class="{'tab-item-active': activeTab == '1'}" @click="handleChange('1')">历史行政许可</div>
     </div>
@@ -211,5 +211,8 @@ init();
 }
 :deep(.w-select) {
   width: 400px!important;
+}
+:deep(.tab-wrap) {
+  margin-bottom: 8px!important;
 }
 </style>

@@ -10,7 +10,7 @@
     <el-descriptions-item label="地址"> {{ formData?.icRegisteredAddress	 }} </el-descriptions-item>
     <el-descriptions-item label="经济区划"> {{ formData?.economicDivision }} </el-descriptions-item>
     <el-descriptions-item label="经营类别"> {{ formData?.managementCategory }} </el-descriptions-item>
-    <el-descriptions-item label="统计经济区划"> ?? </el-descriptions-item>
+    <el-descriptions-item label="统计经济区划"> {{ formData?.economicDivision }} </el-descriptions-item>
     <el-descriptions-item label="行业种类"> {{ formData?.industryCategory }} </el-descriptions-item>
     <el-descriptions-item label="海关注销标志"> {{ formData?.status }} </el-descriptions-item>
     <el-descriptions-item label="跨境贸易电子商务类型">{{ formData?.types }}</el-descriptions-item>

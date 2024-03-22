@@ -94,7 +94,7 @@ function handleCompanyDetail(d) {
   router.push({ 
     path: '/archives/companyDetail', 
     query: {
-      company: JSON.stringify(d)
+      companyId: d.companyId
     }
   });
 }
