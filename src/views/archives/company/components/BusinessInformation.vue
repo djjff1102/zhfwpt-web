@@ -8,15 +8,15 @@
     }"
   >
     <el-descriptions class="margin-top" :column="3" border>
-      <el-descriptions-item label="统一社会信用代码">
+      <el-descriptions-item width="120" label="统一社会信用代码">
         {{ data?.creditNo  }}
       </el-descriptions-item>
       <el-descriptions-item label="企业名称" :span="2">
         {{ data?.companyName }}
       </el-descriptions-item>
       <el-descriptions-item label="法定代表人"> {{ data?.legalPerson }} </el-descriptions-item>
-      <el-descriptions-item label="经营状态"> {{ data?.companyStatus }} </el-descriptions-item>
-      <el-descriptions-item label="成立时间"> {{ data?.establishDate }} </el-descriptions-item>
+      <el-descriptions-item label="经营状态" width="120"> {{ data?.companyStatus }} </el-descriptions-item>
+      <el-descriptions-item label="成立时间" width="120"> {{ data?.establishDate }} </el-descriptions-item>
       <el-descriptions-item label="注册资本"> {{ data?.capital }} </el-descriptions-item>
       <el-descriptions-item label="实缴资本"> {{ data?.realCapital }} </el-descriptions-item>
       <el-descriptions-item label="工商注册号"> {{ data?.companyCode }} </el-descriptions-item>
@@ -36,7 +36,7 @@
       <el-descriptions-item label="邮箱"> {{ data?.companyEmail }} </el-descriptions-item>
       <el-descriptions-item label="官网"> {{ data?.websiteUrl }} </el-descriptions-item>
       <el-descriptions-item label="注册地址" :span="3">
-        {{ data?.workAddress }}？？
+        {{ data?.workAddress }}
       </el-descriptions-item>
       <el-descriptions-item label="经营范围" :span="3">
         {{ data?.businessScope }}
@@ -60,8 +60,5 @@ const isOpen = ref(false);
 <style lang="scss">
 .open-btn {
   cursor: pointer;
-}
-:deep(.el-descriptions__label) {
-  width: auto;
 }
 </style>

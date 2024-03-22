@@ -336,3 +336,15 @@ export function companybusinessimportexportcredit(
     data,
   });
 }
+/**
+ * 许可机关下拉
+ */
+export function BDaeegmnopprrttuy(
+  data: ProvinceSearch
+): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: "/base/company_license_info_creditchina_new/groupByDepartment",
+    method: "post",
+    data,
+  });
+}

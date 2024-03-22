@@ -9,12 +9,14 @@
       <div class="tab-item" :class="{'tab-item-active': activeTab == '1'}" @click="handleChange('1')">历史行政许可</div>
     </div>
     <div class="search_box">
-      <w-form :model="form" layout="inline">
-        <w-form-item class="mr-16px" field="post" label="许可机关">
-          <w-select v-model="form.post" placeholder="不限" />
+      <w-form :model="searchPar" layout="inline">
+        <w-form-item class="mr-16px" field="department" label="许可机关">
+          <w-select v-model="searchPar.department" placeholder="不限">
+            <w-option v-for="(item, i) in listdata" :key="i" :value="item.department_no" :label="item.department"></w-option>
+          </w-select>
         </w-form-item>
-        <el-button type="primary" class="mr-8px">搜索</el-button>
-        <el-button>重置</el-button>
+        <el-button type="primary" class="mr-8px" @click="search">搜索</el-button>
+        <el-button @click="reset">重置</el-button>
       </w-form>
     </div>
     <div class="table-warp">
@@ -42,7 +44,7 @@
 </template>
 <script setup>
 import { ref, reactive } from "vue";
-import { companyLicenseInfoCreditchinaNew } from '@/api/archives'
+import { companyLicenseInfoCreditchinaNew, BDaeegmnopprrttuy } from '@/api/archives'
 
 const props = defineProps({
   companyName: {
@@ -120,9 +122,22 @@ const form = ref({
   post: "",
 });
 
+function search() {
+  searchPar.value.page = 1;
+  pagination.value.current = 1
+  init();
+}
+
+function reset() {
+  searchPar.value.department = ''
+  searchPar.value.page = 1;
+  pagination.value.current = 1
+  init();
+}
+
 function handleChange(tab) {
   activeTab.value = tab
-  searchPar.page = 1;
+  searchPar.value.page = 1;
   pagination.value.current = 1
   searchPar.value.isHistory = Number(activeTab.value);
   init();
@@ -142,6 +157,7 @@ const changepage = (v) => {
   init();
 };
 
+const listdata = ref([])
 function init () {
   if(loading.value) return
   loading.value = true
@@ -152,6 +168,10 @@ function init () {
   }).catch(err => {
      loading.value = false
   })
+
+  BDaeegmnopprrttuy(searchPar.value).then(res => {
+    listdata.value = res.data.records;
+  }).catch(err => {})
 }
 
 
@@ -188,5 +208,8 @@ init();
     background: #F7FAFF;
     color: rgba(52, 112, 255, 1);
   }
+}
+:deep(.w-select) {
+  width: 400px!important;
 }
 </style>
