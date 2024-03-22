@@ -1,24 +1,22 @@
 <template>
   <!-- 进出口信用 -->
-  <!-- <div class="title">备案信息</div>
+  <div class="title">备案信息</div>
   <el-descriptions class="margin-top" :column="2" border>
     <el-descriptions-item label="备案日期">
-      91440300MA5FFW09283
+      ??
     </el-descriptions-item>
-    <el-descriptions-item label="所在海关"> 18100000000 </el-descriptions-item>
-    <el-descriptions-item label="行政区划"> Suzhou </el-descriptions-item>
-    <el-descriptions-item label="地址"> Suzhou </el-descriptions-item>
-    <el-descriptions-item label="经济区划"> Suzhou </el-descriptions-item>
-    <el-descriptions-item label="经营类别"> Suzhou </el-descriptions-item>
-    <el-descriptions-item label="统计经济区划"> Suzhou </el-descriptions-item>
-    <el-descriptions-item label="行业种类"> Suzhou </el-descriptions-item>
-    <el-descriptions-item label="海关注销标志"> Suzhou </el-descriptions-item>
-    <el-descriptions-item label="跨境贸易电子商务类型">
-      Suzhou
-    </el-descriptions-item>
-    <el-descriptions-item label="年报情况"> Suzhou </el-descriptions-item>
-    <el-descriptions-item label="信用等级"> Suzhou </el-descriptions-item>
-  </el-descriptions> -->
+    <el-descriptions-item label="所在海关"> {{ formData?.customsRegisteredAddress || '--' }} </el-descriptions-item>
+    <el-descriptions-item label="行政区划"> {{ formData?.administrativeDivision || '--' }} </el-descriptions-item>
+    <el-descriptions-item label="地址"> {{ formData?.icRegisteredAddress	 }} </el-descriptions-item>
+    <el-descriptions-item label="经济区划"> {{ formData?.economicDivision }} </el-descriptions-item>
+    <el-descriptions-item label="经营类别"> {{ formData?.managementCategory }} </el-descriptions-item>
+    <el-descriptions-item label="统计经济区划"> ?? </el-descriptions-item>
+    <el-descriptions-item label="行业种类"> {{ formData?.industryCategory }} </el-descriptions-item>
+    <el-descriptions-item label="海关注销标志"> {{ formData?.status }} </el-descriptions-item>
+    <el-descriptions-item label="跨境贸易电子商务类型">{{ formData?.types }}</el-descriptions-item>
+    <el-descriptions-item label="年报情况"> {{ formData?.annualReport }} </el-descriptions-item>
+    <el-descriptions-item label="信用等级"> {{ }}?? </el-descriptions-item>
+  </el-descriptions>
   <div class="title">备案编码</div>
   <m-table
     style="height: 100%"
@@ -38,7 +36,6 @@
 <script lang="ts" setup>
 import { ref, reactive } from "vue";
 import {companybusinessimportexportcredit} from '@/api/archives'
-import { table } from "console";
 
 const props = defineProps({
   companyName: {
@@ -84,6 +81,7 @@ const scroll = ref({
   y: 800,
   x: 1080,
 });
+const formData = ref({})
 
 const changePagesize = (v) => {
   pagination.value.current = 1
@@ -102,6 +100,9 @@ const init = async () => {
   loading.value = true
   companybusinessimportexportcredit(searchPar.value).then(res => {
     tableData.value = res.data;
+    if(searchPar.value.page == 1 && tableData.value.length > 0) {
+      formData.value = tableData.value[0]
+    }
     pagination.value.total = res.total;
     loading.value = false
   }).catch(err => {

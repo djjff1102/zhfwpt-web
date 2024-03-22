@@ -61,4 +61,7 @@ const isOpen = ref(false);
 .open-btn {
   cursor: pointer;
 }
+:deep(.el-descriptions__label) {
+  width: auto;
+}
 </style>

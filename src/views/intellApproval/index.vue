@@ -321,5 +321,22 @@ init()
     height: 100%;
   }
 }
+:deep(.w-input-wrapper) {
+  width: 188px;
+  height: 32px;
+}
+:deep(.w-picker) {
+  width: 240px;
+  height: 32px;
+}
+:deep(.w-select-view) {
+  width: 132px;
+  height: 32px;
+}
+:deep(.w-form-item-label) {
+  height: 32px;
+  color: #000;
+  font-weight: 500;
+}
 </style>
 

@@ -88,3 +88,9 @@ export function highlightSearchTerm(str,key){
 	var replace = '<span style="color:#FD463E;font-weight:bold;">$1</span>';
 	return `<span>${str.replace(reg, replace)}</span>`;
 }
+
+export function splitFiltName(fileName, str = "@quesoar@") {
+  let name = fileName.split(str)[1] || "";
+  return name;
+}
+

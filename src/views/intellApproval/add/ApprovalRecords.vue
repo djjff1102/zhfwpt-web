@@ -13,6 +13,9 @@
         <template v-slot:approveName="{rowIndex}">
           <div>{{ tableData[rowIndex].organizationName}}-{{ tableData[rowIndex].approveUserName }}</div>
         </template>
+        <template v-slot:approveResultSlot="{rowIndex}">
+          <div>{{ approveStatus[tableData[rowIndex].approveResult] }}</div>
+        </template>
         <template v-slot:fileName="{rowIndex}">
           <el-button type="text" @click="load(tableData[rowIndex]?.fileUrl, tableData[rowIndex].fileName)">{{ tableData[rowIndex].fileName}}</el-button>
         </template>
@@ -33,6 +36,7 @@
 import { ref, watch } from 'vue';
 import { fpspApproveDetail } from '@/api/intellApproval';
 import { download } from '@/api/file'
+import { approveStatus } from '../type'
 
 const props = defineProps({
   showRecord: {
@@ -56,6 +60,12 @@ const columns = ref([
   {
     title: '审批时间',
     dataIndex: 'approveDate',
+    width: 180,
+  },
+  {
+    title: '审批状态',
+    dataIndex: 'approveResult',
+    slotName: 'approveResultSlot',
     width: 180,
   },
   {

@@ -2,8 +2,8 @@
   <!-- 订单信息 -->
   <div class="second-warehousing-container">
     <div class="mount-sum">
-      <span>金额总计：？？</span>
-      <span>税额总计：？？</span>
+      <span class="mount-sum-item">金额总计：{{ jine }} </span>
+      <span> 税额总计：？？</span>
     </div>
     <!-- <div class="search_box">
       <w-form :model="form" layout="inline">
@@ -145,6 +145,7 @@ const form = ref({
   name: "",
   post: "",
 });
+const jine = ref(0) // 金额总计
 const changePagesize = (v) => {
   pagination.value.pageSize = v;
   pagination.value.current = 1;
@@ -158,10 +159,19 @@ const changepage = (v) => {
   init();
 };
 
+function getSum(data) {
+  let sum = 0;
+  data.forEach(e => {
+    sum += e.totalMoney;
+  });
+  jine.value = sum
+}
+
 // 子订单信息
 function getqyzxOrderSub() {
   qyzxOrderSub(searchPar.value).then(res => {
-    tableData.value = res.data
+    tableData.value = res.data;
+    getSum(res.data)
     pagination.value.total = res.total
   }).catch(err => {})
 }
@@ -186,6 +196,10 @@ init();
 </script>
 
 <style lang="scss" scoped>
+.mount-sum-item {
+  display: inline-block;
+  padding-right: 10px;;
+}
 .mount-sum {
   display: flex;
   justify-content: flex-end;

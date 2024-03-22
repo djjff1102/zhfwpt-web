@@ -143,3 +143,11 @@
     background-color: #1890ff;
   }
 }
+.w-table .w-table-cell {
+  font-weight: normal !important;
+  color: #383B40 !important;
+}
+// 分页组件中的input
+.w-pagination-jumper-input {
+  width: 50px !important;
+}

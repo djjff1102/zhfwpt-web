@@ -3,7 +3,7 @@
   <div class="title">企业用户申报{{ initPageParam.title }}</div>
   <div class="section section-detail-header">
     <div v-if="queryPar.reportCode" class="section-sub">
-      <span style="color: rgba(153, 153, 153, 1);padding-right: 30px;">申请编号：{{ queryPar?.reportCode }}</span>
+      <span style="color: rgba(153, 153, 153, 1); padding-right: 30px;">申请编号：{{ queryPar?.reportCode }}</span>
       <span><span style="color: rgba(51, 51, 51, 1)">审批状态：</span><span style="color: rgba(5, 148, 235, 1)">{{ approveStatus[form?.approveStatus] }}</span></span>
     </div>
     <div v-if="initPageParam.title == '详情'" class="section-sub flex-base-end">
@@ -14,74 +14,84 @@
   <div v-hasPerm="btnApprovalCode.approvaluser" class="section">
     <div class="section-sub">
       <div class="title-sub">申报人信息</div>
-      <w-form ref="basefrom1" :model="form" layout="vertical" :rules="rules">
-        <w-form-item field="taxAuthority"  label="主管税务机关" disabled required>
-          <w-input v-if="initPageParam.edit" style="height: 30px" v-model="form.taxAuthority" placeholder="please enter your username..." />
+      <el-form ref="basefrom1" :model="form" layout="vertical" :rules="rules">
+        <el-form-item prop="taxAuthority"  label="主管税务机关" required>
+          <w-input v-if="initPageParam.edit" style="height: 32px" disabled  v-model="form.taxAuthority" placeholder="please enter your username..." />
           <div v-else>{{ form?.taxAuthority }}</div>
-        </w-form-item>
-        <w-form-item field="companyName" label="申请单位" disabled required>
-          <w-input v-if="initPageParam.edit" style="height: 30px" v-model="form.companyName" placeholder="please enter your post..." />
+        </el-form-item>
+        <el-form-item prop="companyName" label="申请单位" required>
+          <w-input v-if="initPageParam.edit" style="height: 32px" disabled v-model="form.companyName" placeholder="please enter your post..." />
           <div v-else>{{ form.companyName }}</div>
-        </w-form-item>
-        <w-form-item field="registerAddress" label="注册地址" disabled required>
-          <w-input v-if="initPageParam.edit" style="height: 30px" v-model="form.registerAddress" placeholder="please enter your post..." />
+        </el-form-item>
+        <el-form-item prop="registerAddress" label="注册地址" required>
+          <w-input v-if="initPageParam.edit" style="height: 32px" v-model="form.registerAddress" disabled placeholder="please enter your post..." />
            <div v-else>{{ form.registerAddress }}</div>
-        </w-form-item>
-        <w-form-item field="applyUserName" label="操作人" disabled required>
-          <w-input v-if="initPageParam.edit" style="height: 30px" v-model="form.applyUserName" placeholder="please enter your post..." />
+        </el-form-item>
+        <el-form-item prop="applyUserName" label="操作人" required>
+          <w-input v-if="initPageParam.edit" style="height: 32px" v-model="form.applyUserName" disabled placeholder="please enter your post..." />
            <div v-else>{{ form.applyUserName }}</div>
-        </w-form-item>
-        <w-form-item field="applyTime" label="申请日期">
-          <w-date-picker v-if="initPageParam.edit" v-model="form.applyTime" style="width: 100%;height: 30px;" placeholder="请选择日期">
+        </el-form-item>
+        <el-form-item prop="applyTime" label="申请日期">
+          <el-date-picker 
+            v-if="initPageParam.edit"
+            v-model="form.applyTime"
+            style="width: 100%;
+            height: 32px;" 
+            placeholder="请选择日期"
+            format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD"
+          ></el-date-picker>
+          <!-- <w-date-picker  v-model="form.applyTime" style="width: 100%;height: 32px;" placeholder="请选择日期">
             <template #extra>
               <div>请填写在税务申报系统提交申报的日期</div>
             </template>
-          </w-date-picker>
-          <!-- <img src="/download?file_name=${filename}"> -->
+          </w-date-picker> -->
            <div v-else>{{ form.applyTime }}</div>
-        </w-form-item>
-      </w-form>
+        </el-form-item>
+      </el-form>
     </div>
     <div class="section-sub">
       <div class="title-sub">申报额度信息</div>
-      <w-form ref="basefrom2" :model="form" layout="vertical" :rules="rules">
-         <w-form-item field="money" label="申请额度" required>
-          <w-input-number v-if="initPageParam.edit" v-model="form.money" placeholder="请输入额度" style="height: 30px">
+      <el-form ref="basefrom2" :model="form" layout="vertical" :rules="rules">
+         <el-form-item prop="money" label="申请额度" required>
+          <w-input-number v-if="initPageParam.edit" v-model="form.money" placeholder="请输入额度" style="height: 32px">
           </w-input-number>
            <div v-else>{{ form.money }}</div>
-        </w-form-item>
-        <w-form-item field="limitType" label="申请调整额度类型" required>
-          <w-select v-if="initPageParam.edit" v-model="form.limitType" placeholder="请选择申请调整额度类型" style="height: 30px" @change="handleLone(1)">
-            <w-option :value="1" label="长期"></w-option>
-            <w-option :value="2" label="短期"></w-option>
-          </w-select>
+        </el-form-item>
+        <el-form-item prop="limitType" label="申请调整额度类型" required>
+          <el-select v-if="initPageParam.edit" v-model="form.limitType" placeholder="请选择申请调整额度类型" style="height: 32px" @change="handleLone(1)">
+            <el-option :value="1" label="长期"></el-option>
+            <el-option :value="2" label="短期"></el-option>
+          </el-select>
            <div v-else>{{ form.limitType == '1' ? '长期' : '短期' }}</div>
-        </w-form-item>
-        <w-form-item v-if="form.limitType == '2'" field="adjustType" label="发票短期调整类型" required>
-          <w-select v-if="initPageParam.edit" v-model="form.adjustType" placeholder="请选择发票短期调整类型" style="height: 30px" @change="handleLone(2)">
+        </el-form-item>
+        <el-form-item v-if="form.limitType == '2'" prop="adjustType" label="发票短期调整类型" required>
+          <w-select v-if="initPageParam.edit" v-model="form.adjustType" placeholder="请选择发票短期调整类型" style="height: 32px" @change="handleLone(2)">
             <w-option :value="1" labbel="当月">当月</w-option>
             <w-option :value="2" labbel="指定时间">指定时间</w-option>
           </w-select>
            <div v-else>{{ form.adjustType == '1' ? '当月' : '指定时间' }}</div>
-        </w-form-item>
-        <!-- 指定时间 -->
-        <w-form-item v-if="form.limitType" field="validDateStart" label="起止有效期" required>
-          <w-range-picker 
+        </el-form-item>
+        <el-form-item v-if="form.limitType" prop="validDateStart" label="起止有效期" required>
+          <w-range-picker
             v-if="initPageParam.edit"
             :popup-visible="popupVisible"
             v-model="dateRange"
-            style="width: 100%; height: 30px;"
+            style="width: 100%; height: 32px;"
+            format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD"
             @change="onChange"
             @select="dataSelect"
             @popup-visible-change="popupVisibleChange"
           />
            <div v-else>{{ form.validDateStart }} - {{ form.validDateEnd }}</div>
-        </w-form-item>
-        <w-form-item field="reason" label="申请理由" required>
-           <w-textarea v-if="initPageParam.edit" v-model="form.reason" placeholder="请输入申请理由"/>
-            <div v-else>{{ form.reason }}</div>
-        </w-form-item>
-      </w-form>
+        </el-form-item>
+        <el-form-item prop="reason" label="申请理由" required>
+          <el-input type="textarea" v-model="form.reason"></el-input>
+           <!-- <w-textarea v-if="initPageParam.edit" v-model="form.reason" placeholder="请输入申请理由"/> -->
+            <!-- <div v-else>{{ form.reason }}</div> -->
+        </el-form-item>
+      </el-form>
     </div>
   </div>
   <div class="com-section" v-hasPerm="btnApprovalCode.approvalexcute">
@@ -106,7 +116,7 @@
     <m-table
       :data="dataList"
       :columns="columns"
-      :virtual-list-props="{height: 'auto'}" 
+      :virtual-list-props="{height: 'auto'}"
       :pagination="false">
       <template v-slot:index="{rowIndex}">
         <div>{{ rowIndex +1 }}</div>
@@ -160,13 +170,13 @@ const router = useRouter();
 const basefrom1 = ref();
 const basefrom2 = ref();
 const rules = reactive({
-  applyTime: [{ required: true, message: '申报日期不能为空', trigger: 'focus' }],
+  applyTime: [{ required: true, message: '申报日期不能为空', trigger: ['blur', 'change'] }],
   money: [{ required: true, message: '请输入申请额度', trigger: 'focus' }],
   reason: [{ required: true, message: '请输入申请理由', trigger: 'blur' }],
-  limitType: [{ required: true, message: '请选择调整类型' }],
+  limitType: [{ required: true, message: '请选择调整类型', trigger: ['blur', 'change'] }],
   adjustType: [{ required: true, message: '请选择短期调整类型' }],
   validDateStart: [{ required: true, message: '请选择起止有效期',trigger: ['blur', 'change'] }],
-  
+ 
 })
 const popupVisible = ref(false)
 const type = ref('add')
@@ -306,7 +316,7 @@ function updateData(HT:any, DD:any, FP:any, CC:any, YH:any,) {
   dataDD.value = DD
   dataFP.value = FP
   dataCC.value = CC
-  dataYH.value = YH 
+  dataYH.value = YH
   updateTable(HT, DD, FP, CC, YH);
 }
 
@@ -322,9 +332,9 @@ function updateAdd(codeHT:any, codeDD: any, codeFP: any, codeCC: any, codeYH: an
 // 新增暂存、新增提交
 function handleSave(type: any) {
   basefrom1.value.validate(v => {
-    if(!v) {
+    if(v) {
       basefrom2.value.validate(k => {
-        if(!k) {
+        if(k) {
           checkSave(type)
         } else {
           ElMessage.warning("请核实必填信息");
@@ -353,8 +363,8 @@ function checkSave(type: any) {
 
 // 编辑新增成功，返回列表页
 function backToList() {
-  router.push({ 
-    path: '/intellApproval', 
+  router.push({
+    path: '/intellApproval',
  });
 }
 
@@ -562,6 +572,24 @@ init()
 }
 :deep(.w-tabs-content) {
   display: none;
+}
+:deep(.el-form-item) {
+  flex-direction: column;
+  // align-items: flex-start;
+}
+:deep(.el-form-item__label ) {
+  justify-content: flex-start;
+}
+:deep(.el-form-item__label) {
+  color: rgba(39, 42, 49, 1);
+  font-weight: 500;
+  font-size: 14px;;
+}
+:deep(.el-form-item--default) {
+  margin-bottom: 24px;;
+}
+:deep(.el-textarea__inner) {
+  height: 148px;
 }
 </style>
 

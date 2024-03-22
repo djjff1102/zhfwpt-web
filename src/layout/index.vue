@@ -178,6 +178,7 @@ function toggleSideBar() {
   }
 
   .mix-wrapper {
+    min-width: 1440px;
     display: flex;
     height: 100%;
     padding-top: 64px;

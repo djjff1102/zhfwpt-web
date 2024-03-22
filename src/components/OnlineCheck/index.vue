@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button v-if="checkFileType('pdf')" type="text" @click="load('pdf')">在线查看</el-button>
+    <el-button v-if="checkFileType('pdf')" type="text" @click="load('pdf')">在线查看1</el-button>
     <el-button v-if="checkFileType('word')" type="text" @click="load('word')">在线查看</el-button>
     <el-button v-if="checkFileType('excel')" type="text" @click="load('excel')">在线查看</el-button>
     <el-button v-if="checkFileType('img')" type="text" @click="loadImg('img')">在线查看</el-button>
@@ -26,6 +26,9 @@
       <div class="content" v-if="type=='img'">
         <img :src="viewFileUrl">
       </div>
+      <div class="content" v-if="type=='pdf'">
+        <!-- <pdf :src="viewFileUrl"></pdf> -->
+      </div>
       <template #header>
        <div style="padding-top: 16px;">在线查看</div>
       </template>
@@ -43,6 +46,7 @@ import { downloadBuffer } from '@/api/file'
 import * as XLSX from "xlsx"
 import mammoth from "mammoth";
 import { fileType } from './type'
+// import pdf from 'vue-pdf'
 
 const props = defineProps({
   fileUrl: {
@@ -82,8 +86,17 @@ function load(type) {
       initWord(res.data)
     } else if(type == 'excel') {
       exportExcel(res.data)
+    } else if(type == 'pdf') {
+      initPdf(res.data)
     }
   })
+}
+
+function initPdf(data) {
+    // excelShow.value = true
+    let blob = new Blob([data], { type: 'application/pdf;charset=utf-8' });
+    const href = URL.createObjectURL(blob);
+    window.open(href, 'newWindow');
 }
 
 function initWord(data) {

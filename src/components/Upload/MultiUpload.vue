@@ -40,6 +40,7 @@ import {
   UploadProps,
 } from "element-plus";
 import { singleuploadFileApi} from "@/api/file";
+import { splitFiltName } from '@/utils/common'
 
 const emit = defineEmits(['updateUpload']);
 
@@ -99,7 +100,7 @@ async function handleUpload(options: UploadRequestOptions, f): Promise<any> {
   // 上传API调用
   const res = await singleuploadFileApi(options.file);
   allFileList.value.push(res.data);
-  let name = res.data.split('@quesoar@')[1]
+  let name = splitFiltName(res.data)
   fileList.value.push(name)
   emit('updateUpload', allFileList.value)
 }
