@@ -173,12 +173,14 @@ function search() {
 }
 
 function reset() {
-  searchPar.value = {
-    companyName: '',
-    companyId: '',
-    riskType: '',
-    name: '' // 风险名称
-  }
+  searchPar.value.riskType = ''
+  searchPar.value.name = ''
+  // searchPar.value = {
+  //   companyName: pro,
+  //   companyId: '',
+  //   riskType: '',
+  //   name: '' // 风险名称
+  // }
   getqueryRiskInfoByCompanyInfo()
 }
 
@@ -198,8 +200,8 @@ function getqueryRiskInfoByCompanyInfo() {
   if(loading.value) return
   loading.value = true
   let par = {
-    companyName: searchPar.value.companyName,
-    companyId: searchPar.value.companyId,
+    companyName: props.companyName,
+    companyId: props.companyId,
     riskType: searchPar.value.riskType || 0,
     name: searchPar.value.name,
     page_size: searchPar.value.page_size,

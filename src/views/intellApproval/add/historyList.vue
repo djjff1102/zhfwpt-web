@@ -1,5 +1,4 @@
 <template>
-  <!-- 风险点 -->
   <div >
     <div class="search_box">
       <w-form :model="searchPar" layout="inline">
@@ -145,6 +144,7 @@ const columns = reactive([
   //   width: 240,
   // }
 ])
+
 const pagination = ref({
   total: 0,
   pageSize: 10,
@@ -202,6 +202,8 @@ function reset() {
 }
 
 function search() {
+  pagination.value.current = 1;
+  searchPar.value.page = 1;
   getreporthistroy()
 }
 

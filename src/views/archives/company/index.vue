@@ -26,7 +26,7 @@
       </div>
       <div id="ExcessInvoiceApproval">
         <div class="title"><img :src="fpcxlsp">发票审批信息</div>
-        <ExcessInvoiceApproval></ExcessInvoiceApproval>
+        <ExcessInvoiceApproval :companyId="companyMsg?.companyId"></ExcessInvoiceApproval>
       </div>
       <div id="ManagementInformation">
         <div class="title"><img :src="jyxx">经营信息</div>
