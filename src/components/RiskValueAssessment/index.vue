@@ -39,8 +39,8 @@
       <div class="title">风险点</div>
       <div class="search_box">
         <w-form :model="searchPar" layout="inline">
-          <w-form-item field="name" label="风险名称">
-            <w-input v-model="searchPar.name" placeholder="请输入风险名称" />
+          <w-form-item field="indexName" label="风险名称">
+            <w-input v-model="searchPar.indexName" placeholder="请输入风险名称" />
           </w-form-item>
           <w-form-item class="mr-16px" field="riskType" label="风险程度">
             <w-select v-model="searchPar.riskType" placeholder="全部" >
@@ -127,7 +127,7 @@ const searchPar = ref({ // 查询参数-以公司维度查询风险信息
   companyName: '',
   companyId: '',
   riskType: '',
-  name: '' // 风险名称
+  indexName: '' // 风险名称
 })
 const columns = reactive([
   {
@@ -174,7 +174,7 @@ function search() {
 
 function reset() {
   searchPar.value.riskType = ''
-  searchPar.value.name = ''
+  searchPar.value.indexName = ''
   // searchPar.value = {
   //   companyName: pro,
   //   companyId: '',
@@ -203,7 +203,7 @@ function getqueryRiskInfoByCompanyInfo() {
     companyName: props.companyName,
     companyId: props.companyId,
     riskType: searchPar.value.riskType || 0,
-    name: searchPar.value.name,
+    indexName: searchPar.value.indexName,
     page_size: searchPar.value.page_size,
     page: searchPar.value.page,
   }
