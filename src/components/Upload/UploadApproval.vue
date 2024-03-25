@@ -130,6 +130,7 @@ function handleBeforeUpload(file: UploadRawFile) {
   display: flex;
   align-items: center;
   border-radius: 2px;
+  cursor: pointer;
   .file-name {
     width: 260px;
     overflow: hidden;

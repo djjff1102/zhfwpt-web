@@ -3,7 +3,7 @@
   <!-- 企业工商信息 -->
   <div
     :style="{
-      height: isOpen ? 'auto' : '93px',
+      height: isOpen ? 'auto' : '94px',
       overflow: 'hidden',
     }"
   >
@@ -45,7 +45,7 @@
   </div>
   <el-divider>
     <span @click="isOpen = !isOpen" class="text-[#3470FF] open-btn"
-      >{{ isOpen ? "收起" : "展开" }}详情</span
+      >{{ isOpen ? "收起" : "展开" }}详情<el-icon :class="[!isOpen?'more-icon':'close-more-icon']"><DArrowRight /></el-icon></span
     >
   </el-divider>
 </template>
@@ -60,5 +60,16 @@ const isOpen = ref(false);
 <style lang="scss">
 .open-btn {
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
+.more-icon {
+  margin-left: 8px;
+  transform: rotate(90deg);
+}
+.close-more-icon {
+  margin-left: 8px;
+  transform: rotate(270deg);
+}
+
 </style>

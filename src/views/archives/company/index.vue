@@ -6,7 +6,7 @@
         <i v-else class="iconfont icon-guanzhu-xian"></i>
         </template>
         <template #default>{{ companyMsg?.attention ? '已关注' : '关注' }}</template>
-      </el-button>
+    </el-button>
     <!-- <el-button class="absolute right-20px top-20px" type="primry">
       <template #icon>
         <el-icon><StarFilled /></el-icon>
@@ -15,7 +15,8 @@
     </el-button> -->
     <div class="company-name">{{ companyMsg?.companyName }}</div>
     <div class="company-content">
-      <el-backtop target=".company-content" :right="40" :bottom="100" />
+      <m-backtop target=".company-content"></m-backtop>
+      <!-- <el-backtop target=".company-content" :right="40" :bottom="100" /> -->
       <div id="BusinessInformation">
         <div class="title"><img :src="qygsxx">企业工商信息</div>
         <BusinessInformation :data="companyMsg"></BusinessInformation>

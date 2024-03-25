@@ -7,8 +7,8 @@
       <div class="information">
         <div class="suggest">
           <div class="icon flex-base-start">
-            <span style="flex-grow: 1;">
-               <img :src="suggest" alt="" />
+            <span style="flex-grow: 1;" class="pinggu-suggest">
+               <img :src="suggest" alt="" style="width: 64px"/>
               评估建议
             </span>
             <Exportpdf domId="suggestdom" title="风险值评估"></Exportpdf>
@@ -27,10 +27,12 @@
         </div>
         <div class="danger-point">
           <div class="danger-point-title">
-            <img :src="highPoint" alt="" />
+            <img :src="highPoint" alt="" style="width: 64px"/>
             风险分类展示
           </div>
-          <Dangershow :data="suggestData.riskInfoVoList"></Dangershow>
+          <div class="danger-point-content">
+            <Dangershow :data="suggestData.riskInfoVoList"></Dangershow>
+          </div>
         </div>
       </div>
     </div>
@@ -251,13 +253,14 @@ init()
 .information {
   width: calc(100% - 367px);
   .danger-point-title {
+    font-family: myFontALHT;
     background: rgba(221, 223, 231, 0.11);
     height: 50px;
     position: relative;
     padding-top: 14px;
     padding-left: 70px;
     color: rgba(247, 97, 97, 1);
-    font-size: 14px;
+    font-size: 16px;
     img {
       position: absolute;
       left: 0;
@@ -266,11 +269,16 @@ init()
       line-height: 40px;
     }
   }
+  .danger-point-content {
+    background: rgba(221, 223, 231, 0.11);
+    padding: 0 12px 12px;
+  }
 }
 .suggest {
   background-color: rgba($color: #3470ff, $alpha: 0.04);
   padding: 12px;
   position: relative;
+  border-radius: 8px;;
   .icon {
     color: #3470ff;
   }
@@ -314,4 +322,22 @@ init()
     background-color: #1890ff;
   }
 }
+.pinggu-suggest {
+   font-family: myFontALHT;
+   font-size: 16px;
+   position: relative;
+   padding-left: 80px;
+   line-height: 30px;;
+   img {
+    position: absolute;
+    top: -30px;
+    left: 0;
+   }
+}
+.danger-point-content {
+  :deep(.w-table-cell-align-left) {
+    background-color: rgba(221, 223, 231, 0.11);
+  }
+}
+
 </style>
