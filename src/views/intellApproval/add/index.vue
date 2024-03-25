@@ -87,7 +87,8 @@
            <div v-else>{{ form.validDateStart }} - {{ form.validDateEnd }}</div>
         </el-form-item>
         <el-form-item prop="reason" label="申请理由" required>
-          <el-input type="textarea" v-model="form.reason"></el-input>
+          <el-input v-if="initPageParam.edit" type="textarea" v-model="form.reason"></el-input>
+          <div v-else>{{ form.reason }}</div>
            <!-- <w-textarea v-if="initPageParam.edit" v-model="form.reason" placeholder="请输入申请理由"/> -->
             <!-- <div v-else>{{ form.reason }}</div> -->
         </el-form-item>
