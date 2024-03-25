@@ -13,8 +13,8 @@
       </el-tooltip> -->
       
       <Online-check :fileUrl="item.fileUrl" :viewFileUrl="item.viewFileUrl"></Online-check>
-      <div class="file-load" type="text" @click="load(item)">
-        <el-button v-if="loading" :loading="loading" type="text"></el-button>下载</div>
+      <!-- <div class="file-load" type="text" @click="load(item)"> -->
+      <el-button :loading="loading" type="text" @click="load(item)" style="width: 80px">下载</el-button>
     </div>
   </div>
 </template>
@@ -63,7 +63,7 @@ function exportBlob(b,name) {
 .file-load {
   flex-shrink: 0;
   display: flex;
-align-items: center;
+  align-items: center;
   width: 60px;
   height: 20px;
   font-family: PingFangSC, PingFang SC;
@@ -85,7 +85,7 @@ align-items: center;
   align-items: flex-start;
 }
 .flie-item {
-  width:33%;
+  width: 45%;
   background: #F5FCFF;
   display: flex;
   align-items: center;
@@ -110,9 +110,13 @@ align-items: center;
   display: none;
 } 
 .file-name {
+  width: 300px;
   flex-grow: 1;
   font-size: 16px;
   color: #272A31;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .upload-msg {
   width: 477px;
