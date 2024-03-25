@@ -22,8 +22,9 @@
       <div class="flie-item" v-for="(item, i) in fileList" :key="item.name">
         <img src="@/assets/upload/file.png" style="width: 18px">
         <div class="file-name">{{ item }}</div>
-        <img class="close" style="width: 20px" src="../../assets/base/cha.png" @click="handleDel(i)"/> 
-        <img class="success" style="width: 20px" src="../../assets/base/right.png">
+        <delete style="width: 1em; height: 1em; margin-right: 8px;" @click="handleDel(i)"/>
+        <!-- <img class="close" style="width: 20px" src="../../assets/base/cha.png" @click="handleDel(i)"/> 
+        <img class="success" style="width: 20px" src="../../assets/base/right.png"> -->
       </div>
     </div>
   </div>
@@ -124,17 +125,23 @@ function handleBeforeUpload(file: UploadRawFile) {
     flex-wrap: wrap;
 }
 .flie-item {
-  width: 80%;
+  padding: 0 8px;
+  width: 100%;
   display: flex;
   align-items: center;
+  border-radius: 2px;
+  .file-name {
+    width: 260px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
   &:hover {
-    .success {
-      display: none;
+    background: #ebe7e7;
+    color: rgba(247, 97, 97, 1);
+    .file-name {
+      color: rgba(247, 97, 97, 1);
     }
-    .close {
-      cursor: pointer;
-      display: block;
-    } 
   }
 }
 .success {
