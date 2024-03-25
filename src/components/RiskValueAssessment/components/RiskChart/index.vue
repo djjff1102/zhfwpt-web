@@ -1,5 +1,7 @@
 <template>
-  <div class="riskChart" id="riskChart"></div>
+  <div class="riskChart" id="riskChart">
+    <img src="@/assets/base/empty.png" class="empty-img">
+  </div>
 </template>
 <script setup>
 import * as echarts from "echarts";
@@ -92,4 +94,9 @@ function init() {
 
 </script>
 <style lang="scss">
+.empty-img {
+  width: 256px;
+  display: block;
+  margin-top: 40px;
+}
 </style>

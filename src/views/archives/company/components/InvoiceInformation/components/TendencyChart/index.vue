@@ -1,6 +1,6 @@
 <template>
   <div id="tendencyChart">
-      <no-data></no-data>
+    <no-data></no-data>
   </div>
 </template>
 <script setup>
@@ -9,10 +9,10 @@ import { onMounted, watch } from "vue";
 
 const props = defineProps({
   time: {
-    default: [1,2,3,4]
+    default: []
   },
   dataList: {
-    default: [10,15,20,24]
+    default: []
   }
 })
 
@@ -65,9 +65,11 @@ const echartData = ref({
 watch(
   () => props.dataList,
   (v) => {
-    echartData.value.series[0].data = v;
-    echartData.value.xAxis[0].data = props.time;
-    init()
+    if(v && v.length > 0 ) {
+      echartData.value.series[0].data = v;
+      echartData.value.xAxis[0].data = props.time;
+      init()
+    }
   }, {
     deep: true,
   }

@@ -16,19 +16,19 @@
       <div class="title-sub">申报人信息</div>
       <el-form ref="basefrom1" :model="form" layout="vertical" :rules="rules">
         <el-form-item prop="taxAuthority"  label="主管税务机关" required>
-          <w-input v-if="initPageParam.edit" style="height: 32px" disabled  v-model="form.taxAuthority" placeholder="please enter your username..." />
+          <w-input v-if="initPageParam.edit" style="height: 32px" disabled  v-model="form.taxAuthority" placeholder="请输入主管税务机关" />
           <div v-else>{{ form?.taxAuthority }}</div>
         </el-form-item>
         <el-form-item prop="companyName" label="申请单位" required>
-          <w-input v-if="initPageParam.edit" style="height: 32px" disabled v-model="form.companyName" placeholder="please enter your post..." />
+          <w-input v-if="initPageParam.edit" style="height: 32px" disabled v-model="form.companyName" placeholder="请输入申请单位" />
           <div v-else>{{ form.companyName }}</div>
         </el-form-item>
         <el-form-item prop="registerAddress" label="注册地址" required>
-          <w-input v-if="initPageParam.edit" style="height: 32px" v-model="form.registerAddress" disabled placeholder="please enter your post..." />
+          <w-input v-if="initPageParam.edit" style="height: 32px" v-model="form.registerAddress" disabled placeholder="请输入注册地址" />
            <div v-else>{{ form.registerAddress }}</div>
         </el-form-item>
         <el-form-item prop="applyUserName" label="操作人" required>
-          <w-input v-if="initPageParam.edit" style="height: 32px" v-model="form.applyUserName" disabled placeholder="please enter your post..." />
+          <w-input v-if="initPageParam.edit" style="height: 32px" v-model="form.applyUserName" disabled placeholder="请输入操作人" />
            <div v-else>{{ form.applyUserName }}</div>
         </el-form-item>
         <el-form-item prop="applyTime" label="申请日期">
@@ -135,8 +135,8 @@
     <FileList v-if="!initPageParam.edit" :file="fileList"></FileList>
   </div>
   <div v-if="initPageParam.edit" class="bottom flex-base-end">
-    <el-button v-hasPerm="btnApprovalCode.save" style="margin-right: 20px" @click="handleSave(1)">暂存</el-button>
-    <el-button v-hasPerm="btnApprovalCode.submit" type="primary" @click="handleSave(2)">提交</el-button>
+    <el-button v-hasPerm="btnApprovalCode.save" style="margin-right: 20px" @click="handleSave(1, '暂存')">暂存</el-button>
+    <el-button v-hasPerm="btnApprovalCode.submit" type="primary" @click="handleSave(2, '提交')">提交</el-button>
   </div>
   <detail-com v-if="!initPageParam.edit" :companyId="form.companyId" :companyName="form.companyName" ></detail-com>
   <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com>
@@ -330,12 +330,12 @@ function updateAdd(codeHT:any, codeDD: any, codeFP: any, codeCC: any, codeYH: an
 }
 
 // 新增暂存、新增提交
-function handleSave(type: any) {
+function handleSave(type: any, msg: string) {
   basefrom1.value.validate(v => {
     if(v) {
       basefrom2.value.validate(k => {
         if(k) {
-          checkSave(type)
+          checkSave(type, msg)
         } else {
           ElMessage.warning("请核实必填信息");
         }
@@ -346,7 +346,7 @@ function handleSave(type: any) {
   })
 }
 
-function checkSave(type: any) {
+function checkSave(type: any, msg: string) {
     // 1暂存 2提交
   form.value.dataStatus = type;
   form.value.validDateStart = dateRange.value[0];
@@ -354,10 +354,10 @@ function checkSave(type: any) {
   if(initPageParam.type == 1) {
     // 更新
     form.value.id = initPageParam.id
-    handleUpdate();
+    handleUpdate(msg);
   } else {
     // 新增
-    handleAddNew()
+    handleAddNew(msg)
   }
 }
 
@@ -368,9 +368,9 @@ function backToList() {
  });
 }
 
-function handleUpdate() {
+function handleUpdate(msg: string) {
   update(form.value).then(res => {
-    ElMessage.success("编辑成功！");
+    ElMessage.success(msg + "成功！");
     setTimeout(()=>{
       backToList()
     },500)
@@ -378,9 +378,9 @@ function handleUpdate() {
 }
 
 // 新增
-function handleAddNew() {
+function handleAddNew(msg) {
   add(form.value).then(res => {
-    ElMessage.success("保存成功！");
+    ElMessage.success(msg + "成功！");
     setTimeout(()=>{
       backToList()
     },500)
@@ -591,5 +591,6 @@ init()
 :deep(.el-textarea__inner) {
   height: 148px;
 }
+
 </style>
 

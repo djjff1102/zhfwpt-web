@@ -1,22 +1,22 @@
 <template>
   <el-dialog v-model="visible" :before-close="handleBeforeClose" :width="600">
     <div class="proval-content">
-       <w-form ref="baseForm" :model="form" :rules="rules">
-          <w-form-item field="approveResult" label="审批结果" required>
+       <el-form ref="baseForm" :model="form" :rules="rules" label-position="right" label-width="100px">
+          <el-form-item prop="approveResult" label="审批结果" required>
             <el-select v-model="form.approveResult" placeholder="请选择审批结果" style="height: 30px">
               <el-option v-for="(item, i) in appravalResultList" :key="i" :value="item.value" :label="item.label"></el-option>
             </el-select>
-          </w-form-item>
-          <w-form-item field="approveOpinion" label="审批意见" required>
-            <w-textarea v-model="form.approveOpinion" placeholder="请输入审批意见"/>
-          </w-form-item>
-          <w-form-item field="approveRemark" label="备注" required>
-            <w-textarea v-model="form.approveRemark" placeholder="请输入备注"/>
-          </w-form-item>
-          <w-form-item field="fileUrl" label="调研报告">
-            <MultiUpload @updateUpload="updateUpload"></MultiUpload>
-          </w-form-item>
-        </w-form>
+          </el-form-item>
+          <el-form-item prop="approveOpinion" label="审批意见" required>
+            <el-input type="textarea" v-model="form.approveOpinion" placeholder="请输入审批意见"></el-input>
+          </el-form-item>
+          <el-form-item prop="approveRemark" label="备注" required>
+            <el-input type="textarea" v-model="form.approveRemark" placeholder="请输入备注"></el-input>
+          </el-form-item>
+          <el-form-item prop="fileUrl" label="调研报告">
+            <UploadApproval @updateUpload="updateUpload"></UploadApproval>
+          </el-form-item>
+        </el-form>
     </div>
     <template #header>
       <div class="dia-header">审批意见</div>
@@ -79,7 +79,7 @@ function handleCancel (v: any) {
 
 function handleOk() {
   baseForm.value.validate(v => {
-    if(!v) {
+    if(v) {
       if(loading.value) return;
       loading.value = true
       form.value.reportId = props.reportId;
@@ -120,5 +120,6 @@ async function handleBeforeClose(done: any) {
 }
 :deep(.upload-msg) {
   width: 307px;
-  }
+}
+
 </style>

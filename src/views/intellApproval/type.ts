@@ -8,6 +8,12 @@ export const approveStatus = {
   [status.pass]: "通过",
   [status.reject]: "驳回",
 };
+
+export const approveStatusColor = {
+  [status.wait]: "#0594EB",
+  [status.pass]: "#5ECF69",
+  [status.reject]: "#F76161 ",
+};
 enum tasks {
   stop = 1,
   doing = 2,
@@ -18,6 +24,12 @@ export const taskStatus = {
   [tasks.stop]: "已暂停",
   [tasks.doing]: "评估中",
   [tasks.did]: "已完成",
+};
+
+export const taskStatusColor = {
+  [tasks.stop]: "#FF9100",
+  [tasks.doing]: "#0594EB",
+  [tasks.did]: "#5ECF69",
 };
 
 export const statusList = [

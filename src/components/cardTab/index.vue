@@ -64,7 +64,7 @@ function handleTabClick(value) {
   border-bottom: solid 2px rgba(237, 241, 252, 0.5);
   background: linear-gradient( 180deg, rgba(21, 118, 242, 0)  0%, rgba(209, 229, 254, 0.1) 100%);
   &:hover {
-    background: linear-gradient( to bottom,rgba(21,118,242,0) 0%, rgba(21, 118, 242, 0.1) 100%,);
+    background: linear-gradient( to top,rgba(21,118,242,0) 0%, rgba(21, 118, 242, 0.1) 100%,);
   }
 }
 :deep(.w-tabs-tab-active, .w-tabs-tab-closable) {
@@ -72,7 +72,7 @@ function handleTabClick(value) {
   color: #3470FF;
   border-top: solid 2px rgba(52, 112, 255, 1);
   border-bottom: solid 2px rgba(237, 241, 252, 0);
-  background: linear-gradient( to bottom,rgba(21,118,242,0) 0%, rgba(21, 118, 242, 0.1) 100%,);
+  background: linear-gradient( to top,rgba(21,118,242,0) 0%, rgba(21, 118, 242, 0.1) 100%,);
 }
 :deep(.w-tabs-content) {
   border: none;

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="visible" :before-close="handleBeforeClose" :width="600">
+  <el-dialog v-model="visible" :before-close="handleBeforeClose" :width="1200">
     <div class="dia-content">
       <m-table
         :data="tableData"

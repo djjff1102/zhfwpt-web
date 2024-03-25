@@ -13,7 +13,8 @@
       </el-tooltip> -->
       
       <Online-check :fileUrl="item.fileUrl" :viewFileUrl="item.viewFileUrl"></Online-check>
-      <span class="file-load" type="text" @click="load(item)">下载</span>
+      <div class="file-load" type="text" @click="load(item)">
+        <el-button v-if="loading" :loading="loading" type="text"></el-button>下载</div>
     </div>
   </div>
 </template>
@@ -28,15 +29,18 @@ const pros = defineProps({
   }
 })
 
-
-function checkFile(item) {}
+const loading = ref(false)
 
 function load(item) {
+  if(loading.value) return;
+  loading.value = true;
   download({
     file_name: item.fileUrl
   }).then(res => {
     exportBlob(res.data, item.fileName)
-  }).catch(err=>{})
+  }).catch(err=>{
+    loading.value = false;
+  })
 }
 
 // 导出
@@ -50,6 +54,7 @@ function exportBlob(b,name) {
   a.click();
   URL.revokeObjectURL(a.href);
   document.body.removeChild(a);
+  loading.value = false;
 }
 
 </script>
@@ -57,8 +62,9 @@ function exportBlob(b,name) {
 <style scoped lang="scss">
 .file-load {
   flex-shrink: 0;
-  display: block;
-  width: 28px;
+  display: flex;
+align-items: center;
+  width: 60px;
   height: 20px;
   font-family: PingFangSC, PingFang SC;
   font-weight: 400;
@@ -67,9 +73,11 @@ function exportBlob(b,name) {
   line-height: 20px;
   text-align: left;
   font-style: normal;
-  display: block;
   margin-left: 16px;
   cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 .file-wrap {
   display: flex;

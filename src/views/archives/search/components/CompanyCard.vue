@@ -52,6 +52,17 @@
             >
           </div>
         </div>
+        <div class="desc-info">
+          <div class="desc-item predict-danger" v-if="riskAndCountArry && riskAndCountArry.length > 0">
+            <span class="predict-danger-title"><i class="iconfont icon-fengxianzhipinggu"></i>风险预警</span>
+            <span class="predict-danger-item" v-for="(item ,i) in riskAndCountArry" :key="i" :class="{'hide-more': i > 0 && !showRiskAll}">
+              <!-- <span class="predict-danger-label">{{ comData?.riskAndCount[item] }}</span> -->
+              <span class="predict-danger-label">{{ 1 }}</span>
+              <span class="predict-danger-text">条 {{ item }}</span>
+            </span>
+            <!-- <i @click="handleMore" v-if="riskAndCountArry && riskAndCountArry.length > 1 && !showRiskAll" class="iconfont icon-xiayibu"></i> -->
+          </div>
+        </div>
       </div>
       <el-button class="absolute right-0 top-39px" :type="btnType(comData?.attention)" @click.stop="handleAttention(comData)">
         <template #icon>
@@ -64,6 +75,7 @@
   </div>
 </template>
 <script setup>
+import { computed } from 'vue'
 import { useRouter } from 'vue-router';
 import { payAttention } from '@/api/archives';
 import { useUserStoreHook } from "@/store/modules/user";
@@ -80,6 +92,18 @@ const props = defineProps({
   },
   search: {
     default: ''
+  }
+})
+
+const showRiskAll = ref(false)
+
+// 处理风险预警值
+const riskAndCountArry = computed(() => {
+  if(!props.comData?.riskAndCount || JSON.stringify(props.comData?.riskAndCount) == '{}' || JSON.stringify(props.comData?.riskAndCount) == 'null') {
+    return [];
+  } else {
+    const keys = Object.keys(props.comData?.riskAndCount);
+    return keys;
   }
 })
 
@@ -121,6 +145,48 @@ function handleAttention(d) {
 }
 </script>
 <style lang="scss" scoped>
+.predict-danger {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background: rgba(247, 97, 97, 0.1);
+  border-radius: 12px;
+  line-height: 22px;
+  padding: 0 12px;
+}
+.predict-danger-title {
+  height: 22px;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 14px;
+  color: #F76161;
+  line-height: 22px;
+  text-align: right;
+  font-style: normal;
+  display: inline-block;
+  padding-right: 8px;
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    height: 12px;
+    width: 1px;
+    background: #fff;
+    right: 0;
+    top: 5px;
+  }
+}
+.predict-danger-item {
+  display: inline-block;
+  padding: 0 8px;
+  font-size: 12px;
+  .predict-danger-label {
+    color: #F76161;
+  }
+}
+.hide-more {
+  // display: none;
+}
 .company-container {
   background-color: #fff;
   padding: 24px 0;

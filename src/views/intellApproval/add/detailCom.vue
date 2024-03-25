@@ -4,23 +4,26 @@
       <div class="title base-title">风险值评估</div>
       <RiskValueAssessment v-bind="$attrs" ></RiskValueAssessment>
       <div class="title base-title">企业进销项发票趋势</div>
-      <el-tabs type="card" v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="进项发票" name="1">
+      <div class="tab-wrap">
+        <el-tabs type="card" v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="进项发票" name="1">
+            <div class="tendencyChart w-full h-400px">
+              <TendencyChart :dataList="echartData.x" :time="echartData.y"></TendencyChart>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="销项发票" name="2">
+            <div class="tendencyChart w-full h-400px">
+              <TendencyChart :dataList="echartData.x" :time="echartData.y"></TendencyChart>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="近期申报" name="3">
+            近期申报
+          </el-tab-pane>
+        </el-tabs>
+        <div class="predict-wrap">
           <PredictCom :data="echartData.sum"></PredictCom>
-          <div class="tendencyChart w-full h-400px">
-            <TendencyChart :dataList="echartData.x" :time="echartData.y"></TendencyChart>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="销项发票" name="2">
-          <PredictCom :data="echartData.sum"></PredictCom>
-          <div class="tendencyChart w-full h-400px">
-            <TendencyChart :dataList="echartData.x" :time="echartData.y"></TendencyChart>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="近期申报" name="3">
-          近期申报
-        </el-tab-pane>
-      </el-tabs>
+        </div>
+      </div>
       <div class="title base-title">历史审批</div>
       <historyList v-bind="$attrs"></historyList>
     </div>
@@ -58,7 +61,7 @@ const activeName = ref('1')
 const echartData = ref({
   x:[],
   y: [],
-  sum : 0
+  // sum : 0
 })
 
 function handleClick(v) {
@@ -68,13 +71,13 @@ function handleClick(v) {
       receivingCompanyName: props.companyName, //收票单位
       invoicingCompanyName: "" // 开票单位
     }
-    getgroupByInvoiceDate(search)
+    // getgroupByInvoiceDate(search)
   } else if(v.index == '1') {
     const search = {
       receivingCompanyName: '', //收票单位
       invoicingCompanyName: props.companyName // 开票单位
     }
-    getgroupByInvoiceDate(search);
+    // getgroupByInvoiceDate(search);
   } else {
     getfpspReport();
   }
@@ -92,3 +95,13 @@ function getgroupByInvoiceDate(search) {
   }).catch(err => {})
 }
 </script>
+<style lang="scss" scoped>
+.tab-wrap {
+  position: relative
+}
+.predict-wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+</style>

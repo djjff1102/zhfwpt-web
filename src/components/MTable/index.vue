@@ -1,5 +1,5 @@
 <template>
-  <w-table v-bind="$attrs">
+  <w-table v-bind="$attrs" :show-overflow-tooltip="true">
     <template v-slot:empty>
       <NoData></NoData>
     </template>

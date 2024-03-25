@@ -44,10 +44,10 @@
         :bordered="false"
       >
         <template v-slot:approvalstatus="{rowIndex}">
-            <div>{{ approveStatus[tableData[rowIndex].approveStatus] }}</div>
+            <div :style="{color: approveStatusColor[tableData[rowIndex].approveStatus]}">{{ approveStatus[tableData[rowIndex].approveStatus] }}</div>
         </template>
         <template v-slot:taskStatus="{rowIndex}">
-            <div>{{ taskStatus[tableData[rowIndex].taskStatus] }}</div>
+            <div :style="{color: taskStatusColor[tableData[rowIndex].taskStatus]}">{{ taskStatus[tableData[rowIndex].taskStatus] }}</div>
         </template>
         <template v-slot:operations="{rowIndex}">
           <el-button v-hasPerm="btnApprovalCode.approval" type="text" @click="approval(tableData[rowIndex])">审批</el-button>
@@ -66,7 +66,7 @@ import {  ref, reactive } from "vue";
 import ApprovalDo from './add/ApprovalDo.vue';
 import { useRouter } from 'vue-router';
 import { fpspReport, approvalExport, delReport } from '@/api/intellApproval'
-import { approveStatus, statusList, taskStatus } from './type.ts'
+import { approveStatus,approveStatusColor, statusList, taskStatus, taskStatusColor } from './type.ts'
 import dayjs from "dayjs";
 import { btnApprovalCode } from '@/router/permissionCode'
 

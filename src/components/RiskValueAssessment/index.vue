@@ -244,6 +244,9 @@ init()
 }
 .chart {
   width: 367px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center
 }
 .information {
   width: calc(100% - 367px);

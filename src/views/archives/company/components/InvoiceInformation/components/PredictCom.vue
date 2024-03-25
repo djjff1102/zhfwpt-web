@@ -18,7 +18,8 @@ const props = defineProps({
 <style lang="scss" scoped>
 .per-title {
   background: rgba(52, 112, 255, 0.04);
-  padding-left: 70px;
+  padding: 0 24px;
+  // padding-left: 70px;
   .pre-label {
     height: 26px;
     font-family: PingFangSC, PingFang SC;
