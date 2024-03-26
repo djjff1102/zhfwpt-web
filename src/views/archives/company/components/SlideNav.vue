@@ -155,9 +155,24 @@ const scollEvent = () => {
 //     item.scoll = document.getElementById(item.id).offsetTop;
 //   });
 // };
+
+// 从子模块详情页会公司详情页，做定位
+function renderPage() {
+  const localId = sessionStorage.getItem('detailId')
+  if(localId) {
+    const element = document.getElementById(localId);
+    const distanceToTop = element.offsetTop;
+    document.querySelector(".company-content").scrollTo({
+      top:distanceToTop,
+    });
+    sessionStorage.removeItem('detailId')
+  }
+}
+
 onMounted(() => {
   nextTick(() => {
     scollEvent();
+    renderPage()
     // getOffsetTop(navList);
     // setTimeout(() => {getOffsetTop(navList);}, 2000)
   });

@@ -29,7 +29,6 @@ function init() {
   fromOrder.value = route.query.fromOrder;
   if(fromOrder.value == 'true') {
     order.value = JSON.parse(route.query.order);
-    console.log('订单---------------：', order.value)
     code.value = order.value.code;
   } else {
     fapiao.value = JSON.parse(route.query.fapiao);

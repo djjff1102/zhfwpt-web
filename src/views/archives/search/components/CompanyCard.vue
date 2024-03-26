@@ -6,7 +6,8 @@
       </div>
       <div class="company-desc">
         <div class="company-name">
-          <span class="mr-12px">{{ comData?.companyName }}</span>
+          <!-- <span class="mr-12px">{{ comData?.companyName }}</span> -->
+          <span class="mr-12px" v-html="highlightedText"></span>
           <el-tag round effect="light" type="success">{{comData?.companyStatus || '-'}}</el-tag>
         </div>
         <div class="company-tags">
@@ -96,6 +97,15 @@ const props = defineProps({
 })
 
 const showRiskAll = ref(false)
+
+const highlightedText = computed(() => {
+  if (props.search) {
+    const regex = new RegExp(props.search, 'gi');
+    return props.comData?.companyName.replace(regex, match => `<span style="color:red">${match}</span>`);
+  } else {
+    return props.comData?.companyName;
+  }
+})
 
 // 处理风险预警值
 const riskAndCountArry = computed(() => {

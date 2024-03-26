@@ -207,6 +207,8 @@ const scroll = ref({
 
 // 跳转发票详情
 function handleDetail(d) {
+  // 标记从发票调走，针对back时，做模块定位
+  sessionStorage.setItem('detailId', 'InvoiceInformation')
   router.push({
     path: '/archives/fpdetail',
     query: {

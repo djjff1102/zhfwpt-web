@@ -202,6 +202,8 @@ function reset() {
 
 // 跳转订单详情
 function toOrderDetail(d) {
+  // 标记从订单调走，针对back时，做模块定位
+  sessionStorage.setItem('detailId', 'OrderInformation')
   router.push({
     path: '/archives/orderDetail',
     query: {
