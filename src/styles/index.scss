@@ -171,6 +171,17 @@
   font-size: 24px!important;
   font-weight: bold !important;
 }
-// .el-button--primary {
-//   color: #3470ff;
-// }
+/** 时间控件圆角 */
+.w-picker-cell-range-start .w-picker-date {
+  border-radius: 2px;
+  display: flex;
+  justify-content: flex-start;
+}
+.w-picker-cell-range-end .w-picker-date {
+  border-radius: 2px;
+  display: flex;
+  justify-content: flex-end;
+}
+.w-picker-cell .w-picker-date {
+  padding: 0;
+}

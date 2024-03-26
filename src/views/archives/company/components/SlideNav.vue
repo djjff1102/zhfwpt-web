@@ -1,6 +1,6 @@
 <template>
   <!-- <Teleport to="body"> -->
-      <div
+  <div
     class="slide-nav"
     :style="{
       transform: `translateX(${isShowSlideNav ? '0px' : '142px'})`,
@@ -115,8 +115,10 @@ const scrollTo = (item) => {
   setTimeout(() => {
     disableScoll.value = false;
   }, 1000);
+  const element = document.getElementById(item.id);
+  const distanceToTop = element.offsetTop;
   document.querySelector(".company-content").scrollTo({
-    top: item.scoll,
+    top:distanceToTop,
     // behavior: "smooth",
   });
 };
@@ -140,7 +142,6 @@ const scollEvent = () => {
     navList.value.map((item) => {
       const element = document.getElementById(item.id);
       const distanceToTop = element.offsetTop;
-      console.log('滑动的组件---------------------------', item.name, distanceToTop)
       if (e.target.scrollTop + 100 >= distanceToTop && item.show) {
         activeNav.value = item.id;
       }
@@ -149,16 +150,16 @@ const scollEvent = () => {
   document.querySelector(".company-content").addEventListener("scroll", event);
 };
 
-let getOffsetTop = (navList) => {
-  navList.value.map((item) => {
-    item.scoll = document.getElementById(item.id).offsetTop;
-  });
-};
+// let getOffsetTop = (navList) => {
+//   navList.value.map((item) => {
+//     item.scoll = document.getElementById(item.id).offsetTop;
+//   });
+// };
 onMounted(() => {
   nextTick(() => {
     scollEvent();
-    getOffsetTop(navList);
-    setTimeout(() => {getOffsetTop(navList);}, 2000)
+    // getOffsetTop(navList);
+    // setTimeout(() => {getOffsetTop(navList);}, 2000)
   });
 });
 </script>
