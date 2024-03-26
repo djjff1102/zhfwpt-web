@@ -72,35 +72,41 @@ const columns = reactive([
   {
     title: "所属地区",
     dataIndex: "locationProvince",
-    fixed: "left",
+    width: 180,
   },
   {
     title: "仓库地址",
     dataIndex: "locationAddress",
-    fixed: "left",
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
-    title: "涉及订单数量", //TODO:
+    title: "涉及订单数量-暂无", //TODO:
     dataIndex: "email",
   },
   {
-    title: "货物运输总金额",
+    title: "货物运输总金额-暂无",
     dataIndex: "email",
   },
   {
     title: "仓库企业名称",
     dataIndex: "companyName",
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "企业纳税人识别号",
     dataIndex: "creditNo",
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
-  {
-    title: "操作",
-    dataIndex: "operations",
-    slotName: "operations",
-    fixed: "right",
-  },
+  // {
+  //   title: "操作",
+  //   width: 100,
+  //   dataIndex: "operations",
+  //   slotName: "operations",
+  //   fixed: "right",
+  // },
 ]);
 const pagination = ref({
   total: 0,

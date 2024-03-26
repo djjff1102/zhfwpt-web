@@ -51,7 +51,25 @@
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
         </template>
-       <template v-slot:operations="{rowIndex}">
+        <template v-slot:quantitySlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].quantity) }}
+        </template>
+        <template v-slot:amountIncludeTaxSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].amountIncludeTax) }}
+        </template>
+        <template v-slot:taxRateSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].taxRate) }}
+        </template>
+        <template v-slot:taxAmountSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].taxAmount) }}
+        </template>
+        <template v-slot:unitPriceSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].unitPrice) }}
+        </template>
+        <template v-slot:amountTotalSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].amountTotal) }}
+        </template>
+        <template v-slot:operations="{rowIndex}">
           <el-button type="text" @click="handleDetail(tableData[rowIndex])">详情</el-button>
         </template>
       </m-table>
@@ -70,7 +88,7 @@ import { qyzxInvoice, groupByInvoiceDate } from '@/api/archives'
 import { useRoute, useRouter } from 'vue-router';
 import TendencyChart from "./TendencyChart/index.vue";
 import PredictCom from './PredictCom.vue'
-import { formatData } from '@/utils/common'
+import { formatNumber, formatData } from '@/utils/common'
 
 const route = useRoute();
 const router = useRouter();
@@ -104,37 +122,50 @@ const columns = reactive([
   {
     title: "开票单位",
     dataIndex: "invoicingCompanyName",
-    width: 180,
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "开票单位统一社会信用代码",
     dataIndex: "invoicingCreditNo",
     width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "收票单位",
     dataIndex: "receivingCompanyName",
-    width: 180,
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "收票单位统一社会信用代码",
     width: 220,
     dataIndex: "receivingCreditNo",
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "项目名称",
     dataIndex: "goodName",
     width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "规格型号",
     dataIndex: "standard",
-    width: 80,
+    width: 180,
   },
   {
     title: "数量",
     dataIndex: "quantity",
-    width: 80,
+    width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    slotName: 'quantitySlot'
   },
   {
     title: "计量单位",
@@ -145,26 +176,35 @@ const columns = reactive([
     title: "含税金额",
     dataIndex: "amountIncludeTax",
     width: 180,
+    slotName: 'amountIncludeTaxSlot',
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "税率",
     dataIndex: "taxRate",
     width: 180,
+    slotName: 'taxRateSlot'
   },
   {
     title: "税额",
     dataIndex: "taxAmount",
     width: 180,
+    slotName: 'taxAmountSlot'
   },
   {
     title: "单价",
     dataIndex: "unitPrice",
+    slotName: 'unitPriceSlot',
     width: 180,
   },
   {
     title: "价税合计",
     dataIndex: "amountTotal",
     width: 180,
+    ellipsis: true,
+    slotName: 'amountTotalSlot',
+    tooltip: {position: 'left'},
   },
   {
     title: "操作",

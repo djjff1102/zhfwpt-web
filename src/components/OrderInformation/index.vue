@@ -45,6 +45,9 @@
       >
         <template v-slot:index="{rowIndex}">
             <div>{{ rowIndex + 1 }}</div>
+        </template> 
+        <template v-slot:moneySlot="{rowIndex}">
+            <div>{{ formatNumber(tableData[rowIndex].totalMoney) }}</div>
         </template>
         <template v-slot:operations="{rowIndex}">
           <el-button type="text" @click="toOrderDetail(tableData[rowIndex])">详情</el-button>
@@ -53,11 +56,13 @@
     </div>
   </div>
 </template>
+
 <script setup>
 import dayjs from "dayjs";
 import { ref, reactive} from "vue";
 import { qyzxOrder, orderDropDownBox } from '@/api/archives'
 import { useRouter } from 'vue-router'
+import { formatNumber } from '@/utils/common'
 
 const router = useRouter();
 
@@ -81,55 +86,86 @@ const columns = reactive([
   {
     title: "订单编号",
     dataIndex: "code",
-    width: 180,
-    fixed: "left",
+    width: 200,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "订单创建日期",
     dataIndex: "orderCreateDate",
-    fixed: "left",
+    width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "商品类别",
     dataIndex: "goodType",
-    fixed: "left",
+    width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "买方名称",
     dataIndex: "buyerCompanyName",
+    width: 280,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "买方信用代码",
     dataIndex: "buyerCreditNo",
+    width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "卖方名称",
     dataIndex: "sellerCompnayName",
+    width: 280,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "卖方信用代码",
     dataIndex: "sellerCreditNo",
+    width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "商品所在地址",
     dataIndex: "goodAddress",
+    width: 280,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "仓库名称",
     dataIndex: "warehouseName",
+    width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "总金额",
     dataIndex: "totalMoney",
+    width: 180,
+    ellipsis: true,
+    slotName: "moneySlot",
+    tooltip: {position: 'left'},
   },
   {
     title: "合同编号",
     dataIndex: "certificateCode",
+    width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "操作",
     dataIndex: "operations",
     slotName: "operations",
+    width: 100,
     fixed: "right",
   },
 ]);
@@ -207,8 +243,7 @@ function toOrderDetail(d) {
   router.push({
     path: '/archives/orderDetail',
     query: {
-      order: JSON.stringify(d),
-      fromOrder: true
+      order: JSON.stringify(d)
     }
   })
 }

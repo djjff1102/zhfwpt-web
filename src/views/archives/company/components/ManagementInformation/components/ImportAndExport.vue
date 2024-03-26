@@ -3,19 +3,19 @@
   <div class="title">备案信息</div>
   <el-descriptions class="margin-top" :column="2" border>
     <el-descriptions-item label="备案日期">
-      ??
+      {{ formData?.recordDate || '--' }}
     </el-descriptions-item>
     <el-descriptions-item label="所在海关"> {{ formData?.customsRegisteredAddress || '--' }} </el-descriptions-item>
     <el-descriptions-item label="行政区划"> {{ formData?.administrativeDivision || '--' }} </el-descriptions-item>
-    <el-descriptions-item label="地址"> {{ formData?.icRegisteredAddress	 }} </el-descriptions-item>
-    <el-descriptions-item label="经济区划"> {{ formData?.economicDivision }} </el-descriptions-item>
-    <el-descriptions-item label="经营类别"> {{ formData?.managementCategory }} </el-descriptions-item>
-    <el-descriptions-item label="统计经济区划"> {{ formData?.economicDivision }} </el-descriptions-item>
-    <el-descriptions-item label="行业种类"> {{ formData?.industryCategory }} </el-descriptions-item>
-    <el-descriptions-item label="海关注销标志"> {{ formData?.status }} </el-descriptions-item>
-    <el-descriptions-item label="跨境贸易电子商务类型">{{ formData?.types }}</el-descriptions-item>
-    <el-descriptions-item label="年报情况"> {{ formData?.annualReport }} </el-descriptions-item>
-    <el-descriptions-item label="信用等级"> {{ }}?? </el-descriptions-item>
+    <el-descriptions-item label="地址"> {{ formData?.icRegisteredAddress	|| '--' }} </el-descriptions-item>
+    <el-descriptions-item label="经济区划"> {{ formData?.economicDivision || '--' }} </el-descriptions-item>
+    <el-descriptions-item label="经营类别"> {{ formData?.managementCategory || '--' }} </el-descriptions-item>
+    <el-descriptions-item label="统计经济区划"> {{ formData?.economicDivision || '--' }} </el-descriptions-item>
+    <el-descriptions-item label="行业种类"> {{ formData?.industryCategory || '--' }} </el-descriptions-item>
+    <el-descriptions-item label="海关注销标志"> {{ formData?.status || '--' }} </el-descriptions-item>
+    <el-descriptions-item label="跨境贸易电子商务类型">{{ formData?.types || '--' }}</el-descriptions-item>
+    <el-descriptions-item label="年报情况"> {{ formData?.annualReport || '--' }} </el-descriptions-item>
+    <el-descriptions-item label="信用等级"> {{ formData?.creditLevelAfter || '--' }} </el-descriptions-item>
   </el-descriptions>
   <div class="title">备案编码</div>
   <m-table

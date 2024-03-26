@@ -28,10 +28,10 @@
             <div class="label-value">
               <span
                 >当前关注企业
-                <span class="text-#3470FF">{{ attentResult.attentionCount }}</span> 家，其中风险等级较高的
-                <span class="text-#F76161">{{ attentResult.highRiskCount }}</span> 家，风险等级一般的
-                <span class="text-#0594EB">{{ attentResult.normalRiskCount }}</span> 家</span
-              >
+                <span class="text-#3470FF">{{ formatNumber(attentResult?.attentionCount) }}</span> 家，其中风险等级较高的
+                <span class="text-#F76161">{{ formatNumber(attentResult?.riskInfo?.mediumRiskNum) }}</span> 家，风险等级一般的
+                <span class="text-#FF9100">{{ formatNumber(attentResult?.riskInfo?.lowRiskNum) }}</span> 家，风险等级较低的</span>
+                <span class="text-#0594EB">{{ formatNumber(attentResult?.riskInfo?.mediumRiskNum) }}</span> 家
             </div>
           </div>
           <div class="result-count mb-10px">
@@ -50,7 +50,7 @@
               }"
             >
               <span class="area-tag" :class="{'active-province': !curProvince}" @click="handleSearchProvince">全部</span>
-              <span v-for="(item, i) in provinceResult" :key="i" class="area-tag" :class="{'active-province': curProvince === item.province_short }" @click="handleSearchProvince(item)">{{ item.province_short }}({{ item.count }})</span>
+              <span v-for="(item, i) in provinceResult" :key="i" class="area-tag" :class="{'active-province': curProvince === item.province_short }" @click="handleSearchProvince(item)">{{ item.province_short }}({{ formatNumber(item.count) }})</span>
             </div>
           </div>
         </div>
@@ -79,6 +79,7 @@ import CompanyCard from "./components/CompanyCard.vue";
 import NoMatch from "./components/NoMatch.vue";
 import { companyList, attentionTotal, groupByProvince } from '@/api/archives/index'
 import { useUserStoreHook } from "@/store/modules/user";
+import { formatNumber } from '@/utils/common'
 
 const userStore = useUserStoreHook();
 

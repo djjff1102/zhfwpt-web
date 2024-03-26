@@ -41,6 +41,9 @@
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
         </template>
+        <template v-slot:moneySlot="{ rowIndex }">
+          {{ tableData[rowIndex].money && formatNumber(tableData[rowIndex].money) }}
+        </template>
         <template v-slot:approvalstatus="{rowIndex}">
             <div>{{ approveStatus[tableData[rowIndex].approveStatus] }}</div>
         </template>
@@ -53,6 +56,7 @@ import dayjs from "dayjs";
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
 import { reporthistroy } from '@/api/intellApproval'
 import { approveStatus, statusList } from './type'
+import { formatNumber } from '@/utils/common'
 
 const props = defineProps({
   companyId: {
@@ -75,9 +79,9 @@ const columns = reactive([
     title: '申报日期',
     dataIndex: 'createDate',
     width: 180,
-    sortable: {
-      sortDirections: ['ascend', 'descend']
-    }
+    // sortable: {
+    //   sortDirections: ['ascend', 'descend']
+    // }
   },
   // {
   //   title: "申报单位",
@@ -87,12 +91,13 @@ const columns = reactive([
   {
     title: '申报额度',
     dataIndex: 'money',
-    width: 100,
+    slotName: 'moneySlot',
+    width: 180,
   },
   {
     title: "申报人",
     dataIndex: "applyUserName",
-    width: 200,
+    width: 180,
   },
   {
     title: '联系方式',
@@ -118,7 +123,10 @@ const columns = reactive([
   {
     title: "备注",
     dataIndex: "approveRemark",
-    width: 100,
+    width: 200,
+    ellipsis: true,
+    slotName: "descriptionSlot",
+    tooltip: {position: 'left'},
   },
   // {
   //   title: "风险评估任务",

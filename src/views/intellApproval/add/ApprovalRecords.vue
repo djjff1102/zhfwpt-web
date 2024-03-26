@@ -17,7 +17,7 @@
           <div>{{ approveStatus[tableData[rowIndex].approveResult] }}</div>
         </template>
         <template v-slot:fileName="{rowIndex}">
-          <el-button type="text" @click="load(tableData[rowIndex]?.fileUrl, tableData[rowIndex].fileName)">{{ tableData[rowIndex].fileName}}</el-button>
+          <el-button v-for="(item, i) in tableData[rowIndex]?.fileNames" :key="item" type="text" @click="load(tableData[rowIndex]?.fileUrls[i], item)">{{ item }}</el-button>
         </template>
     </m-table>
     </div>
@@ -119,7 +119,7 @@ function load(fileUrl: any, filename: any) {
 function exportBlob(b, name) {
   const fileName = name
   const typeValue = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-  const blob = new Blob([b.data], { type: typeValue});
+  const blob = new Blob([b], { type: typeValue});
   const a = document.createElement('a');
   a.download = fileName;
   a.href = URL.createObjectURL(blob);

@@ -141,20 +141,27 @@ const columns = reactive([
   {
     title: "风险名称",
     dataIndex: "name",
-    width: 180,
+    ellipsis: true,
+    width: 200,
   },
   {
     title: "风险描述",
     dataIndex: "description",
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "扫描结果",
     dataIndex: "result",
-    width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "风险建议",
     dataIndex: "recommend",
+    ellipsis: true,
+    slotName: "recommendSlot",
+    tooltip: {position: 'left'},
   },
 ]);
 

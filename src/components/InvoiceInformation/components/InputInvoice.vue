@@ -4,7 +4,13 @@
     <div class="search_box">
       <w-form :model="searchPar" layout="inline">
         <w-form-item class="mr-16px" field="post" label="发票类别">
-          <w-input v-model="searchPar.type" placeholder="请输入发票类别" />
+          <w-select v-model="searchPar.type" placeholder="全部">
+            <w-option>专用发票</w-option>
+            <w-option>普通发票</w-option>
+            <w-option>手写发票</w-option>
+            <w-option>定额发票</w-option>
+            <w-option>统一发票</w-option>
+          </w-select>
         </w-form-item>
         <w-form-item class="mr-16px" field="post" label="开票日期">
           <w-range-picker
@@ -22,9 +28,6 @@
         </w-form-item>
         <w-form-item field="invoicingCompanyName" label="开票单位">
           <w-input v-model="searchPar.invoicingCompanyName" placeholder="请输入开票单位" />
-        </w-form-item>
-        <w-form-item field="receivingCompanyName" label="收票单位">
-          <w-input v-model="searchPar.receivingCompanyName" placeholder="请输入收票单位" />
         </w-form-item>
         <w-form-item field="code" label="发票号码">
           <w-input v-model="searchPar.code" placeholder="请输入发票号码" />
@@ -85,65 +88,107 @@ const columns = reactive([
   },
   {
     title: "发票号码",
-    dataIndex: "name",
+    dataIndex: "code",
     width: 180,
     fixed: "left",
   },
   {
     title: "开票日期",
-    dataIndex: "salary",
-    width: 180,
-    fixed: "left",
+     width: 180,
+    dataIndex: "invoicingDate",
   },
   {
     title: "发票类别",
-    width: 180,
-    dataIndex: "address",
+     width: 180,
+    dataIndex: "type",
   },
   {
     title: "开票单位",
-    width: 180,
-    dataIndex: "email",
+     width: 180,
+    dataIndex: "invoicingCompanyName",
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "开票单位统一社会信用代码",
-    width: 220,
-    dataIndex: "email",
+     width: 220,
+    dataIndex: "invoicingCreditNo",
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
-    title: "商品类别",
+    title: "收票单位",
+     width: 220,
+    dataIndex: "receivingCompanyName",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "收票单位统一社会信用代码",
+    width: 220,
+    dataIndex: "receivingCreditNo",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "项目名称",
+     width: 180,
+    dataIndex: "goodName",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "规格型号",
     width: 180,
-    dataIndex: "email",
+    dataIndex: "standard",
   },
   {
     title: "数量",
+    dataIndex: "quantity",
     width: 180,
-    dataIndex: "email",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    slotName: 'quantitySlot'
   },
   {
     title: "计量单位",
-    width: 180,
-    dataIndex: "email",
+    width: 100,
+    dataIndex: "measureUnit",
   },
   {
     title: "含税金额",
     width: 180,
-    dataIndex: "email",
+    dataIndex: "amountIncludeTax",
+    slotName: 'amountIncludeTaxSlot',
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "税率",
+    dataIndex: "taxRate",
     width: 180,
-    dataIndex: "email",
+    slotName: 'taxRateSlot'
   },
   {
     title: "税额",
-    width: 180,
-    dataIndex: "email",
+     width: 180,
+    dataIndex: "taxAmount",
+    slotName: 'taxAmountSlot'
   },
   {
     title: "单价",
+     width: 180,
+    dataIndex: "unitPrice",
+    slotName: 'unitPriceSlot',
+  },
+  {
+    title: "价税合计",
     width: 180,
-    dataIndex: "email",
+    dataIndex: "amountTotal",
+    ellipsis: true,
+    slotName: 'amountTotalSlot',
+    tooltip: {position: 'left'},
   },
 ]);
 const pagination = ref({
@@ -161,13 +206,13 @@ const scroll = ref({
 const searchPar = ref({
   page_size: 10,
   page: 1,
-  orderCode: props.parentCode,    //订单编号（在关联订单发票查询接口是需要前端传入的）
+  orderCode: props.parentCode, //订单编号（在关联订单发票查询接口是需要前端传入的）
   invoiceDateStart:"",
   invoiceDateEnd:"",
-  type:"",    //专用发票/普通发票，为空的话查询全部
-  code:"",    //发票号码
-  receivingCompanyName:"",    //收票单位
-  invoicingCompanyName:""    //开票单位
+  type:"", //专用发票/普通发票，为空的话查询全部
+  code:"", //发票号码
+  receivingCompanyName:"",  //收票单位
+  invoicingCompanyName:""  //开票单位
 })
 
 const changePagesize = (v) => {
@@ -193,14 +238,15 @@ function onChange(dateString, date) {
 }
 
 function search() {
+  pagination.value.current = 1;
   searchPar.value.page = 1;
   getqyzxInvoic();
 }
 
 function reset() {
   curDate.value = []
+  pagination.value.current =  1;
   searchPar.value = {
-    page_size: 10,
     page: 1,
     orderCode: props.parentCode,   //订单编号（在关联订单发票查询接口是需要前端传入的）
     invoiceDateStart:"",

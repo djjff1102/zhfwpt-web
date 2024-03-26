@@ -56,16 +56,21 @@ const columns = reactive([
   {
     title: "风险分类",
     dataIndex: "secondCategory",
-    width: 180,
+    ellipsis: true,
+    width: 200,
   },
   {
     title: "风险名称",
     dataIndex: "name",
-    width: 180,
+    ellipsis: true,
+    width: 200,
   },
   {
     title: "风险描述",
     dataIndex: "description",
+    ellipsis: true,
+    slotName: "descriptionSlot",
+    tooltip: {position: 'left'},
   },
 ]);
 const pagination = ref({

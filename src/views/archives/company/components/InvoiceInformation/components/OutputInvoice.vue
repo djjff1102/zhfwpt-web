@@ -30,6 +30,9 @@
         <w-form-item field="receivingCompanyName" label="收票单位">
           <w-input v-model="searchPar.receivingCompanyName" placeholder="请输入收票单位" />
         </w-form-item>
+        <w-form-item field="invoicingCompanyName" label="开票单位">
+          <w-input v-model="searchPar.invoicingCompanyName" placeholder="请输入开票单位" />
+        </w-form-item>
         <w-form-item field="code" label="发票号码">
           <w-input v-model="searchPar.code" placeholder="请输入发票号码" />
         </w-form-item>
@@ -51,6 +54,24 @@
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
         </template>
+        <template v-slot:quantitySlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].quantity) }}
+        </template>
+        <template v-slot:amountIncludeTaxSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].amountIncludeTax) }}
+        </template>
+        <template v-slot:taxRateSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].taxRate) }}
+        </template>
+        <template v-slot:taxAmountSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].taxAmount) }}
+        </template>
+        <template v-slot:unitPriceSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].unitPrice) }}
+        </template>
+        <template v-slot:amountTotalSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].amountTotal) }}
+        </template>
         <template v-slot:operations="{rowIndex}">
           <el-button type="text" @click="handleDetail(tableData[rowIndex])">详情</el-button>
         </template>
@@ -71,7 +92,7 @@ import PredictCom from './PredictCom.vue'
 import { ref, reactive } from "vue";
 import { qyzxInvoice, groupByInvoiceDate } from '@/api/archives'
 import { useRoute, useRouter } from 'vue-router';
-import { formatData } from '@/utils/common'
+import { formatData, formatNumber } from '@/utils/common'
 
 const route = useRoute();
 const router = useRouter();
@@ -106,66 +127,89 @@ const columns = reactive([
     title: "开票单位",
      width: 180,
     dataIndex: "invoicingCompanyName",
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "开票单位统一社会信用代码",
      width: 220,
     dataIndex: "invoicingCreditNo",
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "收票单位",
-     width: 180,
+     width: 220,
     dataIndex: "receivingCompanyName",
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "收票单位统一社会信用代码",
     width: 220,
     dataIndex: "receivingCreditNo",
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "项目名称",
      width: 180,
     dataIndex: "goodName",
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "规格型号",
-     width: 80,
+    width: 180,
     dataIndex: "standard",
   },
   {
     title: "数量",
-     width: 80,
     dataIndex: "quantity",
+    width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    slotName: 'quantitySlot'
   },
   {
     title: "计量单位",
-     width: 100,
+    width: 100,
     dataIndex: "measureUnit",
   },
   {
     title: "含税金额",
-     width: 180,
+    width: 180,
     dataIndex: "amountIncludeTax",
+    slotName: 'amountIncludeTaxSlot',
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "税率",
     dataIndex: "taxRate",
     width: 180,
+    slotName: 'taxRateSlot'
   },
   {
     title: "税额",
      width: 180,
     dataIndex: "taxAmount",
+    slotName: 'taxAmountSlot'
   },
   {
     title: "单价",
      width: 180,
     dataIndex: "unitPrice",
+    slotName: 'unitPriceSlot',
   },
   {
     title: "价税合计",
-     width: 180,
+    width: 180,
     dataIndex: "amountTotal",
+    ellipsis: true,
+    slotName: 'amountTotalSlot',
+    tooltip: {position: 'left'},
   },
   {
     title: "操作",

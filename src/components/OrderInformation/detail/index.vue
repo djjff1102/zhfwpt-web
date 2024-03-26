@@ -1,11 +1,10 @@
 <template>
   <div class="order-detail-container">
     <div class="title">基本信息</div>
-    <BaseInfo v-if="fromOrder == 'true'" :order="order"></BaseInfo>
-    <BaseInfoFP v-else :order="fapiao"></BaseInfoFP>
+    <BaseInfo  :order="order"></BaseInfo>
     <div class="title">子订单信息</div>
     <SecondWarehousing :parentCode="code"></SecondWarehousing>
-    <div v-if="fromOrder == 'true'">
+    <div>
       <div class="title">关联发票列表</div>
       <InvoiceInformation :parentCode="order.code"></InvoiceInformation></div>
     </div>
@@ -15,25 +14,17 @@ import  { ref } from 'vue';
 import BaseInfo from "./components/BaseInfo.vue"
 import SecondWarehousing from "./components/SecondWarehousing.vue";
 import InvoiceInformation from "@/components/InvoiceInformation/components/InputInvoice.vue";
-import BaseInfoFP from './components/BaseInfoFP.vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute();
 
 const order = ref({}) // 订单信息
 const fapiao = ref({}) // 发票信息
-const fromOrder = ref(false) // 从发票跳转、订单跳转
 const code = ref(); // 订单编号
 
 function init() {
-  fromOrder.value = route.query.fromOrder;
-  if(fromOrder.value == 'true') {
-    order.value = JSON.parse(route.query.order);
-    code.value = order.value.code;
-  } else {
-    fapiao.value = JSON.parse(route.query.fapiao);
-    code.value = fapiao.value.orderCode;
-  }
+  order.value = JSON.parse(route.query.order);
+  code.value = order.value.code;
 }
 
 init()
@@ -64,5 +55,22 @@ init()
   overflow: auto;
   background-color: #fff;
   padding: 16px 90px;
+}
+:deep(.w-input-wrapper) {
+  width: 188px;
+  height: 32px;
+}
+:deep(.w-picker) {
+  width: 240px;
+  height: 32px;
+}
+:deep(.w-select-view) {
+  width: 132px;
+  height: 32px;
+}
+:deep(.w-form-item-label) {
+  height: 32px;
+  color: #000;
+  font-weight: 500;
 }
 </style>

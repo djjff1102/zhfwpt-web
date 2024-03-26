@@ -11,7 +11,7 @@
     <div class="search_box">
       <w-form :model="searchPar" layout="inline">
         <w-form-item class="mr-16px" field="department" label="许可机关">
-          <w-select v-model="searchPar.department" placeholder="不限">
+          <w-select v-model="searchPar.department" placeholder="不限" style="width: 400px">
             <w-option v-for="(item, i) in listdata" :key="i" :value="item.department_no" :label="item.department"></w-option>
           </w-select>
         </w-form-item>
@@ -33,9 +33,9 @@
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
         </template>
-        <template v-slot:operations>
+        <!-- <template v-slot:operations>
           <el-button type="text" disabled>详情</el-button>
-        </template>
+        </template> -->
       </m-table>
     </div>
   <!-- </w-spin> -->
@@ -65,38 +65,44 @@ const columns = reactive([
   {
     title: "决定文书/许可编号",
     dataIndex: "licenceNo",
-    width: 180,
-    fixed: "left",
+    width: 200,
   },
   {
     title: "决定文书/许可证名称",
     dataIndex: "licenceName",
-    fixed: "left",
+    width: 200,
   },
   {
     title: "有效期自",
     dataIndex: "allowStartdate",
-    fixed: "left",
+    width: 180,
   },
   {
     title: "有效期至",
     dataIndex: "endDate",
+    width: 180,
   },
   {
     title: "许可机关",
     dataIndex: "department",
+    ellipsis: true,
+    slotName: "recommendSlot",
+    tooltip: {position: 'left'},
   },
   {
     title: "内容",
     dataIndex: "licenceContent",
+    ellipsis: true,
+    slotName: "recommendSlot",
+    tooltip: {position: 'left'},
   },
-  {
-    title: "操作",
-    width: 100,
-    dataIndex: "operations",
-    slotName: "operations",
-    fixed: "right",
-  },
+  // {
+  //   title: "操作",
+  //   width: 100,
+  //   dataIndex: "operations",
+  //   slotName: "operations",
+  //   fixed: "right",
+  // },
 ]);
 const pagination = ref({
   total: 0,
@@ -179,8 +185,6 @@ init();
 </script>
 
 <style lang="scss" scoped>
-.container {
-}
 .table-warp {
   height: calc(100% - 100px);
 }
@@ -196,7 +200,7 @@ init();
     border-radius: 4px;
     margin-right: 4px;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 14px;
     color: #6A6A6A;
     text-align: center;
     font-style: normal;
@@ -209,9 +213,9 @@ init();
     color: rgba(52, 112, 255, 1);
   }
 }
-:deep(.w-select) {
-  width: 400px!important;
-}
+// :deep(.w-select) {
+//   width: 400px!important;
+// }
 :deep(.tab-wrap) {
   margin-bottom: 8px!important;
 }

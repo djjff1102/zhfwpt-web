@@ -32,6 +32,12 @@
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
         </template>
+        <template v-slot:lastestOrderAmountSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].lastestOrderAmount) }}
+        </template>
+        <template v-slot:marketAmountSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].marketAmount) }}
+        </template>
         <template v-slot:operations>
           <el-button type="text">详情</el-button>
         </template>
@@ -42,6 +48,7 @@
 <script lang="ts" setup>
 import { ref, reactive } from "vue";
 import { qyzxGood, goodDropDownBox } from '@/api/archives'
+import { formatNumber } from '@/utils/common'
 
 const props = defineProps({
   companyName: String
@@ -59,7 +66,7 @@ const columns = reactive([
   {
     title: "商品名称",
     dataIndex: "good",
-    width: 180,
+    width: 220,
     fixed: "left",
   },
   {
@@ -79,10 +86,12 @@ const columns = reactive([
   {
     title: "最近一笔订单售价",
     dataIndex: "lastestOrderAmount",
+    slotName: 'lastestOrderAmountSlot',
   },
   {
     title: "市场单价",
     dataIndex: "marketAmount",
+    slotName: 'marketAmountSlot',
   },
 ]);
 const pagination = ref({

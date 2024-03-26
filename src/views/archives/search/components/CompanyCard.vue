@@ -43,13 +43,13 @@
           </div>
           <div class="desc-item">
             <span class="desc-label">官网：</span>
-            <span class="desc-value">{{ comData?.websiteUrl || '-' }}</span>
+            <span class="desc-value" style="width: 400px">{{ comData?.websiteUrl || '-' }}</span>
           </div>
         </div>
         <div class="desc-info">
           <div class="desc-item">
             <span class="desc-label">地址：</span>
-            <span class="desc-value">{{ comData?.companyAddress || '--' }}</span
+            <span class="desc-value" style="width: 900px">{{ comData?.companyAddress || '--' }}</span
             >
           </div>
         </div>
@@ -101,7 +101,7 @@ const showRiskAll = ref(false)
 const highlightedText = computed(() => {
   if (props.search) {
     const regex = new RegExp(props.search, 'gi');
-    return props.comData?.companyName.replace(regex, match => `<span style="color:red">${match}</span>`);
+    return props.comData?.companyName.replace(regex, match => `<span style="color:#F76161 ">${match}</span>`);
   } else {
     return props.comData?.companyName;
   }
@@ -238,11 +238,14 @@ function handleAttention(d) {
 }
 .desc-label,
 .desc-value {
-  display: inline;
+  display: inline-block;
   font-weight: 400;
   font-size: 14px;
   color: #999999;
   line-height: 22px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .desc-value {
   color: #333333;

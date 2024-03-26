@@ -28,10 +28,11 @@
     <el-descriptions-item label="合同编号">
      {{ order?.certificateCode }}
     </el-descriptions-item>
-    <el-descriptions-item label="总金额"> {{ order?.totalMoney }} </el-descriptions-item>
+    <el-descriptions-item label="总金额"> {{ formatNumber(order?.totalMoney) }} </el-descriptions-item>
   </el-descriptions>
 </template>
 <script setup>
+import { formatNumber } from '@/utils/common'
 const props = defineProps({
   order: {
     default: {}
