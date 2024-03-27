@@ -28,7 +28,9 @@ export function formatNumber(number) {
   }
   if (number % 1 !== 0) {
     // 检查是否为小数
-    return number.toFixed(2); // 如果是小数，保留两位小数
+    let num = number.toFixed(2); // 如果是小数，保留两位小数
+    let zhengshu = formatNumber(num.split(".")[0]);
+    return zhengshu + "." + num.split(".")[1];
   } else {
     // 如果是整数
     if (number > 1000) {

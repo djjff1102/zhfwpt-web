@@ -40,6 +40,9 @@
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
         </template>
+        <template v-slot:paymentAmountSlot="{ rowIndex }">
+          {{ formatNumber(Number(tableData[rowIndex].paymentAmount)) }}
+        </template>
         <template v-slot:operations>
           <el-button type="text" disabled>详情</el-button>
         </template>
@@ -51,6 +54,7 @@
 import dayjs from "dayjs";
 import { ref, reactive } from "vue";
 import { qyzxBankStatement } from '@/api/archives'
+import { formatNumber } from '@/utils/common' 
 
 const props = defineProps({
   companyName: String
@@ -70,54 +74,69 @@ const columns = reactive([
   {
     title: "付款编号",
     dataIndex: "paymentCode",
-    width: 180,
+    width: 220,
     fixed: "left",
   },
   {
     title: "付款日期",
     dataIndex: "paymentDate",
-    fixed: "left",
+    width: 220,
   },
   {
     title: "付款状态",
     dataIndex: "paymentStatus",
-    fixed: "left",
+    width: 180,
   },
   {
     title: "付款银行",
     dataIndex: "paymentBank",
+    width: 220,
   },
   {
     title: "付款额度",
     dataIndex: "paymentAmount",
+    width: 220,
+    slotName: 'paymentAmountSlot'
   },
   {
     title: "付款方",
     dataIndex: "paymentCompany",
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "付款账号",
     dataIndex: "paymentAccount",
+     width: 220,
   },
   {
     title: "收款时间",
     dataIndex: "collectionDate",
+     width: 220,
   },
   {
     title: "收款方",
     dataIndex: "collectionCompany",
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "收款银行",
     dataIndex: "collectionBank",
+    width: 220,
   },
   {
     title: "收款账号",
     dataIndex: "collectionAccount",
+     width: 220,
   },
   {
     title: "关联订单编号",
     dataIndex: "orderCode",
+    width: 220,
+    fixed: "right",
   },
 ]);
 const pagination = ref({

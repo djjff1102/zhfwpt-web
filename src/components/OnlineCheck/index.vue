@@ -108,12 +108,16 @@ function initWord(data) {
 }
 
 function exportExcel(d) {
-  excelShow.value = true
+  // excelShow.value = true
   var data = new Uint8Array(d);
   var excel = XLSX.read(data, { type: "array" });
   var sheetNames = excel.SheetNames; // 工作表名称集合
-  var worksheet = excel.Sheets[sheetNames[0]];
-  excelData.value = XLSX.utils.sheet_to_json(worksheet)
+    var worksheet = excel.Sheets[sheetNames[0]];
+  const html = XLSX.utils.sheet_to_html(worksheet);
+  const newWindow = window.open();
+  newWindow.document.write(html);
+
+  // excelData.value = XLSX.utils.sheet_to_json(worksheet)
 }
 </script>
 

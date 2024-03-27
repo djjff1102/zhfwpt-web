@@ -43,6 +43,9 @@
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
         </template>
+        <template v-slot:amountSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].amount) }}
+        </template>
         <template v-slot:operations>
           <el-button type="text" disabled>详情</el-button>
         </template>
@@ -54,6 +57,7 @@
 import dayjs from "dayjs";
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
 import { qyzxTransactionCertificate } from '@/api/archives'
+import { formatNumber } from '@/utils/common' 
 
 const props = defineProps({
   companyName: String
@@ -73,33 +77,43 @@ const columns = reactive([
   {
     title: "合同编号",
     dataIndex: "code",
-    width: 180,
+    width: 220,
     fixed: "left",
   },
   {
     title: "甲方（买方/采购方/需方）",
     dataIndex: "partyA",
-    fixed: "left",
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "乙方（卖方/销售方/供方）",
     dataIndex: "partyB",
-    fixed: "left",
+    fellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "签订地点",
     dataIndex: "signAddress",
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "签订日期",
     dataIndex: "signDate",
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "合同金额",
     dataIndex: "amount",
+    ellipsis: true,
+    slotName: 'amountSlot',
+    tooltip: {position: 'left'},
   },
   {
     title: "操作",
+    width:100,
     dataIndex: "operations",
     slotName: "operations",
     fixed: "right",

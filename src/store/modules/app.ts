@@ -20,7 +20,6 @@ export const useAppStore = defineStore("app", () => {
     withoutAnimation: false,
   });
   const activeTopMenu = useStorage("activeTop", "");
-  console.log("当前激活的菜单-----------：", activeTopMenu.value);
   /**
    * 根据语言标识读取对应的语言包
    */

@@ -7,12 +7,10 @@ const userStore = useUserStoreHook();
  */
 export const hasPerm: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
-    console.log("权限吗111---------------：", binding);
     const { value } = binding;
     if (!value) return;
     let code = userStore.user.authorityCode;
     const curValue = binding.value;
-    console.log("权限吗---------------：", curValue);
     // 可根据自己的业务修改此处实现逻辑
     if (!code.includes(curValue)) {
       el.style.display = "none";

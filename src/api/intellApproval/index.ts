@@ -123,3 +123,13 @@ export function delReport(params: any): CustomAxiosPromise<DetailResult> {
   });
 }
 
+/**
+ * 近期申报
+ */
+export function queryFpspReport(params: any): CustomAxiosPromise<DetailResult> {
+  return request({
+    url: `/base/fpsp_report/queryFpspReport/${params.id}`,
+    method: "get",
+    params,
+  });
+}

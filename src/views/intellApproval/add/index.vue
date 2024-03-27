@@ -49,7 +49,7 @@
               <div>请填写在税务申报系统提交申报的日期</div>
             </template>
           </w-date-picker> -->
-           <div v-else>{{ form.applyTime }}</div>
+           <div v-else>{{ form.applyTime && form.applyTime.split(' ')[0] }}</div>
         </el-form-item>
       </el-form>
     </div>
@@ -97,9 +97,9 @@
           </el-form-item>
         </div>
         <el-form-item v-else prop="validDateStart" label="起止有效期">
-          <span>{{ form.validDateStart }}</span>
+          <span>{{ form.validDateStart && form.validDateStart.split(' ')[0] }}</span>
             <span style="display: inline-block;padding: 0 40px;"> 至 </span>
-            <span>{{ form.validDateEnd }}</span>
+            <span>{{ form.validDateEnd && form.validDateEnd.split(' ')[0] }}</span>
         </el-form-item>
         <el-form-item prop="reason" label="申请理由" required>
           <el-input v-if="initPageParam.edit" type="textarea" v-model="form.reason"></el-input>
@@ -184,7 +184,7 @@ const router = useRouter();
 const basefrom1 = ref();
 const basefrom2 = ref();
 const rules = reactive({
-  applyTime: [{ required: true, message: '申报日期不能为空', trigger: ['blur', 'change'] }],
+  applyTime: [{ required: true, message: '申请日期不能为空', trigger: ['blur', 'change'] }],
   money: [{ required: true, message: '请输入申请额度', trigger: 'focus' }],
   reason: [{ required: true, message: '请输入申请理由', trigger: 'blur' }],
   limitType: [{ required: true, message: '请选择调整类型', trigger: ['blur', 'change'] }],
@@ -444,7 +444,6 @@ function getDetail(d) {
       columns.value = columnsHT
       form.value = res.data as any
       curDate.value = [res.data.validDateStart, res.data.validDateEnd]
-      console.log('curDate.value---------------:', curDate.value)
     } else {
       getgetOneByCompanyName() // 当前返回数据为空，新增，且无暂存，则查询企业基本信息
     }

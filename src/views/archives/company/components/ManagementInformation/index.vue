@@ -10,7 +10,7 @@
     <el-tab-pane label="纳税人资质">
       <TaxpayerQualification v-bind="$attrs"></TaxpayerQualification>
     </el-tab-pane>
-    <el-tab-pane label="企业图谱">
+    <!-- <el-tab-pane label="企业图谱">
       <CompanyGraph></CompanyGraph>
     </el-tab-pane>
     <el-tab-pane label="股权穿透">
@@ -18,7 +18,7 @@
     </el-tab-pane>
     <el-tab-pane label="供应链分析">
       <SupplyChainAnalysis></SupplyChainAnalysis>
-    </el-tab-pane>
+    </el-tab-pane> -->
   </el-tabs>
 </template>
 <script setup>

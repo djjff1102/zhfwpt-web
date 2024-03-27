@@ -1,11 +1,11 @@
 <template>
-  <div id="tendencyChart">
+  <div :id="chartId">
     <no-data></no-data>
   </div>
 </template>
 <script setup>
 import * as echarts from "echarts";
-import { onMounted, watch } from "vue";
+import { onMounted, watch, onUnmounted } from "vue";
 
 const props = defineProps({
   time: {
@@ -13,6 +13,9 @@ const props = defineProps({
   },
   dataList: {
     default: []
+  },
+  chartId: {
+    default: 'tendencyChart'
   }
 })
 
@@ -43,7 +46,7 @@ const echartData = ref({
       {
         type: "category",
         boundaryGap: false,
-        data: [],
+        data: props.time,
       },
     ],
     yAxis: [
@@ -57,7 +60,7 @@ const echartData = ref({
         name: "Evaporation",
         type: "line",
         symbolSize: 8,
-        data: [12, 0, 23, 2, 45],
+        data: props.dataList,
       },
     ],
   })
@@ -76,16 +79,24 @@ watch(
 );
 
 function init() {
-  const tendencyDom = document.querySelector("#tendencyChart");
+  const tendencyDom = document.getElementById(props.chartId);
   const tendencyChart = echarts.init(tendencyDom, null, {
     width: "auto",
     height: "400",
   });
   tendencyChart.setOption(echartData.value);
+  window.addEventListener('resize', handleResize);
 }
-// onMounted(() => {
-//   init()
-// })
+
+function handleResize() {
+  const chart = echarts.getInstanceByDom(document.getElementById(props.chartId));
+  if (chart) {
+    chart.resize();
+  }
+}
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
+})
 
 </script>
 <style lang="scss">
