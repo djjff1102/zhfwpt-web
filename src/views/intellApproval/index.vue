@@ -43,6 +43,9 @@
         @page-size-change="changePagesize"
         :bordered="false"
       >
+      <template v-slot:index="{rowIndex}">
+        {{ rowIndex + 1 }}
+      </template>
         <template v-slot:approvalstatus="{rowIndex}">
             <div :style="{color: approveStatusColor[tableData[rowIndex].approveStatus]}">{{ approveStatus[tableData[rowIndex].approveStatus] }}</div>
         </template>
@@ -77,6 +80,12 @@ const curDate = ref([])
 const loading = ref(false);
 const tableData = ref();
 const columns = reactive([
+   {
+    title: "序号",
+    dataIndex: "index",
+    slotName: 'index',
+    width: 80,
+  },
   {
     title: "申报编号",
     dataIndex: "reportCode",
@@ -86,9 +95,9 @@ const columns = reactive([
     title: '创建日期',
     dataIndex: 'createDate',
     width: 180,
-    sortable: {
-      sortDirections: ['ascend', 'descend']
-    }
+    // sortable: {
+    //   sortDirections: ['ascend', 'descend']
+    // }
   },
   {
     title: "申报单位",

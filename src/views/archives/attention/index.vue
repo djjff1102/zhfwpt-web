@@ -10,20 +10,20 @@
             <w-option v-for="(item, i) in provinceResult" :key="i">{{ item.province_short }}</w-option>
           </w-select>
         </w-form-item>
-        <w-form-item class="mr-16px" field="post" label="登记状态">
-          <w-select placeholder="请选择登记状态" clearable>
-            <w-option v-for="(item, i) in provinceResult" :key="i">{{ item.province_short }}</w-option>
-          </w-select>
-        </w-form-item>
         <w-form-item field="legalPerson" label="法人" >
           <w-input v-model="searchPar.legalPerson" placeholder="请输入法人" clearable/>
+        </w-form-item>
+        <w-form-item class="mr-16px" field="companyStatus" label="登记状态">
+          <w-select v-model="searchPar.companyStatus" placeholder="请选择登记状态" clearable>
+            <w-option v-for="(item, i) in signStatus" :key="i">{{ item.label }}</w-option>
+          </w-select>
         </w-form-item>
         <w-form-item field="creditNo" label="统一社会信用代码" >
           <w-input v-model="searchPar.creditNo" placeholder="请输入统一社会信用代码" clearable/>
         </w-form-item>
-        <w-form-item class="mr-16px" label="企业类型">
-          <w-select placeholder="请选择企业类型" clearable>
-            <w-option v-for="(item, i) in provinceResult" :key="i">{{ item.province_short }}</w-option>
+        <w-form-item field="companyType" class="mr-16px" label="企业类型">
+          <w-select v-model="searchPar.companyType" placeholder="请选择企业类型" clearable>
+            <w-option v-for="(item, i) in companyType" :key="i">{{ item }}</w-option>
           </w-select>
         </w-form-item>
         <w-form-item field="companyAddress" label="注册地址">
@@ -50,6 +50,9 @@
         @page-size-change="changePagesize"
         :bordered="false"
       >
+        <template v-slot:index="{rowIndex}">
+          {{ rowIndex + 1 }}
+        </template>
         <template v-slot:operations="{rowIndex}">
           <el-button type="text" @click="handleCompanyDetail(tableData[rowIndex])">详情</el-button>
         </template>
@@ -64,6 +67,7 @@ import { useRouter } from 'vue-router';
 import { debounce } from "lodash-es";
 import { attentionCompanyQuery, groupByProvince, attentionCompanyExport } from '@/api/archives'
 import dayjs from "dayjs";
+import { signStatus, companyType } from '@/utils/baseType'
 
 const router = useRouter();
 
@@ -71,46 +75,72 @@ const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
   {
+    title: "序号",
+    dataIndex: "index",
+    slotName: 'index',
+    fixed: 'left',
+    width: 80,
+  },
+  {
     title: "统一社会信用代码",
     dataIndex: "creditNo",
-    width: 180,
+    fixed: 'left',
+    width: 220,
   },
   {
     title: "企业名称",
     dataIndex: "companyName",
+    ellipsis: true,
+    width: 240,
+    tooltip: {position: 'left'},
   },
   {
     title: "风险值评估",
+    width: 180,
     dataIndex: "riskValue",
   },
   {
     title: "登记状态",
+    width: 220,
     dataIndex: "companyStatus",
   },
   {
     title: "法定负责人",
     dataIndex: "legalPerson",
+    width: 180,
   },
   {
     title: "联系方式",
     dataIndex: "companyPhone",
+    width: 180,
   },
   {
     title: "登记机关",
     dataIndex: "authority",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    width: 220,
   },
   {
     title: "注册地址",
     dataIndex: "companyAddress",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    width: 220,
   },
   {
     title: "企业类型",
     dataIndex: "companyType",
+    ellipsis: true,
+    width: 220,
+    tooltip: {position: 'left'},
   },
+  
   {
     title: "操作",
     dataIndex: "operations",
     slotName: "operations",
+    width: 100,
     fixed: "right",
   },
 ]);
@@ -129,6 +159,8 @@ const searchPar = ref({
   legalPerson: '', // 法人
   creditNo: '', // 统一社会信用代码
   companyAddress: '', // 注册地址
+  companyStatus: '', // 登记状态
+  companyType :'' // 企业类型
 })
 const provinceResult = ref([])
 const loadingExport = ref(false)
@@ -205,6 +237,8 @@ function reset() {
     legalPerson: '', // 法人
     creditNo: '', // 统一社会信用代码
     companyAddress: '', // 注册地址
+    companyStatus: '', // 登记状态
+    companyType :'' // 企业类型
   }
   getpage();
 }
@@ -298,7 +332,7 @@ init();
   height: 32px;
 }
 :deep(.w-select-view) {
-  width: 132px;
+  width: 188px;
   height: 32px;
 }
 :deep(.w-form-item-label) {
