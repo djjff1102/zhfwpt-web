@@ -122,7 +122,7 @@ function handleBeforeUpload(file: UploadRawFile) {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-    flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 .flie-item {
   padding: 0 8px;

@@ -14,7 +14,7 @@
       
       <Online-check :fileUrl="item.fileUrl" :viewFileUrl="item.viewFileUrl"></Online-check>
       <!-- <div class="file-load" type="text" @click="load(item)"> -->
-      <el-button :loading="loading" type="text" @click="load(item)" style="width: 80px">下载</el-button>
+      <el-button :loading="loading && curLoadId == i" type="text" @click="load(item, i)" style="width: 80px">下载</el-button>
     </div>
   </div>
 </template>
@@ -30,10 +30,12 @@ const pros = defineProps({
 })
 
 const loading = ref(false)
+const curLoadId = ref(-1)
 
-function load(item) {
+function load(item, i) {
   if(loading.value) return;
   loading.value = true;
+  curLoadId.value = i
   download({
     file_name: item.fileUrl
   }).then(res => {
@@ -83,6 +85,7 @@ function exportBlob(b,name) {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  flex-wrap: wrap;
 }
 .flie-item {
   width: 45%;

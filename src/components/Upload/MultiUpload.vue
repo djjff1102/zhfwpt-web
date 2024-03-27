@@ -83,7 +83,6 @@ function init() {
 function handleDel(i: any) {
   fileList.value.splice(i, 1)
   allFileList.value.splice(i, 1)
-  console.log('allFileList.value------------------:', allFileList.value)
   emit('updateUpload', allFileList.value)
 }
 
