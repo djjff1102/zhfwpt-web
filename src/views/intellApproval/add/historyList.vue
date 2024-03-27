@@ -64,6 +64,8 @@ watch(
     if(v) {
       init();
     }
+  }, {
+    immediate: true
   }
 );
 
@@ -155,7 +157,8 @@ const searchPar = ref({
   approveStatus: '', // 审批状态
   startTime: '',
   endTime: '',
-  companyId: ''
+  companyId: '',
+  approveResultList: [2, 3]
 })
 const scroll = ref({
   y: 800,

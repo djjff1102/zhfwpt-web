@@ -38,7 +38,7 @@
     </div> -->
     <div class="table-warp">
       <div class="export-btn">
-        <el-button type="primary" @click="handleExport">导出</el-button>
+        <el-button :loading="loadingExport" type="primary" @click="handleExport">导出</el-button>
       </div>
       <m-table
         style="height: 100%"
@@ -131,6 +131,7 @@ const searchPar = ref({
   companyAddress: '', // 注册地址
 })
 const provinceResult = ref([])
+const loadingExport = ref(false)
 const scroll = ref({
   y: 800,
   x: 1080,
@@ -149,6 +150,8 @@ const changepage = (v: any) => {
 
 // 导出
  function handleExport() {
+  if(loadingExport.value) return;
+  loadingExport.value = true
   const data = {
     companyName: searchPar.value.companyName,
     provinceShort: searchPar.value.provinceShort,
@@ -158,12 +161,14 @@ const changepage = (v: any) => {
   }
   attentionCompanyExport(data).then(res => {
     exportBlob(res);
-  }).catch(err => {})
+  }).catch(err => {
+    loadingExport.value = false
+  })
 }
 
 // 导出
 function exportBlob(b: any) {
-   const now = dayjs().format('YYYY-MM-DD');
+  const now = dayjs().format('YYYY-MM-DD');
   const fileName = `我关注的企业信息${now}`
   // const fileName = decodeURIComponent(b.headers["content-disposition"].split('filename*=utf-8')[1])
   const typeValue = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
@@ -176,6 +181,7 @@ function exportBlob(b: any) {
   a.click();
   URL.revokeObjectURL(a.href);
   document.body.removeChild(a);
+  loadingExport.value = false
 }
 
 function handleCompanyDetail(d) {

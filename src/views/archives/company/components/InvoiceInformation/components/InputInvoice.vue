@@ -315,7 +315,7 @@ function getqyzxInvoice() {
 
 function getgroupByInvoiceDate() {
   groupByInvoiceDate({
-    receivingCompanyName: searchPar.value.invoicingCompanyName
+    receivingCompanyName: route.query.companyName
   }).then(res => {
     echartData.value = formatData(res.data.data);
   }).catch(err => {})

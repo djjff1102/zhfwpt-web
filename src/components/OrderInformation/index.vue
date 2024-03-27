@@ -85,6 +85,7 @@ const columns = reactive([
   },
   {
     title: "订单编号",
+    fixed: "left",
     dataIndex: "code",
     width: 200,
     ellipsis: true,

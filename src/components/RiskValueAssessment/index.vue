@@ -16,7 +16,7 @@
           <div class="info">
             <p>
               本次评估分值为 <span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ suggestData.riskScore || '--' }}</span>
-              分，该分值处于<span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ suggestData?.riskLevel && fxtype[suggestData?.riskLevel].label || '--' }}</span>，以下为风险点，请根据实际情况研判额度申报。
+              分，该分值处于<span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ suggestData?.riskLevel && fxtype[Number(suggestData?.riskLevel) - 1].label || '--' }}</span>，以下为风险点，请根据实际情况研判额度申报。
             </p>
             <p>
               风险点总结：本次评估检测到 {{ suggestData.highRiskNum + suggestData.mediumRiskNum + suggestData.lowRiskNum }} 个风险点，高风险
@@ -137,6 +137,12 @@ const columns = reactive([
     width: 80,
     slotName: "index",
     fixed: "left",
+  },
+  {
+    title: "风险分类",
+    dataIndex: "secondCategory",
+    ellipsis: true,
+    width: 200,
   },
   {
     title: "风险名称",

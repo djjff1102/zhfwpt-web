@@ -152,7 +152,7 @@
     <el-button v-hasPerm="btnApprovalCode.save" style="margin-right: 20px" @click="handleSave(1, '暂存')">暂存</el-button>
     <el-button v-hasPerm="btnApprovalCode.submit" type="primary" @click="handleSave(2, '提交')">提交</el-button>
   </div>
-  <detail-com v-if="!initPageParam.edit" :companyId="form.companyId" :companyName="form.companyName" ></detail-com>
+  <detail-com v-if="!initPageParam.edit" :companyId="form.companyId" :companyName="form.companyName" :preStrMoney="form.preStrMoney"></detail-com>
   <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com>
   <approval-record :showRecord="showRecord" :reportId="route.query.id" @updateAdd="showRecord = false"></approval-record>
   <ApprovalDo :showAdd="showApproval" @updateAdd="updateApprval" @updateData="updateApprovalStatus" :reportId="route.query.id"></ApprovalDo>
@@ -227,6 +227,7 @@ const form = ref({
   warehouseMapRequestList: [], // 仓储
   bankStatementMapRequestList: [], // 银行流水
   otherMaterialsRequestList: [], // 其他资料
+  preStrMoney: ''// 需求预测
 })
 const defaultKey = ref('1'); // 默认打开的tab
 const curTab = ref('1') // 当前打开的tab

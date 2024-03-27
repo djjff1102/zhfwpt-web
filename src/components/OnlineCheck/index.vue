@@ -1,43 +1,9 @@
 <template>
   <div>
     <el-button v-if="checkFileType('pdf')" type="text" @click="load('pdf')">在线查看</el-button>
-    <el-button v-if="checkFileType('word')" type="text" @click="load('word')">在线查看</el-button>
+    <el-button v-if="checkFileType('word')" type="text" @click="load('word')" disabled>在线查看</el-button>
     <el-button v-if="checkFileType('excel')" type="text" @click="load('excel')">在线查看</el-button>
     <el-button v-if="checkFileType('img')" type="text" @click="loadImg('img')">在线查看</el-button>
-    <el-dialog
-        v-model="excelShow"
-        width="100%"
-        :fullscreen="true"
-        :before-close="handleClose"
-      >
-      <div class="content" v-if="type=='excel'">
-         <el-table :data="excelData" style="width: 1400px">
-            <el-table-column
-                v-for="(value, key, index) in excelData[2]"
-                :key="index"
-                :prop="key"
-                :label="key"
-            ></el-table-column>
-        </el-table>
-      </div>
-      <div class="content" v-if="type=='word'">
-        <div id="wordView" v-html="vHtml"></div>
-      </div>
-      <div class="content" v-if="type=='img'">
-        <img :src="viewFileUrl">
-      </div>
-      <div class="content" v-if="type=='pdf'">
-        <!-- <pdf :src="viewFileUrl"></pdf> -->
-      </div>
-      <template #header>
-       <div style="padding-top: 16px;">在线查看</div>
-      </template>
-        <!-- <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">关闭</el-button>
-          </span>
-        </template> -->
-      </el-dialog>
   </div>
 </template>
 
@@ -71,12 +37,14 @@ function checkFileType(n) {
   }
 }
 
-function handleClose() {
-  excelShow.value = false
-}
 function loadImg() {
-  excelShow.value = true
+  const imageUrl = props.viewFileUrl; // 替换为你自己的图片链接
+  const newWindow = window.open(imageUrl, '_blank');
+  if (!newWindow) {
+    window.location.href = imageUrl;
+  }
 }
+
 
 function load(type) {
   downloadBuffer({

@@ -57,9 +57,9 @@
           <div class="desc-item predict-danger" v-if="riskAndCountArry && riskAndCountArry.length > 0">
             <span class="predict-danger-title"><i class="iconfont icon-fengxianzhipinggu"></i>风险预警</span>
             <span class="predict-danger-item" v-for="(item ,i) in riskAndCountArry" :key="i" :class="{'hide-more': i > 0 && !showRiskAll}">
-              <!-- <span class="predict-danger-label">{{ comData?.riskAndCount[item] }}</span> -->
-              <span class="predict-danger-label">{{ 1 }}</span>
-              <span class="predict-danger-text">条 {{ item }}</span>
+              <span class="predict-danger-label">{{ comData?.riskAndCount[item] }}</span>
+              <!-- <span class="predict-danger-label">{{ 1 }}</span> -->
+              <span class="predict-danger-text"> 条 {{ item }}</span>
             </span>
             <!-- <i @click="handleMore" v-if="riskAndCountArry && riskAndCountArry.length > 1 && !showRiskAll" class="iconfont icon-xiayibu"></i> -->
           </div>

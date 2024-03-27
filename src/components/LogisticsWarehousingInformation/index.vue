@@ -81,12 +81,12 @@ const columns = reactive([
     tooltip: {position: 'left'},
   },
   {
-    title: "涉及订单数量-暂无", //TODO:
-    dataIndex: "email",
+    title: "涉及订单数量",
+    dataIndex: "orderCount",
   },
   {
-    title: "货物运输总金额-暂无",
-    dataIndex: "email",
+    title: "货物运输总金额",
+    dataIndex: "orderMoneSum",
   },
   {
     title: "仓库企业名称",

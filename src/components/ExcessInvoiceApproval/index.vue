@@ -70,6 +70,12 @@ const size = ref(10);
 const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
+    {
+    title: "序号",
+    width: 80,
+    slotName: "index",
+    fixed: "left",
+  },
   {
     title: "申报编号",
     dataIndex: "reportCode",
@@ -170,7 +176,8 @@ const searchPar = ref({
   approveStatus: '', // 审批状态
   startTime: '',
   endTime: '',
-  companyId: ''
+  companyId: '',
+  approveResultList: [1, 2, 3]
 })
 
 const changePagesize = (v) => {

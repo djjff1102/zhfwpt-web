@@ -23,7 +23,7 @@
           </el-tab-pane>
         </el-tabs>
         <div class="predict-wrap">
-          <PredictCom :data="echartData.sum"></PredictCom>
+          <PredictCom :data="preStrMoney"></PredictCom>
         </div>
       </div>
       <div class="title base-title">历史审批</div>
@@ -46,8 +46,11 @@ const props = defineProps({
   companyName: {
     default: ''
   },
-  companyId: {
-    default: ''
+  // companyId: {
+  //   default: ''
+  // },
+  preStrMoney: {
+    default: 0
   }
 });
 
