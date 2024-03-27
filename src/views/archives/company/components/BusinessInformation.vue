@@ -36,7 +36,7 @@
       <el-descriptions-item label="邮箱"> {{ data?.companyEmail }} </el-descriptions-item>
       <el-descriptions-item label="官网"> {{ data?.websiteUrl }} </el-descriptions-item>
       <el-descriptions-item label="注册地址" :span="3">
-        {{ data?.workAddress }}
+        {{ data?.companyAddress }}
       </el-descriptions-item>
       <el-descriptions-item label="经营范围" :span="3">
         {{ data?.businessScope }}

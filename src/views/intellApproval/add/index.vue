@@ -4,7 +4,10 @@
   <div class="section section-detail-header">
     <div v-if="queryPar.reportCode" class="section-sub">
       <span style="color: rgba(153, 153, 153, 1); padding-right: 30px;">申请编号：{{ queryPar?.reportCode }}</span>
-      <span><span style="color: rgba(51, 51, 51, 1)">审批状态：</span><span style="color: rgba(5, 148, 235, 1)">{{ approveStatus[form?.approveStatus] }}</span></span>
+      <span>
+        <span style="color: rgba(51, 51, 51, 1)">审批状态：</span>
+          <span :style="{color: approveStatusColor[form?.approveStatus]}">{{ approveStatus[form?.approveStatus] }}</span>
+        </span>
     </div>
     <div v-if="initPageParam.title == '详情'" class="section-sub flex-base-end">
       <el-button v-hasPerm="btnApprovalCode.approvallist" style="margin-right: 8px;" @click="showRecord = true">审批记录</el-button>
@@ -59,38 +62,48 @@
            <div v-else>{{ form.money }}</div>
         </el-form-item>
         <el-form-item prop="limitType" label="申请调整额度类型" required>
-          <el-select v-if="initPageParam.edit" v-model="form.limitType" placeholder="请选择申请调整额度类型" style="height: 32px" @change="handleLone(1)">
+          <el-select v-if="initPageParam.edit" v-model="form.limitType" placeholder="请选择申请调整额度类型" style="height: 32px" @change="handleChangeDate">
             <el-option :value="1" label="长期"></el-option>
             <el-option :value="2" label="短期"></el-option>
           </el-select>
            <div v-else>{{ form.limitType == '1' ? '长期' : '短期' }}</div>
         </el-form-item>
+
         <el-form-item v-if="form.limitType == '2'" prop="adjustType" label="发票短期调整类型" required>
-          <w-select v-if="initPageParam.edit" v-model="form.adjustType" placeholder="请选择发票短期调整类型" style="height: 32px" @change="handleLone(2)">
-            <w-option :value="1" labbel="当月">当月</w-option>
-            <w-option :value="2" labbel="指定时间">指定时间</w-option>
-          </w-select>
+          <el-select v-if="initPageParam.edit" v-model="form.adjustType" placeholder="请选择发票短期调整类型" style="height: 32px" @change="handleChangeDate">
+            <el-option :value="1" label="当月"></el-option>
+            <el-option :value="2" label="指定时间"></el-option>
+          </el-select>
            <div v-else>{{ form.adjustType == '1' ? '当月' : '指定时间' }}</div>
         </el-form-item>
-        <el-form-item v-if="form.limitType" prop="validDateStart" label="起止有效期" required>
-          <w-range-picker
-            v-if="initPageParam.edit"
-            :popup-visible="popupVisible"
-            v-model="dateRange"
-            style="width: 100%; height: 32px;"
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD"
-            @change="onChange"
-            @select="dataSelect"
-            @popup-visible-change="popupVisibleChange"
-          />
-           <div v-else>{{ form.validDateStart }} - {{ form.validDateEnd }}</div>
+        <div v-if="initPageParam.edit">
+          <el-form-item v-if="form.limitType== '1' || (form.limitType== '2') && form.adjustType == '1'" prop="validDateStart" label="起止有效期">
+            <el-date-picker v-model="form.validDateStart" format="YYYY-MM-DD" type="date" placeholder="请选择日期" @change="changeDate"></el-date-picker>
+            <span style="display: inline-block;padding: 0 40px;"> 至 </span>
+            <span>{{ form.validDateEnd }}</span>
+          </el-form-item>
+          <el-form-item v-if=" (form.limitType== '2') && form.adjustType == '2'" prop="validDateStart" label="起止有效期">
+            <el-date-picker
+              v-model="curDate"
+              type="daterange"
+              :clearable="false"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              format="YYYY-MM-DD"
+              @change="changeDateRange"
+            >
+            </el-date-picker>
+          </el-form-item>
+        </div>
+        <el-form-item v-else prop="validDateStart" label="起止有效期">
+          <span>{{ form.validDateStart }}</span>
+            <span style="display: inline-block;padding: 0 40px;"> 至 </span>
+            <span>{{ form.validDateEnd }}</span>
         </el-form-item>
         <el-form-item prop="reason" label="申请理由" required>
           <el-input v-if="initPageParam.edit" type="textarea" v-model="form.reason"></el-input>
           <div v-else>{{ form.reason }}</div>
-           <!-- <w-textarea v-if="initPageParam.edit" v-model="form.reason" placeholder="请输入申请理由"/> -->
-            <!-- <div v-else>{{ form.reason }}</div> -->
         </el-form-item>
       </el-form>
     </div>
@@ -158,7 +171,7 @@ import FileList from './FileList.vue';
 import ApprovalDo from './ApprovalDo.vue';
 import dayjs from "dayjs";
 import { btnApprovalCode } from '@/router/permissionCode'
-import { approveStatus } from '../type'
+import { approveStatus,approveStatusColor } from '../type'
 
 const userStore = useUserStoreHook();
 let userId = userStore.user.id;
@@ -177,7 +190,6 @@ const rules = reactive({
   limitType: [{ required: true, message: '请选择调整类型', trigger: ['blur', 'change'] }],
   adjustType: [{ required: true, message: '请选择短期调整类型' }],
   validDateStart: [{ required: true, message: '请选择起止有效期',trigger: ['blur', 'change'] }],
- 
 })
 const popupVisible = ref(false)
 const type = ref('add')
@@ -194,6 +206,7 @@ const initPageParam = reactive({
   type: 2, // 1有详情数据-更新   2无详情数据-新增
   id: ''
 })
+const curDate = ref('')
 const dateRange = ref([])
 const form = ref({
   companyId: '', // 企业ID
@@ -224,24 +237,53 @@ const totalMoney = ref(0);
 const fileList = ref([]) // 已经提交的文件
 const queryPar = ref({}) // 路由查询参数
 
-// 切换长qi
-function handleLone(v) {
-  dateRange.value = []
-  if(v==1 && form.value.limitType == '1') {
-    dateRange.value= [dayjs(), '2099-12-31']
-    form.value.validDateStart = dayjs() as any;
+// 切换时间类型
+function handleChangeDate() {
+  // 长期 limitType
+  form.value.validDateStart = dayjs().format('YYYY-MM-DD')
+  if(form.value.limitType == '1') {
     form.value.validDateEnd = '2099-12-31'
-  } else if(v==1 && form.value.limitType == '2') {
-    dateRange.value= []
-    form.value.validDateStart = '';
+  } else if(form.value.limitType == '2' && form.value.adjustType == '1') { //1当月
+    form.value.validDateEnd = dayjs(form.value.validDateStart).add(30, 'day').format('YYYY-MM-DD')
+  } else {
+    curDate.value = '';
     form.value.validDateEnd = ''
-  } else if((v==2 && form.value.adjustType == '1')) {
-    let nextMonth = dayjs(dayjs()).add(30, 'day')
-    dateRange.value = [dayjs(), nextMonth] as any
-    form.value.validDateStart = dayjs() as any;
-    form.value.validDateEnd = nextMonth as  any
+    form.value.validDateStart = ''
   }
 }
+
+function changeDate(v) {
+  if(form.value.limitType == '2' && form.value.adjustType == '1') { //1当月
+    form.value.validDateEnd = dayjs(form.value.validDateStart).add(30, 'day').format('YYYY-MM-DD')
+  }
+}
+function formateDate(now) {
+  return `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`
+}
+
+function changeDateRange(v) {
+  form.value.validDateStart = formateDate(curDate.value[0])
+  form.value.validDateEnd = formateDate(curDate.value[1])
+}
+
+// // 切换长qi
+// function handleLone(v) {
+//   dateRange.value = []
+//   if(v==1 && form.value.limitType == '1') {
+//     dateRange.value= [dayjs(), '2099-12-31']
+//     form.value.validDateStart = dayjs() as any;
+//     form.value.validDateEnd = '2099-12-31'
+//   } else if(v==1 && form.value.limitType == '2') {
+//     dateRange.value= []
+//     form.value.validDateStart = '';
+//     form.value.validDateEnd = ''
+//   } else if((v==2 && form.value.adjustType == '1')) {
+//     let nextMonth = dayjs(dayjs()).add(30, 'day')
+//     dateRange.value = [dayjs(), nextMonth] as any
+//     form.value.validDateStart = dayjs() as any;
+//     form.value.validDateEnd = nextMonth as  any
+//   }
+// }
 
 // 更新审批状态
 function updateApprovalStatus() {
@@ -350,8 +392,6 @@ function handleSave(type: any, msg: string) {
 function checkSave(type: any, msg: string) {
     // 1暂存 2提交
   form.value.dataStatus = type;
-  form.value.validDateStart = dateRange.value[0];
-  form.value.validDateEnd = dateRange.value[1]
   if(initPageParam.type == 1) {
     // 更新
     form.value.id = initPageParam.id
@@ -388,37 +428,6 @@ function handleAddNew(msg) {
   }).catch(err => {})
 }
 
-function dataSelect(d:any) {
-  if(form.value.limitType == '1') { // 长期
-    dateRange.value = [d[0], '2099-12-31']
-    form.value.validDateStart = d[0]
-    form.value.validDateEnd = '2099-12-31'
-    popupVisibleChange()
-  } else if(form.value.limitType == '2' && form.value.adjustType == '1') { // 当月
-    let nextMonth = dayjs(d[0]).add(30, 'day')
-    dateRange.value = [d[0], nextMonth]
-     form.value.validDateStart = d[0]
-    form.value.validDateEnd = nextMonth
-    popupVisibleChange()
-  }
-}
-
-function popupVisibleChange() {
-  popupVisible.value = !popupVisible.value
-}
-
-// 时间选择
-function onChange(dateString, date) {
-  // dateRange.value = [d, 2024-03-13 00:00:00]
-  if(dateString && dateString.length > 0) {
-    form.value.validDateStart = dateString[0];
-    form.value.validDateEnd = dateString[1];
-  } else {
-    form.value.validDateStart = '';
-    form.value.validDateEnd = '';
-  }
-}
-
 // 申报详情
 function getDetail(d) {
   searcht(d).then(res => {
@@ -434,7 +443,8 @@ function getDetail(d) {
       dataList.value = res.data.transactionCertificateMapResponseList
       columns.value = columnsHT
       form.value = res.data as any
-      dateRange.value = [res.data.validDateStart, res.data.validDateEnd]
+      curDate.value = [res.data.validDateStart, res.data.validDateEnd]
+      console.log('curDate.value---------------:', curDate.value)
     } else {
       getgetOneByCompanyName() // 当前返回数据为空，新增，且无暂存，则查询企业基本信息
     }
