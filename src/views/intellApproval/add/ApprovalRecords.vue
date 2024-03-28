@@ -4,7 +4,6 @@
       <m-table
         :data="tableData"
         :columns="columns"
-        :scroll="scroll"
         :pagination="pagination"
         @page-change="changepage"
         @page-size-change="changePagesize"
@@ -17,7 +16,12 @@
           <div>{{ approveStatus[tableData[rowIndex].approveResult] }}</div>
         </template>
         <template v-slot:fileName="{rowIndex}">
-          <el-button v-for="(item, i) in tableData[rowIndex]?.fileNames" :key="item" type="text" @click="load(tableData[rowIndex]?.fileUrls[i], item)">{{ item }}</el-button>
+          <el-button
+            v-for="(item, i) in tableData[rowIndex]?.fileNames"
+            :key="item"
+            type="text"
+            @click="load(tableData[rowIndex]?.fileUrls[i], item)"
+            >{{ getFileName(item) }}</el-button>
         </template>
     </m-table>
     </div>
@@ -71,18 +75,24 @@ const columns = ref([
   {
     title: "审批意见",
     dataIndex: "approveOpinion",
-    width: 180,
+    ellipsis: true,
+    width: 240,
+    tooltip: {position: 'left'},
   },
   {
     title: "备注",
     dataIndex: "approveRemark",
-    width: 180,
+    ellipsis: true,
+    width: 240,
+    tooltip: {position: 'left'},
   },
   {
+    
     title: "附件下载",
     dataIndex: "fileUrl",
     slotName:'fileName',
-    width: 180,
+    fixed: "right",
+    width: 240,
   },
 ])
 const scroll = ref({
@@ -103,9 +113,20 @@ const searchPar = ref({
 })
 
 const emits = defineEmits(['updateAdd'])
+
 watch(() => props.showRecord, (newValue) => {
   visible.value = newValue;
 })
+
+function getFileName(fullFileName: string) {
+  if(fullFileName.length > 12) {
+    const fileName = fullFileName.substring(0, 6);
+    const fileExtension = fullFileName.substring(fullFileName.lastIndexOf('.'));
+    return fileName + '...' + fileExtension;
+  } else {
+    return fullFileName
+  }
+}
 
 function load(fileUrl: any, filename: any) {
   download({

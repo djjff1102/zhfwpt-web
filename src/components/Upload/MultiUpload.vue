@@ -9,6 +9,7 @@
     <el-upload
       :before-upload="handleBeforeUpload"
       :http-request="handleUpload"
+      accept="'.pdf,.png,.jpg,.jpeg,.gif,.zip,.ppt,.pptx,.xlsx,.xls,.doc,.docx'"
       :on-exceed="handleExceed"
       :limit="5"
       :show-file-list="false"
@@ -18,7 +19,6 @@
         <el-button type="primary">上传文件</el-button>
         <div class="upload-msg">支持上传的文件格式包含：pdf、png、gif、zip、ppt、xlsx、doc、docx等。单个文件上传不超过100M；最多支持上传5个。</div>
       </div>
-      
     </el-upload>
     <div class="file-wrap">
       <div class="flie-item" v-for="(item, i) in fileList" :key="item.name">

@@ -57,7 +57,7 @@ const echartData = ref({
     ],
     series: [
       {
-        name: "Evaporation",
+        name: "金额",
         type: "line",
         symbolSize: 8,
         data: props.dataList,

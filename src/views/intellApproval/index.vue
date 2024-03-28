@@ -24,8 +24,8 @@
             <w-option v-for="(item, i) in statusList" :key="i" :value="item.value">{{ item.label }}</w-option>
           </w-select>
         </w-form-item>
-        <el-button type="primary" class="mr-8px" @click="search">搜索</el-button>
-        <el-button @click="reset">重置</el-button>
+        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+        <w-button @click="reset">重置</w-button>
       </w-form>
     </div>
     <div class="oper">
@@ -43,9 +43,12 @@
         @page-size-change="changePagesize"
         :bordered="false"
       >
-      <template v-slot:index="{rowIndex}">
-        {{ rowIndex + 1 }}
-      </template>
+        <template v-slot:index="{rowIndex}">
+          {{ rowIndex + 1 }}
+        </template>
+        <template v-slot:moneySlot="{rowIndex}">
+          {{ formatNumber(tableData[rowIndex].money) }}
+        </template>
         <template v-slot:approvalstatus="{rowIndex}">
             <div :style="{color: approveStatusColor[tableData[rowIndex].approveStatus]}">{{ approveStatus[tableData[rowIndex].approveStatus] }}</div>
         </template>
@@ -72,6 +75,7 @@ import { fpspReport, approvalExport, delReport } from '@/api/intellApproval'
 import { approveStatus,approveStatusColor, statusList, taskStatus, taskStatusColor } from './type.ts'
 import dayjs from "dayjs";
 import { btnApprovalCode } from '@/router/permissionCode'
+import { formatNumber } from '@/utils/common'
 
 const router = useRouter();
 
@@ -107,7 +111,8 @@ const columns = reactive([
   {
     title: '申报额度',
     dataIndex: 'money',
-    width: 100,
+    slotName: 'moneySlot',
+    width: 200,
   },
   {
     title: "申报人",
@@ -146,7 +151,7 @@ const columns = reactive([
     dataIndex: "operations",
     slotName: "operations",
     fixed: "right",
-    width: 240,
+    width: 200,
   },
 ]);
 const pagination = ref({

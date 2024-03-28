@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="title base-title">历史审批</div>
-      <historyList v-bind="$attrs"></historyList>
+      <historyList :companyId="data.id"></historyList>
     </div>
   </div>
 </template>
