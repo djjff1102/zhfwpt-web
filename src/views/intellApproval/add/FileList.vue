@@ -14,7 +14,7 @@
       
       <Online-check :fileUrl="item.fileUrl" :viewFileUrl="item.viewFileUrl"></Online-check>
       <!-- <div class="file-load" type="text" @click="load(item)"> -->
-      <w-button :loading="loading && curLoadId == i" type="text" @click="load(item, i)" style="width: 80px">下载</w-button>
+      <el-button :loading="loading && curLoadId == i" type="text" @click="load(item, i)" style="width: 80px">下载</el-button>
     </div>
   </div>
 </template>

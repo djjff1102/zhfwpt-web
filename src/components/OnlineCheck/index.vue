@@ -1,9 +1,9 @@
 <template>
   <div>
-    <w-button v-if="checkFileType('pdf')" type="text" @click="load('pdf')">在线查看</w-button>
-    <w-button v-if="checkFileType('word')" type="text" @click="load('word')" disabled>在线查看</w-button>
-    <w-button v-if="checkFileType('excel')" type="text" @click="load('excel')">在线查看</w-button>
-    <w-button v-if="checkFileType('img')" type="text" @click="loadImg('img')">在线查看</w-button>
+    <el-button v-if="checkFileType('pdf')" type="text" @click="load('pdf')">在线查看</el-button>
+    <el-button v-if="checkFileType('word')" type="text" @click="load('word')" disabled>在线查看</el-button>
+    <el-button v-if="checkFileType('excel')" type="text" @click="load('excel')">在线查看</el-button>
+    <el-button v-if="checkFileType('img')" type="text" @click="loadImg('img')">在线查看</el-button>
   </div>
 </template>
 

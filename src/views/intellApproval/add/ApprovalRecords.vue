@@ -16,12 +16,12 @@
           <div>{{ approveStatus[tableData[rowIndex].approveResult] }}</div>
         </template>
         <template v-slot:fileName="{rowIndex}">
-          <w-button
+          <el-button
             v-for="(item, i) in tableData[rowIndex]?.fileNames"
             :key="item"
             type="text"
             @click="load(tableData[rowIndex]?.fileUrls[i], item)"
-            >{{ getFileName(item) }}</w-button>
+            >{{ getFileName(item) }}</el-button>
         </template>
     </m-table>
     </div>

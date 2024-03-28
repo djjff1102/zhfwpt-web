@@ -1,6 +1,6 @@
 <template>
   <div>
-    <w-button v-loading.fullscreen.lock="loading" type="text" @click="exportPDF">导出PDF</w-button>
+    <el-button v-loading.fullscreen.lock="loading" type="text" @click="exportPDF">导出PDF</el-button>
    
   </div>
 </template>

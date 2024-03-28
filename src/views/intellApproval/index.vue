@@ -56,10 +56,10 @@
             <div :style="{color: taskStatusColor[tableData[rowIndex].taskStatus]}">{{ taskStatus[tableData[rowIndex].taskStatus] }}</div>
         </template>
         <template v-slot:operations="{rowIndex}">
-          <w-button v-hasPerm="btnApprovalCode.approval" type="text" @click="approval(tableData[rowIndex])">审批</w-button>
-          <w-button v-hasPerm="btnApprovalCode.edit" type="text" @click="operate('operate', tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == 2">编辑</w-button>
-          <w-button v-hasPerm="btnApprovalCode.detail" type="text" @click="operate('detail', tableData[rowIndex])">详情</w-button>
-          <w-button v-hasPerm="btnApprovalCode.del" type="danger" link @click="del(tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == 2">删除</w-button>
+          <el-button v-hasPerm="btnApprovalCode.approval" type="text" @click="approval(tableData[rowIndex])">审批</el-button>
+          <el-button v-hasPerm="btnApprovalCode.edit" type="text" @click="operate('operate', tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == 2">编辑</el-button>
+          <el-button v-hasPerm="btnApprovalCode.detail" type="text" @click="operate('detail', tableData[rowIndex])">详情</el-button>
+          <el-button v-hasPerm="btnApprovalCode.del" type="danger" link @click="del(tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == 2">删除</el-button>
         </template>
       </m-table>
     </div>
