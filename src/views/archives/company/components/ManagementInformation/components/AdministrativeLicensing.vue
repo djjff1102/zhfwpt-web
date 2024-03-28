@@ -64,13 +64,17 @@ const columns = reactive([
   },
   {
     title: "决定文书/许可证名称",
-    dataIndex: "licenceName",
-    width: 200,
+    dataIndex: "licenceFliename",
+    width: 240,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "决定文书/许可编号",
-    dataIndex: "licenceNo",
-    width: 200,
+    dataIndex: "licenceNumber",
+    width: 300,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "有效期自",
