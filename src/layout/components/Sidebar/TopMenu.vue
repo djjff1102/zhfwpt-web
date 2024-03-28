@@ -12,15 +12,20 @@ const router = useRouter();
 watch(
   () => route,
   (path) => {
-    if(path.meta.activeMenu != activePath.value) {
-      appStore.changeTopActive(path.meta.activeMenu as string);
-    }
+    nextTick(() => {
+      if(path.meta.activeMenu != activePath.value) {
+        activePath.value = path.meta.activeMenu as any
+        // appStore.changeTopActive(path.meta.activeMenu as string);
+      }
+    })
   },{
-    deep: true // 确保深度监听路由对象的每一个属性
+    deep: true, // 确保深度监听路由对象的每一个属性
+    immediate: true
   }
 );
 
-const activePath = computed(() => appStore.activeTopMenu);
+const activePath = ref('') // 全局不存储当前激活的菜单
+// const activePath = computed(() => appStore.activeTopMenu);
 
 // 递归跳转
 const goFirst = (menu: any[]) => {

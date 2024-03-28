@@ -63,13 +63,13 @@ const columns = reactive([
     fixed: "left",
   },
   {
-    title: "决定文书/许可编号",
-    dataIndex: "licenceNo",
+    title: "决定文书/许可证名称",
+    dataIndex: "licenceName",
     width: 200,
   },
   {
-    title: "决定文书/许可证名称",
-    dataIndex: "licenceName",
+    title: "决定文书/许可编号",
+    dataIndex: "licenceNo",
     width: 200,
   },
   {

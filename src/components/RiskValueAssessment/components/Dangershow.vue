@@ -2,7 +2,7 @@
   <div class="danger-point-container">
     <div class="table-warp">
       <m-table
-        style="height: 160px"
+        :style="{height: height}"
         :data="tableData"
         :columns="columns"
         :scroll="scroll"
@@ -28,6 +28,15 @@ import { onMounted, ref, reactive, unref, computed, watch } from "vue";
 const props = defineProps({
   data: {
     default: []
+  },
+  height: {
+    default: '160px'
+  },
+  scroll: {
+    default: {
+        y: 800,
+        x: 1080,
+    }
   }
 })
 
@@ -56,21 +65,17 @@ const columns = reactive([
   {
     title: "风险分类",
     dataIndex: "secondCategory",
-    ellipsis: true,
     width: 200,
   },
   {
     title: "风险名称",
     dataIndex: "name",
-    ellipsis: true,
     width: 200,
   },
   {
     title: "风险描述",
     dataIndex: "description",
-    ellipsis: true,
     slotName: "descriptionSlot",
-    tooltip: {position: 'left'},
   },
 ]);
 const pagination = ref({
@@ -80,10 +85,10 @@ const pagination = ref({
   "show-page-size": true,
   "show-jumper": true,
 });
-const scroll = ref({
-  y: 800,
-  x: 1080,
-});
+// const scroll = ref({
+//   y: 800,
+//   x: 1080,
+// });
 const form = ref({
   name: "",
   post: "",

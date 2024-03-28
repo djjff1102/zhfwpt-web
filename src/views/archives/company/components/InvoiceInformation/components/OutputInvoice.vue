@@ -27,12 +27,12 @@
             @change="onChange"
           />
         </w-form-item>
-        <w-form-item field="receivingCompanyName" label="收票单位">
+        <w-form-item field="receivingCompanyName" label="受票单位">
           <w-input v-model="searchPar.receivingCompanyName" placeholder="请输入收票单位" />
         </w-form-item>
-        <w-form-item field="invoicingCompanyName" label="开票单位">
+        <!-- <w-form-item field="invoicingCompanyName" label="开票单位">
           <w-input v-model="searchPar.invoicingCompanyName" placeholder="请输入开票单位" />
-        </w-form-item>
+        </w-form-item> -->
         <w-form-item field="code" label="发票号码">
           <w-input v-model="searchPar.code" placeholder="请输入发票号码" />
         </w-form-item>
@@ -139,14 +139,14 @@ const columns = reactive([
     tooltip: {position: 'left'},
   },
   {
-    title: "收票单位",
+    title: "受票单位",
      width: 220,
     dataIndex: "receivingCompanyName",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
-    title: "收票单位统一社会信用代码",
+    title: "受票单位统一社会信用代码",
     width: 220,
     dataIndex: "receivingCreditNo",
     ellipsis: true,

@@ -102,7 +102,7 @@ const columns = reactive([
   {
     title: "申报单位",
     dataIndex: "companyName",
-    width: 180
+    width: 220
   },
   {
     title: '申报额度',

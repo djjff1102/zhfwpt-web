@@ -11,6 +11,9 @@ import { onMounted, ref } from "vue";
 const props = defineProps({
   riskData: {
     default: 0
+  },
+  leval: { // 1高风险 2 中风险 3低风险
+    default: 1
   }
 })
 

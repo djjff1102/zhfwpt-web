@@ -87,8 +87,8 @@ const isOver = ref(false);
 const isOpen = ref(true);
 const tableData = ref([]); // 企业列表
 const searchPar = ref({
-  pageSize: 10,
-  pageNumber: 1,
+  page_size: 10,
+  page: 1,
   allContentSearch: '',  //综合查询输入
   provinceShort: '', // 省份
   userId: userStore.user.id
@@ -135,7 +135,7 @@ function handleSearchProvince(item) {
     curProvince.value = item.province_short;
     
   }
-  searchPar.value.pageNumber = 1;
+  searchPar.value.page = 1;
   loading.value = true;
   tableData.value = [];
   loadPage();
@@ -143,7 +143,7 @@ function handleSearchProvince(item) {
 
 // 企业搜索 重置pageNum
 function handleSearch() {
-  searchPar.value.pageNumber = 1;
+  searchPar.value.page = 1;
   loading.value = true;
   tableData.value = [];
   loadPage();
@@ -186,7 +186,7 @@ function getProvince() {
 function handleInfiniteOnLoad() {
   if(loading.value || scrollDisabled.value) return;
   loading.value = true;
-  searchPar.value.pageNumber += 1
+  searchPar.value.page += 1
   loadPage();
 }
 

@@ -32,22 +32,21 @@ router.beforeEach(async (to, from, next) => {
           next();
         }
       } else {
-        try {
-          const { authorityCode } = await userStore.getUserInfo();
+        const { authorityCode } = await userStore.getUserInfo();
+        const accessRoutes =
+          await permissionStore.generateRoutes(authorityCode);
+        accessRoutes.forEach((route) => {
+          router.addRoute(route);
+        });
+        next({ ...to, replace: true });
+        // try {
 
-          const accessRoutes = await permissionStore.generateRoutes(
-            authorityCode
-          );
-          accessRoutes.forEach((route) => {
-            router.addRoute(route);
-          });
-          next({ ...to, replace: true });
-        } catch (error) {
-          // 移除 token 并跳转登录页
-          await userStore.resetToken();
-          next(`/login?redirect=${to.path}`);
-          NProgress.done();
-        }
+        // } catch (error) {
+        //   // 移除 token 并跳转登录页
+        //   await userStore.resetToken();
+        //   next(`/login?redirect=${to.path}`);
+        //   NProgress.done();
+        // }
       }
     }
   } else {

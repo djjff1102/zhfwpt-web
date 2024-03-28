@@ -2,7 +2,7 @@
   <div id="suggestdom">
     <div class="container-risk-wrap">
       <div class="chart">
-        <RiskChart :riskData="riskData"/>
+        <RiskChart :riskData="riskData" :leval="suggestData.riskLevel"/>
       </div>
       <div class="information">
         <div class="suggest">
@@ -11,7 +11,7 @@
                <img :src="suggest" alt="" style="width: 64px"/>
               评估建议
             </span>
-            <Exportpdf domId="suggestdom" title="风险值评估"></Exportpdf>
+            <Exportpdf v-show="!exportFlag" domId="suggestdom" pointId="allPoint" :title="companyName+`风险值评估`" @handleExport="handleExport"></Exportpdf>
           </div>
           <div class="info">
             <p>
@@ -19,13 +19,13 @@
               分，该分值处于<span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ suggestData?.riskLevel && fxtype[Number(suggestData?.riskLevel) - 1].label || '--' }}</span>，以下为风险点，请根据实际情况研判额度申报。
             </p>
             <p>
-              风险点总结：本次评估检测到 {{ suggestData.highRiskNum + suggestData.mediumRiskNum + suggestData.lowRiskNum }} 个风险点，高风险
+              风险点总结：本次评估检测到 {{ getTotal() }} 个风险点，高风险
               <span class="leval-1">{{ suggestData.highRiskNum }}</span>个，中风险 <span class="leval-2">{{ suggestData.mediumRiskNum }}</span>
               个，低风险 <span class="leval-3">{{ suggestData.lowRiskNum }}</span> 个
             </p>
           </div>
         </div>
-        <div class="danger-point">
+        <div v-show="!exportFlag" class="danger-point">
           <div class="danger-point-title">
             <img :src="highPoint" alt="" style="width: 64px"/>
             风险分类展示
@@ -37,7 +37,7 @@
       </div>
     </div>
     <!-- <DangerPoint :data="tableData" :companyName="companyName" :companyId="companyId"></DangerPoint> -->
-    <div class="danger-point-container">
+    <div v-show="!exportFlag" class="danger-point-container">
       <div class="title">风险点</div>
       <div class="search_box">
         <w-form :model="searchPar" layout="inline">
@@ -73,6 +73,39 @@
         </m-table>
       </div>
     </div>
+    <div v-show="exportFlag" class="suggest-risk">
+      <div class="danger-point">
+        <div class="danger-point-title">
+          <img :src="highPoint" alt="" style="width: 64px"/>
+          <span style="display: inline-block; line-height: 50px;">风险分类展示</span>
+        </div>
+        <div class="danger-point-content">
+          <Dangershow :data="suggestData.riskInfoVoList" height="auto" :scroll="false"></Dangershow>
+        </div>
+      </div>
+    </div>
+
+    <!-- 用作导出 -->
+    <div v-if="exportFlag" id="allPoint" class="danger-point-container">
+      <div class="title" style="margin-top: 16px">风险点</div>
+      <div class="table-warp">
+        <m-table
+          style="height: 100%;width: 100%"
+          :data="allTableData"
+          :columns="columnsAll"
+          :scroll="scroll"
+          :pagination="false"
+          :bordered="false"
+        >
+          <template v-slot:index="{ rowIndex }">
+            {{ rowIndex + 1 }}
+          </template>
+          <template v-slot:operations>
+            <el-button type="text">详情</el-button>
+          </template>
+        </m-table>
+      </div>
+    </div>
   </div>
 
 </template>
@@ -84,7 +117,8 @@ import Dangershow from './components/Dangershow.vue'
 import suggest from "@/assets/images/suggest.png";
 import highPoint from "@/assets/images/high-point.png";
 import { suggestion, queryRiskInfoByCompanyInfo } from '@/api/archives'
-import { Loading } from 'element-plus/es/components/loading/src/service';
+import fxzpg from "@/assets/images/moduleIcon/风险值评估.png";
+import { pro } from '../ExcessInvoiceApproval/type';
 
 const fxtype =[
   {
@@ -109,9 +143,24 @@ const props = defineProps({
   companyId: {
     type: String,
     default: ''
+  },
+  reportId: {
+    type: String,
+    default: ''
   }
 })
 
+watch(() => props.companyId, (v) => {
+  if(v) {
+    nextTick(() => {
+      init()
+    })
+  }
+}, {
+  immediate: true
+})
+
+const allTableData = ref([])
 const riskData = ref(0)
 const pagination = ref({
   total: 0,
@@ -171,6 +220,47 @@ const columns = reactive([
   },
 ]);
 
+const columnsAll = reactive([
+  {
+    title: "序号",
+    slotName: "index",
+  },
+  {
+    title: "风险分类",
+    dataIndex: "secondCategory",
+  },
+  {
+    title: "风险名称",
+    dataIndex: "name",
+  },
+  {
+    title: "风险描述",
+    dataIndex: "description",
+  },
+  {
+    title: "扫描结果",
+    dataIndex: "result",
+  },
+  {
+    title: "风险建议",
+    dataIndex: "recommend",
+    slotName: "recommendSlot",
+  },
+]);
+const exportFlag = ref(false)
+
+function getTotal() {
+  let num1 = suggestData.value.highRiskNum || 0
+  let num2 = suggestData.value.mediumRiskNum || 0
+  let num3 = suggestData.value.highRiskNum || 0
+  return num1+num2+num3;
+}
+
+// 导出PDF
+function handleExport(b) {
+  exportFlag.value = b;
+}
+
 const changePagesize = (v) => {
   pagination.value.pageSize = v;
   searchPar.value.page = 1;
@@ -221,6 +311,7 @@ function getqueryRiskInfoByCompanyInfo() {
     indexName: searchPar.value.indexName,
     page_size: searchPar.value.page_size,
     page: searchPar.value.page,
+    reportId: props.reportId,
   }
   queryRiskInfoByCompanyInfo(par).then(res => {
     tableData.value = res.data;
@@ -231,14 +322,42 @@ function getqueryRiskInfoByCompanyInfo() {
   })
 }
 
+// 获取120条（全部风险点数据）
+function getAllData() {
+  let par = {
+    companyName: props.companyName,
+    companyId: props.companyId,
+    reportId: props.reportId,
+    riskType: 0,
+    indexName: '',
+    page_size: 120,
+    page: 1,
+  }
+  queryRiskInfoByCompanyInfo(par).then(res => {
+    allTableData.value = res.data;
+  }).catch(err => {
+    loading.value = false
+  })
+}
+
 function init() {
+  getAllData()
   getqueryRiskInfoByCompanyInfo();
   getsuggestion();
 }
 
-init()
+// init()
 </script>
 <style lang="scss" scoped>
+.risk-title {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  margin: 32px 0 16px 0;
+  font-weight: 500;
+  font-size: 18px;
+  color: #333333;
+}
 .container-risk-wrap {
   display: flex;
 }
@@ -251,7 +370,7 @@ init()
 }
 
 .leval-3 {
-  color: rgba(52, 112, 255, 1);
+  color: #5ECF69;
 }
 
 .container {
@@ -265,6 +384,11 @@ init()
 }
 .information {
   width: calc(100% - 367px);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  align-items: flex-start;
   .danger-point-title {
     font-family: myFontALHT;
     background: rgba(221, 223, 231, 0.11);
@@ -287,11 +411,18 @@ init()
     padding: 0 12px 12px;
   }
 }
+.suggest-risk {
+  background-color: rgba($color: #3470ff, $alpha: 0.04);
+  position: relative;
+  border-radius: 8px;
+  width: 100%;
+}
 .suggest {
   background-color: rgba($color: #3470ff, $alpha: 0.04);
   padding: 12px;
   position: relative;
-  border-radius: 8px;;
+  border-radius: 8px;
+  width: 100%;
   .icon {
     color: #3470ff;
   }
@@ -303,6 +434,7 @@ init()
   margin-top: 22px;
   padding: 12px;
   position: relative;
+  width: 100%;
   .icon {
     color: #f76161;
   }
@@ -354,3 +486,4 @@ init()
 }
 
 </style>
+

@@ -152,7 +152,7 @@
     <el-button v-hasPerm="btnApprovalCode.save" style="margin-right: 20px" @click="handleSave(1, '暂存')">暂存</el-button>
     <el-button v-hasPerm="btnApprovalCode.submit" type="primary" @click="handleSave(2, '提交')">提交</el-button>
   </div>
-  <detail-com v-if="!initPageParam.edit" :companyId="form.companyId" :companyName="form.companyName" :preStrMoney="form.preStrMoney"></detail-com>
+  <detail-com v-if="!initPageParam.edit" :companyId="form.companyId" :companyName="form.companyName" :reportId="route.query.id" :preStrMoney="form.preStrMoney"></detail-com>
   <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com>
   <approval-record :showRecord="showRecord" :reportId="route.query.id" @updateAdd="showRecord = false"></approval-record>
   <ApprovalDo :showAdd="showApproval" @updateAdd="updateApprval" @updateData="updateApprovalStatus" :reportId="route.query.id"></ApprovalDo>

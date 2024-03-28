@@ -111,6 +111,7 @@ const columns = reactive([
 const pagination = ref({
   total: 0,
   pageSize: 10,
+  current:1,
   "show-total": true,
   "show-page-size": true,
   "show-jumper": true,
@@ -133,10 +134,12 @@ const changePagesize = (v) => {
   pagination.value.pageSize = v;
   searchPar.value.page_size = v;
   searchPar.value.page = 1;
+  pagination.value.current = 1;
   getqyzxWarehouse();
 };
 
 const changepage = (v) => {
+  pagination.value.current = v;
   searchPar.value.page = v;
   getqyzxWarehouse();
 };
@@ -167,6 +170,7 @@ function getqyzxWarehouse() {
   qyzxWarehouse(searchPar.value).then(res => {
     const data = res.data;
     tableData.value = data as any;
+    pagination.value.total = res.total as any;
     loading.value = false
   }).catch(err => {
     loading.value = false

@@ -2,7 +2,7 @@
   <div>
     <div id="RiskValueAssessment">
       <div class="title base-title">风险值评估</div>
-      <RiskValueAssessment v-bind="$attrs" ></RiskValueAssessment>
+      <RiskValueAssessment :companyId="data.id" :companyName="data.name" :reportId="data.reportId"></RiskValueAssessment>
       <div class="title base-title">企业进销项发票趋势</div>
       <div class="tab-wrap">
         <el-tabs type="card" v-model="activeName" @tab-click="handleClick">
@@ -46,18 +46,26 @@ const props = defineProps({
   companyName: {
     default: ''
   },
-  // companyId: {
-  //   default: ''
-  // },
+  companyId: {
+    default: ''
+  },
   preStrMoney: {
     default: 0
+  },
+  reportId: {
+    default: ''
   }
 });
-
+const data = ref()
 watch(
   () => props.companyName,
   (name) => {
     if(name) {
+      data.value = {
+        name,
+        id: props.companyId,
+        reportId: props.reportId
+      }
       getgroupByInvoiceDate({
         receivingCompanyName: props.companyName, 
         invoicingCompanyName: ""
