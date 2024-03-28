@@ -234,21 +234,19 @@ function handleLogin() {
           // password,
         })
         .then(() => {
-          const query: LocationQuery = route.query;
-
-          const redirect = (query.redirect as LocationQueryValue) ?? "/";
-
-          const otherQueryParams = Object.keys(query).reduce(
-            (acc: any, cur: string) => {
-              if (cur !== "redirect") {
-                acc[cur] = query[cur];
-              }
-              return acc;
-            },
-            {}
-          );
-
-          router.push({ path: redirect, query: otherQueryParams });
+          // const query: LocationQuery = route.query;
+          // const redirect = (query.redirect as LocationQueryValue) ?? "/";
+          // const otherQueryParams = Object.keys(query).reduce(
+          //   (acc: any, cur: string) => {
+          //     if (cur !== "redirect") {
+          //       acc[cur] = query[cur];
+          //     }
+          //     return acc;
+          //   },
+          //   {}
+          // );
+          // router.push({ path: redirect, query: otherQueryParams });
+          router.push('/')
         })
         .catch(() => {
           // 验证失败

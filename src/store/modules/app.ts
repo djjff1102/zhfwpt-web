@@ -19,7 +19,8 @@ export const useAppStore = defineStore("app", () => {
     opened: sidebarStatus.value !== "closed",
     withoutAnimation: false,
   });
-  const activeTopMenu = useStorage("activeTop", "");
+  // const activeTopMenu = useStorage("activeTop", "");
+  const activeTopMenu = ref("/");
   /**
    * 根据语言标识读取对应的语言包
    */
