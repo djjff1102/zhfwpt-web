@@ -136,8 +136,8 @@ onMounted(() => {
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="handleQuery">搜索</el-button>
-          <el-button @click="resetQuery">重置</el-button>
+          <w-button type="primary" @click="handleQuery">搜索</w-button>
+          <w-button @click="resetQuery">重置</w-button>
         </el-form-item>
       </el-form>
     </div>

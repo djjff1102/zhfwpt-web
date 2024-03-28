@@ -60,7 +60,7 @@ function goBack() {
   <div :class="{ hasTagsView: showTagsView }" class="main-container">
     <div :class="{ 'fixed-header': fixedHeader, device: device }">
       <navbar  v-if="showMenu"/>
-      <div v-else class="back-nar"><el-button type="text" @click="goBack">返回</el-button></div>
+      <div v-else class="back-nar"><w-button type="text" @click="goBack">返回</w-button></div>
     </div>
     <!--主页面-->
     <app-main />

@@ -10,11 +10,11 @@
       multiple
     >
       <div class="flex-base-start ">
-        <el-button plain>
+        <w-button plain>
           <template #icon><i class="iconfont icon-shangchuan"></i></template>
           <template #default>上传文件</template>
           <!-- <img src="@/assets/upload/up.png" class="upload-img">上传文件 -->
-        </el-button>
+        </w-button>
         <div class="upload-msg">支持上传的文件格式包含：pdf、png、gif、zip、ppt、xlsx、doc、docx等。单个文件上传不超过100M；最多支持上传5个。</div>
       </div>
       
@@ -168,7 +168,7 @@ function handleBeforeUpload(file: UploadRawFile) {
   font-style: normal;
   padding-left: 16px;
 }
-.el-button {
+.w-button {
   height: 32px;
   width: 110px;
 }

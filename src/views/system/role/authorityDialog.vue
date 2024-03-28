@@ -20,8 +20,8 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button type="primary" @click="updateAuthority">确 定</el-button>
-        <el-button @click="menuDialogVisible = false">取 消</el-button>
+        <w-button type="primary" @click="updateAuthority">确 定</w-button>
+        <w-button @click="menuDialogVisible = false">取 消</w-button>
       </div>
     </template>
   </el-dialog>

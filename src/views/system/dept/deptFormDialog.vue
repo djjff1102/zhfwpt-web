@@ -34,8 +34,8 @@
             maxlength="20"
             v-model="formData.alias[index]"
           />
-          <el-button class="ml-3" @click="handleAdd()">添加</el-button>
-          <el-button class="ml-3" @click="handleDelete(index)">删除</el-button>
+          <w-button class="ml-3" @click="handleAdd()">添加</w-button>
+          <w-button class="ml-3" @click="handleDelete(index)">删除</w-button>
         </div>
       </el-form-item>
       <el-form-item label="备注" prop="remark">
@@ -52,8 +52,8 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button type="primary" @click="handleSubmit"> 确 定 </el-button>
-        <el-button @click="closeDialog"> 取 消 </el-button>
+        <w-button type="primary" @click="handleSubmit"> 确 定 </w-button>
+        <w-button @click="closeDialog"> 取 消 </w-button>
       </div>
     </template>
   </el-dialog>

@@ -1,6 +1,6 @@
 <template>
   <el-dialog v-model="visible" :before-close="handleBeforeClose" :width="1200">
-    <w-spin :loading="loading">
+    <w-spin :loading="loading" style="display: block;">
     <div class="dia-content">
       <card-tab
         :showExtra="false"
@@ -112,8 +112,8 @@
     </template>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="handleCancel">取消</el-button>
-        <el-button type="primary" @click="handleOk">确定</el-button>
+        <w-button @click="handleCancel" style="margin-right: 8px">取消</w-button>
+        <w-button type="primary" @click="handleOk">确定</w-button>
       </span>
     </template>
   </el-dialog>

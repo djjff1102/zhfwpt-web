@@ -34,11 +34,11 @@
       </w-form>
     </div>
     <!-- <div class="oper">
-      <el-button type="primary" class="mr-8px">新增</el-button>
+      <w-button type="primary" class="mr-8px">新增</w-button>
     </div> -->
     <div class="table-warp">
       <div class="export-btn">
-        <el-button :loading="loadingExport" type="primary" @click="handleExport">导出</el-button>
+        <w-button :loading="loadingExport" type="primary" @click="handleExport">导出</w-button>
       </div>
       <m-table
         style="height: 100%"
@@ -54,7 +54,7 @@
           {{ rowIndex + 1 }}
         </template>
         <template v-slot:operations="{rowIndex}">
-          <el-button type="text" @click="handleCompanyDetail(tableData[rowIndex])">详情</el-button>
+          <w-button type="text" @click="handleCompanyDetail(tableData[rowIndex])">详情</w-button>
         </template>
       </m-table>
     </div>

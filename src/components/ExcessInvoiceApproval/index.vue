@@ -23,8 +23,8 @@
           </w-select>
           <!-- <w-select v-model="form.post" placeholder="请输入审批状态" /> -->
         </w-form-item>
-        <el-button type="primary" class="mr-8px" @click="search">搜索</el-button>
-        <el-button @click="reset">重置</el-button>
+        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+        <w-button @click="reset">重置</w-button>
       </w-form>
     </div>
     <div class="table-warp">

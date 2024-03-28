@@ -82,15 +82,15 @@ onMounted(() => {
         </el-form-item>
 
         <el-form-item>
-          <el-button
+          <w-button
             v-has-perm="['105']"
             class="filter-item"
             type="primary"
             @click="handleQuery"
           >
             搜索
-          </el-button>
-          <el-button v-has-perm="['106']" @click="resetQuery">重置</el-button>
+          </w-button>
+          <w-button v-has-perm="['106']" @click="resetQuery">重置</w-button>
         </el-form-item>
       </el-form>
     </div>
@@ -98,8 +98,8 @@ onMounted(() => {
     <el-card shadow="never" class="table-container">
       <template #header>
         <div class="flex justify-end items-center">
-          <el-button v-has-perm="['107']" type="primary" @click="openDialog()"
-            >新增</el-button
+          <w-button v-has-perm="['107']" type="primary" @click="openDialog()"
+            >新增</w-button
           >
         </div>
       </template>

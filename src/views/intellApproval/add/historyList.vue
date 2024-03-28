@@ -21,8 +21,8 @@
             <w-option v-for="(item, i) in statusListHis" :key="i" :value="item.value">{{ item.label }}</w-option>
           </w-select>
         </w-form-item>
-        <el-button type="primary" class="mr-8px" @click="search">搜索</el-button>
-        <el-button @click="reset">重置</el-button>
+        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+        <w-button @click="reset">重置</w-button>
       </w-form>
     </div>
     <div class="table-warp">
@@ -39,9 +39,15 @@
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
         </template>
-        <template v-slot:approvalstatus="{rowIndex}">
-            <div>{{ approveStatus[tableData[rowIndex].approveStatus] }}</div>
+        <template v-slot:moneySlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].money) }}
         </template>
+        <template v-slot:approvalstatus="{rowIndex}">
+            <div :style="{color: approveStatusColor[tableData[rowIndex].approveStatus]}">{{ approveStatus[tableData[rowIndex].approveStatus] }}</div>
+        </template>
+        <!-- <template v-slot:approvalstatus="{rowIndex}">
+            <div>{{ approveStatus[tableData[rowIndex].approveStatus] }}</div>
+        </template> -->
       </m-table>
     </div>
   </div>
@@ -50,7 +56,8 @@
 import dayjs from "dayjs";
 import { ref, reactive} from "vue";
 import { reporthistroy } from '@/api/intellApproval'
-import { approveStatus, statusListHis } from '../type'
+import { approveStatus, statusListHis, approveStatusColor } from '../type'
+import { formatNumber } from '@/utils/common'
 
 const props = defineProps({
   companyId: {
@@ -74,14 +81,22 @@ const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
   {
+    title: "序号",
+    dataIndex: "index",
+    slotName: 'index',
+    fixed: 'left',
+    width: 80,
+  },
+  {
     title: "申报编号",
     dataIndex: "reportCode",
-    width: 180,
+    width: 200,
+    fixed: 'left',
   },
   {
     title: '申报日期',
     dataIndex: 'applyTime',
-    width: 180,
+    width: 220,
   },
   // {
   //   title: "申报单位",
@@ -91,7 +106,8 @@ const columns = reactive([
   {
     title: '申报额度',
     dataIndex: 'money',
-    width: 100,
+    slotName: 'moneySlot',
+    width: 220,
   },
   {
     title: "申报人",
@@ -122,7 +138,7 @@ const columns = reactive([
   {
     title: "备注",
     dataIndex: "approveRemark",
-    width: 100,
+    width: 300,
   },
   // {
   //   title: "风险评估任务",

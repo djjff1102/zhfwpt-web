@@ -9,8 +9,8 @@
         <w-form-item class="mr-16px" field="post" label="风险程度">
           <w-select v-model="form.post" placeholder="全部" />
         </w-form-item>
-        <el-button type="primary" class="mr-8px">搜索</el-button>
-        <el-button>重置</el-button>
+        <w-button type="primary" class="mr-8px">搜索</w-button>
+        <w-button>重置</w-button>
       </w-form>
     </div>
     <div class="table-warp">
@@ -28,7 +28,7 @@
           {{ rowIndex + 1 }}
         </template>
         <template v-slot:operations>
-          <el-button type="text">详情</el-button>
+          <w-button type="text">详情</w-button>
         </template>
       </m-table>
     </div>

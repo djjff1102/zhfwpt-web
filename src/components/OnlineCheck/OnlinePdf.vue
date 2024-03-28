@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button>在先查看pdf</el-button>
+    <w-button>在先查看pdf</w-button>
      <pdf :src="fileUrl"></pdf>
   </div>
 </template>

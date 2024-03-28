@@ -45,8 +45,8 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button type="primary" @click="handleSubmit">确 定</el-button>
-        <el-button @click="closeDialog">取 消</el-button>
+        <w-button type="primary" @click="handleSubmit">确 定</w-button>
+        <w-button @click="closeDialog">取 消</w-button>
       </div>
     </template>
   </el-dialog>

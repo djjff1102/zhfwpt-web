@@ -33,8 +33,8 @@
         <w-form-item field="code" label="发票号码">
           <w-input v-model="searchPar.code" placeholder="请输入发票号码" />
         </w-form-item>
-        <el-button type="primary" class="mr-8px" @click="search">搜索</el-button>
-        <el-button @click="reset">重置</el-button>
+        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+        <w-button @click="reset">重置</w-button>
       </w-form>
     </div>
     <div class="table-warp">
@@ -70,7 +70,7 @@
           {{ formatNumber(tableData[rowIndex].amountTotal) }}
         </template>
         <template v-slot:operations="{rowIndex}">
-          <el-button type="text" @click="handleDetail(tableData[rowIndex])">详情</el-button>
+          <w-button type="text" @click="handleDetail(tableData[rowIndex])">详情</w-button>
         </template>
       </m-table>
     </div>

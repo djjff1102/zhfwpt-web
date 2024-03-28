@@ -57,14 +57,14 @@
               </el-form-item>
             </el-tooltip>
 
-            <el-button
+            <w-button
               :loading="loading"
               type="primary"
               class="w-full"
               :style="{width: '360px', height: '48px'}"
               @click.prevent="handleLogin"
               >{{ $t("login.login") }}
-            </el-button>
+            </w-button>
           </el-form>
         </div>
       </div>
@@ -121,13 +121,13 @@
           </el-form-item>
         </el-tooltip>
 
-        <el-button
+        <w-button
           :loading="loading"
           type="primary"
           class="w-full"
           @click.prevent="handleLogin"
           >{{ $t("login.login") }}
-        </el-button>
+        </w-button>
       </el-form>
     </el-card> -->
 

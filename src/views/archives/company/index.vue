@@ -1,18 +1,18 @@
 <template>
   <div class="company-detail">
-    <el-button class="absolute right-20 top-22px" :type="btnType(companyMsg?.attention)" @click.stop="handleAttention(companyMsg)">
+    <w-button class="absolute right-20 top-22px" :type="btnType(companyMsg?.attention)" @click.stop="handleAttention(companyMsg)">
         <template #icon>
         <i  v-if="comData?.attention" class="iconfont icon-guanzhu-mian"></i>
         <i v-else class="iconfont icon-guanzhu-xian"></i>
         </template>
         <template #default>{{ companyMsg?.attention ? '已关注' : '关注' }}</template>
-    </el-button>
-    <!-- <el-button class="absolute right-20px top-20px" type="primry">
+    </w-button>
+    <!-- <w-button class="absolute right-20px top-20px" type="primry">
       <template #icon>
         <el-icon><StarFilled /></el-icon>
       </template>
       <template #default>关注</template>
-    </el-button> -->
+    </w-button> -->
     <div class="company-name">{{ companyMsg?.companyName }}</div>
     <div class="company-content">
       <m-backtop target=".company-content"></m-backtop>

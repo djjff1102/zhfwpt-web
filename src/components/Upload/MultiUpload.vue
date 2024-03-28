@@ -16,7 +16,7 @@
       multiple
     >
       <div class="flex-base-start ">
-        <el-button type="primary">上传文件</el-button>
+        <w-button type="primary">上传文件</w-button>
         <div class="upload-msg">支持上传的文件格式包含：pdf、png、gif、zip、ppt、xlsx、doc、docx等。单个文件上传不超过100M；最多支持上传5个。</div>
       </div>
     </el-upload>

@@ -15,7 +15,7 @@
         {{ rowIndex + 1 }}
       </template>
       <template v-slot:operations>
-        <el-button type="text">详情</el-button>
+        <w-button type="text">详情</w-button>
       </template>
     </m-table>
   </div>

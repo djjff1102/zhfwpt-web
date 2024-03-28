@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button @click="load">在线查看excel</el-button>
+    <w-button @click="load">在线查看excel</w-button>
     <el-dialog
         title="提示"
         v-model="excelShow"
@@ -17,8 +17,8 @@
       </el-table>
         <template #footer>
           <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            <w-button @click="dialogVisible = false">取 消</w-button>
+            <w-button type="primary" @click="dialogVisible = false">确 定</w-button>
           </span>
         </template>
       </el-dialog>

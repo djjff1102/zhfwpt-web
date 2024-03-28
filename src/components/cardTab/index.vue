@@ -1,7 +1,7 @@
 <template>
   <w-tabs :default-active-key="defaultActive" type="card-gutter" @tab-click="handleTabClick" >
     <template v-if="showExtra" #extra>
-      <el-button type="primary">新增</el-button>
+      <w-button type="primary">新增</w-button>
     </template>
     <w-tab-pane key="1" title="合同">
       <slot name="applycontent"></slot>

@@ -28,8 +28,8 @@
         <w-form-item field="code" label="子订单编号">
           <w-input v-model="searchPar.code" placeholder="请输入子订单编号" />
         </w-form-item>
-        <el-button type="primary" class="mr-8px" @click="search">搜索</el-button>
-        <el-button @click="reset">重置</el-button>
+        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+        <w-button @click="reset">重置</w-button>
       </w-form>
     </div>
     <div class="table-warp">
@@ -50,7 +50,7 @@
           {{ rowIndex + 1 }}
         </template>
         <template v-slot:operations>
-          <el-button type="text">详情</el-button>
+          <w-button type="text">详情</w-button>
         </template>
       </m-table>
     </div>

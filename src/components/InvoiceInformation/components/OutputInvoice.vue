@@ -27,8 +27,8 @@
         <w-form-item field="name" label="发票号码">
           <w-input v-model="form.name" placeholder="请输入发票号码" />
         </w-form-item>
-        <el-button type="primary" class="mr-8px">搜索</el-button>
-        <el-button>重置</el-button>
+        <w-button type="primary" class="mr-8px">搜索</w-button>
+        <w-button>重置</w-button>
       </w-form>
     </div>
     <div class="table-warp">
@@ -46,7 +46,7 @@
           {{ $index + 1 }}
         </template>
         <template v-slot:operations>
-          <el-button type="text">详情</el-button>
+          <w-button type="text">详情</w-button>
         </template>
       </m-table>
     </div>

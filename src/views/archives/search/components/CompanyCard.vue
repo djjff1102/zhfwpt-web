@@ -65,13 +65,13 @@
           </div>
         </div>
       </div>
-      <el-button class="absolute right-0 top-39px" :type="btnType(comData?.attention)" @click.stop="handleAttention(comData)">
+      <w-button class="absolute right-0 top-39px" :type="btnType(comData?.attention)" @click.stop="handleAttention(comData)">
         <template #icon>
         <i v-if="comData?.attention" class="iconfont icon-guanzhu-mian"></i>
         <i v-else class="iconfont icon-guanzhu-xian"></i>
         </template>
         <template #default>{{ comData?.attention ? '已关注' : '关注' }}</template>
-      </el-button>
+      </w-button>
     </div>
   </div>
 </template>

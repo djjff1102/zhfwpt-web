@@ -20,7 +20,7 @@
         <span>{{ option[transferProps.key] }} - {{ option[transferProps.label] }}</span>
       </template>
       <template #left-footer>
-        <!-- <el-button v-if="total == dataList.length" type="primary" size="small" @click="loadMore">继续加载</el-button>
+        <!-- <w-button v-if="total == dataList.length" type="primary" size="small" @click="loadMore">继续加载</w-button>
         <span v-else>已加载完</span> -->
       </template>
     </el-transfer>

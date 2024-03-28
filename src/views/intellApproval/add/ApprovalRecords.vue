@@ -16,12 +16,12 @@
           <div>{{ approveStatus[tableData[rowIndex].approveResult] }}</div>
         </template>
         <template v-slot:fileName="{rowIndex}">
-          <el-button
+          <w-button
             v-for="(item, i) in tableData[rowIndex]?.fileNames"
             :key="item"
             type="text"
             @click="load(tableData[rowIndex]?.fileUrls[i], item)"
-            >{{ getFileName(item) }}</el-button>
+            >{{ getFileName(item) }}</w-button>
         </template>
     </m-table>
     </div>
@@ -30,7 +30,7 @@
     </template>
     <template #footer>
       <span class="dialog-footer">
-        <el-button type="primary" @click="handleCancel">知道了</el-button>
+        <w-button type="primary" @click="handleCancel">知道了</w-button>
       </span>
     </template>
   </el-dialog>

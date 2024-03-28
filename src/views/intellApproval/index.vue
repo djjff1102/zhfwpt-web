@@ -29,8 +29,8 @@
       </w-form>
     </div>
     <div class="oper">
-      <el-button v-hasPerm="btnApprovalCode.add" type="primary" class="mr-8px" @click="operate('add')">新增</el-button>
-      <el-button v-hasPerm="btnApprovalCode.export" :loading="loadingExport" type="primary" class="mr-8px" @click="handleExport">导出</el-button>
+      <w-button v-hasPerm="btnApprovalCode.add" type="primary" class="mr-8px" @click="operate('add')">新增</w-button>
+      <w-button v-hasPerm="btnApprovalCode.export" :loading="loadingExport" type="primary" class="mr-8px" @click="handleExport">导出</w-button>
     </div>
       <div class="table-warp">
       <m-table
@@ -56,10 +56,10 @@
             <div :style="{color: taskStatusColor[tableData[rowIndex].taskStatus]}">{{ taskStatus[tableData[rowIndex].taskStatus] }}</div>
         </template>
         <template v-slot:operations="{rowIndex}">
-          <el-button v-hasPerm="btnApprovalCode.approval" type="text" @click="approval(tableData[rowIndex])">审批</el-button>
-          <el-button v-hasPerm="btnApprovalCode.edit" type="text" @click="operate('operate', tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == 2">编辑</el-button>
-          <el-button v-hasPerm="btnApprovalCode.detail" type="text" @click="operate('detail', tableData[rowIndex])">详情</el-button>
-          <el-button v-hasPerm="btnApprovalCode.del" type="danger" link @click="del(tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == 2">删除</el-button>
+          <w-button v-hasPerm="btnApprovalCode.approval" type="text" @click="approval(tableData[rowIndex])">审批</w-button>
+          <w-button v-hasPerm="btnApprovalCode.edit" type="text" @click="operate('operate', tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == 2">编辑</w-button>
+          <w-button v-hasPerm="btnApprovalCode.detail" type="text" @click="operate('detail', tableData[rowIndex])">详情</w-button>
+          <w-button v-hasPerm="btnApprovalCode.del" type="danger" link @click="del(tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == 2">删除</w-button>
         </template>
       </m-table>
     </div>

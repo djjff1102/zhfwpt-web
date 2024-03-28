@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="text" @click="load">在线查看world</el-button>
+    <w-button type="text" @click="load">在线查看world</w-button>
     <div id="wordView" v-html="vHtml"></div>
   </div>
 </template>

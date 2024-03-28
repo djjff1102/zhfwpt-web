@@ -10,14 +10,14 @@
     <el-card shadow="never" class="table-container">
       <template #header>
         <div class="flex justify-end items-center">
-          <el-button
+          <w-button
             @click="
               openFuncFormDialog(ResourceDialogConfigEnum.ADD_RESOURCE, {
                 id: curMenuId,
               })
             "
             type="success"
-            ><i-ep-plus />新增</el-button
+            ><i-ep-plus />新增</w-button
           >
         </div>
       </template>
@@ -44,7 +44,7 @@
         <el-table-column label="备注" align="center" prop="remark" />
         <el-table-column fixed="right" label="操作" width="220">
           <template #default="scope">
-            <el-button
+            <w-button
               type="primary"
               size="small"
               @click="
@@ -56,22 +56,22 @@
               link
             >
               编辑
-            </el-button>
-            <el-button
+            </w-button>
+            <w-button
               type="primary"
               @click="handleDelete(scope.row.id)"
               size="small"
               link
             >
               删除
-            </el-button>
+            </w-button>
           </template>
         </el-table-column>
       </el-table>
     </el-card>
     <template #footer>
       <div class="dialog-footer">
-        <el-button type="primary" @click="closeDialog">确 定</el-button>
+        <w-button type="primary" @click="closeDialog">确 定</w-button>
       </div>
     </template>
   </el-dialog>
