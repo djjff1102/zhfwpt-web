@@ -54,7 +54,7 @@
           {{ rowIndex + 1 }}
         </template>
         <template v-slot:operations="{rowIndex}">
-          <w-button type="text" @click="handleCompanyDetail(tableData[rowIndex])">详情</w-button>
+          <el-button type="text" @click="handleCompanyDetail(tableData[rowIndex])">详情</el-button>
         </template>
       </m-table>
     </div>
@@ -140,7 +140,7 @@ const columns = reactive([
     title: "操作",
     dataIndex: "operations",
     slotName: "operations",
-    width: 100,
+    width: 80,
     fixed: "right",
   },
 ]);

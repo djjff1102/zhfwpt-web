@@ -73,7 +73,7 @@
           {{ formatNumber(tableData[rowIndex].amountTotal) }}
         </template>
         <template v-slot:operations="{rowIndex}">
-          <w-button type="text" @click="handleDetail(tableData[rowIndex])">详情</w-button>
+          <el-button type="text" @click="handleDetail(tableData[rowIndex])">详情</el-button>
         </template>
       </m-table>
     </div>

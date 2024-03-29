@@ -39,11 +39,17 @@ const goFirst = (menu: any[]) => {
     });
   }
 };
-const selectMenu = (index: string) => {
-  appStore.changeTopActive(index);
-  permissionStore.getMixLeftMenu(index);
-  const { mixLeftMenu } = permissionStore;
-  goFirst(mixLeftMenu);
+
+const waitPath = reactive(['/warehousing', '/riskMonitoring']);
+const selectMenu = (index: string, item: any) => {
+  if(waitPath.includes(index)) {
+    ElMessage.warning("敬请期待！");
+  } else {
+    appStore.changeTopActive(index);
+    permissionStore.getMixLeftMenu(index);
+    const { mixLeftMenu } = permissionStore;
+    goFirst(mixLeftMenu);
+  }
 };
 const permissionStore = usePermissionStore();
 const topMenu = ref<any[]>([]);
