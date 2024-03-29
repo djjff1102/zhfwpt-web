@@ -171,7 +171,7 @@
   font-size: 24px!important;
   font-weight: bold !important;
 }
-/** 时间控件圆角 */
+/** w-date时间控件圆角 */
 .w-picker-cell-range-start .w-picker-date {
   border-radius: 2px;
   display: flex;
@@ -185,6 +185,36 @@
 .w-picker-cell .w-picker-date {
   padding: 0;
 }
+.w-picker-cell-in-view .w-picker-date-value {
+  color: #333!important;
+  font-weight: normal;
+}
+// .w-picker-date-value {
+//   box-sizing: content-box;
+//   padding: 4px;
+// }
 .w-table-scroll-position-left .w-table-col-fixed-right-first::after {
   box-shadow: inset -6px 0 8px -3px rgba(0, 0, 0, 0.08);
+}
+// el-data时间控件圆角
+.el-date-table-cell__text {
+  font-size: 14px!important;
+  border-radius: 2px!important;
+}
+.el-date-table td.start-date .el-date-table-cell {
+  border-top-left-radius: 2px!important;
+  border-bottom-left-radius: 2px!important;
+}
+.el-date-table td.end-date .el-date-table-cell {
+  margin-right: 5px;
+  border-top-right-radius: 2px!important;
+  border-bottom-right-radius: 2px!important;
+}
+.el-date-table td .el-date-table-cell {
+  height: 24px!important;
+  padding: 0px 0!important;
+  box-sizing: border-box!important;
+}
+.el-date-table td.in-range .el-date-table-cell {
+  // background-color: #ccc!important;
 }
