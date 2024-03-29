@@ -41,7 +41,7 @@ const goFirst = (menu: any[]) => {
 };
 
 const waitPath = reactive(['/warehousing', '/riskMonitoring']);
-const selectMenu = (index: string, item: any) => {
+const selectMenu = (index: string) => {
   if(waitPath.includes(index)) {
     ElMessage.warning("敬请期待！");
   } else {
