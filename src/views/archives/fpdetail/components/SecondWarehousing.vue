@@ -51,18 +51,27 @@
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
         </template>
-        <template v-slot:operations>
-          <w-button type="text">详情</w-button>
+
+        <template v-slot:quantitySlot="{ rowIndex }">
+          {{  formatNumber(tableData[rowIndex].quantity) }}
+        </template>
+        <template v-slot:unitPriceSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].unitPrice) }}
+        </template>
+        <template v-slot:amountIncludeTaxSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].amountIncludeTax) }}
+        </template>
+        <template v-slot:taxAmountSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].taxAmount) }}
         </template>
       </m-table>
     </div>
   </div>
 </template>
 <script setup>
-import dayjs from "dayjs";
 import { ref, reactive } from "vue";
-import { qyzxOrderSub,goods,  suborderDropDownBox } from  '@/api/archives'
-import { pro } from "@/components/ExcessInvoiceApproval/type";
+import { goods,  suborderDropDownBox } from  '@/api/archives'
+import { formatNumber } from '@/utils/common'
 
 const props = defineProps({
   id: {
@@ -77,7 +86,7 @@ const columns = reactive([
   {
     title: "商品名称",
     dataIndex: "goodName",
-    width: 180,
+    width: 220,
     fixed: "left",
   },
   // {
@@ -88,26 +97,26 @@ const columns = reactive([
   {
     title: "规格",
     dataIndex: "standards",
-    fixed: "left",
   },
    {
     title: "单位",
     dataIndex: "unit",
-    fixed: "left",
   },
   {
     title: "数量",
     dataIndex: "quantity",
-    fixed: "left",
+    slotName: 'quantitySlot'
   },
    {
     title: "单价",
     dataIndex: "unitPrice",
     fixed: "left",
+    slotName: 'unitPriceSlot'
   },
   {
     title: "金额",
     dataIndex: "amountIncludeTax",
+    slotName: 'amountIncludeTaxSlot'
   },
   {
     title: "税率",
@@ -116,6 +125,7 @@ const columns = reactive([
   {
     title: "税额",
     dataIndex: "taxAmount",
+    slotName: 'taxAmountSlot'
   },
   {
     title: "税收分类编码",

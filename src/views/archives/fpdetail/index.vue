@@ -2,7 +2,7 @@
   <div class="order-detail-container">
     <div class="title">{{ name }}基本信息</div>
     <BaseInfo v-if="name == '销项发票'" :order="fapiao"></BaseInfo>
-    <BaseInfoIN :order="fapiao"></BaseInfoIN>
+    <BaseInfoIN v-else :order="fapiao"></BaseInfoIN>
     <div class="title">商品单信息</div>
     <SecondWarehousing :id="fapiao.id"></SecondWarehousing>
   </div>
