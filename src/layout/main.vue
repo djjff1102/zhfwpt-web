@@ -60,7 +60,14 @@ function goBack() {
   <div :class="{ hasTagsView: showTagsView }" class="main-container">
     <div :class="{ 'fixed-header': fixedHeader, device: device }">
       <navbar  v-if="showMenu"/>
-      <div v-else class="back-nar"><el-button type="text" @click="goBack">返回</el-button></div>
+      <div v-else class="back-nar">
+        
+        <el-button type="text" @click="goBack">
+          <img src="@/assets/icon_backe.png">
+          <!-- <i class="iconfont icon-icon_backe1 back-icon"></i> -->
+          返回
+        </el-button>
+      </div>
     </div>
     <!--主页面-->
     <app-main />
@@ -78,6 +85,11 @@ function goBack() {
   align-items: center;
   height: 50px;
   padding-left: 16px;
+  img {
+    width: 28px;
+    display: block;
+    margin-right: 12px;
+  }
 }
 .fixed-header {
   // position: fixed;

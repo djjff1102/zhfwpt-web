@@ -1,11 +1,11 @@
 <template >
   <!-- 经营信息 -->
   <el-tabs type="card" >
-    <el-tab-pane label="进出口信用">
-      <ImportAndExport v-bind="$attrs"></ImportAndExport>
-    </el-tab-pane>
     <el-tab-pane label="行政许可">
       <AdministrativeLicensing v-bind="$attrs"></AdministrativeLicensing>
+    </el-tab-pane>
+    <el-tab-pane label="进出口信用">
+      <ImportAndExport v-bind="$attrs"></ImportAndExport>
     </el-tab-pane>
     <el-tab-pane label="纳税人资质">
       <TaxpayerQualification v-bind="$attrs"></TaxpayerQualification>

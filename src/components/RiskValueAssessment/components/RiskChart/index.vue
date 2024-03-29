@@ -5,7 +5,7 @@
 </template>
 <script setup>
 import * as echarts from "echarts";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, reactive } from "vue";
 // import option from "./option";
 
 const props = defineProps({
@@ -13,17 +13,42 @@ const props = defineProps({
     default: 0
   },
   leval: { // 1高风险 2 中风险 3低风险
-    default: 1
+    default: -1
   }
 })
+
+const colorArr = reactive(['#F76161', '#FF9100', '#5ECF69']) // leval-1分别取颜色值 1高风险 2 中风险 3低风险
 
 watch(
   () => props.riskData,
   (d) => {
+    handleColor()
     option.value.series[0].data[0].value =  Math.floor(d);
     init();
   }
 );
+
+function handleColor() {
+  switch (props.leval) {
+    case 1:
+      setColor('#F76161')
+      break;
+    case 2:
+      setColor('#FF9100')
+      break;
+    case 3: 
+      setColor('#5ECF69')
+      break;
+  }
+}
+
+function setColor(col) {
+  option.value.series[0].progress.itemStyle.color = col;
+  option.value.series[0].pointer.itemStyle.color = col;
+  option.value.series[0].axisTick.lineStyle.color = col;
+  option.value.series[0].axisLabel.color = col;
+  option.value.series[0].detail.color = col;
+}
 
 const option = ref({
   series: [

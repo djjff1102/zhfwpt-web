@@ -294,6 +294,7 @@ function getsuggestion() {
   suggestion({
     companyId: props.companyId,
     companyName: props.companyName,
+    reportId: props.reportId,
   }).then(res => {
     suggestData.value = res.data;
     riskData.value = res.data.riskScore
