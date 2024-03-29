@@ -593,30 +593,33 @@ init()
   padding: 12px 0;
   border-top: solid 1px rgba(237, 241, 252, 1);
 }
-:deep(.w-textarea) {
-  height: 120px;
+.section {
+  :deep(.w-textarea) {
+    height: 120px;
+  }
+  :deep(.w-tabs-content) {
+    display: none;
+  }
+  :deep(.el-form-item) {
+    flex-direction: column;
+    // align-items: flex-start;
+  }
+  :deep(.el-form-item__label ) {
+    justify-content: flex-start;
+  }
+  :deep(.el-form-item__label) {
+    color: rgba(39, 42, 49, 1);
+    font-weight: 500;
+    font-size: 14px;;
+  }
+  :deep(.el-form-item--default) {
+    margin-bottom: 24px;;
+  }
+  :deep(.el-textarea__inner) {
+    height: 148px;
+  }
 }
-:deep(.w-tabs-content) {
-  display: none;
-}
-:deep(.el-form-item) {
-  flex-direction: column;
-  // align-items: flex-start;
-}
-:deep(.el-form-item__label ) {
-  justify-content: flex-start;
-}
-:deep(.el-form-item__label) {
-  color: rgba(39, 42, 49, 1);
-  font-weight: 500;
-  font-size: 14px;;
-}
-:deep(.el-form-item--default) {
-  margin-bottom: 24px;;
-}
-:deep(.el-textarea__inner) {
-  height: 148px;
-}
+
 
 </style>
 

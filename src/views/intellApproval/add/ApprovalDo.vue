@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="visible" :before-close="handleBeforeClose" :width="600">
+  <el-dialog v-model="visible" :before-close="handleBeforeClose" :width="700">
     <div class="proval-content">
        <el-form ref="baseForm" :model="form" :rules="rules" label-position="right" label-width="100px">
           <el-form-item prop="approveResult" label="审批结果" required>
@@ -118,8 +118,8 @@ async function handleBeforeClose(done: any) {
   position: relative;
   z-index: 9999;
 }
-:deep(.upload-msg) {
-  width: 307px;
-}
+// :deep(.upload-msg) {
+//   width: 307px;
+// }
 
 </style>

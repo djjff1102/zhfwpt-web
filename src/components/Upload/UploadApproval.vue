@@ -9,7 +9,7 @@
       :show-file-list="false"
       multiple
     >
-      <div class="flex-base-start ">
+      <div class="flex-base-start upload-flex">
         <w-button plain>
           <template #icon><i class="iconfont icon-shangchuan"></i></template>
           <template #default>上传文件</template>
@@ -21,11 +21,10 @@
     </el-upload>
     <div class="file-wrap">
       <div class="flie-item" v-for="(item, i) in fileList" :key="item.name">
-        <img src="@/assets/upload/file.png" style="width: 18px">
+        <img class="file-normal" src="@/assets/upload/file.png" style="width: 18px">
+        <img class="file-active" src="@/assets/upload/file-del.png" style="width: 18px">
         <div class="file-name">{{ item }}</div>
         <delete style="width: 1em; height: 1em; margin-right: 8px;" @click="handleDel(i)"/>
-        <!-- <img class="close" style="width: 20px" src="../../assets/base/cha.png" @click="handleDel(i)"/> 
-        <img class="success" style="width: 20px" src="../../assets/base/right.png"> -->
       </div>
     </div>
   </div>
@@ -82,7 +81,8 @@ function init() {
 
 function handleDel(i: any) {
   fileList.value.splice(i, 1)
-  allFileList.value.slice(i, 1)
+  allFileList.value.splice(i, 1)
+  emit('updateUpload', allFileList.value)
 }
 
 async function handleExceed() {
@@ -119,6 +119,9 @@ function handleBeforeUpload(file: UploadRawFile) {
 </script>
 
 <style lang="scss" scoped>
+.upload-flex {
+  align-items: flex-start;
+}
 .file-wrap {
   display: flex;
   justify-content: space-between;
@@ -131,15 +134,26 @@ function handleBeforeUpload(file: UploadRawFile) {
   display: flex;
   align-items: center;
   border-radius: 2px;
+  margin-top: 12px;
   cursor: pointer;
+  .file-active {
+    display: none;
+  }
   .file-name {
     width: 260px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    padding-left: 8px;
   }
   &:hover {
-    background: #ebe7e7;
+    .file-normal {
+      display: none;
+    }
+    .file-active {
+      display: block;
+    }
+    background: #F4F4F5;
     color: rgba(247, 97, 97, 1);
     .file-name {
       color: rgba(247, 97, 97, 1);
@@ -159,7 +173,7 @@ function handleBeforeUpload(file: UploadRawFile) {
   font-weight: 400px;
 }
 .upload-msg {
-  width: 350px;
+  width: 420px;
   font-family: PingFangSC, PingFang SC;
   font-weight: 400;
   font-size: 14px;
@@ -167,6 +181,7 @@ function handleBeforeUpload(file: UploadRawFile) {
   text-align: left;
   font-style: normal;
   padding-left: 16px;
+  line-height: 18px;
 }
 .w-button {
   height: 32px;

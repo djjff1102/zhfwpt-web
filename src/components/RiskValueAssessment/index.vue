@@ -432,7 +432,7 @@ function init() {
 }
 .danger-point {
   margin-top: 22px;
-  padding: 12px;
+  padding: 12px 0;
   position: relative;
   width: 100%;
   .icon {

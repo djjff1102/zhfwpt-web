@@ -113,6 +113,7 @@ function exportBlob(b,name) {
   display: none;
 } 
 .file-name {
+  padding-left: 24px;
   width: 300px;
   flex-grow: 1;
   font-size: 16px;
