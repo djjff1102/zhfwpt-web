@@ -185,3 +185,6 @@
 .w-picker-cell .w-picker-date {
   padding: 0;
 }
+.w-table-scroll-position-left .w-table-col-fixed-right-first::after {
+  box-shadow: inset -6px 0 8px -3px rgba(0, 0, 0, 0.08);
+}

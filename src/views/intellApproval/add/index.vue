@@ -446,6 +446,7 @@ function getDetail(d) {
       dataList.value = res.data.transactionCertificateMapResponseList
       columns.value = columnsHT
       form.value = res.data as any
+      form.value.taxAuthority = '东疆综合保税区税务局'
       curDate.value = [res.data.validDateStart, res.data.validDateEnd]
     } else {
       getgetOneByCompanyName() // 当前返回数据为空，新增，且无暂存，则查询企业基本信息
@@ -458,7 +459,7 @@ function getgetOneByCompanyName() {
   getOneByCompanyName({
     companyName: form.value.companyName
   }).then(res => {
-    form.value.taxAuthority = res.data.taxAuthority;
+    form.value.taxAuthority = '东疆综合保税区税务局'
     form.value.companyName = res.data.companyName;
     form.value.registerAddress = res.data.companyAddress;
     form.value.applyUserName = username as any
