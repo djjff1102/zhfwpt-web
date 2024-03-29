@@ -10,8 +10,8 @@
     </div>
     <div class="search_box">
       <w-form :model="searchPar" layout="inline">
-        <w-form-item class="mr-16px" field="department" label="许可机关">
-          <w-select v-model="searchPar.department" placeholder="不限" style="width: 400px">
+        <w-form-item class="mr-16px" field="departmentNo" label="许可机关">
+          <w-select v-model="searchPar.departmentNo" placeholder="不限" style="width: 400px">
             <w-option v-for="(item, i) in listdata" :key="i" :value="item.department_no" :label="item.department"></w-option>
           </w-select>
         </w-form-item>
@@ -120,7 +120,7 @@ const searchPar = ref({
   page_size: 10,
   page: 1,
   companyName: props.companyName,
-  department: '', // 许可单位
+  departmentNo: '', // 许可单位
   isHistory: 0 // 0官网还存在 1官网不存在
 })
 const scroll = ref({
@@ -139,7 +139,7 @@ function search() {
 }
 
 function reset() {
-  searchPar.value.department = ''
+  searchPar.value.departmentNo = ''
   searchPar.value.page = 1;
   pagination.value.current = 1
   init();
@@ -150,6 +150,7 @@ function handleChange(tab) {
   searchPar.value.page = 1;
   pagination.value.current = 1
   searchPar.value.isHistory = Number(activeTab.value);
+  searchPar.value.departmentNo = ''
   init();
 }
 
