@@ -16,7 +16,7 @@
         <div class="desc-info">
           <div class="desc-item">
             <div class="desc-label">法定代表人：</div>
-            <div class="desc-value">{{ comData?.legalPersonCaption || '-' }}</div>
+            <div class="desc-value">{{ comData?.legalPerson || '-' }}</div>
           </div>
           <div class="desc-item">
             <div class="desc-label">注册资本：</div>
@@ -24,7 +24,7 @@
           </div>
           <div class="desc-item">
             <span class="desc-label">成立日期：</span>
-            <span class="desc-value">{{ comData?.createTime || '-' }}</span>
+            <span class="desc-value">{{ comData?.establishDate || '-' }}</span>
           </div>
           <div class="desc-item">
             <span class="desc-label">统一社会信用代码：</span>

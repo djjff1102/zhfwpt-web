@@ -44,12 +44,14 @@
             format="YYYY-MM-DD"
             value-format="YYYY-MM-DD"
           ></el-date-picker>
+          
           <!-- <w-date-picker  v-model="form.applyTime" style="width: 100%;height: 32px;" placeholder="请选择日期">
             <template #extra>
               <div>请填写在税务申报系统提交申报的日期</div>
             </template>
           </w-date-picker> -->
            <div v-else>{{ form.applyTime && form.applyTime.split(' ')[0] }}</div>
+           <span v-if="initPageParam.edit" class="date-msg">请填写在税务申报系统提交申报时的日期</span>
         </el-form-item>
       </el-form>
     </div>
@@ -494,6 +496,19 @@ init()
 </script>
 
 <style lang="scss" scoped>
+.date-msg {
+  display: block;
+  margin-top: 12px;
+  padding-left: 17px;
+  height: 22px;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 14px;
+  color: #999999;
+  line-height: 22px;
+  text-align: right;
+  font-style: normal;
+}
 .section-detail-header {
   padding-bottom: 18px;
   margin-bottom: 24px;
