@@ -2,8 +2,8 @@
   <!-- 订单信息 -->
   <div class="second-warehousing-container">
     <div class="mount-sum">
-      <span class="mount-sum-item">金额总计：{{ jine }} </span>
-      <span> 税额总计：{{ shuie }}</span>
+      <span class="mount-sum-item">金额总计：{{ formatNumber(jine) }} </span>
+      <span> 税额总计：{{ formatNumber(shuie) }}</span>
     </div>
     <!-- <div class="search_box">
       <w-form :model="form" layout="inline">

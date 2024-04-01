@@ -2,21 +2,23 @@
   <!-- 主营商品信息 -->
   <div >
     <div class="search_box">
-      <w-form :model="searchPar" layout="inline">
-        <w-form-item class="mr-16px" field="post" label="计量单位">
-          <w-select v-model="searchPar.measureUnit" placeholder="请选择计量单位" clearable>
-            <w-option v-for="(item, i) in goodList" :key="i">{{ item }}</w-option>
-          </w-select>
-        </w-form-item>
-        <w-form-item field="good" label="商品名称">
-          <w-input v-model="searchPar.good" placeholder="请输入商品名称" clearable/>
-        </w-form-item>
-        <w-form-item field="standard" label="规格型号">
-          <w-input v-model="searchPar.standard" placeholder="请输入规格型号" clearable/>
-        </w-form-item>
-        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
-        <w-button @click="reset">重置</w-button>
-      </w-form>
+      <el-form :model="searchPar" :inline="true" class="demo-form-inline">
+        <el-form-item class="mr-16px" field="post" label="计量单位">
+          <el-select v-model="searchPar.measureUnit" placeholder="请选择计量单位" clearable>
+            <el-option v-for="(item, i) in goodList" :key="i" :value="item"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item field="good" label="商品名称">
+          <el-input v-model="searchPar.good" placeholder="请输入商品名称" clearable/>
+        </el-form-item>
+        <el-form-item field="standard" label="规格型号">
+          <el-input v-model="searchPar.standard" placeholder="请输入规格型号" clearable/>
+        </el-form-item>
+        <el-form-item>
+          <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+          <w-button @click="reset">重置</w-button>
+        </el-form-item>
+      </el-form>
     </div>
     <div class="table-warp">
       <m-table

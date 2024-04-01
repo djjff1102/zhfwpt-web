@@ -2,36 +2,35 @@
   <!-- 订单信息 -->
   <div class="second-warehousing-container">
     <div class="search_box">
-      <w-form :model="searchPar" layout="inline">
-        <w-form-item class="mr-16px" field="goodType" label="商品类别">
-          <w-select v-model="searchPar.goodType" placeholder="全部" clearable>
-            <w-option v-for="(item, i) in subOrderList" :key="i">{{ item }}</w-option>
-          </w-select>
-        </w-form-item>
-        <w-form-item class="mr-16px" field="post" label="订单创建日期">
-          <w-range-picker
-            v-model="currentDate"
-            class="w-250px"
-            :time-picker-props="{
-              defaultValue: [
-                dayjs('00:00:00', 'HH:mm:ss'),
-                dayjs('09:09:06', 'HH:mm:ss'),
-              ],
-            }"
-            clearable
-            format="YYYY-MM-DD"
-            @change="onChange"
-          />
-        </w-form-item>
-        <w-form-item field="goodName" label="商品名称">
-          <w-input v-model="searchPar.goodName" placeholder="请输入买方名称" clearable/>
-        </w-form-item>
-        <w-form-item field="code" label="子订单编号">
-          <w-input v-model="searchPar.code" placeholder="请输入子订单编号" clearable/>
-        </w-form-item>
-        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
-        <w-button @click="reset">重置</w-button>
-      </w-form>
+      <el-form :model="searchPar" inline="true" class="demo-form-inline">
+        <el-form-item class="mr-16px" field="goodType" label="商品类别">
+          <el-select v-model="searchPar.goodType" placeholder="全部" clearable style="width: 188px">
+            <el-option v-for="(item, i) in subOrderList" :key="i" :value="item" :label="item"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item class="mr-16px" field="post" label="订单创建日期">
+          <el-date-picker
+              v-model="currentDate"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              format="YYYY-MM-DD"
+              @change="onChange"
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item field="goodName" label="商品名称">
+          <el-input v-model="searchPar.goodName" placeholder="请输入买方名称" clearable/>
+        </el-form-item>
+        <el-form-item field="code" label="子订单编号">
+          <el-input v-model="searchPar.code" placeholder="请输入子订单编号" clearable/>
+        </el-form-item>
+         <el-form-item>
+          <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+          <w-button @click="reset">重置</w-button>
+         </el-form-item>
+      </el-form>
     </div>
     <div class="table-warp">
       <m-table
@@ -61,7 +60,7 @@
 import dayjs from "dayjs";
 import { ref, reactive } from "vue";
 import { qyzxOrderSub, suborderDropDownBox } from  '@/api/archives'
-import { formatNumber } from '@/utils/common'
+import { formatNumber,formateDate } from '@/utils/common'
 
 const props = defineProps({
   parentCode: {
@@ -70,7 +69,7 @@ const props = defineProps({
   }
 })
 
-const currentDate = ref()
+const currentDate = ref('')
 const current = ref(1);
 const size = ref(10);
 const loading = ref(false);
@@ -94,7 +93,7 @@ const columns = reactive([
     title: "订单创建日期",
     dataIndex: "orderCreateDate",
     fixed: "left",
-    // width: 220,
+    width: 220,
   },
   {
     title: "商品类别",
@@ -168,8 +167,8 @@ const scroll = ref({
 // 选择时间
 function onChange(dateString, date) {
   if(dateString && dateString.length > 0) {
-    searchPar.value.orderCreateDateStart = dateString[0];
-    searchPar.value.orderCreateDateEnd = dateString[1];
+    searchPar.value.orderCreateDateStart = formateDate(dateString[0]);
+    searchPar.value.orderCreateDateEnd = formateDate(dateString[1]);
   } else {
     searchPar.value.orderCreateDateStart = '';
     searchPar.value.orderCreateDateEnd = '';
@@ -186,7 +185,7 @@ function reset() {
     code: '',
     parentOrderCode: props.parentCode
   }
-  currentDate.value = [];
+  currentDate.value = '';
   pagination.value.current = 1;
   getqyzxOrderSub();
 }

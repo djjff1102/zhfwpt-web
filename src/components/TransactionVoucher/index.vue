@@ -2,33 +2,33 @@
   <!-- 交易凭证 -->
   <div>
     <div class="search_box">
-      <w-form :model="searchPar" layout="inline">
-        <w-form-item field="code" label="合同编号">
-          <w-input v-model="searchPar.code" placeholder="请输入合同编号" clearable/>
-        </w-form-item>
-        <w-form-item class="mr-16px" field="partyA" label="甲方">
-          <w-input v-model="searchPar.partyA" placeholder="请输入关键字" clearable/>
-        </w-form-item>
-        <w-form-item class="mr-16px" field="partyB" label="乙方">
-          <w-input v-model="searchPar.partyB" placeholder="请输入关键字" clearable/>
-        </w-form-item>
-        <w-form-item class="mr-16px" field="post" label="签订日期">
-          <w-range-picker
-            class="w-250px"
-            :time-picker-props="{
-              defaultValue: [
-                dayjs('00:00:00', 'HH:mm:ss'),
-                dayjs('09:09:06', 'HH:mm:ss'),
-              ],
-            }"
-            clearable
-            format="YYYY-MM-DD"
-            @change="onChange"
-          />
-        </w-form-item>
-        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
-        <w-button @click="reset">重置</w-button>
-      </w-form>
+      <el-form :model="searchPar" :inline="true" class="demo-form-inline">
+        <el-form-item field="code" label="合同编号">
+          <el-input v-model="searchPar.code" placeholder="请输入合同编号" clearable/>
+        </el-form-item>
+        <el-form-item class="mr-16px" field="partyA" label="甲方">
+          <el-input v-model="searchPar.partyA" placeholder="请输入关键字" clearable/>
+        </el-form-item>
+        <el-form-item class="mr-16px" field="partyB" label="乙方">
+          <el-input v-model="searchPar.partyB" placeholder="请输入关键字" clearable/>
+        </el-form-item>
+        <el-form-item class="mr-16px" field="post" label="签订日期">
+          <el-date-picker
+              v-model="curDate"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              format="YYYY-MM-DD"
+              @change="onChange"
+            >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+          <w-button @click="reset">重置</w-button>
+        </el-form-item>
+      </el-form>
     </div>
     <div class="table-warp">
       <m-table
@@ -58,12 +58,13 @@
 import dayjs from "dayjs";
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
 import { qyzxTransactionCertificate } from '@/api/archives'
-import { formatNumber } from '@/utils/common' 
+import { formatNumber, formateDate } from '@/utils/common' 
 
 const props = defineProps({
   companyName: String
 })
 
+const curDate = ref('')
 const current = ref(1);
 const size = ref(10);
 const loading = ref(false);
@@ -156,8 +157,8 @@ const changepage = (v) => {
 // 时间选择
 function onChange(dateString, date) {
   if(dateString && dateString.length > 0) {
-    searchPar.value.signDateStart = dateString[0];
-    searchPar.value.signDateEnd = dateString[1];
+    searchPar.value.signDateStart = formateDate(dateString[0]);
+    searchPar.value.signDateEnd = formateDate(dateString[1]);
   } else {
     searchPar.value.signDateStart = '';
     searchPar.value.signDateEnd = '';
@@ -172,6 +173,7 @@ function search() {
 function reset() {
   pagination.value.pageSize = 10;
   let name = searchPar.value.companyName;
+  curDate.value = ''
   searchPar.value = {
     page_size: 10,
     page: 1,

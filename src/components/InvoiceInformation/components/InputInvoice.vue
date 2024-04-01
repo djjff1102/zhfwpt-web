@@ -2,18 +2,18 @@
   <!-- 订单信息 -->
   <div class="input-invoice-container">
     <div class="search_box">
-      <w-form :model="searchPar" layout="inline">
-        <w-form-item class="mr-16px" field="post" label="发票类别">
-          <w-select v-model="searchPar.type" placeholder="全部" clearable>
-            <w-option>专用发票</w-option>
-            <w-option>普通发票</w-option>
-            <w-option>手写发票</w-option>
-            <w-option>定额发票</w-option>
-            <w-option>统一发票</w-option>
-          </w-select>
-        </w-form-item>
-        <w-form-item class="mr-16px" field="post" label="开票日期">
-          <w-range-picker
+      <el-form :model="searchPar" inline="true" class="demo-form-inline">
+        <el-form-item class="mr-16px" field="post" label="发票类别">
+          <el-select v-model="searchPar.type" placeholder="全部" clearable style="width: 132px">
+            <el-option value="专用发票"></el-option>
+            <el-option value="普通发票"></el-option>
+            <el-option  value="手写发票"></el-option>
+            <el-option  value="定额发票"></el-option>
+            <el-option  value="统一发票"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item class="mr-16px" field="post" label="开票日期">
+          <!-- <w-range-picker
             v-model="curDate"
             class="w-250px"
             :time-picker-props="{
@@ -25,17 +25,29 @@
             clearable
             format="YYYY-MM-DD"
             @change="onChange"
-          />
-        </w-form-item>
-        <w-form-item field="invoicingCompanyName" label="开票单位">
-          <w-input v-model="searchPar.invoicingCompanyName" placeholder="请输入开票单位" clearable/>
-        </w-form-item>
-        <w-form-item field="code" label="发票号码">
-          <w-input v-model="searchPar.code" placeholder="请输入发票号码" clearable/>
-        </w-form-item>
-        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
-        <w-button @click="reset">重置</w-button>
-      </w-form>
+          /> -->
+          <el-date-picker
+              v-model="curDate"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              format="YYYY-MM-DD"
+              @change="onChange"
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item field="invoicingCompanyName" label="开票单位">
+          <el-input v-model="searchPar.invoicingCompanyName" placeholder="请输入开票单位" clearable/>
+        </el-form-item>
+        <el-form-item field="code" label="发票号码">
+          <el-input v-model="searchPar.code" placeholder="请输入发票号码" clearable/>
+        </el-form-item>
+        <el-form-item>
+          <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+          <w-button @click="reset">重置</w-button>
+        </el-form-item>
+      </el-form>
     </div>
     <div class="table-warp">
       <m-table
@@ -56,17 +68,13 @@
         </template>
       </m-table>
     </div>
-    <!-- TODO: 未开发 -->
-    <!-- <div class="title">企业进销项发票趋势</div>
-    <div class="tendencyChart w-full h-400px">
-      <TendencyChart></TendencyChart>
-    </div> -->
   </div>
 </template>
 <script setup>
 import dayjs from "dayjs";
 import { ref, reactive } from "vue";
 import { qyzxInvoic } from '@/api/archives'
+import { formateDate } from '@/utils/common'
 
 const props = defineProps({
   parentCode: {
@@ -230,8 +238,8 @@ const changepage = (v) => {
 // 时间选择
 function onChange(dateString, date) {
   if(dateString && dateString.length > 0) {
-    searchPar.value.invoiceDateStart = dateString[0];
-    searchPar.value.invoiceDateEnd = dateString[1];
+    searchPar.value.invoiceDateStart = formateDate(dateString[0]);
+    searchPar.value.invoiceDateEnd = formateDate(dateString[1]);
   } else {
     searchPar.value.invoiceDateStart = '';
     searchPar.value.invoiceDateEnd = '';

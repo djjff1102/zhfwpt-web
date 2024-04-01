@@ -9,15 +9,17 @@
       <div class="tab-item" :class="{'tab-item-active': activeTab == '1'}" @click="handleChange('1')">历史行政许可</div>
     </div>
     <div class="search_box">
-      <w-form :model="searchPar" layout="inline">
-        <w-form-item class="mr-16px" field="departmentNo" label="许可机关">
-          <w-select v-model="searchPar.departmentNo" placeholder="不限" style="width: 400px" clearable>
-            <w-option v-for="(item, i) in listdata" :key="i" :value="item.department_no" :label="item.department"></w-option>
-          </w-select>
-        </w-form-item>
-        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
-        <w-button @click="reset">重置</w-button>
-      </w-form>
+      <el-form :model="searchPar" :inline="true">
+        <el-form-item class="mr-16px" field="departmentNo" label="许可机关" style="margin-top: 8px;">
+          <el-select v-model="searchPar.departmentNo" placeholder="不限" style="width: 400px" clearable>
+            <el-option v-for="(item, i) in listdata" :key="i" :value="item.department_no" :label="item.department"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+          <w-button @click="reset">重置</w-button>
+        </el-form-item>
+      </el-form>
     </div>
     <div class="table-warp">
       <m-table

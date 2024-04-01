@@ -2,31 +2,30 @@
   <!-- 审批信息 -->
   <div>
     <div class="search_box">
-      <w-form :model="searchPar" layout="inline">
-        <w-form-item class="mr-16px" field="post" label="申报日期">
-          <w-range-picker
-            v-model="curDate"
-            class="w-250px"
-            :time-picker-props="{
-              defaultValue: [
-                dayjs('00:00:00', 'HH:mm:ss'),
-                dayjs('09:09:06', 'HH:mm:ss'),
-              ],
-            }"
-            clearable
-            format="YYYY-MM-DD"
-            @change="onChange"
-          />
-        </w-form-item>
-        <w-form-item class="mr-16px" field="post" label="审批状态">
-          <w-select v-model="searchPar.approveStatus" placeholder="请选择审批状态" style="width: 160px" clearable>
-            <w-option v-for="(item, i) in statusList" :key="i" :value="item.value">{{ item.label }}</w-option>
-          </w-select>
-          <!-- <w-select v-model="form.post" placeholder="请输入审批状态" /> -->
-        </w-form-item>
-        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
-        <w-button @click="reset">重置</w-button>
-      </w-form>
+      <el-form :model="searchPar" :inline="true">
+        <el-form-item class="mr-16px" field="post" label="申报日期">
+          <el-date-picker
+              v-model="curDate"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              format="YYYY-MM-DD"
+              @change="onChange"
+            >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item class="mr-16px" field="post" label="审批状态">
+          <el-select v-model="searchPar.approveStatus" placeholder="请选择审批状态" style="width: 160px" clearable>
+            <el-option v-for="(item, i) in statusList" :key="i" :value="item.value" :label="item.label"></el-option>
+          </el-select>
+          <!-- <el-select v-model="form.post" placeholder="请输入审批状态" /> -->
+        </el-form-item>
+        <el-form-item>
+          <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+          <w-button @click="reset">重置</w-button>
+        </el-form-item>
+      </el-form>
     </div>
     <div class="table-warp">
       <m-table
@@ -57,7 +56,7 @@ import dayjs from "dayjs";
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
 import { reporthistroy } from '@/api/intellApproval'
 import { approveStatus, statusList } from './type'
-import { formatNumber } from '@/utils/common'
+import { formatNumber, formateDate } from '@/utils/common'
 
 const props = defineProps({
   companyId: {
@@ -65,7 +64,7 @@ const props = defineProps({
   }
 })
 
-const curDate = ref([])
+const curDate = ref('')
 const current = ref(1);
 const size = ref(10);
 const loading = ref(false);
@@ -199,7 +198,7 @@ function reset() {
   searchPar.value.approveStatus = ''
   searchPar.value.startTime = ''
   searchPar.value.endTime = ''
-  curDate.value = []
+  curDate.value = ''
   init();
 }
 
@@ -212,8 +211,8 @@ function search() {
 // 选择时间
 function onChange(dateString, date) {
   if(dateString && dateString.length > 0) {
-    searchPar.value.startTime = dateString[0];
-    searchPar.value.endTime = dateString[1];
+    searchPar.value.startTime = formateDate(curDate.value[0])
+    searchPar.value.endTime = formateDate(curDate.value[1])
   } else {
     searchPar.value.startTime = '';
     searchPar.value.endTime = '';

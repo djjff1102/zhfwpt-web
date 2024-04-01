@@ -306,11 +306,11 @@ function onChange(dateString: any, date: any) {
   if(dateString && dateString.length > 0) {
     searchPar.value.startTime = formateDate(curDate.value[0])
     searchPar.value.endTime = formateDate(curDate.value[1])
+    console.log('222222222222222--time:',searchPar.value.endTime )
   } else {
     searchPar.value.startTime = '';
     searchPar.value.endTime = '';
   }
-   console.log('选择时间------------：', searchPar.value.startTime)
 }
 
 // 申报列表

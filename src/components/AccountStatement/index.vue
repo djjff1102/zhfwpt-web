@@ -2,9 +2,9 @@
   <!-- 银行流水 -->
   <div>
     <div class="search_box">
-      <w-form :model="searchPar" layout="inline">
-        <w-form-item field="name" label="付款日期">
-          <w-range-picker
+      <el-form :model="searchPar" :inline="true" class="demo-form-inline">
+        <el-form-item field="name" label="付款日期">
+          <!-- <w-range-picker
             class="w-250px"
             :time-picker-props="{
               defaultValue: [
@@ -15,17 +15,29 @@
             clearable
             format="YYYY-MM-DD"
             @change="onChange"
-          />
-        </w-form-item>
-        <w-form-item field="bank" label="银行网点">
-          <w-input v-model="searchPar.bank" placeholder="请输入银行网点" clearable/>
-        </w-form-item>
-        <w-form-item class="mr-16px" field="paymentCompany" label="付款方">
-          <w-input v-model="searchPar.paymentCompany" placeholder="请输入付款方" clearable/>
-        </w-form-item>
-        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
-        <w-button @click="reset">重置</w-button>
-      </w-form>
+          /> -->
+          <el-date-picker
+            v-model="curDate"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            format="YYYY-MM-DD"
+            @change="onChange"
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item field="bank" label="银行网点">
+          <el-input v-model="searchPar.bank" placeholder="请输入银行网点" clearable/>
+        </el-form-item>
+        <el-form-item class="mr-16px" field="paymentCompany" label="付款方">
+          <el-input v-model="searchPar.paymentCompany" placeholder="请输入付款方" clearable/>
+        </el-form-item>
+        <el-form-item>
+          <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+          <w-button @click="reset">重置</w-button>
+        </el-form-item>
+      </el-form>
     </div>
     <div class="table-warp">
       <m-table
@@ -61,6 +73,7 @@ const props = defineProps({
   companyName: String
 })
 
+const curDate = ref('')
 const current = ref(1);
 const size = ref(10);
 const loading = ref(false);
@@ -195,6 +208,7 @@ function search() {
 function reset() {
   let name = searchPar.value.companyName;
   pagination.value.pageSize = 10;
+  curDate.value = ''
   searchPar.value = {
     page_size: 10,
     page: 1,

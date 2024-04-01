@@ -40,18 +40,20 @@
     <div v-show="!exportFlag" class="danger-point-container">
       <div class="title">风险点</div>
       <div class="search_box">
-        <w-form :model="searchPar" layout="inline">
-          <w-form-item field="indexName" label="风险名称">
-            <w-input v-model="searchPar.indexName" placeholder="请输入风险名称" clearable/>
-          </w-form-item>
-          <w-form-item class="mr-16px" field="riskType" label="风险程度">
-            <w-select v-model="searchPar.riskType" placeholder="全部" clearable>
-              <w-option v-for="(item, i) in fxtype" :key="i" :value="item.value" :label="item.label"></w-option>
-            </w-select>
-          </w-form-item>
-          <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
-          <w-button @click="reset">重置</w-button>
-        </w-form>
+        <el-form :model="searchPar" :inline="true">
+          <el-form-item field="indexName" label="风险名称">
+            <el-input v-model="searchPar.indexName" placeholder="请输入风险名称" clearable/>
+          </el-form-item>
+          <el-form-item class="mr-16px" field="riskType" label="风险程度">
+            <el-select v-model="searchPar.riskType" placeholder="全部" clearable>
+              <el-option v-for="(item, i) in fxtype" :key="i" :value="item.value" :label="item.label"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+            <w-button @click="reset">重置</w-button>
+          </el-form-item>
+        </el-form>
       </div>
       <div class="table-warp">
         <m-table
@@ -444,9 +446,7 @@ function init() {
   display: flex;
   justify-content: flex-end;
 }
-::v-deep .w-form {
-  width: auto;
-}
+
 .title {
   position: relative;
   margin: 16px 0;

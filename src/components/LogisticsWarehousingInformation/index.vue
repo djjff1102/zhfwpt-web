@@ -2,22 +2,24 @@
   <!-- 物流仓储信息 -->
   <div class="warehousing-container">
     <div class="search_box">
-      <w-form :model="searchPar" layout="inline">
-        <w-form-item class="mr-16px" field="locationProvince" label="所属地区">
+      <el-form :model="searchPar" :inline="true" class="demo-form-inline">
+        <el-form-item class="mr-16px" field="locationProvince" label="所属地区">
           <!-- <w-input v-model="searchPar.locationProvince" laceholder="请输入地区"></w-input> -->
-          <w-select v-model="searchPar.locationProvince" placeholder="请选择地区" clearable>
-            <w-option v-for="(item ,i) in wareList" :key="i">{{ item }}</w-option>
-          </w-select>
-        </w-form-item>
-        <w-form-item field="locationAddress" label="仓库地址">
+          <el-select v-model="searchPar.locationProvince" placeholder="请选择地区" clearable>
+            <el-option v-for="(item ,i) in wareList" :key="i" :value="item">{{ item }}</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item field="locationAddress" label="仓库地址">
           <w-input v-model="searchPar.locationAddress" placeholder="请输入仓库地址" clearable/>
-        </w-form-item>
-        <w-form-item field="shortName" label="仓库简称">
+        </el-form-item>
+        <el-form-item field="shortName" label="仓库简称">
           <w-input v-model="searchPar.shortName" placeholder="请输入仓库简称" clearable/>
-        </w-form-item>
-        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
-        <w-button @click="reset">重置</w-button>
-      </w-form>
+        </el-form-item>
+        <el-form-item>
+          <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+          <w-button @click="reset">重置</w-button>
+        </el-form-item>
+      </el-form>
     </div>
     <div class="table-warp">
       <m-table

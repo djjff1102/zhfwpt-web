@@ -2,14 +2,24 @@
   <!-- 订单信息 -->
   <div class="order-container">
     <div class="search_box">
-      <w-form :model="orderPar" layout="inline">
-        <w-form-item class="mr-16px" field="goodType" label="商品类别">
-          <w-select v-model="orderPar.goodType" placeholder="全部" clearable>
+      <el-form :model="orderPar" inline="true" class="demo-form-inline">
+        <el-form-item class="mr-16px" field="goodType" label="商品类别" >
+          <w-select v-model="orderPar.goodType" placeholder="全部" clearable style="width: 188px">
             <w-option v-for="(item,i) in orderList" :key="i">{{item}}</w-option>
           </w-select>
-        </w-form-item>
-        <w-form-item class="mr-16px" field="post" label="订单创建日期">
-          <w-range-picker
+        </el-form-item>
+        <el-form-item class="mr-16px" field="post" label="订单创建日期">
+          <el-date-picker
+              v-model="curDate"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              format="YYYY-MM-DD"
+              @change="onChange"
+            >
+          </el-date-picker>
+          <!-- <w-range-picker
             v-model="curDate"
             class="w-250px"
             :time-picker-props="{
@@ -20,17 +30,17 @@
             }"
             format="YYYY-MM-DD"
             @change="onChange"
-          />
-        </w-form-item>
-        <w-form-item field="buyerCompanyName" label="买方名称">
+          /> -->
+        </el-form-item>
+        <el-form-item field="buyerCompanyName" label="买方名称">
           <w-input v-model="orderPar.buyerCompanyName" placeholder="请输入买方名称" clearable/>
-        </w-form-item>
-        <w-form-item field="code" label="订单编号">
+        </el-form-item>
+        <el-form-item field="code" label="订单编号">
           <w-input v-model="orderPar.code" placeholder="请输入订单编号" clearable/>
-        </w-form-item>
+        </el-form-item>
         <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
         <w-button @click="reset">重置</w-button>
-      </w-form>
+      </el-form>
     </div>
     <div class="table-warp">
       <m-table
@@ -62,7 +72,7 @@ import dayjs from "dayjs";
 import { ref, reactive} from "vue";
 import { qyzxOrder, orderDropDownBox } from '@/api/archives'
 import { useRouter } from 'vue-router'
-import { formatNumber } from '@/utils/common'
+import { formatNumber,formateDate } from '@/utils/common'
 
 const router = useRouter();
 
@@ -73,7 +83,7 @@ const props = defineProps({
   }
 })
 
-const curDate = ref([])
+const curDate = ref('')
 const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
@@ -206,8 +216,8 @@ const changepage = (v) => {
 // 选择时间
 function onChange(dateString, date) {
   if(dateString && dateString.length > 0) {
-    orderPar.value.orderCreateDateStart = dateString[0];
-    orderPar.value.orderCreateDateEnd = dateString[1];
+    orderPar.value.orderCreateDateStart = formateDate(dateString[0]);
+    orderPar.value.orderCreateDateEnd = formateDate(dateString[1]);
   } else {
     orderPar.value.orderCreateDateStart = '';
     orderPar.value.orderCreateDateEnd = '';
@@ -223,7 +233,7 @@ function search() {
 // 重置
 function reset() {
   pagination.value.pageSize = 10;
-  curDate.value = [];
+  curDate.value = '';
   orderPar.value = {
     page_size: 10,
     page: 1,
