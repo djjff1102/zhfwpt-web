@@ -5,7 +5,7 @@
       <w-form :model="searchPar" layout="inline">
         <w-form-item class="mr-16px" field="type" label="发票类别">
           <!-- <w-input v-model="searchPar.type" placeholder="请输入发票类别" ></w-input> -->
-          <w-select v-model="searchPar.type" placeholder="全部">
+          <w-select v-model="searchPar.type" placeholder="全部" clearable>
             <w-option>专用发票</w-option>
             <w-option>普通发票</w-option>
             <w-option>手写发票</w-option>
@@ -23,18 +23,19 @@
                 dayjs('09:09:06', 'HH:mm:ss'),
               ],
             }"
+            clearable
             format="YYYY-MM-DD"
             @change="onChange"
           />
         </w-form-item>
         <w-form-item field="receivingCompanyName" label="受票单位">
-          <w-input v-model="searchPar.receivingCompanyName" placeholder="请输入收票单位" />
+          <w-input v-model="searchPar.receivingCompanyName" placeholder="请输入收票单位" clearable/>
         </w-form-item>
         <!-- <w-form-item field="invoicingCompanyName" label="开票单位">
           <w-input v-model="searchPar.invoicingCompanyName" placeholder="请输入开票单位" />
         </w-form-item> -->
         <w-form-item field="code" label="发票号码">
-          <w-input v-model="searchPar.code" placeholder="请输入发票号码" />
+          <w-input v-model="searchPar.code" placeholder="请输入发票号码" clearable/>
         </w-form-item>
         <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
         <w-button @click="reset">重置</w-button>

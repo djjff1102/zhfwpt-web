@@ -4,7 +4,7 @@
     <div class="search_box">
       <w-form :model="searchPar" layout="inline">
         <w-form-item class="mr-16px" field="goodType" label="商品类别">
-          <w-select v-model="searchPar.goodType" placeholder="全部" >
+          <w-select v-model="searchPar.goodType" placeholder="全部" clearable>
             <w-option v-for="(item, i) in subOrderList" :key="i">{{ item }}</w-option>
           </w-select>
         </w-form-item>
@@ -18,15 +18,16 @@
                 dayjs('09:09:06', 'HH:mm:ss'),
               ],
             }"
+            clearable
             format="YYYY-MM-DD"
             @change="onChange"
           />
         </w-form-item>
         <w-form-item field="goodName" label="商品名称">
-          <w-input v-model="searchPar.goodName" placeholder="请输入买方名称" />
+          <w-input v-model="searchPar.goodName" placeholder="请输入买方名称" clearable/>
         </w-form-item>
         <w-form-item field="code" label="子订单编号">
-          <w-input v-model="searchPar.code" placeholder="请输入子订单编号" />
+          <w-input v-model="searchPar.code" placeholder="请输入子订单编号" clearable/>
         </w-form-item>
         <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
         <w-button @click="reset">重置</w-button>

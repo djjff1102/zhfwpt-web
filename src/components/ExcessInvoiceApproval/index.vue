@@ -13,12 +13,13 @@
                 dayjs('09:09:06', 'HH:mm:ss'),
               ],
             }"
+            clearable
             format="YYYY-MM-DD"
             @change="onChange"
           />
         </w-form-item>
         <w-form-item class="mr-16px" field="post" label="审批状态">
-          <w-select v-model="searchPar.approveStatus" placeholder="请选择审批状态" style="width: 160px">
+          <w-select v-model="searchPar.approveStatus" placeholder="请选择审批状态" style="width: 160px" clearable>
             <w-option v-for="(item, i) in statusList" :key="i" :value="item.value">{{ item.label }}</w-option>
           </w-select>
           <!-- <w-select v-model="form.post" placeholder="请输入审批状态" /> -->

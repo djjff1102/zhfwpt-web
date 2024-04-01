@@ -5,15 +5,15 @@
       <w-form :model="searchPar" layout="inline">
         <w-form-item class="mr-16px" field="locationProvince" label="所属地区">
           <!-- <w-input v-model="searchPar.locationProvince" laceholder="请输入地区"></w-input> -->
-          <w-select v-model="searchPar.locationProvince" placeholder="请选择地区">
+          <w-select v-model="searchPar.locationProvince" placeholder="请选择地区" clearable>
             <w-option v-for="(item ,i) in wareList" :key="i">{{ item }}</w-option>
           </w-select>
         </w-form-item>
         <w-form-item field="locationAddress" label="仓库地址">
-          <w-input v-model="searchPar.locationAddress" placeholder="请输入仓库地址" />
+          <w-input v-model="searchPar.locationAddress" placeholder="请输入仓库地址" clearable/>
         </w-form-item>
         <w-form-item field="shortName" label="仓库简称">
-          <w-input v-model="searchPar.shortName" placeholder="请输入仓库简称" />
+          <w-input v-model="searchPar.shortName" placeholder="请输入仓库简称" clearable/>
         </w-form-item>
         <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
         <w-button @click="reset">重置</w-button>

@@ -4,13 +4,13 @@
     <div class="search_box">
       <w-form :model="searchPar" layout="inline">
         <w-form-item field="code" label="合同编号">
-          <w-input v-model="searchPar.code" placeholder="请输入合同编号" />
+          <w-input v-model="searchPar.code" placeholder="请输入合同编号" clearable/>
         </w-form-item>
         <w-form-item class="mr-16px" field="partyA" label="甲方">
-          <w-input v-model="searchPar.partyA" placeholder="请输入关键字" />
+          <w-input v-model="searchPar.partyA" placeholder="请输入关键字" clearable/>
         </w-form-item>
         <w-form-item class="mr-16px" field="partyB" label="乙方">
-          <w-input v-model="searchPar.partyB" placeholder="请输入关键字" />
+          <w-input v-model="searchPar.partyB" placeholder="请输入关键字" clearable/>
         </w-form-item>
         <w-form-item class="mr-16px" field="post" label="签订日期">
           <w-range-picker
@@ -21,6 +21,7 @@
                 dayjs('09:09:06', 'HH:mm:ss'),
               ],
             }"
+            clearable
             format="YYYY-MM-DD"
             @change="onChange"
           />

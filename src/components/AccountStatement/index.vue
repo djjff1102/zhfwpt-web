@@ -12,15 +12,16 @@
                 dayjs('09:09:06', 'HH:mm:ss'),
               ],
             }"
+            clearable
             format="YYYY-MM-DD"
             @change="onChange"
           />
         </w-form-item>
         <w-form-item field="bank" label="银行网点">
-          <w-input v-model="searchPar.bank" placeholder="请输入银行网点" />
+          <w-input v-model="searchPar.bank" placeholder="请输入银行网点" clearable/>
         </w-form-item>
         <w-form-item class="mr-16px" field="paymentCompany" label="付款方">
-          <w-input v-model="searchPar.paymentCompany" placeholder="请输入付款方" />
+          <w-input v-model="searchPar.paymentCompany" placeholder="请输入付款方" clearable/>
         </w-form-item>
         <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
         <w-button @click="reset">重置</w-button>

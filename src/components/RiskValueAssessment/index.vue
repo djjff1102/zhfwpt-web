@@ -42,10 +42,10 @@
       <div class="search_box">
         <w-form :model="searchPar" layout="inline">
           <w-form-item field="indexName" label="风险名称">
-            <w-input v-model="searchPar.indexName" placeholder="请输入风险名称" />
+            <w-input v-model="searchPar.indexName" placeholder="请输入风险名称" clearable/>
           </w-form-item>
           <w-form-item class="mr-16px" field="riskType" label="风险程度">
-            <w-select v-model="searchPar.riskType" placeholder="全部" >
+            <w-select v-model="searchPar.riskType" placeholder="全部" clearable>
               <w-option v-for="(item, i) in fxtype" :key="i" :value="item.value" :label="item.label"></w-option>
             </w-select>
           </w-form-item>

@@ -11,7 +11,7 @@
     <div class="search_box">
       <w-form :model="searchPar" layout="inline">
         <w-form-item class="mr-16px" field="departmentNo" label="许可机关">
-          <w-select v-model="searchPar.departmentNo" placeholder="不限" style="width: 400px">
+          <w-select v-model="searchPar.departmentNo" placeholder="不限" style="width: 400px" clearable>
             <w-option v-for="(item, i) in listdata" :key="i" :value="item.department_no" :label="item.department"></w-option>
           </w-select>
         </w-form-item>

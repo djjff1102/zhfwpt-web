@@ -1,37 +1,39 @@
 <template>
   <div class="attention">
     <div class="search_box">
-      <w-form :model="searchPar" layout="inline">
-        <w-form-item field="companyName" label="企业名称" >
-          <w-input v-model="searchPar.companyName" placeholder="请输入企业名称" clearable/>
-        </w-form-item>
-        <w-form-item field="provinceShort" label="省份地区">
-          <w-select v-model="searchPar.provinceShort" placeholder="请选择省份地区" clearable>
-            <w-option v-for="(item, i) in provinceResult" :key="i">{{ item.province_short }}</w-option>
-          </w-select>
-        </w-form-item>
-        <w-form-item field="legalPerson" label="法人" >
-          <w-input v-model="searchPar.legalPerson" placeholder="请输入法人" clearable/>
-        </w-form-item>
-        <w-form-item class="mr-16px" field="companyStatus" label="登记状态">
-          <w-select v-model="searchPar.companyStatus" placeholder="请选择登记状态" clearable>
-            <w-option v-for="(item, i) in signStatus" :key="i">{{ item.label }}</w-option>
-          </w-select>
-        </w-form-item>
-        <w-form-item field="creditNo" label="统一社会信用代码" >
-          <w-input v-model="searchPar.creditNo" placeholder="请输入统一社会信用代码" clearable/>
-        </w-form-item>
-        <w-form-item field="companyType" class="mr-16px" label="企业类型">
-          <w-select v-model="searchPar.companyType" placeholder="请选择企业类型" clearable>
-            <w-option v-for="(item, i) in companyType" :key="i">{{ item }}</w-option>
-          </w-select>
-        </w-form-item>
-        <w-form-item field="companyAddress" label="注册地址">
-          <w-input v-model="searchPar.companyAddress" placeholder="请输入注册地址" clearable/>
-        </w-form-item>
-        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
-        <w-button @click="reset">重置</w-button>
-      </w-form>
+      <el-form :model="searchPar" :inline="true" class="demo-form-inline">
+        <el-form-item field="companyName" label="企业名称" >
+          <el-input v-model="searchPar.companyName" placeholder="请输入企业名称" clearable/>
+        </el-form-item>
+        <el-form-item field="provinceShort" label="省份地区">
+          <el-select v-model="searchPar.provinceShort" placeholder="请选择省份地区" clearable>
+            <el-option v-for="(item, i) in provinceResult" :key="i" :value="item.province_short"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item field="legalPerson" label="法人" >
+          <el-input v-model="searchPar.legalPerson" placeholder="请输入法人" clearable/>
+        </el-form-item>
+        <el-form-item class="mr-16px" field="companyStatus" label="登记状态">
+          <el-select v-model="searchPar.companyStatus" placeholder="请选择登记状态" clearable>
+            <el-option v-for="(item, i) in signStatus" :key="i" :value="item.label"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item field="creditNo" label="统一社会信用代码" >
+          <el-input v-model="searchPar.creditNo" placeholder="请输入统一社会信用代码" clearable/>
+        </el-form-item>
+        <el-form-item field="companyType" class="mr-16px" label="企业类型">
+          <el-select v-model="searchPar.companyType" placeholder="请选择企业类型" clearable>
+            <el-option v-for="(item, i) in companyType" :key="i" :value="item"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item field="companyAddress" label="注册地址">
+          <el-input v-model="searchPar.companyAddress" placeholder="请输入注册地址" clearable/>
+        </el-form-item>
+        <el-form-item>
+          <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+          <w-button @click="reset">重置</w-button>
+        </el-form-item>
+      </el-form>
     </div>
     <!-- <div class="oper">
       <w-button type="primary" class="mr-8px">新增</w-button>
@@ -323,7 +325,7 @@ init();
   justify-content: flex-end;
   padding: 16px 0;
 }
-:deep(.w-input-wrapper) {
+:deep(.el-input-wrapper) {
   width: 188px;
   height: 32px;
 }
@@ -331,11 +333,11 @@ init();
   width: 240px;
   height: 32px;
 }
-:deep(.w-select-view) {
+:deep(.el-select-view) {
   width: 188px;
   height: 32px;
 }
-:deep(.w-form-item-label) {
+:deep(.el-form-item-label) {
   height: 32px;
   color: #000;
   font-weight: 500;

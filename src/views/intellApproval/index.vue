@@ -1,9 +1,9 @@
 <template>
   <div class="attention">
     <div class="search_box">
-      <w-form :model="searchPar" layout="inline">
-        <w-form-item field="post" label="创建日期">
-         <w-range-picker
+      <el-form :model="searchPar" :inline="true" class="demo-form-inline">
+        <el-form-item field="post" label="创建日期">
+         <!-- <w-range-picker
             v-model="curDate"
             class="w-250px"
             :time-picker-props="{
@@ -12,21 +12,34 @@
                 dayjs('09:09:06', 'HH:mm:ss'),
               ],
             }"
+            clearable
             format="YYYY-MM-DD"
             @change="onChange"
-          />
-        </w-form-item>
-        <w-form-item field="companyName" label="申报单位">
-          <w-input v-model="searchPar.companyName" placeholder="请输入申报单位" />
-        </w-form-item>
-        <w-form-item class="mr-16px" field="approveStatus" label="审批状态">
-          <w-select v-model="searchPar.approveStatus" placeholder="请选择审批状态" style="width: 160px">
-            <w-option v-for="(item, i) in statusList" :key="i" :value="item.value">{{ item.label }}</w-option>
-          </w-select>
-        </w-form-item>
-        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
-        <w-button @click="reset">重置</w-button>
-      </w-form>
+          /> -->
+          <el-date-picker
+              v-model="curDate"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              format="YYYY-MM-DD"
+              @change="onChange"
+            >
+            </el-date-picker>
+        </el-form-item>
+        <el-form-item field="companyName" label="申报单位">
+          <el-input v-model="searchPar.companyName" placeholder="请输入申报单位" clearable/>
+        </el-form-item>
+        <el-form-item class="mr-16px" field="approveStatus" label="审批状态">
+          <el-select v-model="searchPar.approveStatus" placeholder="请选择审批状态" style="width: 160px" clearable>
+            <el-option v-for="(item, i) in statusList" :key="i" :value="item.value" :label="item.label"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+          <w-button @click="reset">重置</w-button>
+         </el-form-item>
+      </el-form>
     </div>
     <div class="oper">
       <w-button v-hasPerm="btnApprovalCode.add" type="primary" class="mr-8px" @click="operate('add')">新增</w-button>
@@ -75,12 +88,12 @@ import { fpspReport, approvalExport, delReport } from '@/api/intellApproval'
 import { approveStatus,approveStatusColor, statusList, taskStatus, taskStatusColor } from './type.ts'
 import dayjs from "dayjs";
 import { btnApprovalCode } from '@/router/permissionCode'
-import { formatNumber } from '@/utils/common'
+import { formatNumber, formateDate } from '@/utils/common'
 
 const router = useRouter();
 
 const showApproval = ref(false)
-const curDate = ref([])
+const curDate = ref('')
 const loading = ref(false);
 const tableData = ref();
 const columns = reactive([
@@ -273,7 +286,7 @@ function search() {
 }
 
 function reset() {
-  curDate.value = [];
+  curDate.value = '';
   searchPar.value = {
     page_size: 10,
     page: 1,
@@ -287,13 +300,17 @@ function reset() {
 
 // 选择时间
 function onChange(dateString: any, date: any) {
+ 
+  // form.value.validDateStart = formateDate(curDate.value[0])
+  // form.value.validDateEnd = formateDate(curDate.value[1])
   if(dateString && dateString.length > 0) {
-    searchPar.value.startTime = dateString[0];
-    searchPar.value.endTime = dateString[1];
+    searchPar.value.startTime = formateDate(curDate.value[0])
+    searchPar.value.endTime = formateDate(curDate.value[1])
   } else {
     searchPar.value.startTime = '';
     searchPar.value.endTime = '';
   }
+   console.log('选择时间------------：', searchPar.value.startTime)
 }
 
 // 申报列表
@@ -335,7 +352,7 @@ init()
     height: 100%;
   }
 }
-:deep(.w-input-wrapper) {
+:deep(.el-input-wrapper) {
   width: 188px;
   height: 32px;
 }
@@ -343,11 +360,11 @@ init()
   width: 240px;
   height: 32px;
 }
-:deep(.w-select-view) {
+:deep(.el-select-view) {
   width: 132px;
   height: 32px;
 }
-:deep(.w-form-item-label) {
+:deep(.el-form-item-label) {
   height: 32px;
   color: #000;
   font-weight: 500;

@@ -215,6 +215,11 @@
   padding: 0px 0!important;
   box-sizing: border-box!important;
 }
-.el-date-table td.in-range .el-date-table-cell {
-  // background-color: #ccc!important;
+.demo-form-inline {
+  .el-select__wrapper {
+    width: 132px;
+  }
+  .el-input__wrapper {
+    width: 188px;
+  }
 }
