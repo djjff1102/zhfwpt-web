@@ -20,8 +20,8 @@
             </p>
             <p>
               风险点总结：本次评估检测到 {{ getTotal() }} 个风险点，高风险
-              <span class="leval-1">{{ suggestData.highRiskNum }}</span>个，中风险 <span class="leval-2">{{ suggestData.mediumRiskNum }}</span>
-              个，低风险 <span class="leval-3">{{ suggestData.lowRiskNum }}</span> 个
+              <span class="leval-1"> {{ suggestData.highRiskNum }} </span> 个，中风险 <span class="leval-2">{{ suggestData.mediumRiskNum }}</span>
+              个，低风险 <span class="leval-3"> {{ suggestData.lowRiskNum }} </span> 个
             </p>
           </div>
         </div>
@@ -40,7 +40,7 @@
     <div v-show="!exportFlag" class="danger-point-container">
       <div class="title">风险点</div>
       <div class="search_box">
-        <el-form :model="searchPar" :inline="true">
+        <el-form :model="searchPar" :inline="true" class="demo-form-inline">
           <el-form-item field="indexName" label="风险名称">
             <el-input v-model="searchPar.indexName" placeholder="请输入风险名称" clearable/>
           </el-form-item>
