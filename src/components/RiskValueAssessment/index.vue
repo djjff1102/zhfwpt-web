@@ -254,7 +254,7 @@ const exportFlag = ref(false)
 function getTotal() {
   let num1 = suggestData.value.highRiskNum || 0
   let num2 = suggestData.value.mediumRiskNum || 0
-  let num3 = suggestData.value.highRiskNum || 0
+  let num3 = suggestData.value.lowRiskNum || 0
   return num1+num2+num3;
 }
 
