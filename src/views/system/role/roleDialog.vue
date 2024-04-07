@@ -5,47 +5,48 @@
     width="500px"
     @close="closeDialog"
   >
-    <el-form
-      ref="roleFormRef"
-      :model="formData"
-      :rules="rules"
-      label-width="100px"
-    >
-      <el-form-item label="角色名称" prop="name">
-        <el-input
-          v-model.trim="formData.name"
-          maxlength="40"
-          clearable
-          placeholder="请输入角色名称"
-        />
-      </el-form-item>
+    <div style="padding-top:  24px; padding-right: 24px;">
+      <el-form
+        ref="roleFormRef"
+        :model="formData"
+        :rules="rules"
+        label-width="100px"
+      >
+        <el-form-item label="角色名称" prop="name">
+          <el-input
+            v-model.trim="formData.name"
+            maxlength="40"
+            clearable
+            placeholder="请输入角色名称"
+          />
+        </el-form-item>
 
-      <el-form-item label="层级" prop="area_type">
-        <el-radio-group v-model="formData.area_type">
-          <el-radio
-            v-for="item in areaTypeOptions"
-            :key="item.value"
-            :label="item.value"
-            >{{ item.label }}</el-radio
-          >
-        </el-radio-group>
-      </el-form-item>
+        <el-form-item label="身份" prop="area_type">
+          <el-radio-group v-model="formData.area_type">
+            <el-radio
+              v-for="item in areaTypeOptions"
+              :key="item.value"
+              :label="item.value"
+              >{{ item.label }}</el-radio
+            >
+          </el-radio-group>
+        </el-form-item>
 
-      <el-form-item label="描述" prop="remark">
-        <el-input
-          type="textarea"
-          rows="5"
-          show-word-limit
-          maxlength="200"
-          v-model="formData.remark"
-          placeholder="请输入描述"
-        />
-      </el-form-item>
-    </el-form>
-
+        <el-form-item label="描述" prop="remark">
+          <el-input
+            type="textarea"
+            rows="5"
+            show-word-limit
+            maxlength="200"
+            v-model="formData.remark"
+            placeholder="请输入描述"
+          />
+        </el-form-item>
+      </el-form>
+    </div>
     <template #footer>
       <div class="dialog-footer">
-        <w-button type="primary" @click="handleSubmit">确 定</w-button>
+        <w-button type="primary" @click="handleSubmit" style="margin-right: 8px">确 定</w-button>
         <w-button @click="closeDialog">取 消</w-button>
       </div>
     </template>

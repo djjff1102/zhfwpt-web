@@ -82,13 +82,12 @@ let navList = ref([
     scoll: 0,
     show: true,
   },
-  {
-    id: "GoodsInformation",
-    name: "主营商品信息",
-    scoll: 0,
-    show: true,
-  },
-
+  // {
+  //   id: "GoodsInformation",
+  //   name: "主营商品信息",
+  //   scoll: 0,
+  //   show: true,
+  // },
   {
     id: "TransactionVoucher",
     name: "合同信息",

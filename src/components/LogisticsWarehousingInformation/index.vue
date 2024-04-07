@@ -35,6 +35,15 @@
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
         </template>
+        <template v-slot:orderMoneySumSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].orderMoneySum) }}
+        </template>
+        <template v-slot:orderCountSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].orderCount) }}
+        </template>
+        <!-- <template v-slot:index="{ rowIndex }">
+          {{ rowIndex + 1 }}
+        </template>orderMoneySumSlot -->
         <template v-slot:operations>
           <w-button type="text" disabled>详情</w-button>
         </template>
@@ -46,6 +55,7 @@
 import { ref, reactive } from "vue";
 import { qyzxWarehouse, warehouseDropDownBox } from '@/api/archives';
 import { Warehouse } from '@/api/archives/type'
+import { formatNumber } from '@/utils/common'
 
 const props = defineProps({
   companyName: {
@@ -85,10 +95,12 @@ const columns = reactive([
   {
     title: "涉及订单数量",
     dataIndex: "orderCount",
+    slotName: 'orderCountSlot'
   },
   {
     title: "货物运输总金额",
-    dataIndex: "orderMoneSum",
+    dataIndex: "orderMoneySum",
+    slotName: 'orderMoneySumSlot'
   },
   {
     title: "仓库企业名称",

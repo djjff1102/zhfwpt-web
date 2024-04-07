@@ -3,11 +3,11 @@ import { RolePageVO } from "@/api/role/types";
 export const areaTypeOptions: OptionType[] = [
   {
     value: 1,
-    label: "一级",
+    label: "税务",
   },
   {
     value: 2,
-    label: "二级",
+    label: "企业",
   },
 ];
 

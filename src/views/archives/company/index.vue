@@ -45,10 +45,10 @@
         <div class="title"><img :src="wlccxx">物流仓储信息</div>
         <LogisticsWarehousingInformation :companyName="companyName"></LogisticsWarehousingInformation>
       </div>
-      <div id="GoodsInformation">
+      <!-- <div id="GoodsInformation">
         <div class="title"><img :src="zyspxx">主营商品信息</div>
         <GoodsInformation :companyName="companyName"></GoodsInformation>
-      </div>
+      </div> -->
       <div id="TransactionVoucher">
         <div class="title"><img :src="jjpz">合同信息</div>
         <TransactionVoucher :companyName="companyName"></TransactionVoucher>

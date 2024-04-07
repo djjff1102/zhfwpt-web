@@ -77,7 +77,15 @@ const props = defineProps({
   id: {
     type: String,
     default: ''
-  }
+  },
+  code: {
+    type: String,
+    default: ''
+  },
+  number: {
+    type: String,
+    default: ''
+  },
 })
 
 const loading = ref(false);
@@ -150,10 +158,7 @@ const scroll = ref({
   y: 800,
   x: 1080,
 });
-const form = ref({
-  name: "",
-  post: "",
-});
+
 const jine = ref(0) // 金额总计
 const shuie = ref(0) // 税额
 const changePagesize = (v) => {
@@ -203,7 +208,9 @@ function getqyzxOrderSub() {
 // }
 
 const init = async () => {
-  searchPar.value.parentOrderCode = props.parentCode;
+  // searchPar.value.parentOrderCode = props.parentCode;
+  searchPar.value.code = props.code;
+  searchPar.value.number = props.number;
   getqyzxOrderSub();
 };
 

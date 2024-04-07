@@ -25,18 +25,18 @@
             </p>
           </div>
         </div>
-        <div v-show="!exportFlag" class="danger-point">
+        <div class="danger-point">
           <div class="danger-point-title">
             <img :src="highPoint" alt="" style="width: 64px"/>
-            风险分类展示
+            风险分类展示 - 待接口联调
           </div>
           <div class="danger-point-content">
-            <Dangershow :data="suggestData.riskInfoVoList"></Dangershow>
+            <RiskTypeList></RiskTypeList>
+            <!-- <Dangershow :data="suggestData.riskInfoVoList"></Dangershow> -->
           </div>
         </div>
       </div>
     </div>
-    <!-- <DangerPoint :data="tableData" :companyName="companyName" :companyId="companyId"></DangerPoint> -->
     <div v-show="!exportFlag" class="danger-point-container">
       <div class="title">风险点</div>
       <div class="search_box">
@@ -69,21 +69,13 @@
           <template v-slot:index="{ rowIndex }">
             {{ rowIndex + 1 }}
           </template>
-          <template v-slot:operations>
-            <w-button type="text">详情</w-button>
+          <template v-slot:nameSlot="{ rowIndex }">
+            <div class="risk-name-level">
+              <img :src="getRiskIcon(tableData[rowIndex + 1].level)" style="width: 16px">
+              <span>{{ tableData[rowIndex + 1].name }}</span>
+            </div>
           </template>
         </m-table>
-      </div>
-    </div>
-    <div v-show="exportFlag" class="suggest-risk">
-      <div class="danger-point">
-        <div class="danger-point-title">
-          <img :src="highPoint" alt="" style="width: 64px"/>
-          <span style="display: inline-block; line-height: 50px;">风险分类展示</span>
-        </div>
-        <div class="danger-point-content">
-          <Dangershow :data="suggestData.riskInfoVoList" height="auto" :scroll="false"></Dangershow>
-        </div>
       </div>
     </div>
 
@@ -102,9 +94,6 @@
           <template v-slot:index="{ rowIndex }">
             {{ rowIndex + 1 }}
           </template>
-          <template v-slot:operations>
-            <w-button type="text">详情</w-button>
-          </template>
         </m-table>
       </div>
     </div>
@@ -114,13 +103,17 @@
 <script setup>
 import { ref, reactive } from 'vue';
 import RiskChart from "./components/RiskChart/index.vue";
+import RiskTypeList from './components/RiskChart/RiskTypeList.vue'
 // import DangerPoint from "./components/DangerPoint.vue";
-import Dangershow from './components/Dangershow.vue'
+// import Dangershow from './components/Dangershow.vue'
 import suggest from "@/assets/images/suggest.png";
 import highPoint from "@/assets/images/high-point.png";
 import { suggestion, queryRiskInfoByCompanyInfo } from '@/api/archives'
 import fxzpg from "@/assets/images/moduleIcon/风险值评估.png";
-import { pro } from '../ExcessInvoiceApproval/type';
+import highIcon from '@/assets/riskleval/high.png'
+import middleIcon from '@/assets/riskleval/middle.png'
+import lowIcon from '@/assets/riskleval/low.png'
+
 
 const fxtype =[
   {
@@ -198,6 +191,7 @@ const columns = reactive([
   {
     title: "风险名称",
     dataIndex: "name",
+    slotName: 'nameSlot',
     ellipsis: true,
     width: 200,
   },
@@ -250,6 +244,16 @@ const columnsAll = reactive([
   },
 ]);
 const exportFlag = ref(false)
+
+function getRiskIcon(level) {
+  if(level == 1) {
+    return highIcon;
+  } else if(level == 2) {
+    return middleIcon;
+  } else {
+    return lowIcon
+  }
+}
 
 function getTotal() {
   let num1 = suggestData.value.highRiskNum || 0
@@ -485,6 +489,14 @@ function init() {
     background-color: rgba(221, 223, 231, 0.11);
   }
 }
-
+.risk-name-level {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  img {
+    display: block;
+    margin-right: 4px;
+  }
+}
 </style>
 

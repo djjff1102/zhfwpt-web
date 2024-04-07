@@ -24,11 +24,11 @@ export function splitFiltName(fileName, str = "@quesoar@") {
 // 处理数字
 export function formatNumber(number) {
   if (isNaN(number)) {
-    return "Invalid number";
+    return "";
   }
-  if (number % 1 !== 0) {
+  if (number % 1 !== 0 || number.toString().includes(".")) {
     // 检查是否为小数
-    let num = number.toFixed(2); // 如果是小数，保留两位小数
+    let num = Number(number).toFixed(2); // 如果是小数，保留两位小数
     let zhengshu = formatNumber(num.split(".")[0]);
     return zhengshu + "." + num.split(".")[1];
   } else {

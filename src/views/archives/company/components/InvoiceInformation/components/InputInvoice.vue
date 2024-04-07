@@ -74,11 +74,10 @@
         </template>
       </m-table>
     </div>
-    <div class="title">企业进项发票趋势</div>
-    <!-- <PredictCom :data="echartData.sum"></PredictCom> -->
+    <!-- <div class="title">企业进项发票趋势</div>
     <div class="tendencyChart w-full">
       <TendencyChart :dataList="echartData.x" :time="echartData.y"></TendencyChart>
-    </div>
+    </div> -->
   </div>
 </template>
 <script setup>
@@ -86,8 +85,7 @@ import dayjs from "dayjs";
 import { ref, reactive } from "vue";
 import { qyzxInvoice, groupByInvoiceDate } from '@/api/archives'
 import { useRoute, useRouter } from 'vue-router';
-import TendencyChart from "./TendencyChart/index.vue";
-import PredictCom from './PredictCom.vue'
+// import TendencyChart from "./TendencyChart/index.vue";
 import { formatNumber, formatData } from '@/utils/common'
 
 const route = useRoute();
