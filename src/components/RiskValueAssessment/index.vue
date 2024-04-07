@@ -71,8 +71,8 @@
           </template>
           <template v-slot:nameSlot="{ rowIndex }">
             <div class="risk-name-level">
-              <img :src="getRiskIcon(tableData[rowIndex + 1].level)" style="width: 16px">
-              <span>{{ tableData[rowIndex + 1].name }}</span>
+              <img :src="getRiskIcon(tableData[rowIndex].level)" style="width: 16px">
+              <span>{{ tableData[rowIndex].name }}</span>
             </div>
           </template>
         </m-table>
@@ -93,6 +93,12 @@
         >
           <template v-slot:index="{ rowIndex }">
             {{ rowIndex + 1 }}
+          </template>
+          <template v-slot:nameSlot="{ rowIndex }">
+            <div class="risk-name-level">
+              <img :src="getRiskIcon(tableData[rowIndex].level)" style="width: 16px">
+              <span>{{ tableData[rowIndex].name }}</span>
+            </div>
           </template>
         </m-table>
       </div>
@@ -228,6 +234,7 @@ const columnsAll = reactive([
   {
     title: "风险名称",
     dataIndex: "name",
+    slotName:'nameSlot'
   },
   {
     title: "风险描述",
