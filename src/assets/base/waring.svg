@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>切片</title>
+    <g id="20240402阶段2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1大宗贸易-3企业资信档案库-1详情-3异常" transform="translate(-469.000000, -262.000000)">
+            <g id="编组-10" transform="translate(445.000000, 238.000000)">
+                <g id="编组备份-8" transform="translate(24.000000, 24.000000)">
+                    <polygon id="路径" points="0 0 24 0 24 24 0 24"></polygon>
+                    <g id="编组" transform="translate(2.000000, 2.000000)" fill="#FF9100" fill-rule="nonzero">
+                        <path d="M10,20 C4.47715,20 0,15.5228 0,10 C0,4.47715 4.47715,0 10,0 C15.5228,0 20,4.47715 20,10 C20,15.5228 15.5228,20 10,20 Z M9,13 L9,15 L11,15 L11,13 L9,13 Z M9,5 L9,11 L11,11 L11,5 L9,5 Z" id="形状"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

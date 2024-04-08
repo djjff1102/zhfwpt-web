@@ -76,7 +76,7 @@
             </div>
           </template>
           <template v-slot:resultSlot="{ rowIndex }">
-            <RiskTypeShow :text="tableData[rowIndex].result"></RiskTypeShow>
+            <RiskTypeShow :info="tableData[rowIndex]"></RiskTypeShow>
           </template>
         </m-table>
       </div>
