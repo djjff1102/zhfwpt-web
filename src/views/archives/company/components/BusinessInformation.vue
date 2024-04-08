@@ -43,11 +43,15 @@
       </el-descriptions-item>
     </el-descriptions>
   </div>
-  <el-divider>
-    <span @click="isOpen = !isOpen" class="text-[#3470FF] open-btn"
-      >{{ isOpen ? "收起" : "展开" }}详情<el-icon :class="[!isOpen?'more-icon':'close-more-icon']"><DArrowRight /></el-icon></span
-    >
-  </el-divider>
+  <m-divder :isOpen="isOpen" @handleShow="handleShow"></m-divder>
+  <!-- <el-divider>
+    <div class="open-icon-bg">
+      <img src="@/assets/base/openclose.svg">
+      <span @click="isOpen = !isOpen" class="text-[#3470FF] open-btn">
+        {{ isOpen ? "收起" : "展开" }}<el-icon :class="[!isOpen?'more-icon':'close-more-icon']" style="margin-top: -4px"><DArrowRight /></el-icon>
+      </span>
+    </div>
+  </el-divider> -->
 </template>
 <script setup>
 const props = defineProps({
@@ -56,20 +60,11 @@ const props = defineProps({
   }
 })
 const isOpen = ref(false);
-</script>
-<style lang="scss">
-.open-btn {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-.more-icon {
-  margin-left: 8px;
-  transform: rotate(90deg);
-}
-.close-more-icon {
-  margin-left: 8px;
-  transform: rotate(270deg);
-}
 
+function handleShow() {
+  isOpen.value = !isOpen.value;
+}
+</script>
+
+<style lang="scss">
 </style>

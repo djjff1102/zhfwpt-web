@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>切片</title>
+    <defs>
+        <ellipse id="path-1" cx="15.9995556" cy="16" rx="15.9995556" ry="16"></ellipse>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#91E2E4" offset="0%"></stop>
+            <stop stop-color="#3470FF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="20240219阶段1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="切图" transform="translate(-524.000000, -362.000000)">
+            <g id="img/头像" transform="translate(524.000000, 362.000000)">
+                <ellipse id="椭圆_5" stroke="#FFFFFF" fill="#EBF8F3" fill-rule="nonzero" cx="17.9925002" cy="17.993" rx="17.4925002" ry="17.493"></ellipse>
+                <g id="编组" transform="translate(1.999944, 2.000000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="蒙版"></g>
+                    <g mask="url(#mask-2)" fill="url(#linearGradient-3)" fill-rule="nonzero" id="形状">
+                        <g transform="translate(2.999901, 4.000000)">
+                            <path d="M19.4994735,16.9 C21.2233328,16.9 22.8765873,17.5848194 24.0955398,18.8038059 C25.3144924,20.0227924 25.999278,21.6760928 25.999278,23.4 L25.999278,29 L1.07478824e-07,29 L1.07478824e-07,23.4 C-0.000637320748,19.8583271 2.83411669,16.968 6.37503834,16.9 C8.17446972,18.5740979 10.5419336,19.5032696 12.9996542,19.5 C15.4566984,19.5035517 17.8238192,18.5759081 19.62427,16.9039 L19.4994735,16.9 Z M12.9996542,0 C17.6663306,0 21.4494193,3.78319386 21.4494193,8.45 C21.4494193,13.1168061 17.6663306,16.9 12.9996542,16.9 C8.33297776,16.9 4.54988905,13.1168061 4.54988905,8.45 C4.54988905,3.78319386 8.33297776,0 12.9996542,0 L12.9996542,0 Z"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

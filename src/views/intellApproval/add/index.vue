@@ -110,7 +110,7 @@
       </el-form>
     </div>
   </div>
-  <div class="com-section" v-hasPerm="btnApprovalCode.approvalexcute">
+  <div class="com-section" v-hasPerm="btnApprovalCode.approvaluser">
     <div class="title-sub">申报资料</div>
     <card-tab
       :showExtra="false"

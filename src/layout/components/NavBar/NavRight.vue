@@ -14,13 +14,34 @@
   <!-- 用户头像 -->
   <div class="avatar-container">
     <div class="avatar_name text-[#FFF]">欢迎您，{{ userStore.user.name }}</div>
-    <div class="avatar w-[36px] h-[36px] ml-[12px]">
-      <img
-        class="!w-full !h-full object-cover"
-        src="@/assets/base/avatar.png"
-        alt="avatar"
-      />
-    </div>
+    <!-- 用户信息 trigger="click"-->
+    <el-popover
+      placement="bottom-start"
+      :width="375"
+    >
+      <template #reference>
+        <div class="avatar w-[36px] h-[36px] ml-[12px]">
+          <img
+            class="!w-full !h-full object-cover"
+            src="@/assets/base/avatar.svg"
+            alt="avatar"
+          />
+        </div>
+      </template>
+      <UserInfo></UserInfo>
+    </el-popover>
+    <!-- 消息通知 trigger="click"-->
+    <el-popover
+      placement="bottom-start"
+      :width="407"
+    >
+      <template #reference>
+        <div class="avatar w-[20px] h-[20px] ml-[12px]" @click="handleOpenNotice">
+          <img class="!w-full !h-full object-cover" src="@/assets/base/notice.svg">
+        </div>
+      </template>
+      <NoticeInfo></NoticeInfo>
+    </el-popover>
     <i
       @click="logout"
       class="mr-[17px] ml-[14px] iconfont icon-close text-[#FFF]"
@@ -33,6 +54,8 @@ import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router";
 import { useAppStore } from "@/store/modules/app";
 import { useTagsViewStore } from "@/store/modules/tagsView";
 import { useUserStore } from "@/store/modules/user";
+import UserInfo from './UserInfo.vue'
+import NoticeInfo from './NoticeInfo.vue'
 
 const appStore = useAppStore();
 const tagsViewStore = useTagsViewStore();
@@ -47,6 +70,12 @@ const { device } = storeToRefs(appStore); // 设备类型：desktop-宽屏设备
  * vueUse 全屏
  */
 const { isFullscreen, toggle } = useFullscreen();
+
+
+// 打开消息列表
+function handleOpenNotice() {
+  
+}
 
 /**
  * 注销
@@ -99,5 +128,13 @@ function logout() {
     height: 40px;
     border-radius: 5px;
   }
+}
+:deep(.el-popper__arrow::before) {
+
+    display: none!important;
+    position: static;
+
+    z-index: -1;
+
 }
 </style>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="373px" height="101px" viewBox="0 0 373 101" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>个人中心卡片bg</title>
+    <defs>
+        <linearGradient x1="100%" y1="50%" x2="0%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#EFFBFF" offset="0%"></stop>
+            <stop stop-color="#EAF6FF" offset="54.5591128%"></stop>
+            <stop stop-color="#E5F1FF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="20240219阶段1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="切图" transform="translate(-137.000000, -700.000000)" fill="url(#linearGradient-1)">
+            <path d="M145,700 L502,700 C506.418278,700 510,703.581722 510,708 L510,801 L510,801 L137,801 L137,708 C137,703.581722 140.581722,700 145,700 Z" id="个人中心卡片bg"></path>
+        </g>
+    </g>
+</svg>

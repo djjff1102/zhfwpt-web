@@ -223,3 +223,13 @@
     width: 188px;
   }
 }
+
+// 暂时全局修改气泡弹窗的样式（上面的小箭头）
+.el-popper__arrow::before {
+  display: none;
+}
+.el-popover.el-popper {
+  padding: 0!important;
+  border: solid 1px #fff !important;
+  box-shadow: 0px 10px 20px 0px rgba(0,0,0,0.04) !important;
+}

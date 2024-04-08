@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <div v-show="!exportFlag" class="danger-point-container">
+    <div v-show="!exportFlag" class="danger-point-container" :class="{'open-divder': isOpen}">
       <div class="title">风险点</div>
       <div class="search_box">
         <el-form :model="searchPar" :inline="true" class="demo-form-inline">
@@ -58,10 +58,10 @@
       <div class="table-warp">
         <m-table
           style="height: 100%"
-          :data="tableData"
+          :data="tableDataCom"
           :columns="columns"
           :scroll="scroll"
-          :pagination="pagination"
+          :pagination="isOpen ?pagination : false"
           :bordered="false"
           @page-change="changepage"
           @page-size-change="changePagesize"
@@ -75,8 +75,12 @@
               <span>{{ tableData[rowIndex].name }}</span>
             </div>
           </template>
+          <template v-slot:resultSlot="{ rowIndex }">
+            <RiskTypeShow :text="tableData[rowIndex].result"></RiskTypeShow>
+          </template>
         </m-table>
       </div>
+      <m-divder :isOpen="isOpen" @handleShow="handleShow"></m-divder>
     </div>
 
     <!-- 用作导出 -->
@@ -107,7 +111,7 @@
 
 </template>
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import RiskChart from "./components/RiskChart/index.vue";
 import RiskTypeList from './components/RiskChart/RiskTypeList.vue'
 // import DangerPoint from "./components/DangerPoint.vue";
@@ -161,6 +165,8 @@ watch(() => props.companyId, (v) => {
   immediate: true
 })
 
+const showRiskNum = ref(3) // 默认展示两条数据
+const isOpen = ref(false)
 const allTableData = ref([])
 const riskData = ref(0)
 const pagination = ref({
@@ -210,8 +216,7 @@ const columns = reactive([
   {
     title: "扫描结果",
     dataIndex: "result",
-    ellipsis: true,
-    tooltip: {position: 'left'},
+    slotName: 'resultSlot'
   },
   {
     title: "风险建议",
@@ -251,6 +256,23 @@ const columnsAll = reactive([
   },
 ]);
 const exportFlag = ref(false)
+
+// 收起显示table显示的数据
+const tableDataCom = computed(() => {
+  if(isOpen.value) {
+    return tableData.value;
+  } else {
+    if(tableData.value.length <= showRiskNum.value) {
+      return tableData.value;
+    } else {
+      return tableData.value.sclice(0, 2);
+    }
+  }
+})
+
+function handleShow() {
+  isOpen.value = !isOpen.value;
+}
 
 function getRiskIcon(level) {
   if(level == 1) {
@@ -363,6 +385,12 @@ function init() {
 // init()
 </script>
 <style lang="scss" scoped>
+.open-divder {
+  .open-icon-bg {
+    border-top: solid 1px #eee;
+    margin-top: 8px;
+  }
+}
 .risk-title {
   display: flex;
   align-content: center;
