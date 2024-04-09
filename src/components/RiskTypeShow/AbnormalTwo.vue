@@ -42,7 +42,6 @@ const props = defineProps({
       flex-shrink: 0;
     }
   }
-
 }
 :deep(.el-descriptions__cell) {
   width: 100px;

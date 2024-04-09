@@ -20,25 +20,55 @@ const option = ref({
   tooltip: {
     trigger: 'axis',
     axisPointer: {
-      type: 'shadow'
+      type: 'shadow',
+      // lineStyle: {
+      //   type: 'solid',
+      //   width: 36, // 设置阴影的宽度
+      //   color: 'rgba(236, 238, 245, 0.7)', // 设置阴影的颜色和透明度
+      // }
     }
   },
   legend: {},
   grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
+    left: '0%',
+    right: '0%',
+    bottom: '0%',
     containLabel: true
   },
   xAxis: [
     {
       type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    }
+      data: ['经营备案', '物流仓储', '合同数据风险', '风险', '票据政务风险', '超限量申请风险'],
+      axisTick: {
+        //y轴刻度线
+        show: false,
+      },
+      axisLine: {
+        //轴线
+        // show: true,
+        lineStyle: {
+          color: "#ccc",
+        },
+
+      },
+      axisLabel: {
+        textStyle: {
+        color: '#6A6A6A',// x轴字体颜色
+        interval: 5//轴显示所有的数据
+      }
+    },
+    },
   ],
   yAxis: [
     {
-      type: 'value'
+      type: 'value',
+      splitLine :{    //网格线
+        lineStyle:{
+          color: 'rgba(82, 100, 122, 0.2)',
+            type:'dashed'    //设置网格线类型 dotted：虚线   solid:实线
+        },
+        show:true //隐藏或显示
+      }
     }
   ],
   series: [
@@ -46,6 +76,7 @@ const option = ref({
       name: '高风险',
       type: 'bar',
       stack: 'Ad',
+      barWidth: 18,
       emphasis: {
         focus: 'series'
       },

@@ -16,7 +16,8 @@
         </span>
       </template>
       <!-- <abnormal-one :info="info"></abnormal-one> -->
-      <abnormal-two :info="info"></abnormal-two>
+      <!-- <abnormal-two :info="info"></abnormal-two> -->
+      <abnormal-three :info="info"></abnormal-three>
     </el-dialog>
   </div>
 
