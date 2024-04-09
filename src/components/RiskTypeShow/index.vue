@@ -15,16 +15,17 @@
           <w-button type="primary" @click="dialogTableVisible = false">知道了</w-button>
         </span>
       </template>
-      <!-- <abnormal-one :info="info"></abnormal-one> -->
-      <!-- <abnormal-two :info="info"></abnormal-two> -->
-      <abnormal-three :info="info"></abnormal-three>
+      <abnormal-one v-if="riskType == 2" :info="info"></abnormal-one>
+      <abnormal-two v-if="riskType == 1" :info="info" :columns="columns"></abnormal-two>
+      <abnormal-three v-if="riskType == 3" :info="info"></abnormal-three>
     </el-dialog>
   </div>
-
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch, onMounted } from 'vue'
+import { fxjkFieldMapping } from '@/api/archives'
+import { JYriskCode } from '@/utils/baseType'
 
 const props = defineProps({
   info: { // 风险信息
@@ -33,10 +34,48 @@ const props = defineProps({
 })
 
 const dialogTableVisible = ref(false)
+const riskType = ref(-1); // 根据风险类型控制页面显示
+const columns = ref([])
+
+// 获取汉字和英文关系
+function getfxjkFieldMapping(code) {
+  fxjkFieldMapping({
+    indexCode: code
+  }).then(res => {
+    let d = JSON.parse(res.data[0].fieldMapping);
+    formateWord(d);
+  }).catch(err => {
+  })
+}
+
+function formateWord(d) {
+  columns.value = []
+  const arr = [{
+    title: "序号",
+    dataIndex: "index",
+    slotName: 'index',
+    width: 80,
+  }]
+  Object.keys(d).forEach(item => {
+    let cur = {
+      title: d[item],
+      dataIndex: item
+    }
+    arr.push(cur)
+  })
+  columns.value = arr;
+}
 
 function handleResult() {
   dialogTableVisible.value = true;
+  let code = props.info.code
+  if(JYriskCode.includes(code)) {   // 经营类异常
+    getfxjkFieldMapping(code)
+    riskType.value = 1
+  }
+  
 }
+
 </script>
 
 <style scoped lang="scss">

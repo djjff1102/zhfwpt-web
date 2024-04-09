@@ -1,3 +1,6 @@
+// 风险状态吗
+export const JYriskCode = ["QYFX_XFQY_JYZT"];
+
 // 登记状态
 export const signStatus = [
   {

@@ -97,7 +97,7 @@ const curDate = ref('')
 const loading = ref(false);
 const tableData = ref();
 const columns = reactive([
-   {
+  {
     title: "序号",
     dataIndex: "index",
     slotName: 'index',

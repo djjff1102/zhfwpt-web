@@ -370,3 +370,14 @@ export function goods(
     data,
   });
 }
+
+// 风险下钻
+export function fxjkFieldMapping(
+  data: ProvinceSearch
+): CustomAxiosPromise<ProvinceResult> {
+  return request({
+    url: "/base/fxjk_field_mapping",
+    method: "post",
+    data,
+  });
+}
