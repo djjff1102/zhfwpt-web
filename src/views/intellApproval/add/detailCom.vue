@@ -1,8 +1,12 @@
 <template>
-  <div>
-    <div id="RiskValueAssessment">
+  <div id="RiskValueAssessment">
+    <!-- 风险值评估 -->
+    <div v-hasPerm="approvalMapping.approvalEvaluate">
       <div class="title base-title">风险值评估</div>
       <RiskValueAssessment :companyId="data.id" :companyName="data.name" :reportId="data.reportId"></RiskValueAssessment>
+    </div>
+    <!-- 企业用票需求预测 -->
+    <div v-hasPerm="approvalMapping.approvalPredict">
       <div class="title base-title">企业进销项发票趋势</div>
       <div class="tab-wrap">
         <el-tabs type="card" v-model="activeName" @tab-click="handleClick">
@@ -26,6 +30,9 @@
           <PredictCom :data="preStrMoney"></PredictCom>
         </div>
       </div>
+    </div>
+    <!-- 历史审批情况 -->
+    <div v-hasPerm="approvalMapping.approvalHistory">
       <div class="title base-title">历史审批</div>
       <historyList :companyId="data.id"></historyList>
     </div>
@@ -41,6 +48,7 @@ import { queryFpspReport } from '@/api/intellApproval'
 // import { fpspReport } from '@/api/intellApproval'
 import { formatData } from '@/utils/common'
 import { ref } from 'vue'
+import { approvalMapping } from '@/router/permissionCode'
 
 const props = defineProps({
   companyName: {

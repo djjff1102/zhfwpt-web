@@ -81,22 +81,36 @@
 </template>
 
 <script lang="ts" setup>
-import {  ref, reactive } from "vue";
+import {  ref, reactive, watch } from "vue";
 import ApprovalDo from './add/ApprovalDo.vue';
 import { useRouter } from 'vue-router';
 import { fpspReport, approvalExport, delReport } from '@/api/intellApproval'
 import { approveStatus,approveStatusColor, statusList, taskStatus, taskStatusColor } from './type.ts'
 import dayjs from "dayjs";
-import { btnApprovalCode } from '@/router/permissionCode'
+import { btnApprovalCode, approvalMapping } from '@/router/permissionCode'
+import { useUserStoreHook } from "@/store/modules/user";
 import { formatNumber, formateDate } from '@/utils/common'
 
+const userStore = useUserStoreHook();
 const router = useRouter();
+
+// 监听权限吗
+watch(() => userStore.user.dataPermissionCode,  (v) => {
+  nextTick(() => {
+    if( !v?.includes(approvalMapping.approvalTask)) {
+      columns.value.splice(10, 1)
+    }
+  })
+}, {
+  deep: true,
+  immediate: true
+})
 
 const showApproval = ref(false)
 const curDate = ref('')
 const loading = ref(false);
 const tableData = ref();
-const columns = reactive([
+const columns = ref([
   {
     title: "序号",
     dataIndex: "index",

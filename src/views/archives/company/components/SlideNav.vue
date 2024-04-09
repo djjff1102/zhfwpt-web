@@ -19,6 +19,7 @@
           active: activeNav === item.id,
         }"
         v-for="item in navList"
+        v-hasPerm="approvalMapping[item.id]"
         :key="item.name"
       >
         <View
@@ -39,6 +40,7 @@
 
 </template>
 <script setup>
+import { approvalMapping } from '@/router/permissionCode'
 let navList = ref([
   {
     id: "BusinessInformation",

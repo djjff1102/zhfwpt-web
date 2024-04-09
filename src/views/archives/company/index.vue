@@ -7,41 +7,34 @@
         </template>
         <template #default>{{ companyMsg?.attention ? '已关注' : '关注' }}</template>
     </w-button>
-    <!-- <w-button class="absolute right-20px top-20px" type="primry">
-      <template #icon>
-        <el-icon><StarFilled /></el-icon>
-      </template>
-      <template #default>关注</template>
-    </w-button> -->
     <div class="company-name">{{ companyMsg?.companyName }}</div>
     <div class="company-content">
       <m-backtop target=".company-content"></m-backtop>
-      <!-- <el-backtop target=".company-content" :right="40" :bottom="100" /> -->
-      <div id="BusinessInformation">
+      <div v-hasPerm="approvalMapping.BusinessInformation" id="BusinessInformation">
         <div class="title"><img :src="qygsxx">企业工商信息</div>
         <BusinessInformation :data="companyMsg"></BusinessInformation>
       </div>
-      <div id="RiskValueAssessment">
+      <div v-hasPerm="approvalMapping.RiskValueAssessment" id="RiskValueAssessment">
         <div class="title"><img :src="fxzpg">风险值评估</div>
         <RiskValueAssessment :companyName="companyName" :companyId="id"></RiskValueAssessment>
       </div>
-      <div id="ExcessInvoiceApproval">
+      <div v-hasPerm="approvalMapping.ExcessInvoiceApproval" id="ExcessInvoiceApproval">
         <div class="title"><img :src="fpcxlsp">发票审批信息</div>
         <ExcessInvoiceApproval :companyId="id"></ExcessInvoiceApproval>
       </div>
-      <div id="ManagementInformation">
+      <div v-hasPerm="approvalMapping.ManagementInformation" id="ManagementInformation">
         <div class="title"><img :src="jyxx">经营信息</div>
         <ManagementInformation :companyName="companyName"></ManagementInformation>
       </div>
-      <div id="OrderInformation">
+      <div v-hasPerm="approvalMapping.OrderInformation" id="OrderInformation">
         <div class="title"><img :src="ddxx">订单信息</div>
         <OrderInformation :companyName="companyName"></OrderInformation>
       </div>
-      <div id="InvoiceInformation">
+      <div v-hasPerm="approvalMapping.InvoiceInformation" id="InvoiceInformation">
         <div class="title"><img :src="fpxx">发票信息</div>
         <InvoiceInformation></InvoiceInformation>
       </div>
-      <div id="LogisticsWarehousingInformation">
+      <div v-hasPerm="approvalMapping.LogisticsWarehousingInformation" id="LogisticsWarehousingInformation">
         <div class="title"><img :src="wlccxx">物流仓储信息</div>
         <LogisticsWarehousingInformation :companyName="companyName"></LogisticsWarehousingInformation>
       </div>
@@ -49,11 +42,11 @@
         <div class="title"><img :src="zyspxx">主营商品信息</div>
         <GoodsInformation :companyName="companyName"></GoodsInformation>
       </div> -->
-      <div id="TransactionVoucher">
+      <div v-hasPerm="approvalMapping.TransactionVoucher" id="TransactionVoucher">
         <div class="title"><img :src="jjpz">合同信息</div>
         <TransactionVoucher :companyName="companyName"></TransactionVoucher>
       </div>
-      <div id="AccountStatement">
+      <div v-hasPerm="approvalMapping.AccountStatement" id="AccountStatement">
         <div class="title"><img :src="yhls">银行流水</div>
         <AccountStatement :companyName="companyName"></AccountStatement>
       </div>
@@ -87,6 +80,7 @@ import wlccxx from "@/assets/images/moduleIcon/物流仓储信息.png";
 import zyspxx from "@/assets/images/moduleIcon/主营商品信息.png";
 import jjpz from "@/assets/images/moduleIcon/交易凭证.png";
 import yhls from "@/assets/images/moduleIcon/银行流水.png";
+import { approvalMapping } from '@/router/permissionCode'
 
 const userStore = useUserStoreHook();
 // const router = useRouter();

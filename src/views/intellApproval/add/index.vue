@@ -14,7 +14,9 @@
       <w-button v-hasPerm="btnApprovalCode.approval" type="primary" @click="toApproval">审批</w-button>
     </div>
   </div>
-  <div v-hasPerm="btnApprovalCode.approvaluser" class="section">
+  <!-- 企业用户申报详情 -->
+  <div v-hasPerm="approvalMapping.appravalDetail">
+    <div class="section">
     <div class="section-sub">
       <div class="title-sub">申报人信息</div>
       <el-form ref="basefrom1" :model="form" layout="vertical" :rules="rules">
@@ -109,47 +111,49 @@
         </el-form-item>
       </el-form>
     </div>
-  </div>
-  <div class="com-section" v-hasPerm="btnApprovalCode.approvaluser">
-    <div class="title-sub">申报资料</div>
-    <card-tab
-      :showExtra="false"
-      :defaultKey = "defaultKey"
-      @handleTab="handleTab"
-    >
-    </card-tab>
-    <w-row class="grid-demo">
-      <w-col :span="20">
-        <div class="base-flex-start">
-          <w-input :style="{width: '532px', height: '32px', marginRight:'16px'}" placeholder="请输入搜索内容"></w-input>
-          <w-button type="primary">搜索</w-button>
-        </div>
-      </w-col>
-      <w-col v-if="initPageParam.edit" :span="4">
-        <div class="flex-base-end"><w-button type="primary" @click="handleAdd">新增</w-button></div>
-      </w-col>
-    </w-row>
-    <m-table
-      :data="dataList"
-      :columns="columns"
-      :virtual-list-props="{height: 'auto'}"
-      :pagination="false">
-      <template v-slot:index="{rowIndex}">
-        <div>{{ rowIndex +1 }}</div>
-      </template>
-    </m-table>
-    <div class="flex-base-start sum-line">
-      <div style="margin-right: 16px">{{ nameMap[curTab] }}已选：<span class="num-light">{{ dataList.length }}</span></div>
-      <div>金额合计：<span class="num-light">{{ totalMoney }}</span></div>
+    </div>
+    <div class="com-section" >
+      <div class="title-sub">申报资料</div>
+      <card-tab
+        :showExtra="false"
+        :defaultKey = "defaultKey"
+        @handleTab="handleTab"
+      >
+      </card-tab>
+      <w-row class="grid-demo">
+        <w-col :span="20">
+          <div class="base-flex-start">
+            <w-input :style="{width: '532px', height: '32px', marginRight:'16px'}" placeholder="请输入搜索内容"></w-input>
+            <w-button type="primary">搜索</w-button>
+          </div>
+        </w-col>
+        <w-col v-if="initPageParam.edit" :span="4">
+          <div class="flex-base-end"><w-button type="primary" @click="handleAdd">新增</w-button></div>
+        </w-col>
+      </w-row>
+      <m-table
+        :data="dataList"
+        :columns="columns"
+        :virtual-list-props="{height: 'auto'}"
+        :pagination="false">
+        <template v-slot:index="{rowIndex}">
+          <div>{{ rowIndex +1 }}</div>
+        </template>
+      </m-table>
+      <div class="flex-base-start sum-line">
+        <div style="margin-right: 16px">{{ nameMap[curTab] }}已选：<span class="num-light">{{ dataList.length }}</span></div>
+        <div>金额合计：<span class="num-light">{{ totalMoney }}</span></div>
+      </div>
+    </div>
+    <div class="com-section">
+      <div class="title-sub title-sub-sub">其他资料</div>
+      <div v-if="initPageParam.edit">
+        <MultiUpload @updateUpload="updateUpload" :file="fileList"></MultiUpload>
+      </div>
+      <FileList v-if="!initPageParam.edit" :file="fileList"></FileList>
     </div>
   </div>
-  <div v-hasPerm="btnApprovalCode.approvaluser" class="com-section">
-    <div class="title-sub title-sub-sub">其他资料</div>
-    <div v-if="initPageParam.edit">
-      <MultiUpload @updateUpload="updateUpload" :file="fileList"></MultiUpload>
-    </div>
-    <FileList v-if="!initPageParam.edit" :file="fileList"></FileList>
-  </div>
+  
   <div v-if="initPageParam.edit" class="bottom flex-base-end">
     <w-button v-hasPerm="btnApprovalCode.save" style="margin-right: 20px" @click="handleSave(1, '暂存')">暂存</w-button>
     <w-button v-hasPerm="btnApprovalCode.submit" type="primary" @click="handleSave(2, '提交')">提交</w-button>
@@ -161,7 +165,7 @@
 </div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import addApplyCom from './addApplyCom.vue';
 import detailCom from './detailCom.vue'
@@ -172,13 +176,15 @@ import { pro, columnsHT,columnsDD, columnsFP, columnsCC, columnsYH, nameMap } fr
 import FileList from './FileList.vue';
 import ApprovalDo from './ApprovalDo.vue';
 import dayjs from "dayjs";
-import { btnApprovalCode } from '@/router/permissionCode'
+import { btnApprovalCode, approvalMapping } from '@/router/permissionCode'
 import { approveStatus,approveStatusColor } from '../type'
 
 const userStore = useUserStoreHook();
+
 let userId = userStore.user.id;
 let username = userStore.user.name;
 let companyName = userStore?.user?.organization?.name;
+// const dataPermissionCode = userStore.user.dataPermissionCode || []; // 模块权限码
 
 const route = useRoute();
 const router = useRouter();

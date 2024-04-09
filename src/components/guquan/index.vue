@@ -144,7 +144,6 @@ G6.registerNode(
     },
     draw(cfg, group) {
       const styles = this.getShapeStyle(cfg);
-      console.log('this------------:', styles)
       const { labelCfg = {} } = cfg;
 
       const w = styles.width;
@@ -157,7 +156,6 @@ G6.registerNode(
           y: -h / 2,
         },
       });
-      console.log('cfg.leftIcon', cfg.leftIcon);
       if (cfg.leftIcon) {
         const { style, img } = cfg.leftIcon;
         group.addShape('rect', {

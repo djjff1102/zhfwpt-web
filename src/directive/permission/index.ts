@@ -9,7 +9,9 @@ export const hasPerm: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
     const { value } = binding;
     if (!value) return;
-    let code = userStore.user.authorityCode;
+    let code = userStore.user.authorityCode || [];
+    let dataPermissionCode = userStore.user.dataPermissionCode || [];
+    code?.push(...dataPermissionCode);
     const curValue = binding.value;
     // 可根据自己的业务修改此处实现逻辑
     if (!code.includes(curValue)) {
