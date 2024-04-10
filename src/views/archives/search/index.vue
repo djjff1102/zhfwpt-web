@@ -40,47 +40,43 @@
               为您找到 <span class="text-#3470FF">{{ total }}</span> 条相关结果
             </span>
           </div>
-          <!-- <div class="area">
-            <span class="label">省份地区：</span>
-            <div
-              class="label-value area-list"
-              :style="{
-                height: maxHeight,
-                overflow: 'hidden',
-              }"
-            >
-              <span class="area-tag" :class="{'active-province': !curProvince}" @click="handleSearchProvince">全部</span>
-              <span v-for="(item, i) in provinceResult" :key="i" class="area-tag" :class="{'active-province': curProvince === item.province_short }" @click="handleSearchProvince(item)">{{ item.province_short }}({{ formatNumber(item.count) }})</span>
-            </div>
-          </div> -->
-          <SingleSelect
+          <div v-show="isOpen">
+            <SingleSelect
             title="省份地区"
             :list="provinceResult"
             :transformLabel="{value: 'province_short', key: 'province_short', extra: 'count'}"
             :extraContent="true"
             @updateSeach="handleSearchProvince"
-          ></SingleSelect>
-          <SingleSelect
-            title="注册资本(￥)"
-            :list="registerMoney"
-            :customFun="true"
-            customFunType="number"
-            @updateSeach="handleSearchMoney"
-          ></SingleSelect>
-          <SingleSelect
-            title="成立时间"
-            :list="establishDate"
-            :customFun="true"
-            customFunType="date"
-            @updateSeach="handleSearchMoney"
-          ></SingleSelect>
-          <SingleSelect
-            title="企业类型"
-            :list="companyTypeObj"
-            @updateSeach="handleSearchMoney"
-          ></SingleSelect>
+            ></SingleSelect>
+            <SingleSelect
+              title="注册资本(￥)"
+              :list="registerMoney"
+              :customFun="true"
+              customFunType="number"
+              @updateSeach="handleSearchMoney"
+            ></SingleSelect>
+            <SingleSelect
+              title="成立时间"
+              :list="establishDate"
+              :customFun="true"
+              customFunType="date"
+              @updateSeach="handleSearchMoney"
+            ></SingleSelect>
+            <SingleSelect
+              title="企业类型"
+              :list="companyTypeObj"
+              @updateSeach="handleSearchMoney"
+            ></SingleSelect>
+          </div>
+          <el-divider style=" position: absolute; bottom: 15px; left: 0px;">
+            <span @click="isOpen = !isOpen" class="text-[#3470FF] open-btn">
+              {{ isOpen ? "收起" : "展开" }}
+              <el-icon :class="[!isOpen?'more-icon':'close-more-icon']"><DArrowRight /></el-icon>
+            </span>
+          </el-divider>
         </div>
-        <el-divider></el-divider>
+        
+        <!-- <el-divider></el-divider> -->
 
         <NoMatch v-if="isEmpty && !loading" class="mt-60px"></NoMatch>
         <div class="company-list">
@@ -131,15 +127,15 @@ const scrollDisabled = computed(() => {
   // }
   // return false;
 })
-const maxHeight = computed(() => (isOpen.value ? "auto" : "22px"));
+// const maxHeight = computed(() => (isOpen.value ? "auto" : "22px"));
 
 const isEmpty = computed(() => {
   return tableData.value.length === 0;
 });
 
-let toggleOpen = () => {
-  isOpen.value = !isOpen.value;
-};
+// let toggleOpen = () => {
+//   isOpen.value = !isOpen.value;
+// };
 
 let computeHeight = () => {
   const areaListDom = document.querySelector(".area-list");
@@ -266,7 +262,7 @@ onMounted(() => {
 .search-brief {
   position: sticky;
   top: 0;
-  padding: 20px 24px 15px 24px;
+  padding: 20px 24px 30px 24px;
   background-color: #fff;
   z-index:9;
   .label {
@@ -365,5 +361,18 @@ onMounted(() => {
     width: 18px;
     height: 18px;
   }
+}
+.more-icon {
+  margin-left: 4px;
+  transform: rotate(90deg);
+}
+.close-more-icon {
+  margin-left: 4px;
+  transform: rotate(270deg);
+}
+.open-btn{ 
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 </style>
