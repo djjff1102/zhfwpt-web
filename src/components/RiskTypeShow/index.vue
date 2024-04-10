@@ -3,7 +3,7 @@
     <div class="risk-result" @click="handleResult">
       {{ info?.result }}
     </div>
-    <el-dialog v-model="dialogTableVisible" width="1074">
+    <el-dialog v-model="dialogTableVisible" :width="getWidth">
       <template #header>
         <div class="flex-base-start">
           <img src="@/assets/base/waring.svg">
@@ -15,17 +15,17 @@
           <w-button type="primary" @click="dialogTableVisible = false">知道了</w-button>
         </span>
       </template>
-      <abnormal-one v-if="riskType == 2" :info="info"></abnormal-one>
+      <abnormal-one v-if="riskType == 2" :info="info" :columns="columns"></abnormal-one>
       <abnormal-two v-if="riskType == 1" :info="info" :columns="columns"></abnormal-two>
-      <abnormal-three v-if="riskType == 3" :info="info"></abnormal-three>
+      <abnormal-three v-if="riskType == 1" :info="info"></abnormal-three>
     </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, computed } from 'vue'
 import { fxjkFieldMapping } from '@/api/archives'
-import { JYriskCode } from '@/utils/baseType'
+import { JYriskCode, TSriskCode } from '@/utils/baseType'
 
 const props = defineProps({
   info: { // 风险信息
@@ -36,6 +36,16 @@ const props = defineProps({
 const dialogTableVisible = ref(false)
 const riskType = ref(-1); // 根据风险类型控制页面显示
 const columns = ref([])
+
+const getWidth = computed(() => {
+  if(riskType.value == 2) {
+    return 550;
+  } else if(riskType.value == 1){
+    return 900;
+  } else {
+    return 900;
+  }
+})
 
 // 获取汉字和英文关系
 function getfxjkFieldMapping(code) {
@@ -48,6 +58,7 @@ function getfxjkFieldMapping(code) {
   })
 }
 
+// 处理数据，生成columns
 function formateWord(d) {
   columns.value = []
   const arr = [{
@@ -72,8 +83,12 @@ function handleResult() {
   if(JYriskCode.includes(code)) {   // 经营类异常
     getfxjkFieldMapping(code)
     riskType.value = 1
+  } else if(TSriskCode.includes(code)) {
+    getfxjkFieldMapping(code)
+    riskType.value = 2
+  } else {
+    riskType.value = 3
   }
-  
 }
 
 </script>

@@ -208,7 +208,7 @@ onMounted(() => {
 function init() {
   const tendencyDom = document.getElementById(props.chartId);
   const tendencyChart = echarts.init(tendencyDom, null, {
-    width: "1000",
+    width: "800",
     height: 48 * 5, // 每根柱子宽24，间距24  计算画布的高
   });
   tendencyChart.setOption(echartData.value);

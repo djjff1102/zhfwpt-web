@@ -1,9 +1,9 @@
 <template>
   <div class="content-one">
-    <div class="risk-result">深圳市超级饰科技有限公司重庆市第三分公司，于2022年08月04日注销。</div>
+    <div class="risk-result">{{ info.companyName }}，于{{ JSON.parse(info.source)[0]?.operationStartdate }}{{ JSON.parse(info.source)[0]?.companyStatus }}。</div>
     <div class="risk-reason">
       <div>注销原因：</div>
-      <div>决议解散决议解散决议解散决议解散决议解散决议解散决议解散决议解散决议解散决议解散决议解散决议解散决议解散决议解散决议解散决议解散决议解散决议解散决议解散决议解散决议解散决议解散决议解散决议解散</div>
+      <div>{{ JSON.parse(info.source)[0]?.cancelReason}}</div>
     </div>
   </div>
 </template>
@@ -12,6 +12,9 @@
 const props = defineProps({
   info: { // 风险信息
     default: {}
+  },
+  columns: {
+    default: []
   }
 })
 </script>

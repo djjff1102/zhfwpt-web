@@ -23,7 +23,7 @@
         :infinite-scroll-watch-disabled="scrollDisabled"
         :infinite-scroll-distance="20">
         <div class="search-brief">
-          <!-- <div class="attention mb-10px">
+          <div class="attention mb-12px">
             <span class="label">关注企业：</span>
             <div class="label-value">
               <span
@@ -33,14 +33,14 @@
                 <span class="text-#FF9100">{{ formatNumber(attentResult?.riskInfo?.lowRiskNum) }}</span> 家，风险等级较低的</span>
                 <span class="text-#0594EB">{{ formatNumber(attentResult?.riskInfo?.mediumRiskNum) }}</span> 家
             </div>
-          </div> -->
-          <div class="result-count mb-10px">
+          </div>
+          <div class="result-count mb-12px">
             <span class="label">检索结果：</span>
             <span class="label-value">
               为您找到 <span class="text-#3470FF">{{ total }}</span> 条相关结果
             </span>
           </div>
-          <div class="area">
+          <!-- <div class="area">
             <span class="label">省份地区：</span>
             <div
               class="label-value area-list"
@@ -52,7 +52,33 @@
               <span class="area-tag" :class="{'active-province': !curProvince}" @click="handleSearchProvince">全部</span>
               <span v-for="(item, i) in provinceResult" :key="i" class="area-tag" :class="{'active-province': curProvince === item.province_short }" @click="handleSearchProvince(item)">{{ item.province_short }}({{ formatNumber(item.count) }})</span>
             </div>
-          </div>
+          </div> -->
+          <SingleSelect
+            title="省份地区"
+            :list="provinceResult"
+            :transformLabel="{value: 'province_short', key: 'province_short', extra: 'count'}"
+            :extraContent="true"
+            @updateSeach="handleSearchProvince"
+          ></SingleSelect>
+          <SingleSelect
+            title="注册资本(￥)"
+            :list="registerMoney"
+            :customFun="true"
+            customFunType="number"
+            @updateSeach="handleSearchMoney"
+          ></SingleSelect>
+          <SingleSelect
+            title="成立时间"
+            :list="establishDate"
+            :customFun="true"
+            customFunType="date"
+            @updateSeach="handleSearchMoney"
+          ></SingleSelect>
+          <SingleSelect
+            title="企业类型"
+            :list="companyTypeObj"
+            @updateSeach="handleSearchMoney"
+          ></SingleSelect>
         </div>
         <el-divider></el-divider>
 
@@ -68,8 +94,6 @@
           <div v-if="scrollDisabled && tableData.length > 0" class="load-finish">数据加载完</div>
         </div>
         <m-backtop target=".search-result"></m-backtop >
-        <!-- <el-backtop target=".search-result" :right="40" :bottom="100">
-        </el-backtop> -->
       </div>
     </div>
   </div>
@@ -80,6 +104,7 @@ import NoMatch from "./components/NoMatch.vue";
 import { companyList, attentionTotal, groupByProvince } from '@/api/archives/index'
 import { useUserStoreHook } from "@/store/modules/user";
 import { formatNumber } from '@/utils/common'
+import { establishDate, registerMoney, companyTypeObj } from '@/utils/baseType'
 
 const userStore = useUserStoreHook();
 
@@ -97,7 +122,7 @@ const total = ref(0) // 查询结果总数量
 const loading = ref(false); // 加载
 const attentResult = ref({}) // 企业关注统计
 const provinceResult = ref() // 省份分布
-const curProvince = ref('')
+// const curProvince = ref('')
 
 const scrollDisabled = computed(() => {
   return tableData.value.length >= total.value;
@@ -129,16 +154,21 @@ function refresh(i) {
 function handleSearchProvince(item) {
   if(!item) {
     searchPar.value.provinceShort = '';
-    curProvince.value = '';
+    // curProvince.value = '';
   } else {
-    searchPar.value.provinceShort = item.province_short;
-    curProvince.value = item.province_short;
+    searchPar.value.provinceShort = item.key;
+    // curProvince.value = item.province_short;
     
   }
   searchPar.value.page = 1;
   loading.value = true;
   tableData.value = [];
   loadPage();
+}
+
+// 注册资本
+function handleSearchMoney() {
+
 }
 
 // 企业搜索 重置pageNum
@@ -245,6 +275,8 @@ onMounted(() => {
     font-size: 14px;
     color: #000000;
     line-height: 22px;
+    width: 94px;
+    text-align: right;
   }
   .label-value {
     display: inline-block;
