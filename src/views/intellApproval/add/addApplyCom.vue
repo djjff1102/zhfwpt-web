@@ -233,7 +233,7 @@ const searchHT = ref({ // 合同
 const searchDD = ref({ // 订单
   page_size: 10,
   page: 1,
-  sellerCompnayName: props.companyName
+  sellerCompanyName: props.companyName
 }) 
 const searchFP = ref({ // 发票
   page_size: 10,

@@ -131,7 +131,7 @@ const columns = reactive([
   },
   {
     title: "卖方名称",
-    dataIndex: "sellerCompnayName",
+    dataIndex: "sellerCompanyName",
     width: 280,
     ellipsis: true,
     tooltip: {position: 'left'},
@@ -194,7 +194,7 @@ const orderPar = ref({
   orderCreateDateStart: '',
   orderCreateDateEnd: '',
   buyerCompanyName: '', // 买方名称
-  sellerCompnayName: '', // 上个页面带过来的公司名称
+  sellerCompanyName: '', // 上个页面带过来的公司名称
   code: '' // 订单编号
 })
 const orderList = ref([]) // 订单商品类别
@@ -241,7 +241,7 @@ function reset() {
     orderCreateDateStart: '',
     orderCreateDateEnd: '',
     buyerCompanyName: '', // 买方名称
-    sellerCompnayName: props.companyName, // 上个页面带过来的公司名称
+    sellerCompanyName: props.companyName, // 上个页面带过来的公司名称
     code: '' // 订单编号
   }
   getqyzxOrder();
@@ -276,7 +276,7 @@ function getorderDropDownBox() {
   const data = {
     page_size: 50,
     page: 1,
-    sellerCompnayName: props.companyName
+    sellerCompanyName: props.companyName
   }
   orderDropDownBox(data).then(res => {
     orderList.value = res.data
@@ -284,7 +284,7 @@ function getorderDropDownBox() {
 }
 
 const init = async () => {
-  orderPar.value.sellerCompnayName = props.companyName;
+  orderPar.value.sellerCompanyName = props.companyName;
   getqyzxOrder()
   getorderDropDownBox();
 };

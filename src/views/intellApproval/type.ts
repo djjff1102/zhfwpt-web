@@ -82,7 +82,7 @@ export const prosMap = {
   },
   [pro.DD]: {
     key: "code",
-    label: "sellerCompnayName",
+    label: "sellerCompanyName",
   },
   [pro.FP]: {
     key: "code",
@@ -178,7 +178,7 @@ export const columnsDD = reactive([
   },
   {
     title: "卖方名称",
-    dataIndex: "sellerCompnayName",
+    dataIndex: "sellerCompanyName",
   },
   {
     title: "卖方信用代码",

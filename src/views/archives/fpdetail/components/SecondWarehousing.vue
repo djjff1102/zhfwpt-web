@@ -200,7 +200,7 @@ function getqyzxOrderSub() {
 //   const data = {
 //     page_size: 50,
 //     page: 1,
-//     sellerCompnayName: props.companyName
+//     sellerCompanyName: props.companyName
 //   }
 //   suborderDropDownBox(data).then(res => {
 //     subOrderList.value = res.data;

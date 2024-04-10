@@ -12,7 +12,7 @@
       {{ order?.buyerCreditNo || '--' }}
     </el-descriptions-item>
     <el-descriptions-item label="卖方名称">
-      {{ order?.sellerCompnayName || '--' }}
+      {{ order?.sellerCompanyName || '--' }}
     </el-descriptions-item>
     <el-descriptions-item label="卖方信用代码">
       {{ order?.sellerCreditNo || '--' }}
