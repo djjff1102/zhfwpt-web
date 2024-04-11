@@ -9,9 +9,9 @@
         <InputInvoice v-if="activeName === 'input'"></InputInvoice>
       </el-tab-pane>
     </el-tabs>
-    <div class="title">企业进项发票趋势-待接口联调</div>
+    <div class="title">企业进项发票趋势</div>
     <div class="tendencyChart w-full">
-      <TendencyChart :dataList="echartData.x" :time="echartData.y"></TendencyChart>
+      <TendencyChart :dataList="echartData" :time="echartData.x"></TendencyChart>
     </div>
   </div>
 </template>
@@ -28,20 +28,57 @@ const route = useRoute();
 const activeName = ref('output')
 const echartData = ref({
   x:[],
-  y: [],
-  sum : 0
+  yOut: {
+    data: [],
+    name: '销项'
+  },
+  yIn: {
+    data: [],
+    name: '进项'
+  }
 })
 
 // 进项发票
 function getgroupByInvoiceDateIn() {
-  groupByInvoiceDate({
-    receivingCompanyName: route.query.companyName
-  }).then(res => {
-    echartData.value = formatData(res.data.data);
-  }).catch(err => {})
+  return new Promise((resolve, reject) => {
+    groupByInvoiceDate({
+      receivingCompanyName: route.query.companyName
+    }).then(res => {
+      resolve(res.data)
+    }).catch(err => {
+      reject(err)
+    })
+  })
 }
 
-getgroupByInvoiceDateIn()
+// 销项发票
+function getgroupByInvoiceDateOut() {
+  return new Promise((resolve, reject) => {
+    groupByInvoiceDate({
+      invoicingCompanyName: route.query.companyName
+    }).then(res => {
+      resolve(res.data)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+ 
+}
+
+Promise.all([getgroupByInvoiceDateIn(), getgroupByInvoiceDateOut()])
+  .then(results => {
+    // 两个接口都成功返回数据
+    const result1 = results[0];
+    const result2 = results[1];
+    // 进行处理
+    echartData.value.x = formatData(result2.data).x;
+    echartData.value.yOut.data = formatData(result2.data).y;
+    echartData.value.yIn.data = formatData(result1.data).y;
+    console.log('biage------------:', echartData.value)
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+});
 </script>
 <style lang="scss" scoped>
 .title {

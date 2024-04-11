@@ -57,10 +57,16 @@ const echartData = ref({
     ],
     series: [
       {
-        name: "金额",
+        name: "",
         type: "line",
         symbolSize: 8,
-        data: props.dataList,
+        data: [],
+      },
+      {
+        name: "",
+        type: "line",
+        symbolSize: 8,
+        data: [],
       },
     ],
   })
@@ -68,11 +74,14 @@ const echartData = ref({
 watch(
   () => props.dataList,
   (v) => {
-    if(v && v.length > 0 ) {
-      echartData.value.series[0].data = v;
+    nextTick(() => {
+      echartData.value.series[0].data = v?.yOut?.data || [];
+      echartData.value.series[0].name = v?.yOut?.name || ''
+      echartData.value.series[1].data = v?.yIn?.data || [];
+      echartData.value.series[1].name = v?.yIn?.name || '';
       echartData.value.xAxis[0].data = props.time;
       init()
-    }
+    })
   }, {
     deep: true,
   }

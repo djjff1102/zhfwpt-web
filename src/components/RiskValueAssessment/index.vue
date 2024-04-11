@@ -265,7 +265,7 @@ const tableDataCom = computed(() => {
     if(tableData.value.length <= showRiskNum.value) {
       return tableData.value;
     } else {
-      return tableData.value.sclice(0, 2);
+      return tableData.value?.slice(0, 2);
     }
   }
 })
