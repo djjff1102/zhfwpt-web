@@ -1,9 +1,16 @@
 <template>
   <w-tabs :default-active-key="defaultActive" type="card-gutter" @tab-click="handleTabClick" >
-    <template v-if="showExtra" #extra>
-      <w-button type="primary">新增</w-button>
-    </template>
-    <w-tab-pane key="1" title="合同">
+    <w-tab-pane
+      v-for="(item) in Object.keys(tabData)"
+      :key="tabData[item]?.key">
+      <template #title>
+        <div class="tab-item">{{ tabData[item]?.name }}
+          <img v-if="tabData[item]?.status == 2" class="success-img" src="@/assets/base/success.svg">
+          <div v-if="tabData[item]?.status == 1" class="file-error">附件有误</div>
+        </div>
+      </template>
+    </w-tab-pane>
+    <!-- <w-tab-pane key="1" title="合同">
       <slot name="applycontent"></slot>
     </w-tab-pane>
     <w-tab-pane key="2" title="订单">
@@ -17,7 +24,7 @@
     </w-tab-pane>
     <w-tab-pane key="5" title="银行流水">
       <slot name="applycontent"></slot>
-    </w-tab-pane>
+    </w-tab-pane> -->
   </w-tabs>
 </template>
 
@@ -32,6 +39,9 @@ const props = defineProps({
   defaultKey: {
     type: String,
     default: '1'
+  },
+  tabData: {
+    default: {}
   }
 });
 
@@ -47,6 +57,27 @@ function handleTabClick(value) {
 </script>
 
 <style lang="scss" scoped>
+.tab-item {
+  position: relative;
+}
+.success-img {
+  position: absolute;
+  top: 50%;
+  transform: translate(8px, -50%);
+}
+.file-error {
+  position: absolute;
+  top: -25%;
+  left: 80%;
+  width: 72px;
+  height: 28px;
+  background: #F76161;
+  border-radius: 14px;
+  border: 1px solid #FFFFFF;
+  color: #fff;
+  font-size: 12px;
+  line-height: 28px;
+}
 :deep(.w-tabs-nav-tab-list) {
   width: 100%;
   height: 48px;

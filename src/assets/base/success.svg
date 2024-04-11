@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>success</title>
+    <g id="20240402阶段2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1大宗贸易-2发票智能审批-1申报列表-1申报资料-2上传申报文件成功" transform="translate(-349.000000, -879.000000)">
+            <g id="Feedback--(类型=-警告提示---,-尺寸=无,--状态=警告）" transform="translate(339.000000, 870.000000)">
+                <g id="success" transform="translate(10.000000, 9.000000)">
+                    <polygon id="路径" points="0 0 18 0 18 18 0 18"></polygon>
+                    <path d="M9,16.5 C4.85775,16.5 1.5,13.14225 1.5,9 C1.5,4.85775 4.85775,1.5 9,1.5 C13.14225,1.5 16.5,4.85775 16.5,9 C16.5,13.14225 13.14225,16.5 9,16.5 Z M8.25225,12 L13.55475,6.69675 L12.49425,5.63625 L8.25225,9.879 L6.1305,7.75725 L5.07,8.81775 L8.25225,12 Z" id="形状" fill="#5ECF69" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

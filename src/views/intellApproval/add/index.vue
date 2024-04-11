@@ -46,12 +46,6 @@
             format="YYYY-MM-DD"
             value-format="YYYY-MM-DD"
           ></el-date-picker>
-          
-          <!-- <w-date-picker  v-model="form.applyTime" style="width: 100%;height: 32px;" placeholder="请选择日期">
-            <template #extra>
-              <div>请填写在税务申报系统提交申报的日期</div>
-            </template>
-          </w-date-picker> -->
            <div v-else>{{ form.applyTime && form.applyTime.split(' ')[0] }}</div>
            <span v-if="initPageParam.edit" class="date-msg">请填写在税务申报系统提交申报时的日期</span>
         </el-form-item>
@@ -112,15 +106,18 @@
       </el-form>
     </div>
     </div>
+    
     <div class="com-section" >
       <div class="title-sub">申报资料</div>
+      <validateExcel :form="form" :reportId="reportId" @updateReportId="updateReportId"></validateExcel>
       <card-tab
+        :tabData="tabData"
         :showExtra="false"
         :defaultKey = "defaultKey"
         @handleTab="handleTab"
       >
       </card-tab>
-      <w-row class="grid-demo">
+      <!-- <w-row class="grid-demo">
         <w-col :span="20">
           <div class="base-flex-start">
             <w-input :style="{width: '532px', height: '32px', marginRight:'16px'}" placeholder="请输入搜索内容"></w-input>
@@ -130,8 +127,36 @@
         <w-col v-if="initPageParam.edit" :span="4">
           <div class="flex-base-end"><w-button type="primary" @click="handleAdd">新增</w-button></div>
         </w-col>
-      </w-row>
-      <m-table
+      </w-row> -->
+      <InfoDD
+        v-if="curTab == pro.DD" 
+        :companyName="companyName"
+        :showSearch="false"
+      ></InfoDD>
+      <InfoHT
+        v-if="curTab == pro.HT"
+        :companyName="companyName"
+        :showSearch="false"
+      ></InfoHT>
+      <!-- 发票不区分进项和销项 -->
+      <InfoFP
+        v-if="curTab == pro.FP"
+        :showSearch="false"
+      ></InfoFP>
+      <InfoYH
+        v-if="curTab == pro.YH"
+        :companyName="companyName"
+        :showSearch="false"
+      ></InfoYH>
+      <InfoCC
+        v-if="curTab == pro.CC"
+        :companyName="companyName"
+        :showSearch="false"
+      ></InfoCC>
+      <InfoWL
+        v-if="curTab == pro.WL"
+      ></InfoWL>
+      <!-- <m-table
         :data="dataList"
         :columns="columns"
         :virtual-list-props="{height: 'auto'}"
@@ -139,7 +164,7 @@
         <template v-slot:index="{rowIndex}">
           <div>{{ rowIndex +1 }}</div>
         </template>
-      </m-table>
+      </m-table> -->
       <div class="flex-base-start sum-line">
         <div style="margin-right: 16px">{{ nameMap[curTab] }}已选：<span class="num-light">{{ dataList.length }}</span></div>
         <div>金额合计：<span class="num-light">{{ totalMoney }}</span></div>
@@ -178,6 +203,13 @@ import ApprovalDo from './ApprovalDo.vue';
 import dayjs from "dayjs";
 import { btnApprovalCode, approvalMapping } from '@/router/permissionCode'
 import { approveStatus,approveStatusColor } from '../type'
+import validateExcel from './validateExcel.vue'
+import InfoDD from './InfoDD.vue'
+import InfoHT from './InfoHT.vue'
+import InfoPF from './InfoDP.vue'
+import InfoWL from './InfoWL.vue'
+import InfoYH from './InfoYH.vue'
+import InfoCC from './InfoCC.vue'
 
 const userStore = useUserStoreHook();
 
@@ -189,6 +221,39 @@ let companyName = userStore?.user?.organization?.name;
 const route = useRoute();
 const router = useRouter();
 
+const reportId = ref(-1)
+const tabData = ref({
+  HT: {
+    name: '订单',
+    key: "2",
+    status: 0 // 默认状态为0 1为附件有误 2为正确
+  },
+  DD: {
+    name: '合同',
+    key: "1",
+    status: 1 // 默认状态为0 1为附件有误 2为正确
+  },
+  PF: {
+    name: '发票',
+    key: "3",
+    status: 2 // 默认状态为0 1为附件有误 2为正确
+  },
+  YH: {
+    name: '银行流水',
+    key: "5",
+    status: 2 // 默认状态为0 1为附件有误 2为正确
+  },
+  CC: {
+    name: '仓储',
+    key: "4",
+    status: 2 // 默认状态为0 1为附件有误 2为正确
+  },
+  WL: {
+    name: '物流',
+    key: "6",
+    status: 0 // 默认状态为0 1为附件有误 2为正确
+  },
+})
 const basefrom1 = ref();
 const basefrom2 = ref();
 const rules = reactive({
@@ -246,6 +311,10 @@ const totalMoney = ref(0);
 const fileList = ref([]) // 已经提交的文件
 const queryPar = ref({}) // 路由查询参数
 
+function updateReportId(id) {
+  reportId.value = id;
+}
+
 // 切换时间类型
 function handleChangeDate() {
   // 长期 limitType
@@ -274,25 +343,6 @@ function changeDateRange(v) {
   form.value.validDateStart = formateDate(curDate.value[0])
   form.value.validDateEnd = formateDate(curDate.value[1])
 }
-
-// // 切换长qi
-// function handleLone(v) {
-//   dateRange.value = []
-//   if(v==1 && form.value.limitType == '1') {
-//     dateRange.value= [dayjs(), '2099-12-31']
-//     form.value.validDateStart = dayjs() as any;
-//     form.value.validDateEnd = '2099-12-31'
-//   } else if(v==1 && form.value.limitType == '2') {
-//     dateRange.value= []
-//     form.value.validDateStart = '';
-//     form.value.validDateEnd = ''
-//   } else if((v==2 && form.value.adjustType == '1')) {
-//     let nextMonth = dayjs(dayjs()).add(30, 'day')
-//     dateRange.value = [dayjs(), nextMonth] as any
-//     form.value.validDateStart = dayjs() as any;
-//     form.value.validDateEnd = nextMonth as  any
-//   }
-// }
 
 // 更新审批状态
 function updateApprovalStatus() {
@@ -454,6 +504,7 @@ function getDetail(d) {
       form.value = res.data as any
       form.value.taxAuthority = '东疆综合保税区税务局'
       curDate.value = [res.data.validDateStart, res.data.validDateEnd]
+      reportId.value = res.data.id
     } else {
       getgetOneByCompanyName() // 当前返回数据为空，新增，且无暂存，则查询企业基本信息
     }
@@ -493,6 +544,7 @@ function init() {
   } else {
     // 编辑 查询详情
     initPageParam.title = '编辑'
+    reportId.value = route.query.id
     getDetail({
       id,
     })
@@ -527,7 +579,7 @@ init()
 }
 .operate-wrap {
   padding: 30px 90px;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 120px);
   background: #fff;
   overflow-y: scroll;
   .title-sub {
@@ -596,8 +648,13 @@ init()
   text-align: left;
 }
 .bottom {
-  margin-top: 20px;
-  padding: 12px 0;
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 0;
+  z-index: 99;
+  padding: 12px 24px;
+  background: #fff;
   border-top: solid 1px rgba(237, 241, 252, 1);
 }
 .section {

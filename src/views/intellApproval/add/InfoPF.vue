@@ -1,54 +1,6 @@
 <template>
-  <!-- 订单信息 -->
+  <!-- 发票信息--不区分进项和销项 -->
   <div class="input-invoice-container">
-    <div class="search_box">
-      <el-form :model="searchPar" inline="true" class="demo-form-inline">
-        <el-form-item class="mr-16px" field="post" label="发票类别">
-          <el-select v-model="searchPar.type" placeholder="全部" clearable style="width: 132px">
-            <el-option value="专用发票"></el-option>
-            <el-option value="普通发票"></el-option>
-            <el-option  value="手写发票"></el-option>
-            <el-option  value="定额发票"></el-option>
-            <el-option  value="统一发票"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item class="mr-16px" field="post" label="开票日期">
-          <!-- <w-range-picker
-            v-model="curDate"
-            class="w-250px"
-            :time-picker-props="{
-              defaultValue: [
-                dayjs('00:00:00', 'HH:mm:ss'),
-                dayjs('09:09:06', 'HH:mm:ss'),
-              ],
-            }"
-            clearable
-            format="YYYY-MM-DD"
-            @change="onChange"
-          /> -->
-          <el-date-picker
-              v-model="curDate"
-              type="daterange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              format="YYYY-MM-DD"
-              @change="onChange"
-          >
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item field="invoicingCompanyName" label="开票单位">
-          <el-input v-model="searchPar.invoicingCompanyName" placeholder="请输入开票单位" clearable/>
-        </el-form-item>
-        <el-form-item field="code" label="发票号码">
-          <el-input v-model="searchPar.code" placeholder="请输入发票号码" clearable/>
-        </el-form-item>
-        <el-form-item>
-          <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
-          <w-button @click="reset">重置</w-button>
-        </el-form-item>
-      </el-form>
-    </div>
     <div class="table-warp">
       <m-table
         style="height: 100%"
@@ -60,8 +12,8 @@
         @page-size-change="changePagesize"
         :bordered="false"
       >
-        <template v-slot:index="{ $index }">
-          {{ $index + 1 }}
+        <template v-slot:index="{ rowIndex }">
+          {{ rowIndex + 1 }}
         </template>
         <template v-slot:operations>
           <w-button type="text">详情</w-button>
@@ -71,7 +23,6 @@
   </div>
 </template>
 <script setup>
-import dayjs from "dayjs";
 import { ref, reactive } from "vue";
 import { qyzxInvoic } from '@/api/archives'
 import { formateDate } from '@/utils/common'

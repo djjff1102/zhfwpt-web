@@ -314,13 +314,9 @@ function reset() {
 
 // 选择时间
 function onChange(dateString: any, date: any) {
- 
-  // form.value.validDateStart = formateDate(curDate.value[0])
-  // form.value.validDateEnd = formateDate(curDate.value[1])
   if(dateString && dateString.length > 0) {
     searchPar.value.startTime = formateDate(curDate.value[0])
     searchPar.value.endTime = formateDate(curDate.value[1])
-    console.log('222222222222222--time:',searchPar.value.endTime )
   } else {
     searchPar.value.startTime = '';
     searchPar.value.endTime = '';

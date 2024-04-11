@@ -32,6 +32,21 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
+        path: "index2",
+        component: () => import("@/views/iframeYY/index.vue"),
+        name: "IntellApproval2",
+        meta: {
+          title: "YY",
+          icon: "icon-shenbaoliebiao",
+          hidden: false,
+          roles: ["ADMIN"],
+          keepAlive: true,
+          code: [501],
+          showMenu: true,
+          activeMenu: "/intellApproval",
+        },
+      },
+      {
         path: "operate",
         component: () => import("@/views/intellApproval/add/index.vue"),
         name: "IntellApprovalOperate",

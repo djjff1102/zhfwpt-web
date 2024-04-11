@@ -64,6 +64,7 @@ export enum pro {
   FP = "3", // 发票
   CC = "4", // 仓储
   YH = "5", // 银行流水
+  WL = "6", // 物流
 }
 
 export const nameMap = {
@@ -72,6 +73,7 @@ export const nameMap = {
   [pro.FP]: "发票",
   [pro.CC]: "仓储",
   [pro.YH]: "银行流水",
+  [pro.WL]: "物流",
 };
 
 // 适配穿梭组件自定义属性

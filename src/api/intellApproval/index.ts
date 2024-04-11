@@ -133,3 +133,19 @@ export function queryFpspReport(params: any): CustomAxiosPromise<DetailResult> {
     params,
   });
 }
+
+/**
+ * 发票智能审批-校验表单
+ *
+ * @param file
+ */
+export function importData(data: any){
+  return request({
+    url: "base/fpsp_report/importData",
+    method: "post",
+    data,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
