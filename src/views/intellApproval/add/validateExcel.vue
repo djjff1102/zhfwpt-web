@@ -153,16 +153,10 @@ async function handleUpload(options) {
 }
 
 function handleDel() {
-  // fileList.value = []
-  // TODO: 测试id
   let reportId = props.reportId;
-  // let reportId = 118;
   deleteDataAfterDeleteExcel({ reportId }).then(res => {
+    fileList.value = []
     emits('updateFileData')
-    // let h = document.getElementsByClassName('operate-wrap')[0].scrollTop
-    // sessionStorage.setItem('scrollPosition', h);
-    // sessionStorage.setItem('form', JSON.stringify(props.form));
-    // location.reload();
   }).catch(err => {
     console.log('err------------:', err)
   })
