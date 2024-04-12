@@ -156,6 +156,7 @@ function handleDel() {
   let reportId = props.reportId;
   deleteDataAfterDeleteExcel({ reportId }).then(res => {
     fileList.value = []
+    uploadFlag.value = -1
     emits('updateFileData')
   }).catch(err => {
     console.log('err------------:', err)
