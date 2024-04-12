@@ -42,7 +42,7 @@
 <script setup>
 import RiskValueAssessment from "@/components/RiskValueAssessment/index.vue";
 import historyList from './historyList.vue'
-import TendencyChart from "../../archives/company/components/InvoiceInformation/components/TendencyChart/index.vue";
+// import TendencyChart from "../../archives/company/components/InvoiceInformation/components/TendencyChart/index.vue";
 import { groupByInvoiceDate } from '@/api/archives'
 import { queryFpspReport } from '@/api/intellApproval'
 // import { fpspReport } from '@/api/intellApproval'

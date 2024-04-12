@@ -17,8 +17,8 @@
 </template>
 <script setup>
 import { ref } from 'vue';
-import TendencyChart from "./components/TendencyChart/index.vue";
-import OutputInvoice from "./components/OutputInvoice.vue";
+// import TendencyChart from "./components/TendencyChart/index.vue";
+// import OutputInvoice from "./components/OutputInvoice.vue";
 import InputInvoice from "./components/InputInvoice.vue";
 import { groupByInvoiceDate } from '@/api/archives'
 import { useRoute } from 'vue-router';
