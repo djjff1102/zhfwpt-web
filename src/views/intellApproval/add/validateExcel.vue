@@ -122,7 +122,6 @@ async function handleBeforeUpload() {
     const data = JSON.parse(JSON.stringify(props.form))
     data.dataStatus = 1
     const result = await add(data)
-    console.log('result=----------------:', result)
     if(result.result == 1) {
       emits('updateReportId', result.data)
       return true;
@@ -156,8 +155,8 @@ async function handleUpload(options) {
 function handleDel() {
   // fileList.value = []
   // TODO: 测试id
-  // let reportId = props.reportId;
-  let reportId = 118;
+  let reportId = props.reportId;
+  // let reportId = 118;
   deleteDataAfterDeleteExcel({ reportId }).then(res => {
     emits('updateFileData')
     // let h = document.getElementsByClassName('operate-wrap')[0].scrollTop
