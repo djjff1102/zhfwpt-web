@@ -127,39 +127,6 @@ const changepage = (v) => {
   getqyzxTransactionCertificate();
 };
 
-// 时间选择
-function onChange(dateString, date) {
-  if(dateString && dateString.length > 0) {
-    searchPar.value.signDateStart = formateDate(dateString[0]);
-    searchPar.value.signDateEnd = formateDate(dateString[1]);
-  } else {
-    searchPar.value.signDateStart = '';
-    searchPar.value.signDateEnd = '';
-  }
-}
-
-function search() {
-  searchPar.value.page = 1;
-  getqyzxTransactionCertificate();
-}
-
-function reset() {
-  pagination.value.pageSize = 10;
-  let name = searchPar.value.companyName;
-  curDate.value = ''
-  searchPar.value = {
-    page_size: 10,
-    page: 1,
-    signDateStart: '',
-    signDateEnd: '',
-    code: '',
-    companyName: name, // 传过来的公司名称
-    partyA: '', // 甲方
-    partyB: '' // 乙方
-  }
-  getqyzxTransactionCertificate()
-}
-
 // 交易凭证
 function getqyzxTransactionCertificate() {
   if(loading.value) return
@@ -178,6 +145,7 @@ const init = async () => {
   getqyzxTransactionCertificate()
 };
 init();
+
 </script>
 
 <style lang="scss" scoped>

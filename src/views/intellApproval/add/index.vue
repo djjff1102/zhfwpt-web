@@ -135,7 +135,7 @@
       </w-row> -->
       <InfoDD
         v-if="curTab == pro.DD" 
-        :companyName="companyName"
+        :reportId="reportId"
       ></InfoDD>
       <InfoHT
         v-if="curTab == pro.HT"
@@ -206,7 +206,7 @@ import { approveStatus,approveStatusColor } from '../type'
 import validateExcel from './validateExcel.vue'
 import InfoDD from './InfoDD.vue'
 import InfoHT from './InfoHT.vue'
-import InfoPF from './InfoDP.vue'
+import InfoFP from './InfoFP.vue'
 import InfoWL from './InfoWL.vue'
 import InfoYH from './InfoYH.vue'
 import InfoCC from './InfoCC.vue'
@@ -300,8 +300,8 @@ const form = ref({
   otherMaterialsRequestList: [], // 其他资料
   preStrMoney: ''// 需求预测
 })
-const defaultKey = ref('1'); // 默认打开的tab
-const curTab = ref('1') // 当前打开的tab
+const defaultKey = ref('2'); // 默认打开的tab
+const curTab = ref('2') // 当前打开的tab
 const showAdd = ref(false); // 新增资料弹窗
 const showRecord = ref(false); // 审批记录
 const showApproval = ref(false) // 审批窗口

@@ -7,7 +7,7 @@
         :data="tableData"
         :columns="columns"
         :scroll="scroll"
-        :pagination="pagination"
+        :pagination="false"
         @page-change="changepage"
         @page-size-change="changePagesize"
         :bordered="false"
@@ -28,24 +28,16 @@
 
 <script setup>
 import { ref, reactive} from "vue";
-import { qyzxOrder, orderDropDownBox } from '@/api/archives'
+import { forReportDD } from '@/api/intellApproval/special'
 import { useRouter } from 'vue-router'
-import { formatNumber,formateDate } from '@/utils/common'
+import { formatNumber } from '@/utils/common'
 
 const router = useRouter();
 
 const props = defineProps({
-  companyName: {
-    type: String,
-    default: ''
-  },
-  showSearch: {
-    default: true
-  }
+  reportId: ''
 })
 
-const curDate = ref('')
-const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
   {
@@ -149,69 +141,17 @@ const pagination = ref({
   "show-jumper": true,
 });
 const orderPar = ref({
-  page_size: 10,
-  page: 1,
-  goodType: '', // 商品类别
-  orderCreateDateStart: '',
-  orderCreateDateEnd: '',
-  buyerCompanyName: '', // 买方名称
-  sellerCompanyName: '', // 上个页面带过来的公司名称
-  code: '' // 订单编号
+  page_size: 100,
+  page: 1
 })
-const orderList = ref([]) // 订单商品类别
 const scroll = ref({
   y: 800,
   x: 1080,
 });
 
-const changePagesize = (v) => {
-  orderPar.value.page_size = v;
-  pagination.value.pageSize = v;
-  getqyzxOrder()
-};
-const changepage = (v) => {
-  orderPar.value.page = v;
-  getqyzxOrder();
-};
-
-// 选择时间
-function onChange(dateString, date) {
-  if(dateString && dateString.length > 0) {
-    orderPar.value.orderCreateDateStart = formateDate(dateString[0]);
-    orderPar.value.orderCreateDateEnd = formateDate(dateString[1]);
-  } else {
-    orderPar.value.orderCreateDateStart = '';
-    orderPar.value.orderCreateDateEnd = '';
-  }
-}
-
-// 搜索-重置分页
-function search() {
-  orderPar.value.page = 1;
-  getqyzxOrder();
-}
-
-// 重置
-function reset() {
-  pagination.value.pageSize = 10;
-  curDate.value = '';
-  orderPar.value = {
-    page_size: 10,
-    page: 1,
-    goodType: '', // 商品类别
-    orderCreateDateStart: '',
-    orderCreateDateEnd: '',
-    buyerCompanyName: '', // 买方名称
-    sellerCompanyName: props.companyName, // 上个页面带过来的公司名称
-    code: '' // 订单编号
-  }
-  getqyzxOrder();
-}
-
 // 跳转订单详情
 function toOrderDetail(d) {
   // 标记从订单调走，针对back时，做模块定位
-  sessionStorage.setItem('detailId', 'OrderInformation')
   router.push({
     path: '/archives/orderDetail',
     query: {
@@ -222,34 +162,18 @@ function toOrderDetail(d) {
 
 // 获取主订单列表及详情
 function getqyzxOrder() {
-  if(loading.value) return
-  loading.value = true;
-  qyzxOrder(orderPar.value).then(res => {
+  orderPar.value.dataType = props.reportId;
+  forReportDD(orderPar.value).then(res => {
     tableData.value = res.data
     pagination.value.total = res.total;
-    loading.value = false;
   }).catch(err => {
-    loading.value = false;
   })
 }
 
-function getorderDropDownBox() {
-  const data = {
-    page_size: 50,
-    page: 1,
-    sellerCompanyName: props.companyName
-  }
-  orderDropDownBox(data).then(res => {
-    orderList.value = res.data
-  }).catch(err => {})
-}
-
 const init = async () => {
-  orderPar.value.sellerCompanyName = props.companyName;
   getqyzxOrder()
-  getorderDropDownBox();
 };
-init();
+init()
 </script>
 
 <style lang="scss" scoped>

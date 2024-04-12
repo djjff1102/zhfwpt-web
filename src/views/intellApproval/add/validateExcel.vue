@@ -147,8 +147,9 @@ async function handleUpload(options) {
     tableData.value = res.data.fieldList
     uploadFlag.value = 0
   } else {
-    fileList.value = options.file
+    fileList.value = [options.file]
     uploadFlag.value = 1
+    emits('updateFileData')
   }
 }
 
