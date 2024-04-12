@@ -3,28 +3,22 @@
     <div class="file-message">系统中存在申报所需订单，可通过【新增】功能进行勾选；系统中不存在申报所需订单，可手动上传</div>
     <div class="validate-excel-wrap">
       <div class="flex-base-start">
-        <el-button type="text" style="margin-right: 8px">下载模版</el-button>
+        <el-button :loading="loading" type="text" style="margin-right: 8px" @click="downloadTemplate">下载模版</el-button>
         <el-upload
           :before-upload="handleBeforeUpload"
           :http-request="handleUpload"
           :accept="acceptType"
           :on-exceed="handleExceed"
-          :limit="1"
           :show-file-list="false"
         >
           <div class="flex-base-start">
             <w-button type="primary">上传文件</w-button>
           </div>
         </el-upload>
-        <!-- <InfoUpload  
-          @updateUpload="updateUpload"
-          :file="fileList"
-          :showText="false"
-          maxUploadCount="1"
-          :acceptType="acceptType"
-        ></InfoUpload> -->
-        <!-- <div class="success-text flex-base-start"><img src="@/assets/base/success.svg">{{ successText }}</div> -->
-        <div class="success-text flex-base-start"><img src="@/assets/base/waring.svg">
+        <div v-if="uploadFlag == 1" class="success-text flex-base-start">
+          <img src="@/assets/base/success.svg">{{ successText }}
+        </div>
+        <div v-if="uploadFlag == 0" class="success-text flex-base-start"><img src="@/assets/base/waring.svg">
           请查看<el-button type="text" @click="dialogVisible = true">错误信息</el-button>，修改后重新上传文件。
         </div>
       </div>
@@ -32,7 +26,7 @@
       <div class="file-wrap">
         <div class="flie-item" v-for="(item) in fileList" :key="item.name">
           <img src="@/assets/base/file.png">
-          <div class="file-name">{{ item }}</div>
+          <div class="file-name">{{ item.name }}</div>
           <img class="close" style="width: 20px" src="@/assets/base/cha.png" @click="handleDel"/> 
           <img class="success" style="width: 20px" src="@/assets/base/right.png">
         </div>
@@ -54,8 +48,8 @@
         :pagination="false"
         :bordered="false"
       >
-        <template v-slot:index="{ $index }">
-          {{ $index + 1 }}
+        <template v-slot:index="{ rowIndex }">
+          {{ rowIndex + 1 }}
         </template>
       </m-table>
     </div>
@@ -64,10 +58,10 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import InfoUpload from './InfoUpload.vue'
-import { add, importData  } from '@/api/intellApproval'
-import { splitFiltName } from '@/utils/common'
+import { ref, reactive, onMounted } from 'vue'
+import { add, importData, deleteDataAfterDeleteExcel } from '@/api/intellApproval'
+import { download } from '@/api/file'
+import { exportBlob } from '@/utils/common'
 
 const successText = '上传成功，上传信息已展示在下述列表中，可上传相关附件，其中合同和银行流水的附件必须要上传'
 const acceptType = '.xlsx,.xls'
@@ -81,40 +75,48 @@ const props = defineProps({
   }
 })
 
-const emits = defineEmits(['updateReportId'])
+const emits = defineEmits(['updateReportId', 'updateFileData'])
 
+const uploadFlag = ref(-1) // -1 未上传文件，0上传有误，1上传成功
+const loading = ref(false)
 const fileList = ref([])
 const dialogVisible = ref(false)
-const tableData = ref([
-  {name: 'test'}
-])
+const tableData = ref([])
 const columns = reactive([
   {
     title: "序号",
     width: 80,
     slotName: "index",
-    fixed: "left",
   },
   {
     title: "错误位置",
-    dataIndex: "name",
-    width: 180,
-    fixed: "left",
+    dataIndex: "position",
   },
    {
     title: "错误字段",
-    dataIndex: "name",
-    width: 180,
-    fixed: "left",
+    dataIndex: "field",
   },
   {
     title: "错误内容",
-    dataIndex: "name",
-    width: 180,
-    fixed: "left",
+    dataIndex: "content",
   }
 ])
 
+// 模版下载
+async function downloadTemplate() {
+  if(loading.value) return;
+  loading.value = true;
+  download({
+    file_name: '20240411/1778318595530911746@quesoar@审批上传模版.xlsx'
+  }).then(async(res) => {
+    await exportBlob(res.data, '审批上传模版')
+    loading.value = false;
+  }).catch(err=>{
+    loading.value = false;
+  })
+}
+
+// 上传文件前，验证是否有审批id，没有审批id需要调暂存接口，生成审批id
 async function handleBeforeUpload() {
   if(props.reportId == -1) {
     const data = JSON.parse(JSON.stringify(props.form))
@@ -122,8 +124,7 @@ async function handleBeforeUpload() {
     const result = await add(data)
     console.log('result=----------------:', result)
     if(result.result == 1) {
-      //TODO: 更新id
-      emits('updateReportId', 111)
+      emits('updateReportId', result.data)
       return true;
     } else {
       return false;
@@ -141,18 +142,43 @@ async function handleUpload(options) {
   formData.append("file", options.file);
   formData.append("reportId", props.reportId);
   const res = await importData(formData);
-  // allFileList.value.push(res.data);
-  let name = splitFiltName(res.data)
-  fileList.value.push(name)
+  if(res.data.fieldList && res.data.fieldList.length > 0) {
+    fileList.value = [];
+    tableData.value = res.data.fieldList
+    uploadFlag.value = 0
+  } else {
+    fileList.value = options.file
+    uploadFlag.value = 1
+  }
 }
 
 function handleDel() {
-  fileList.value = []
+  // fileList.value = []
+  // TODO: 测试id
+  // let reportId = props.reportId;
+  let reportId = 118;
+  deleteDataAfterDeleteExcel({ reportId }).then(res => {
+    emits('updateFileData')
+    // let h = document.getElementsByClassName('operate-wrap')[0].scrollTop
+    // sessionStorage.setItem('scrollPosition', h);
+    // sessionStorage.setItem('form', JSON.stringify(props.form));
+    // location.reload();
+  }).catch(err => {
+    console.log('err------------:', err)
+  })
 }
 
 function handleClose() {
   dialogVisible.value = false
 }
+
+// onMounted(() => {
+//   var scrollPosition = sessionStorage.getItem('scrollPosition');
+//   if (scrollPosition !== null) {
+//     document.getElementsByClassName('operate-wrap')[0].scrollTo(0, parseInt(scrollPosition, 10));
+//     sessionStorage.setItem('scrollPosition', null)
+//   }
+// })
 </script>
 
 <style scoped lang="scss">

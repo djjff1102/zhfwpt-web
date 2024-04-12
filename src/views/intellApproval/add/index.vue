@@ -11,7 +11,7 @@
     </div>
     <div v-if="initPageParam.title == '详情'" class="section-sub flex-base-end">
       <w-button v-hasPerm="btnApprovalCode.approvallist" style="margin-right: 8px;" @click="showRecord = true">审批记录</w-button>
-      <w-button v-hasPerm="btnApprovalCode.approval" type="primary" @click="toApproval">审批</w-button>
+      <w-button v-hasPerm="btnApprovalCode.approval" type="primary" @click="updateApprval">审批</w-button>
     </div>
   </div>
   <!-- 企业用户申报详情 -->
@@ -109,7 +109,12 @@
     
     <div class="com-section" >
       <div class="title-sub">申报资料</div>
-      <validateExcel :form="form" :reportId="reportId" @updateReportId="updateReportId"></validateExcel>
+      <validateExcel
+        :form="form"
+        :reportId="reportId"
+        @updateReportId="updateReportId"
+        @updateFileData="updateFileData"
+        ></validateExcel>
       <card-tab
         :tabData="tabData"
         :showExtra="false"
@@ -131,27 +136,22 @@
       <InfoDD
         v-if="curTab == pro.DD" 
         :companyName="companyName"
-        :showSearch="false"
       ></InfoDD>
       <InfoHT
         v-if="curTab == pro.HT"
         :companyName="companyName"
-        :showSearch="false"
       ></InfoHT>
       <!-- 发票不区分进项和销项 -->
       <InfoFP
         v-if="curTab == pro.FP"
-        :showSearch="false"
       ></InfoFP>
       <InfoYH
         v-if="curTab == pro.YH"
         :companyName="companyName"
-        :showSearch="false"
       ></InfoYH>
       <InfoCC
         v-if="curTab == pro.CC"
         :companyName="companyName"
-        :showSearch="false"
       ></InfoCC>
       <InfoWL
         v-if="curTab == pro.WL"
@@ -264,15 +264,14 @@ const rules = reactive({
   adjustType: [{ required: true, message: '请选择短期调整类型' }],
   validDateStart: [{ required: true, message: '请选择起止有效期',trigger: ['blur', 'change'] }],
 })
-const popupVisible = ref(false)
 const type = ref('add')
 const dataList = ref([])
-const columns = ref([])
-const dataHT = ref([]) // 已选的合同list
-const dataDD = ref([]) // 已选的订单list
-const dataFP = ref([]) // 已选的发票list
-const dataCC = ref([]) // 已选的仓储list
-const dataYH = ref([]) // 已选的银行流水list
+// const columns = ref([])
+// const dataHT = ref([]) // 已选的合同list
+// const dataDD = ref([]) // 已选的订单list
+// const dataFP = ref([]) // 已选的发票list
+// const dataCC = ref([]) // 已选的仓储list
+// const dataYH = ref([]) // 已选的银行流水list
 const initPageParam = reactive({
   title: '新增',
   edit: true,
@@ -280,7 +279,6 @@ const initPageParam = reactive({
   id: ''
 })
 const curDate = ref('')
-const dateRange = ref([])
 const form = ref({
   companyId: '', // 企业ID
   applyUserId: '', // 申请人ID :TODO
@@ -311,8 +309,19 @@ const totalMoney = ref(0);
 const fileList = ref([]) // 已经提交的文件
 const queryPar = ref({}) // 路由查询参数
 
+// 更新审批id
 function updateReportId(id) {
   reportId.value = id;
+}
+
+// 文件上传成功，刷新列表
+function updateFileData() {
+  let tab = curTab.value;
+  curTab.value = '-1';
+  nextTick(() => {
+    curTab.value = tab
+  })
+  
 }
 
 // 切换时间类型
@@ -329,16 +338,17 @@ function handleChangeDate() {
     form.value.validDateStart = ''
   }
 }
-
+// 切换时间类型
 function changeDate(v) {
   if(form.value.limitType == '2' && form.value.adjustType == '1') { //1当月
     form.value.validDateEnd = dayjs(form.value.validDateStart).add(30, 'day').format('YYYY-MM-DD')
   }
 }
+// 切换时间类型
 function formateDate(now) {
   return `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`
 }
-
+// 切换时间类型
 function changeDateRange(v) {
   form.value.validDateStart = formateDate(curDate.value[0])
   form.value.validDateEnd = formateDate(curDate.value[1])
@@ -353,11 +363,7 @@ function updateApprovalStatus() {
 }
 
 function updateApprval() {
-  showApproval.value = false;
-}
-
-function toApproval() {
-  showApproval.value = true;
+  showApproval.value = !showApproval.value;
 }
 
 // 更新上传的文件
@@ -366,72 +372,74 @@ function updateUpload(file) {
 }
 
 // 添加资料
-function handleAdd() {
-  showAdd.value = true;
-}
+// function handleAdd() {
+//   showAdd.value = true;
+// }
 
-function getSum(key: string) {
-  let sum = 0;
-  dataList.value.forEach((item: any) => {
-    sum += item[key]
-  })
-  totalMoney.value = sum;
-}
+// function getSum(key: string) {
+//   let sum = 0;
+//   dataList.value.forEach((item: any) => {
+//     sum += item[key]
+//   })
+//   totalMoney.value = sum;
+// }
 
 function handleTab(v: any) {
   curTab.value = v;
-  updateTable(dataHT.value, dataDD.value, dataFP.value, dataCC.value, dataYH.value);
+  // updateTable(dataHT.value, dataDD.value, dataFP.value, dataCC.value, dataYH.value);
 }
 
-function updateTable(HT:any, DD:any, FP:any, CC:any, YH:any,) {
-    switch(curTab.value) {
-    case pro.HT:
-      dataList.value = HT;
-      columns.value = columnsHT as any;
-      getSum('amount');
-      break;
-    case pro.DD:
-      columns.value = columnsDD as any;
-      dataList.value = DD;
-      getSum('totalMoney')
-      break;
-     case pro.FP:
-      columns.value = columnsFP as any;
-      dataList.value = FP;
-      getSum('amountTotal')
-      break;
-    case pro.CC:
-      columns.value = columnsCC as any;
-      dataList.value = CC;
-      totalMoney.value = 0;
-      break;
-     case pro.YH:
-      columns.value = columnsYH as any;
-      dataList.value = YH;
-      getSum('paymentAmount')
-      break;
-  }
-}
+// function updateTable(HT:any, DD:any, FP:any, CC:any, YH:any,) {
+//     switch(curTab.value) {
+//     case pro.HT:
+//       dataList.value = HT;
+//       columns.value = columnsHT as any;
+//       getSum('amount');
+//       break;
+//     case pro.DD:
+//       columns.value = columnsDD as any;
+//       dataList.value = DD;
+//       getSum('totalMoney')
+//       break;
+//      case pro.FP:
+//       columns.value = columnsFP as any;
+//       dataList.value = FP;
+//       getSum('amountTotal')
+//       break;
+//     case pro.CC:
+//       columns.value = columnsCC as any;
+//       dataList.value = CC;
+//       totalMoney.value = 0;
+//       break;
+//      case pro.YH:
+//       columns.value = columnsYH as any;
+//       dataList.value = YH;
+//       getSum('paymentAmount')
+//       break;
+//   }
+// }
 
-function updateData(HT:any, DD:any, FP:any, CC:any, YH:any,) {
-  dataHT.value = HT
-  dataDD.value = DD
-  dataFP.value = FP
-  dataCC.value = CC
-  dataYH.value = YH
-  updateTable(HT, DD, FP, CC, YH);
-}
+// function updateData(HT:any, DD:any, FP:any, CC:any, YH:any,) {
+//   dataHT.value = HT
+//   dataDD.value = DD
+//   dataFP.value = FP
+//   dataCC.value = CC
+//   dataYH.value = YH
+//   updateTable(HT, DD, FP, CC, YH);
+// }
 
-function updateAdd(codeHT:any, codeDD: any, codeFP: any, codeCC: any, codeYH: any) {
-  showAdd.value = false;
-  form.value.transactionCertificateMapRequestList = codeHT  // 合同
-  form.value.orderMapRequestList = codeDD   // 订单
-  form.value.bankStatementMapRequestList = codeYH // 银行流水
-  form.value.invoiceMapRequestList = codeFP   // 发票
-  form.value.warehouseMapRequestList = codeCC    // 仓储
-}
+
+// function updateAdd(codeHT:any, codeDD: any, codeFP: any, codeCC: any, codeYH: any) {
+//   showAdd.value = false;
+//   form.value.transactionCertificateMapRequestList = codeHT  // 合同
+//   form.value.orderMapRequestList = codeDD   // 订单
+//   form.value.bankStatementMapRequestList = codeYH // 银行流水
+//   form.value.invoiceMapRequestList = codeFP   // 发票
+//   form.value.warehouseMapRequestList = codeCC    // 仓储
+// }
 
 // 新增暂存、新增提交
+
 function handleSave(type: any, msg: string) {
   basefrom1.value.validate(v => {
     if(v) {
@@ -493,14 +501,15 @@ function getDetail(d) {
     if(JSON.stringify(res.data) != '{}') {
       initPageParam.type = 1
       initPageParam.id = res.data.id
-      dataHT.value = res.data.transactionCertificateMapResponseList
-      dataDD.value = res.data.orderMapResponseList
-      dataFP.value = res.data.invoiceMapResponseList
-      dataCC.value = res.data.warehouseMapResponseList
-      dataYH.value = res.data.bankStatementMapResponseList
+      // TODO: 第一个版本的逻辑，选择河东订单前端本地缓存
+      // dataHT.value = res.data.transactionCertificateMapResponseList
+      // dataDD.value = res.data.orderMapResponseList
+      // dataFP.value = res.data.invoiceMapResponseList
+      // dataCC.value = res.data.warehouseMapResponseList
+      // dataYH.value = res.data.bankStatementMapResponseList
+      // columns.value = columnsHT
       fileList.value = res.data.otherMaterialsResponseList
       dataList.value = res.data.transactionCertificateMapResponseList
-      columns.value = columnsHT
       form.value = res.data as any
       form.value.taxAuthority = '东疆综合保税区税务局'
       curDate.value = [res.data.validDateStart, res.data.validDateEnd]

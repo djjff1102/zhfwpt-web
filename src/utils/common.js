@@ -42,3 +42,15 @@ export function formatNumber(number) {
 export function formateDate(now) {
   return `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, "0")}-${now.getDate().toString().padStart(2, "0")}`;
 }
+
+export async function exportBlob(b, name) {
+  const fileName = name;
+  const a = document.createElement("a");
+  a.download = fileName;
+  a.href = URL.createObjectURL(b);
+  a.style.display = "none";
+  document.body.appendChild(a);
+  a.click();
+  URL.revokeObjectURL(a.href);
+  document.body.removeChild(a);
+}

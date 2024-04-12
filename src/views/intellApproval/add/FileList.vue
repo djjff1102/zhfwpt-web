@@ -22,6 +22,7 @@
 <script setup>
 import { ref } from 'vue'
 import { download } from '@/api/file'
+import { exportBlob } from '@/utils/common'
 
 const pros = defineProps({
   file: {
@@ -32,32 +33,33 @@ const pros = defineProps({
 const loading = ref(false)
 const curLoadId = ref(-1)
 
-function load(item, i) {
+async function load(item, i) {
   if(loading.value) return;
   loading.value = true;
   curLoadId.value = i
   download({
     file_name: item.fileUrl
-  }).then(res => {
-    exportBlob(res.data, item.fileName)
+  }).then(async(res) => {
+    await exportBlob(res.data, item.fileName)
+    loading.value = false;
   }).catch(err=>{
     loading.value = false;
   })
 }
 
 // 导出
-function exportBlob(b,name) {
-  const fileName = name
-  const a = document.createElement('a');
-  a.download = fileName;
-  a.href = URL.createObjectURL(b);
-  a.style.display = 'none';
-  document.body.appendChild(a);
-  a.click();
-  URL.revokeObjectURL(a.href);
-  document.body.removeChild(a);
-  loading.value = false;
-}
+// function exportBlob(b,name) {
+//   const fileName = name
+//   const a = document.createElement('a');
+//   a.download = fileName;
+//   a.href = URL.createObjectURL(b);
+//   a.style.display = 'none';
+//   document.body.appendChild(a);
+//   a.click();
+//   URL.revokeObjectURL(a.href);
+//   document.body.removeChild(a);
+//   loading.value = false;
+// }
 
 </script>
 

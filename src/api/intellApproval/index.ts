@@ -149,3 +149,16 @@ export function importData(data: any){
     },
   });
 }
+
+/**
+ * 发票智能审批-删除上传文件
+ 
+ */
+export function deleteDataAfterDeleteExcel(params: any) {
+  return request({
+    url: `base/fpsp_report/deleteDataAfterDeleteExcel/${params.reportId}`,
+    method: "get",
+    params,
+  });
+}
+
