@@ -19,7 +19,19 @@
             <div>{{ formatNumber(tableData[rowIndex].totalMoney) }}</div>
         </template>
         <template v-slot:operations="{rowIndex}">
-          <el-button type="text" @click="toOrderDetail(tableData[rowIndex])">详情</el-button>
+          <div class="flex-base-around">
+            <SingleUpload
+            :row="tableData[rowIndex]"
+            @updateUpload="updateUpload">
+            </SingleUpload>
+            <el-button
+              type="text"
+              @click="handleError(tableData[rowIndex])"
+              :disabled="checkError(tableData[rowIndex])"
+            >错误情况</el-button>
+            <el-button type="text" @click="toOrderDetail(tableData[rowIndex])">详情</el-button>
+            <el-button type="text" disabled>取消</el-button>
+          </div>
         </template>
       </m-table>
     </div>
@@ -27,10 +39,13 @@
 </template>
 
 <script setup>
-import { ref, reactive} from "vue";
+import { ref, reactive, computed} from "vue";
 import { forReportDD } from '@/api/intellApproval/special'
 import { useRouter } from 'vue-router'
 import { formatNumber } from '@/utils/common'
+import { useApprovalStore } from '@/store/modules/approval'
+
+const approvalStore = useApprovalStore();
 
 const router = useRouter();
 
@@ -129,7 +144,7 @@ const columns = reactive([
     title: "操作",
     dataIndex: "operations",
     slotName: "operations",
-    width: 80,
+    width: 220,
     fixed: "right",
   },
 ]);
@@ -149,6 +164,35 @@ const scroll = ref({
   x: 1080,
 });
 
+// 上传的附件信息先保存到每条订单上
+function updateUpload(file, row) {
+  row.businessDataMaterialList = {
+    fileType: "1",   //订单例子
+    fileUrl: file,
+    judgeId: row.id
+  }
+  approvalStore.setListData(tableData.value)
+}
+
+// 检验错误信息的状态
+function checkError(row) {
+  if( row?.material?.judgeCode == 2 ) {
+    return false;
+  } else {
+    return true
+  }
+}
+
+// 上传附件
+function upload() {
+
+}
+
+// 附件错误信息
+function handleError() {
+
+}
+
 // 跳转订单详情
 function toOrderDetail(d) {
   // 标记从订单调走，针对back时，做模块定位
@@ -165,7 +209,7 @@ function getqyzxOrder() {
   orderPar.value.dataType = props.reportId;
   forReportDD(orderPar.value).then(res => {
     tableData.value = res.data
-    pagination.value.total = res.total;
+    approvalStore.setListData(tableData.value)
   }).catch(err => {
   })
 }

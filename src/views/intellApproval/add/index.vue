@@ -210,6 +210,9 @@ import InfoFP from './InfoFP.vue'
 import InfoWL from './InfoWL.vue'
 import InfoYH from './InfoYH.vue'
 import InfoCC from './InfoCC.vue'
+import { useApprovalStore } from '@/store/modules/approval'
+
+const approvalStore = useApprovalStore();
 
 const userStore = useUserStoreHook();
 
@@ -477,6 +480,8 @@ function backToList() {
 }
 
 function handleUpdate(msg: string) {
+  approvalStore.updateData(form.value)
+  console.log('获取form-----------：', form.value)
   update(form.value).then(res => {
     ElMessage.success(msg + "成功！");
     setTimeout(()=>{
@@ -487,6 +492,8 @@ function handleUpdate(msg: string) {
 
 // 新增
 function handleAddNew(msg) {
+  approvalStore.updateData(form.value)
+  console.log('获取form-----------：', form.value)
   add(form.value).then(res => {
     ElMessage.success(msg + "成功！");
     setTimeout(()=>{
