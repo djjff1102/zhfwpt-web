@@ -9,32 +9,65 @@
         />
       </div>
       <div class="top-right">
-        <div>admin</div>
-        <div>税务一部 | 税务员</div>
+        <div>{{ userStore.user.name }}</div>
+        <div>{{ userStore?.user?.organization?.name }} | {{ userStore?.user?.roleName[0] }}</div>
       </div>
     </div>
     <div class="user-bottom">
       <div class="user-item flex-base-start">
         <span class="item-label">真实姓名</span>
-        <span class="item-value">长得正</span>
+        <span class="item-value">{{ userStore.user.realName }}</span>
       </div>
       <div class="user-item flex-base-start">
         <span class="item-label">本次登录</span>
-        <span class="item-value">2023-2-2</span>
+        <span class="item-value">{{ dayjs().format('YYYY-MM-DD HH:mm:ss') }}</span>
       </div>
       <div class="user-item flex-base-start">
         <span class="item-label">登录地区</span>
-        <span class="item-value">天津市滨海新区（IP: 233.145.255.255）</span>
+        <span class="item-value">{{ currentCity }}（{{ ip }}）</span>
       </div>
       <div class="user-item flex-base-start">
         <span class="item-label">上次登录</span>
-        <span class="item-value">2024-2-2 14:55:55</span>
+        <span class="item-value">{{ lastLoginTime }}</span>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
+import { ref } from 'vue'
+import dayjs from "dayjs";
+import { useUserStoreHook } from "@/store/modules/user";
+import axios from 'axios'
 
+const userStore = useUserStoreHook();
+
+const lastLoginTime = ref('暂无')
+let currentCity = ref('**')
+let ip = ref('')
+// 
+function getGeolocation() {
+  const geolocation = new BMap.Geolocation();
+  geolocation.getCurrentPosition((r) => {
+    if(r?.address?.province === r?.address?.city) {
+      currentCity.value = r?.address?.city
+    } else {
+      currentCity.value = r?.address?.province + r?.address?.city
+    }
+  })
+}
+
+function getIP() {
+  axios.get('https://api.ipify.org?format=json')
+  .then(response => {
+    ip.value = response.data.ip;
+  })
+  .catch(error => {
+    console.error('获取IP地址出错:', error);
+  });
+}
+
+getGeolocation()
+getIP()
 
 </script>
 <style lang="scss" scoped>

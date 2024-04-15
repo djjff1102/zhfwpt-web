@@ -67,17 +67,20 @@ const echartData = ref({
     {
       name: "进项",
       type: "line",
+      symbol: "circle",
       symbolSize: 8,
       data: [],
     },
     {
       name: "销项",
       type: "line",
+      symbol: "circle",
       symbolSize: 8,
       data: [],
     },
     {
       name: "近期申报",
+      symbol: "circle",
       type: "line",
       symbolSize: 8,
       data: [],

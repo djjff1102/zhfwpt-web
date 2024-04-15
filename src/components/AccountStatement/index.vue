@@ -64,7 +64,6 @@
   </div>
 </template>
 <script setup>
-import dayjs from "dayjs";
 import { ref, reactive } from "vue";
 import { qyzxBankStatement } from '@/api/archives'
 import { formatNumber } from '@/utils/common' 
