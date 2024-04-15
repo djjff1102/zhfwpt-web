@@ -56,18 +56,18 @@ const echartData = ref({
       },
     ],
     series: [
-      {
-        name: "",
-        type: "line",
-        symbolSize: 8,
-        data: [],
-      },
-      {
-        name: "",
-        type: "line",
-        symbolSize: 8,
-        data: [],
-      },
+      // {
+      //   name: "",
+      //   type: "line",
+      //   symbolSize: 8,
+      //   data: [],
+      // },
+      // {
+      //   name: "",
+      //   type: "line",
+      //   symbolSize: 8,
+      //   data: [],
+      // },
     ],
   })
 
@@ -75,10 +75,7 @@ watch(
   () => props.dataList,
   (v) => {
     nextTick(() => {
-      echartData.value.series[0].data = v?.yOut?.data || [];
-      echartData.value.series[0].name = v?.yOut?.name || ''
-      echartData.value.series[1].data = v?.yIn?.data || [];
-      echartData.value.series[1].name = v?.yIn?.name || '';
+      echartData.value.series = props.dataList.series;
       echartData.value.xAxis[0].data = props.time;
       init()
     })

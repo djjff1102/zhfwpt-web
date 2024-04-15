@@ -28,14 +28,20 @@ const route = useRoute();
 const activeName = ref('output')
 const echartData = ref({
   x:[],
-  yOut: {
-    data: [],
-    name: '销项'
-  },
-  yIn: {
-    data: [],
-    name: '进项'
-  }
+  series: [
+    {
+      name: '进项',
+      type: "line",
+      symbolSize: 8,
+      data: [],
+    },
+    {
+      name: "销项",
+      type: "line",
+      symbolSize: 8,
+      data: [],
+    },
+  ]
 })
 
 // 进项发票
@@ -72,9 +78,10 @@ Promise.all([getgroupByInvoiceDateIn(), getgroupByInvoiceDateOut()])
     const result2 = results[1];
     // 进行处理
     echartData.value.x = formatData(result2.data).x;
-    echartData.value.yOut.data = formatData(result2.data).y;
-    echartData.value.yIn.data = formatData(result1.data).y;
-    console.log('biage------------:', echartData.value)
+    // echartData.value.yOut.data = formatData(result2.data).y;
+    // echartData.value.yIn.data = formatData(result1.data).y;
+    echartData.value.series[0].data = formatData(result1.data).y;
+    echartData.value.series[1].data = formatData(result2.data).y;
   })
   .catch(error => {
     console.error('Error fetching data:', error);
