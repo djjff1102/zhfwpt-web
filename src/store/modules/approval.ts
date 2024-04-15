@@ -13,10 +13,10 @@ export const useApprovalStore = defineStore("approvalstore", () => {
   function setListData(data: any, type: any) {
     switch (type) {
       case "1":
-        DDList.value = data;
+        HTList.value = data;
         break;
       case "2":
-        HTList.value = data;
+        DDList.value = data;
         break;
       case "3":
         FPList.value = data;
