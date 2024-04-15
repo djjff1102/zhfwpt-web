@@ -19,19 +19,7 @@
             <div>{{ formatNumber(tableData[rowIndex].totalMoney) }}</div>
         </template>
         <template v-slot:operations="{rowIndex}">
-          <div class="flex-base-around">
-            <SingleUpload
-            :row="tableData[rowIndex]"
-            @updateUpload="updateUpload">
-            </SingleUpload>
-            <el-button
-              type="text"
-              @click="handleError(tableData[rowIndex])"
-              :disabled="checkError(tableData[rowIndex])"
-            >错误情况</el-button>
-            <el-button type="text" @click="toOrderDetail(tableData[rowIndex])">详情</el-button>
-            <el-button type="text" disabled>取消</el-button>
-          </div>
+          <reportOperation :tableData="tableData" :row="tableData[rowIndex]" :type="pro.DD"></reportOperation>
         </template>
       </m-table>
     </div>
@@ -39,11 +27,13 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed} from "vue";
+import { ref, reactive} from "vue";
 import { forReportDD } from '@/api/intellApproval/special'
 import { useRouter } from 'vue-router'
 import { formatNumber } from '@/utils/common'
 import { useApprovalStore } from '@/store/modules/approval'
+import reportOperation from './reportOperation.vue'
+import { pro } from '../type'
 
 const approvalStore = useApprovalStore();
 
@@ -148,13 +138,6 @@ const columns = reactive([
     fixed: "right",
   },
 ]);
-const pagination = ref({
-  total: 0,
-  pageSize: 10,
-  "show-total": true,
-  "show-page-size": true,
-  "show-jumper": true,
-});
 const orderPar = ref({
   page_size: 100,
   page: 1

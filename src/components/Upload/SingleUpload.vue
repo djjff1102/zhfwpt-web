@@ -24,11 +24,11 @@ import {
 import { singleuploadFileApi } from "@/api/file";
 import { splitFiltName } from '@/utils/common'
 
-const props = defineProps({
-  row: {
-    default: {}
-  }
-})
+// const props = defineProps({
+//   row: {
+//     default: {}
+//   }
+// })
 
 const emit = defineEmits(['updateUpload']);
 
@@ -48,7 +48,7 @@ async function handleUpload(options: UploadRequestOptions): Promise<any> {
     let name = splitFiltName(res.data)
     fileList.value.push(name)
     ElMessage.success(`附件${name}上传成`);
-    emit('updateUpload', allFileList.value, props.row)
+    emit('updateUpload', allFileList.value[0])
   }).catch(err => {
     ElMessage.error(`附件上失败`);
   })

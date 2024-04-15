@@ -124,10 +124,6 @@
       </card-tab>
       <!-- <w-row class="grid-demo">
         <w-col :span="20">
-          <div class="base-flex-start">
-            <w-input :style="{width: '532px', height: '32px', marginRight:'16px'}" placeholder="请输入搜索内容"></w-input>
-            <w-button type="primary">搜索</w-button>
-          </div>
         </w-col>
         <w-col v-if="initPageParam.edit" :span="4">
           <div class="flex-base-end"><w-button type="primary" @click="handleAdd">新增</w-button></div>
@@ -139,22 +135,24 @@
       ></InfoDD>
       <InfoHT
         v-if="curTab == pro.HT"
-        :companyName="companyName"
+        :reportId="reportId"
       ></InfoHT>
       <!-- 发票不区分进项和销项 -->
       <InfoFP
+        :reportId="reportId"
         v-if="curTab == pro.FP"
       ></InfoFP>
       <InfoYH
         v-if="curTab == pro.YH"
-        :companyName="companyName"
+        :reportId="reportId"
       ></InfoYH>
       <InfoCC
         v-if="curTab == pro.CC"
-        :companyName="companyName"
+        :reportId="reportId"
       ></InfoCC>
       <InfoWL
         v-if="curTab == pro.WL"
+        :reportId="reportId"
       ></InfoWL>
       <!-- <m-table
         :data="dataList"
@@ -197,7 +195,7 @@ import detailCom from './detailCom.vue'
 import ApprovalRecord from './ApprovalRecords.vue'
 import { searcht, add, update, getOneByCompanyName } from '@/api/intellApproval'
 import { useUserStoreHook } from "@/store/modules/user";
-import { pro, columnsHT,columnsDD, columnsFP, columnsCC, columnsYH, nameMap } from '../type'
+import { pro, nameMap } from '../type'
 import FileList from './FileList.vue';
 import ApprovalDo from './ApprovalDo.vue';
 import dayjs from "dayjs";
@@ -211,6 +209,7 @@ import InfoWL from './InfoWL.vue'
 import InfoYH from './InfoYH.vue'
 import InfoCC from './InfoCC.vue'
 import { useApprovalStore } from '@/store/modules/approval'
+import { judgeMaterial } from '@/api/intellApproval/special'
 
 const approvalStore = useApprovalStore();
 
@@ -301,7 +300,8 @@ const form = ref({
   warehouseMapRequestList: [], // 仓储
   bankStatementMapRequestList: [], // 银行流水
   otherMaterialsRequestList: [], // 其他资料
-  preStrMoney: ''// 需求预测
+  preStrMoney: '',// 需求预测
+  businessDataMaterialList: []
 })
 const defaultKey = ref('2'); // 默认打开的tab
 const curTab = ref('2') // 当前打开的tab
@@ -459,9 +459,11 @@ function handleSave(type: any, msg: string) {
   })
 }
 
-function checkSave(type: any, msg: string) {
+async function checkSave(type: any, msg: string) {
     // 1暂存 2提交
   form.value.dataStatus = type;
+  approvalStore.updateData(form.value)
+  await checkjudgeMaterial()
   if(initPageParam.type == 1) {
     // 更新
     form.value.id = initPageParam.id
@@ -479,9 +481,16 @@ function backToList() {
  });
 }
 
+// 算法校验
+function checkjudgeMaterial() {
+  judgeMaterial({ material: form.value?.businessDataMaterialList }).then(res => {
+
+  }).catch(err => {
+
+  })
+}
+
 function handleUpdate(msg: string) {
-  approvalStore.updateData(form.value)
-  console.log('获取form-----------：', form.value)
   update(form.value).then(res => {
     ElMessage.success(msg + "成功！");
     setTimeout(()=>{
@@ -491,9 +500,7 @@ function handleUpdate(msg: string) {
 }
 
 // 新增
-function handleAddNew(msg) {
-  approvalStore.updateData(form.value)
-  console.log('获取form-----------：', form.value)
+function handleAddNew(msg: any) {
   add(form.value).then(res => {
     ElMessage.success(msg + "成功！");
     setTimeout(()=>{
@@ -505,7 +512,7 @@ function handleAddNew(msg) {
 // 申报详情
 function getDetail(d) {
   searcht(d).then(res => {
-    if(JSON.stringify(res.data) != '{}') {
+    if(JSON.stringify(res.data) != '{}') { // 编辑或者有暂存
       initPageParam.type = 1
       initPageParam.id = res.data.id
       // TODO: 第一个版本的逻辑，选择河东订单前端本地缓存
@@ -542,7 +549,7 @@ function getgetOneByCompanyName() {
 }
 
 function init() {
-  type.value = route.query.type as any;
+  type.value = route.query.type as any; // add新增 edit编辑 detail详情
   queryPar.value = route.query;
   let id = route.query.id // 申请人发票ID
   if(type.value === 'detail') {

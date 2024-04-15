@@ -7,9 +7,7 @@
         :data="tableData"
         :columns="columns"
         :scroll="scroll"
-        :pagination="pagination"
-        @page-change="changepage"
-        @page-size-change="changePagesize"
+        :pagination="false"
         :bordered="false"
       >
         <template v-slot:index="{ rowIndex }">
@@ -18,29 +16,24 @@
         <template v-slot:paymentAmountSlot="{ rowIndex }">
           {{ formatNumber(Number(tableData[rowIndex].paymentAmount)) }}
         </template>
-        <template v-slot:operations>
-          <w-button type="text" disabled>详情</w-button>
+        <template v-slot:operations="{rowIndex}">
+          <reportOperation :tableData="tableData" :row="tableData[rowIndex]" :type="pro.YH"></reportOperation>
         </template>
       </m-table>
     </div>
   </div>
 </template>
 <script setup>
-import dayjs from "dayjs";
 import { ref, reactive } from "vue";
-import { qyzxBankStatement } from '@/api/archives'
-import { formatNumber } from '@/utils/common' 
+import { qyzxBankStatement } from '@/api/intellApproval/special'
+import { formatNumber } from '@/utils/common'
+import reportOperation from './reportOperation.vue'
+import { pro } from '../type'
 
 const props = defineProps({
-  companyName: String,
-  showSearch: {
-    default: true
-  }
+  reportId: ''
 })
 
-const curDate = ref('')
-const current = ref(1);
-const size = ref(10);
 const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
@@ -115,76 +108,25 @@ const columns = reactive([
     title: "关联订单编号",
     dataIndex: "orderCode",
     width: 220,
+  },
+  {
+    title: "操作",
+    width: 220,
+    dataIndex: "operations",
+    slotName: "operations",
     fixed: "right",
   },
 ]);
-const pagination = ref({
-  total: 0,
-  pageSize: 10,
-  "show-total": true,
-  "show-page-size": true,
-  "show-jumper": true,
-});
 
 const searchPar = ref({
-  page_size: 10,
+  page_size: 100,
   page: 1,
-  paymentDateStart: '',
-  paymentDateEnd: '',
-  paymentCompany: '', // 付款方
-  bank: '', // 银行网点
-  companyName: '' // 带过来的参数
+  dataType:''
 })
 const scroll = ref({
   y: 800,
   x: 1080,
 });
-const form = ref({
-  name: "",
-  post: "",
-});
-const changePagesize = (v) => {
-  searchPar.value.page_size = v;
-  searchPar.value.page = 1;
-  pagination.value.pageSize = v;
-  getqyzxBankStatement()
-};
-const changepage = (v) => {
-  searchPar.value.page = v;
-  getqyzxBankStatement();
-};
-
-// 时间选择
-function onChange(dateString, date) {
-  if(dateString && dateString.length > 0) {
-    searchPar.value.paymentDateStart = dateString[0];
-    searchPar.value.paymentDateEnd = dateString[1];
-  } else {
-    searchPar.value.paymentDateStart = '';
-    searchPar.value.paymentDateEnd = '';
-  }
-}
-
-function search() {
-  searchPar.value.page = 1;
-  getqyzxBankStatement();
-}
-
-function reset() {
-  let name = searchPar.value.companyName;
-  pagination.value.pageSize = 10;
-  curDate.value = ''
-  searchPar.value = {
-    page_size: 10,
-    page: 1,
-    paymentDateStart: '',
-    paymentDateEnd: '',
-    paymentCompany: '', // 付款方
-    bank: '', // 银行网点
-    companyName: name // 带过来的参数
-  }
-  getqyzxBankStatement();
-}
 
 // 银行流水
 function getqyzxBankStatement() {
@@ -192,7 +134,6 @@ function getqyzxBankStatement() {
   loading.value = true
   qyzxBankStatement(searchPar.value).then(res => {
     tableData.value = res.data;
-    pagination.value.total = res.total;
     loading.value = false
   }).catch(err => {
     loading.value = false
@@ -200,7 +141,7 @@ function getqyzxBankStatement() {
 }
 
 const init = async () => {
-  searchPar.value.companyName = props.companyName
+  searchPar.value.dataType = props.reportId
   getqyzxBankStatement()
 };
 init();

@@ -7,16 +7,14 @@
         :data="tableData"
         :columns="columns"
         :scroll="scroll"
-        :pagination="pagination"
-        @page-change="changepage"
-        @page-size-change="changePagesize"
+        :pagination="false"
         :bordered="false"
       >
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
         </template>
-        <template v-slot:operations>
-          <w-button type="text">详情</w-button>
+        <template v-slot:operations="{rowIndex}">
+          <reportOperation :tableData="tableData" :row="tableData[rowIndex]" :type="pro.FP"></reportOperation>
         </template>
       </m-table>
     </div>
@@ -24,19 +22,14 @@
 </template>
 <script setup>
 import { ref, reactive } from "vue";
-import { qyzxInvoic } from '@/api/archives'
-import { formateDate } from '@/utils/common'
+import { qyzxInvoic } from '@/api/intellApproval/special'
+import reportOperation from './reportOperation.vue'
+import { pro } from '../type'
 
 const props = defineProps({
-  parentCode: {
-    type: String,
-    default: ''
-  }
+  reportId: ''
 })
 
-const curDate = ref([])
-const current = ref(1);
-const size = ref(10);
 const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
@@ -150,74 +143,24 @@ const columns = reactive([
     slotName: 'amountTotalSlot',
     tooltip: {position: 'left'},
   },
+  {
+    title: "操作",
+    width: 220,
+    dataIndex: "operations",
+    slotName: "operations",
+    fixed: "right",
+  },
 ]);
-const pagination = ref({
-  total: 0,
-  pageSize: 10,
-  "show-total": true,
-  "show-page-size": true,
-  "show-jumper": true,
-});
 const scroll = ref({
   y: 800,
   x: 1080,
 });
 
 const searchPar = ref({
-  page_size: 10,
+  page_size: 100,
   page: 1,
-  orderCode: props.parentCode, //订单编号（在关联订单发票查询接口是需要前端传入的）
-  invoiceDateStart:"",
-  invoiceDateEnd:"",
-  type:"", //专用发票/普通发票，为空的话查询全部
-  code:"", //发票号码
-  receivingCompanyName:"",  //收票单位
-  invoicingCompanyName:""  //开票单位
+  dataType:''
 })
-
-const changePagesize = (v) => {
-  size.value = v;
-  pagination.value.pageSize = v;
-  init();
-}
-
-const changepage = (v) => {
-  current.value = v;
-  init();
-};
-
-// 时间选择
-function onChange(dateString, date) {
-  if(dateString && dateString.length > 0) {
-    searchPar.value.invoiceDateStart = formateDate(dateString[0]);
-    searchPar.value.invoiceDateEnd = formateDate(dateString[1]);
-  } else {
-    searchPar.value.invoiceDateStart = '';
-    searchPar.value.invoiceDateEnd = '';
-  }
-}
-
-function search() {
-  pagination.value.current = 1;
-  searchPar.value.page = 1;
-  getqyzxInvoic();
-}
-
-function reset() {
-  curDate.value = []
-  pagination.value.current =  1;
-  searchPar.value = {
-    page: 1,
-    orderCode: props.parentCode,   //订单编号（在关联订单发票查询接口是需要前端传入的）
-    invoiceDateStart:"",
-    invoiceDateEnd:"",
-    type:"",    //专用发票/普通发票，为空的话查询全部
-    code:"",    //发票号码
-    receivingCompanyName: "",    //收票单位
-    invoicingCompanyName: ""    //开票单位
-  }
-  getqyzxInvoic();
-}
 
 // 获取关联发票列表
 function getqyzxInvoic() {
@@ -225,7 +168,6 @@ function getqyzxInvoic() {
   loading.value = true;
   qyzxInvoic(searchPar.value).then(res => {
     tableData.value = res.data;
-    pagination.value.total = res.total;
     loading.value = false;
   }).catch(err => {
     loading.value = false;
@@ -233,6 +175,7 @@ function getqyzxInvoic() {
 }
 
 const init = async () => {
+  searchPar.value.dataType = props.reportId
   getqyzxInvoic();
 };
 

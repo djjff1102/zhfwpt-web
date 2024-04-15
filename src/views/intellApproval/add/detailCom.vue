@@ -8,28 +8,7 @@
     <!-- 企业用票需求预测 -->
     <div v-hasPerm="approvalMapping.approvalPredict">
       <div class="title base-title">企业进销项发票趋势</div>
-      <div class="tab-wrap">
-        <el-tabs type="card" v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="进项发票" name="1">
-            <div class="tendencyChart w-full">
-              <TendencyChart chartId="chartId1" :dataList="echartData.x" :time="echartData.y"></TendencyChart>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="销项发票" name="2">
-            <div class="tendencyChart w-full">
-              <TendencyChart chartId="chartId2" :dataList="echartData2.x" :time="echartData2.y"></TendencyChart>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="近期申报" name="3">
-            <div class="tendencyChart w-full">
-              <TendencyChart chartId="chartId3" :dataList="recentEchartData.y" :time="recentEchartData.x"></TendencyChart>
-            </div>
-          </el-tab-pane>
-        </el-tabs>
-        <div class="predict-wrap">
-          <PredictCom :data="preStrMoney"></PredictCom>
-        </div>
-      </div>
+      <TendencyChart chartId="chartId1" :dataList="echartData" :time="echartData.x"></TendencyChart>
     </div>
     <!-- 历史审批情况 -->
     <div v-hasPerm="approvalMapping.approvalHistory">
@@ -74,10 +53,7 @@ watch(
         id: props.companyId,
         reportId: props.reportId
       }
-      getgroupByInvoiceDate({
-        receivingCompanyName: props.companyName, 
-        invoicingCompanyName: ""
-      })
+      init()
     }
   },
   {
@@ -85,66 +61,93 @@ watch(
   }
 );
 
-const activeName = ref('1')
 const echartData = ref({
   x:[],
-  y: []
-})
-const echartData2 = ref({
-  x:[],
-  y: []
-})
-const recentEchartData = ref({
-  x:[],
-  y: []
+  series: [
+    {
+      name: "进项",
+      type: "line",
+      symbolSize: 8,
+      data: [],
+    },
+    {
+      name: "销项",
+      type: "line",
+      symbolSize: 8,
+      data: [],
+    },
+    {
+      name: "近期申报",
+      type: "line",
+      symbolSize: 8,
+      data: [],
+    },
+  ],
 })
 
-function handleClick(v) {
-  if(v.index == '0') {
-    const search = {
-      receivingCompanyName: props.companyName, //收票单位
-      invoicingCompanyName: "" // 开票单位
-    }
-    getgroupByInvoiceDate(search)
-  } else if(v.index == '1') {
-    const search = {
-      receivingCompanyName: '', //收票单位
-      invoicingCompanyName: props.companyName // 开票单位
-    }
-    getgroupByInvoiceDate(search);
-  } else {
-    getfpspReport();
-  }
-}
-
-function getfpspReport() {
-  queryFpspReport({id: props.companyId}).then(res => {
-    const data = res.data;
-    let x = []
-    let y = []
-    recentEchartData.value.x= []
-    recentEchartData.value.y = []
-    data.forEach(item =>{
-      x.push(item.yearMoth)
-      y.push(item.moneySum)
+// 进项发票
+function getgroupByInvoiceDateIn() {
+  return new Promise((resolve, reject) => {
+    groupByInvoiceDate({
+      receivingCompanyName: data.value.name
+    }).then(res => {
+      resolve(res.data)
+    }).catch(err => {
+      reject(err)
     })
-    recentEchartData.value.x = x
-    recentEchartData.value.y = y
-    console.log('222222222222222222222222222:', recentEchartData.value)
-  }).catch(err => {
-
   })
 }
 
-function getgroupByInvoiceDate(search) {
-  groupByInvoiceDate(search).then(res => {
-    if(activeName.value == '1') {
-      echartData.value = formatData(res.data.data);
-    } else {
-      echartData2.value = formatData(res.data.data);
-    }
-  }).catch(err => {})
+// 销项发票
+function getgroupByInvoiceDateOut() {
+  return new Promise((resolve, reject) => {
+    groupByInvoiceDate({
+      invoicingCompanyName: data.value.name
+    }).then(res => {
+      resolve(res.data)
+    }).catch(err => {
+      reject(err)
+    })
+  })
 }
+
+// 近期申报
+function getfpspReport() {
+  // TODO: 暂时这是 id传值为空
+  // return new Promise((resolve, reject) => {
+  //   queryFpspReport({id: data.value?.id}).then(res => {
+  //     const data = res.data;
+  //     let x = []
+  //     let y = []
+  //     data.forEach(item =>{
+  //       x.push(item.yearMoth)
+  //       y.push(item.moneySum)
+  //     })
+  //     resolve(x, y)
+  //   }).catch(err => {
+  //     reject(err)
+  //   })
+  // })
+}
+
+function init() {
+  Promise.all([getgroupByInvoiceDateIn(), getgroupByInvoiceDateOut(), getfpspReport()])
+  .then(results => {
+    // 两个接口都成功返回数据
+    const result1 = results[0];
+    const result2 = results[1];
+    const result3 = results[2]
+    // 进行处理
+    echartData.value.x = getfpspReport().x || formatData(result1.data).x || formatData(result2.data).x;
+    echartData.value.series[0].data = formatData(result1.data).y;
+    echartData.value.series[1].data = formatData(result2.data).y;
+    echartData.value.series[2].data = result3.y;
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+});
+}
+
 </script>
 <style lang="scss" scoped>
 .tab-wrap {

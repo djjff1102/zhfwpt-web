@@ -6,9 +6,7 @@
         :data="tableData"
         :columns="columns"
         :scroll="scroll"
-        :pagination="pagination"
-        @page-change="changepage"
-        @page-size-change="changePagesize"
+        :pagination="false"
         :bordered="false"
       >
         <template v-slot:index="{ rowIndex }">
@@ -17,29 +15,24 @@
         <template v-slot:amountSlot="{ rowIndex }">
           {{ formatNumber(tableData[rowIndex].amount) }}
         </template>
-        <template v-slot:operations>
-          <w-button type="text" disabled>详情</w-button>
+        <template v-slot:operations="{rowIndex}">
+          <reportOperation :tableData="tableData" :row="tableData[rowIndex]" :type="pro.HT"></reportOperation>
         </template>
       </m-table>
     </div>
   </div>
 </template>
 <script setup>
-import dayjs from "dayjs";
-import { onMounted, ref, reactive, unref, computed, watch } from "vue";
-import { qyzxTransactionCertificate } from '@/api/archives'
-import { formatNumber, formateDate } from '@/utils/common' 
+import { ref, reactive } from "vue";
+import { qyzxTransactionCertificate } from '@/api/intellApproval/special'
+import { formatNumber } from '@/utils/common' 
+import reportOperation from './reportOperation.vue'
+import { pro } from '../type'
 
 const props = defineProps({
-  companyName: String,
-  showSearch: {
-    default: true
-  }
+  reportId: ''
 })
 
-const curDate = ref('')
-const current = ref(1);
-const size = ref(10);
 const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
@@ -88,44 +81,21 @@ const columns = reactive([
   },
   {
     title: "操作",
-    width:100,
+    width: 220,
     dataIndex: "operations",
     slotName: "operations",
     fixed: "right",
   },
 ]);
-const pagination = ref({
-  total: 0,
-  pageSize: 10,
-  "show-total": true,
-  "show-page-size": true,
-  "show-jumper": true,
-});
 const searchPar = ref({
-  page_size: 10,
+  page_size: 100,
   page: 1,
-  signDateStart: '',
-  signDateEnd: '',
-  code: '',
-  companyName: '', // 传过来的公司名称
-  partyA: '', // 甲方
-  partyB: '' // 乙方
+ dataType: ''
 })
 const scroll = ref({
   y: 800,
   x: 1080,
 });
-
-const changePagesize = (v) => {
-  searchPar.value.page_size = v;
-  pagination.value.pageSize = v;
-  searchPar.value.page = 1;
-  getqyzxTransactionCertificate();
-};
-const changepage = (v) => {
-  searchPar.value.page = v;
-  getqyzxTransactionCertificate();
-};
 
 // 交易凭证
 function getqyzxTransactionCertificate() {
@@ -141,7 +111,7 @@ function getqyzxTransactionCertificate() {
 }
 
 const init = async () => {
-  searchPar.value.companyName = props.companyName
+  searchPar.value.dataType = props.reportId
   getqyzxTransactionCertificate()
 };
 init();

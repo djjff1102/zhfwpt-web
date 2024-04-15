@@ -50,7 +50,6 @@ const props = defineProps({
 watch(
   () => props.companyId,
   (v) => {
-    alert(v)
     // if(v && v.length > 0) {
     //   tableData.value = v
     // }
