@@ -1,7 +1,7 @@
 <template>
   <div class="validate-excel">
     <div class="file-message">系统中存在申报所需订单，可通过【新增】功能进行勾选；系统中不存在申报所需订单，可手动上传</div>
-    <div class="validate-excel-wrap">
+    <div class="validate-excel-wrap" :class="{'error-mesg': errorFlag && uploadFlag == 0 }">
       <div class="flex-base-start">
         <el-button :loading="loading" type="text" style="margin-right: 8px" @click="downloadTemplate">下载模版</el-button>
         <el-upload
@@ -75,6 +75,9 @@ const props = defineProps({
   },
   reportId: {
     default: -1
+  },
+  errorFlag: {
+    default: false
   }
 })
 
@@ -153,15 +156,17 @@ async function handleUpload(options) {
     relationList.value = []
     tableData.value = res.data.fieldList
     uploadFlag.value = 0
+    emits('updateFileData', uploadFlag.value)
   } else if(res.data.relationList && res.data.relationList.length > 0) {
     fileList.value = [];
     tableData.value = []
     relationList.value = res.data.relationList
     uploadFlag.value = 0
+    emits('updateFileData', uploadFlag.value)
   } else {
     fileList.value = [options.file]
     uploadFlag.value = 1
-    emits('updateFileData')
+    emits('updateFileData', uploadFlag.value)
   }
 }
 
@@ -217,6 +222,9 @@ function handleClose() {
   padding: 24px;
   margin-top: 12px;
   margin-bottom: 32px;
+}
+.error-mesg {
+  border: 1px dashed red;
 }
 .success-text {
   height: 24px;

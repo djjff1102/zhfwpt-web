@@ -1,8 +1,8 @@
 <template>
   <!-- <el-divider> -->
   <div class="open-icon-bg">
-    <img src="@/assets/base/openclose.svg"  @click="handleOpen" style="cursor: pointer;">
-    <span class="text-[#3470FF] open-btn">
+    <img src="@/assets/base/openclose.svg" style="cursor: pointer;">
+    <span class="text-[#3470FF] open-btn" @click="handleOpen">
       {{ isOpen ? "收起" : "展开" }}<el-icon :class="[!isOpen?'more-icon':'close-more-icon']" style="margin-top: -4px"><DArrowRight /></el-icon>
     </span>
   </div>
@@ -38,9 +38,10 @@ function handleOpen() {
   display: flex;
   align-items: center;
   position: absolute;
+  padding: 12px 30px;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, 40%);
+  transform: translate(-50%, -10%);
 }
 .more-icon {
   margin-left: 8px;

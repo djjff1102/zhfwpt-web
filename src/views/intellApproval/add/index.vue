@@ -112,6 +112,7 @@
       <validateExcel
         :form="form"
         :reportId="reportId"
+        :errorFlag="errorFlag"
         @updateReportId="updateReportId"
         @updateFileData="updateFileData"
         ></validateExcel>
@@ -311,6 +312,8 @@ const showApproval = ref(false) // 审批窗口
 const totalMoney = ref(0);
 const fileList = ref([]) // 已经提交的文件
 const queryPar = ref({}) // 路由查询参数
+const uploadFlag = ref(-1) // -1未上传文件 0 上传文件失败 1上传成功
+const errorFlag = ref(false) // 信息提交时，深白资料有误，提示信息
 
 // 更新审批id
 function updateReportId(id) {
@@ -318,13 +321,17 @@ function updateReportId(id) {
 }
 
 // 文件上传成功，刷新列表
-function updateFileData() {
-  let tab = curTab.value;
-  curTab.value = '-1';
-  nextTick(() => {
-    curTab.value = tab
-  })
-  
+function updateFileData(Flag: any) {
+  if(Flag == 1) { // 上传成功
+    let tab = curTab.value;
+    curTab.value = '-1';
+    nextTick(() => {  // 上传失败
+      curTab.value = tab
+    })
+    uploadFlag.value = Flag
+  } else {
+    uploadFlag.value = Flag
+  }
 }
 
 // 切换时间类型
@@ -454,6 +461,11 @@ function getCurSumMoney(v: any) {
 // 新增暂存、新增提交
 
 function handleSave(type: any, msg: string) {
+  if(uploadFlag.value == 0) {
+    ElMessage.warning("申报资料有误");
+    errorFlag.value = true
+    return;
+  }
   basefrom1.value.validate(v => {
     if(v) {
       basefrom2.value.validate(k => {
