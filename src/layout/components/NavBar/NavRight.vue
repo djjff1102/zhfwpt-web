@@ -33,7 +33,6 @@
     <!-- 消息通知 trigger="click"-->
     <el-popover
       placement="bottom-start"
-      trigger="click"
       :width="407"
     >
       <template #reference>
