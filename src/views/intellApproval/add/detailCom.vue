@@ -53,7 +53,19 @@ watch(
         id: props.companyId,
         reportId: props.reportId
       }
-      init()
+    }
+  },
+  {
+    immediate: true
+  }
+);
+
+watch(
+  () => props.companyId,
+  (id) => {
+    if(id) {
+      init(id)
+      // getfpspReport(id)
     }
   },
   {
@@ -115,33 +127,30 @@ function getgroupByInvoiceDateOut() {
 }
 
 // 近期申报
-function getfpspReport() {
-  // TODO: 暂时这是 id传值为空
-  // return new Promise((resolve, reject) => {
-  //   queryFpspReport({id: data.value?.id}).then(res => {
-  //     const data = res.data;
-  //     let x = []
-  //     let y = []
-  //     data.forEach(item =>{
-  //       x.push(item.yearMoth)
-  //       y.push(item.moneySum)
-  //     })
-  //     resolve(x, y)
-  //   }).catch(err => {
-  //     reject(err)
-  //   })
-  // })
+function getfpspReport(id) {
+  return queryFpspReport({ id }).then(res => {
+    const data = res.data;
+    let x = []
+    let y = []
+    data.forEach(item =>{
+      x.push(item.yearMoth)
+      y.push(item.moneySum)
+    })
+    return {
+      x,y
+    }
+  })
 }
 
-function init() {
-  Promise.all([getgroupByInvoiceDateIn(), getgroupByInvoiceDateOut(), getfpspReport()])
+function init(id) {
+  Promise.all([getgroupByInvoiceDateIn(), getgroupByInvoiceDateOut(), getfpspReport(id)])
   .then(results => {
     // 两个接口都成功返回数据
     const result1 = results[0];
-    const result2 = results[1];
+    const result2 = results[1]
     const result3 = results[2]
     // 进行处理
-    echartData.value.x = getfpspReport().x || formatData(result1.data).x || formatData(result2.data).x;
+    echartData.value.x =  formatData(result2.data).x;
     echartData.value.series[0].data = formatData(result1.data).y;
     echartData.value.series[1].data = formatData(result2.data).y;
     echartData.value.series[2].data = result3.y;

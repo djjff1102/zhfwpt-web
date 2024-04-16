@@ -164,7 +164,7 @@
         </template>
       </m-table> -->
       <div class="flex-base-start sum-line">
-        <div style="margin-right: 16px">{{ nameMap[curTab] }}已选：<span class="num-light">{{ dataList.length }}</span></div>
+        <div style="margin-right: 16px">{{ nameMap[curTab] }}已选：<span class="num-light">待定</span></div>
         <div>金额合计：<span class="num-light">{{ totalMoney }}</span></div>
       </div>
     </div>
@@ -209,7 +209,7 @@ import InfoWL from './InfoWL.vue'
 import InfoYH from './InfoYH.vue'
 import InfoCC from './InfoCC.vue'
 import { useApprovalStore } from '@/store/modules/approval'
-import { judgeMaterial } from '@/api/intellApproval/special'
+import { judgeMaterial, getTotalMoney } from '@/api/intellApproval/special'
 
 const approvalStore = useApprovalStore();
 
@@ -389,7 +389,17 @@ function updateUpload(file) {
 
 function handleTab(v: any) {
   curTab.value = v;
+  getCurSumMoney(v)
   // updateTable(dataHT.value, dataDD.value, dataFP.value, dataCC.value, dataYH.value);
+}
+
+function getCurSumMoney(v: any) {
+  getTotalMoney({
+    reportId: reportId.value,
+    fileType: v
+  }).then(res => {
+    totalMoney.value = res.data;
+  }).catch(err => {})
 }
 
 // function updateTable(HT:any, DD:any, FP:any, CC:any, YH:any,) {

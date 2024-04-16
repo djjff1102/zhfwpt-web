@@ -78,8 +78,6 @@ Promise.all([getgroupByInvoiceDateIn(), getgroupByInvoiceDateOut()])
     const result2 = results[1];
     // 进行处理
     echartData.value.x = formatData(result2.data).x;
-    // echartData.value.yOut.data = formatData(result2.data).y;
-    // echartData.value.yIn.data = formatData(result1.data).y;
     echartData.value.series[0].data = formatData(result1.data).y;
     echartData.value.series[1].data = formatData(result2.data).y;
   })

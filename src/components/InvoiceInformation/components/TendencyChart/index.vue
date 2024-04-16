@@ -33,20 +33,20 @@ const echartData = ref({
     tooltip: {
       trigger: "axis",
       axisPointer: {
-        animation: false,
+        animation: true,
       },
     },
     grid: [
       {
-        left: 60,
-        right: 50,
+        left: 120,
+        right: 120,
       },
     ],
     xAxis: [
       {
         type: "category",
         boundaryGap: false,
-        data: props.time,
+        data: [],
       },
     ],
     yAxis: [
@@ -55,27 +55,14 @@ const echartData = ref({
         type: "value",
       },
     ],
-    series: [
-      // {
-      //   name: "",
-      //   type: "line",
-      //   symbolSize: 8,
-      //   data: [],
-      // },
-      // {
-      //   name: "",
-      //   type: "line",
-      //   symbolSize: 8,
-      //   data: [],
-      // },
-    ],
+    series: [],
   })
 
 watch(
   () => props.dataList,
   (v) => {
     nextTick(() => {
-      echartData.value.series = props.dataList.series;
+      echartData.value.series = v.series;
       echartData.value.xAxis[0].data = props.time;
       init()
     })
@@ -83,13 +70,14 @@ watch(
     deep: true,
   }
 );
-
+const TChert = ref()
 function init() {
   const tendencyDom = document.getElementById(props.chartId);
   const tendencyChart = echarts.init(tendencyDom, null, {
     width: "auto",
     height: "400",
   });
+  TChert.value = tendencyChart
   tendencyChart.setOption(echartData.value);
   window.addEventListener('resize', handleResize);
 }
@@ -100,6 +88,11 @@ function handleResize() {
     chart.resize();
   }
 }
+
+// onMounted(() => {
+//   init()
+// })
+
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize);
 })

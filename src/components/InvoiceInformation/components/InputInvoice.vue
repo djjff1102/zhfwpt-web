@@ -219,11 +219,11 @@ const pagination = ref({
   "show-page-size": true,
   "show-jumper": true,
 });
-const echartData = ref({
-  x:[],
-  y: [],
-  sum : 0
-})
+// const echartData = ref({
+//   x:[],
+//   y: [],
+//   sum : 0
+// })
 const searchPar = ref({
   page_size: 10,
   page: 1,
@@ -311,18 +311,18 @@ function getqyzxInvoice() {
   })
 }
 
-function getgroupByInvoiceDate() {
-  groupByInvoiceDate({
-    receivingCompanyName: route.query.companyName
-  }).then(res => {
-    echartData.value = formatData(res.data.data);
-  }).catch(err => {})
-}
+// function getgroupByInvoiceDate() {
+//   groupByInvoiceDate({
+//     receivingCompanyName: route.query.companyName
+//   }).then(res => {
+//     echartData.value = formatData(res.data.data);
+//   }).catch(err => {})
+// }
 
 const init = async () => {
   searchPar.value.receivingCompanyName = route.query.companyName
   getqyzxInvoice();
-  getgroupByInvoiceDate();
+  // getgroupByInvoiceDate();
 };
 
 init();

@@ -2,8 +2,11 @@ export const formatData = (data) => {
   let timeArry = [];
   let amountArry = [];
   data.forEach((item) => {
-    let time = `${item.invoicing_year}.${item.invoicing_month}`;
-    let amount = item.count || 0;
+    if (!item) {
+      return;
+    }
+    let time = `${item?.invoicing_year}.${item?.invoicing_month}`;
+    let amount = item?.count || 0;
     timeArry.push(time);
     amountArry.push(amount);
   });

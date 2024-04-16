@@ -320,18 +320,18 @@ function getqyzxInvoice() {
   })
 }
 
-function getgroupByInvoiceDate() {
-  groupByInvoiceDate({
-    invoicingCompanyName: searchPar.value.invoicingCompanyName
-  }).then(res => {
-    echartData.value = formatData(res.data.data);
-  }).catch(err => {})
-}
+// function getgroupByInvoiceDate() {
+//   groupByInvoiceDate({
+//     invoicingCompanyName: searchPar.value.invoicingCompanyName
+//   }).then(res => {
+//     echartData.value = formatData(res.data.data);
+//   }).catch(err => {})
+// }
 
 const init = async () => {
   searchPar.value.invoicingCompanyName = route.query.companyName
   getqyzxInvoice();
-  getgroupByInvoiceDate();
+  // getgroupByInvoiceDate();
 };
 init();
 </script>

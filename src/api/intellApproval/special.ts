@@ -55,3 +55,14 @@ export function judgeMaterial(data: any) {
     data,
   });
 }
+
+/**
+ * 已选的订单、合同、发票、银行流水的总金额
+ */
+export function getTotalMoney(data: any) {
+  return request({
+    url: "base/fpsp_report/getTotalMoney",
+    method: "post",
+    data,
+  });
+}
