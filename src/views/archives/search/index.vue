@@ -122,12 +122,7 @@ const provinceResult = ref() // 省份分布
 
 const scrollDisabled = computed(() => {
   return tableData.value.length >= total.value;
-  // if(tableData.value.length > 0) {
-  //   return tableData.value.length >= total.value;
-  // }
-  // return false;
 })
-// const maxHeight = computed(() => (isOpen.value ? "auto" : "22px"));
 
 const isEmpty = computed(() => {
   return tableData.value.length === 0;
@@ -150,11 +145,8 @@ function refresh(i) {
 function handleSearchProvince(item) {
   if(!item) {
     searchPar.value.provinceShort = '';
-    // curProvince.value = '';
   } else {
     searchPar.value.provinceShort = item.key;
-    // curProvince.value = item.province_short;
-    
   }
   searchPar.value.page = 1;
   loading.value = true;

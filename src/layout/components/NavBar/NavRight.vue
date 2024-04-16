@@ -33,6 +33,7 @@
     <!-- 消息通知 trigger="click"-->
     <el-popover
       placement="bottom-start"
+      trigger="click"
       :width="407"
     >
       <template #reference>
@@ -71,6 +72,7 @@ const { device } = storeToRefs(appStore); // 设备类型：desktop-宽屏设备
  */
 const { isFullscreen, toggle } = useFullscreen();
 
+const popover = ref();
 
 // 打开消息列表
 function handleOpenNotice() {
@@ -96,7 +98,6 @@ function logout() {
       });
   });
 }
-
 </script>
 <style lang="scss" scoped>
 .setting-container {

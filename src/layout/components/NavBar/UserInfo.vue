@@ -26,10 +26,10 @@
         <span class="item-label">登录地区</span>
         <span class="item-value">{{ currentCity }}（{{ ip }}）</span>
       </div>
-      <div class="user-item flex-base-start">
+      <!-- <div class="user-item flex-base-start">
         <span class="item-label">上次登录</span>
         <span class="item-value">{{ lastLoginTime }}</span>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -41,7 +41,6 @@ import axios from 'axios'
 
 const userStore = useUserStoreHook();
 
-const lastLoginTime = ref('暂无')
 let currentCity = ref('**')
 let ip = ref('')
 // 

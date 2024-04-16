@@ -1,14 +1,44 @@
 <template>
-  <div class="notice-popover-content">
-    <div class="notice-item" v-for="item in [1,2,3,4,5,6,7,8]" :key="item">
-      <span>待审批</span> -
-      <span>CXL23232莱佛金属（天津）有限公司测试测试测试测试测试测试</span>
+  <div 
+    ref="scrolldom"
+    class="notice-popover-content">
+    <div ref='innerDom' style="height: auto">
+      <div class="notice-item" v-for="item in tableData" :key="item" @click="handleDetail(item)">
+        <span>（{{ roleLevel == 1 ? '待审批' : '驳回' }}）</span> -
+        <span>{{ item.companyName }}</span>
+      </div>
     </div>
-    <div class="no-more">-- 暂无更多 --</div>
+    <div v-if="scrollDisabled" class="no-more">-- 暂无更多 --</div>
   </div>
 </template>
 <script setup lang="ts">
+import { computed, onMounted } from 'vue'
+import { useNoticeApprovalStore } from '@/store/modules/notice'
 
+const noticeStore = useNoticeApprovalStore();
+
+const tableData = computed(() => noticeStore.tableData)
+const scrollDisabled = computed(() => noticeStore.scrollDisabled)
+const roleLevel = computed(() => noticeStore.roleLevel) // 1税务 2企业
+
+const scrolldom = ref();
+const innerDom = ref()
+
+function handleInfiniteOnLoad() {
+  let scrollTop = scrolldom.value.scrollTop;
+  let domH = innerDom.value.clientHeight;
+  noticeStore.getNoticeApprovalList()
+}
+
+// 跳转详情页
+function handleDetail(item: any) {
+  noticeStore.toNoticeApprovalDetail(item)
+}
+
+onMounted(() => {
+  scrolldom.value.addEventListener('scroll', handleInfiniteOnLoad)
+  handleInfiniteOnLoad()
+})
 </script>
 <style lang="scss" scoped>
 .notice-popover-content {
