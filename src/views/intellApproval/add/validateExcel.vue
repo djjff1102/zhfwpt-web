@@ -36,15 +36,15 @@
     <el-dialog
       title="错误信息"
       v-model="dialogVisible"
-      width="60%"
+      width="800"
       :before-close="handleClose"
     >
-    <div style="padding: 24px">
+    <div style="padding: 24px 30px">
       <m-table
-        style="height: 100%"
+        v-if="tableData && tableData.length > 0"
         :data="tableData"
         :columns="columns"
-        :scroll="false"
+        :scroll="scroll"
         :pagination="false"
         :bordered="false"
       >
@@ -52,6 +52,9 @@
           {{ rowIndex + 1 }}
         </template>
       </m-table>
+      <div v-if="relationList && relationList.length > 0">
+        <div class="relation-info" v-for="(item, i) in relationList" :key="i">{{ i+1 }}、{{ item }}</div>
+      </div>
     </div>
     </el-dialog>
   </div>
@@ -77,6 +80,9 @@ const props = defineProps({
 
 const emits = defineEmits(['updateReportId', 'updateFileData'])
 
+const scroll = ref({
+  y: 500
+})
 const uploadFlag = ref(-1) // -1 未上传文件，0上传有误，1上传成功
 const loading = ref(false)
 const fileList = ref([])
@@ -101,6 +107,7 @@ const columns = reactive([
     dataIndex: "content",
   }
 ])
+const relationList = ref([]) // 关联关系错误
 
 // 模版下载
 async function downloadTemplate() {
@@ -143,7 +150,13 @@ async function handleUpload(options) {
   const res = await importData(formData);
   if(res.data.fieldList && res.data.fieldList.length > 0) {
     fileList.value = [];
+    relationList.value = []
     tableData.value = res.data.fieldList
+    uploadFlag.value = 0
+  } else if(res.data.relationList && res.data.relationList.length > 0) {
+    fileList.value = [];
+    tableData.value = []
+    relationList.value = res.data.relationList
     uploadFlag.value = 0
   } else {
     fileList.value = [options.file]
@@ -177,6 +190,17 @@ function handleClose() {
 </script>
 
 <style scoped lang="scss">
+.relation-info {
+  height: 20px;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 14px;
+  color: #333333;
+  line-height: 20px;
+  text-align: left;
+  font-style: normal;
+  margin-bottom: 8px;
+}
 .file-message {
   height: 22px;
   font-family: PingFangSC, PingFang SC;
