@@ -35,6 +35,9 @@ import { ref, watch, reactive } from 'vue'
 import { appravalResultList } from '../type'
 import { approveSave } from '@/api/intellApproval'
 import { useRouter } from 'vue-router';
+import { useNoticeApprovalStore } from '@/store/modules/notice'
+
+const noticeStore = useNoticeApprovalStore()
 
 const props = defineProps({
   showAdd: {
@@ -87,6 +90,7 @@ function handleOk() {
         emits('updateData')
         emits('updateAdd')
         ElMessage.success("审批成功！");
+        noticeStore.refreshNotice()
         loading.value = false
       }).catch(err => {
         loading.value = false

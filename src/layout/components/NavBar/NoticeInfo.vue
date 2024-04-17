@@ -7,6 +7,7 @@
         <span>（{{ roleLevel == 1 ? '待审批' : '驳回' }}）</span> -
         <span>{{ item.companyName }}</span>
       </div>
+      <div v-if="tableData.length == 0" class="no-more">暂无通知</div>
     </div>
     <div v-if="scrollDisabled" class="no-more">-- 暂无更多 --</div>
   </div>
@@ -42,8 +43,8 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
 .notice-popover-content {
-  padding: 24px 16px 8px;
-  height: 300px;
+  padding: 24px 16px;
+  max-height: 300px;
   overflow-y: scroll;
   .notice-item {
     width:375px;

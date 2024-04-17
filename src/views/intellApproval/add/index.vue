@@ -211,6 +211,9 @@ import InfoYH from './InfoYH.vue'
 import InfoCC from './InfoCC.vue'
 import { useApprovalStore } from '@/store/modules/approval'
 import { judgeMaterial, getTotalMoney } from '@/api/intellApproval/special'
+import { useNoticeApprovalStore } from '@/store/modules/notice'
+
+const noticeStore = useNoticeApprovalStore()
 
 const approvalStore = useApprovalStore();
 
@@ -482,7 +485,7 @@ function handleSave(type: any, msg: string) {
 }
 
 async function checkSave(type: any, msg: string) {
-    // 1暂存 2提交
+  // 1暂存 2提交
   form.value.dataStatus = type;
   approvalStore.updateData(form.value)
   await checkjudgeMaterial()
@@ -518,7 +521,10 @@ function handleUpdate(msg: string) {
     setTimeout(()=>{
       backToList()
     },500)
-  }).catch(err => {})
+    noticeStore.refreshNotice()
+  }).catch(err => {
+    ElMessage.error(msg + "失败！");
+  })
 }
 
 // 新增
@@ -528,7 +534,10 @@ function handleAddNew(msg: any) {
     setTimeout(()=>{
       backToList()
     },500)
-  }).catch(err => {})
+    noticeStore.refreshNotice()
+  }).catch(err => {
+    ElMessage.error(msg + "失败！");
+  })
 }
 
 // 申报详情

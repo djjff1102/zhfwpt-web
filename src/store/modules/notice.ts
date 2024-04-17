@@ -60,6 +60,13 @@ export const useNoticeApprovalStore = defineStore("noticeApprovalstore", () => {
       });
   }
 
+  function refreshNotice() {
+    tableData.value = [];
+    searchPar.value.page = 1;
+    total.value = 0;
+    getNoticeApprovalList();
+  }
+
   // 跳转审批详情
   function toNoticeApprovalDetail(data: any) {
     router.push({
@@ -74,14 +81,6 @@ export const useNoticeApprovalStore = defineStore("noticeApprovalstore", () => {
     });
   }
 
-  function refreshNotice() {
-    searchPar.value = {
-      page_size: 10,
-      page: 1,
-      approveStatus: "", // 审批状态
-    };
-  }
-
   return {
     roleLevel,
     tableData,
@@ -89,5 +88,6 @@ export const useNoticeApprovalStore = defineStore("noticeApprovalstore", () => {
     scrollDisabled,
     getNoticeApprovalList,
     toNoticeApprovalDetail,
+    refreshNotice,
   };
 });
