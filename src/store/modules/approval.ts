@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import { ref, reactive } from "vue";
 import {
   qyzxBankStatement,
   forReportDD,
@@ -19,6 +19,12 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     page: 1,
     dataType: "",
   });
+  const fileInfo = ref(); // 记录上传的附件
+
+  // 保存上传的文件
+  function setFileInfo(d: any) {
+    fileInfo.value = d;
+  }
 
   // 获取订单、合同、 发票、 银行流水
   function getTableData(reportId: any) {
@@ -43,7 +49,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     qyzxTransactionCertificate(searchPar.value)
       .then((res) => {
         HTList.value = res.data;
-        console.log("合同---------：", HTList.value);
       })
       .catch((err) => {});
   }
@@ -91,6 +96,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
   // 表单提交前，整合数据
   function updateData(form: any) {
     const businessDataMaterialList: any = [];
+    businessDataMaterialList.push(fileInfo.value);
     const DDcode: any = [];
     const HTcode: any = [];
     const FPcode: any = [];
@@ -123,7 +129,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     });
     YHList.value.forEach((item: any) => {
       YHcode.push(item.id);
-      console.log("银行code----------------------------：", YHcode);
       if (item?.businessDataMaterialList) {
         const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
         businessDataMaterialList.push(d);
@@ -169,5 +174,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     setListData,
     updateData,
     getTableData,
+    setFileInfo,
   };
 });

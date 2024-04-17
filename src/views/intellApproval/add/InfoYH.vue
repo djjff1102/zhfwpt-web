@@ -25,7 +25,6 @@
 </template>
 <script setup>
 import { ref, reactive } from "vue";
-import { qyzxBankStatement } from '@/api/intellApproval/special'
 import { formatNumber } from '@/utils/common'
 import reportOperation from './reportOperation.vue'
 import { pro } from '../type'
@@ -40,8 +39,6 @@ const props = defineProps({
   reportId: ''
 })
 
-const loading = ref(false);
-// const tableData = ref([]);
 const columns = reactive([
   {
     title: "序号",
@@ -124,33 +121,10 @@ const columns = reactive([
   },
 ]);
 
-const searchPar = ref({
-  page_size: 100,
-  page: 1,
-  dataType:''
-})
 const scroll = ref({
   y: 800,
   x: 1080,
 });
-
-// 银行流水
-function getqyzxBankStatement() {
-  if(loading.value) return
-  loading.value = true
-  qyzxBankStatement(searchPar.value).then(res => {
-    tableData.value = res.data;
-    loading.value = false
-  }).catch(err => {
-    loading.value = false
-  })
-}
-
-const init = async () => {
-  searchPar.value.dataType = props.reportId
-  getqyzxBankStatement()
-};
-// init();
 </script>
 
 <style lang="scss" scoped>

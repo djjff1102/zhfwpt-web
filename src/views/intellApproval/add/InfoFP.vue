@@ -22,7 +22,6 @@
 </template>
 <script setup>
 import { ref, reactive } from "vue";
-import { qyzxInvoic } from '@/api/intellApproval/special'
 import reportOperation from './reportOperation.vue'
 import { pro } from '../type'
 import { useApprovalStore } from '@/store/modules/approval'

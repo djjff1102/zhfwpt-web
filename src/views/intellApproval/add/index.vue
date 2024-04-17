@@ -554,6 +554,7 @@ function getDetail(d) {
       form.value.taxAuthority = '东疆综合保税区税务局'
       curDate.value = [res.data.validDateStart, res.data.validDateEnd]
       reportId.value = res.data.id
+      approvalStore.getTableData(reportId.value); // 获取订单、合同、发票等信息
     } else {
       getgetOneByCompanyName() // 当前返回数据为空，新增，且无暂存，则查询企业基本信息
     }
@@ -601,6 +602,7 @@ function init() {
 }
 
 init()
+
 </script>
 
 <style lang="scss" scoped>

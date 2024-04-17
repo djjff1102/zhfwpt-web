@@ -24,8 +24,6 @@
 </template>
 <script setup>
 import { ref, reactive } from "vue";
-import { qyzxTransactionCertificate } from '@/api/intellApproval/special'
-import { forReportDD } from '@/api/intellApproval/special'
 import { formatNumber } from '@/utils/common' 
 import reportOperation from './reportOperation.vue'
 import { pro } from '../type'
@@ -40,8 +38,6 @@ const props = defineProps({
   reportId: ''
 })
 
-const loading = ref(false);
-// const tableData = ref([]);
 const columns = reactive([
   {
     title: "序号",
@@ -94,35 +90,11 @@ const columns = reactive([
     fixed: "right",
   },
 ]);
-const searchPar = ref({
-  page_size: 100,
-  page: 1,
- dataType: ''
-})
+
 const scroll = ref({
   y: 800,
   x: 1080,
 });
-
-// 交易凭证
-function getqyzxTransactionCertificate() {
-  if(loading.value) return
-  loading.value = true
-  qyzxTransactionCertificate(searchPar.value).then(res => {
-    tableData.value = res.data;
-    loading.value = false
-    pagination.value.total = res.total;
-  }).catch(err => {
-    loading.value = false
-  })
-}
-
-const init = async () => {
-  searchPar.value.dataType = props.reportId
-  getqyzxTransactionCertificate()
-};
-// init();
-
 </script>
 
 <style lang="scss" scoped>

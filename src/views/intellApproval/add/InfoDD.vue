@@ -28,7 +28,6 @@
 
 <script setup>
 import { ref, reactive} from "vue";
-import { forReportDD } from '@/api/intellApproval/special'
 import { useRouter } from 'vue-router'
 import { formatNumber } from '@/utils/common'
 import reportOperation from './reportOperation.vue'
@@ -41,10 +40,6 @@ const tableData = computed(() => {
 })
 
 const router = useRouter();
-
-const props = defineProps({
-  reportId: ''
-})
 
 // const tableData = ref([]);
 const columns = reactive([
@@ -141,24 +136,10 @@ const columns = reactive([
     fixed: "right",
   },
 ]);
-const orderPar = ref({
-  page_size: 100,
-  page: 1
-})
 const scroll = ref({
   y: 800,
   x: 1080,
 });
-
-// 上传的附件信息先保存到每条订单上
-function updateUpload(file, row) {
-  row.businessDataMaterialList = {
-    fileType: "1",   //订单例子
-    fileUrl: file,
-    judgeId: row.id
-  }
-  approvalStore.setListData(tableData.value)
-}
 
 // 检验错误信息的状态
 function checkError(row) {
@@ -189,21 +170,6 @@ function toOrderDetail(d) {
     }
   })
 }
-
-// 获取主订单列表及详情
-function getqyzxOrder() {
-  orderPar.value.dataType = props.reportId;
-  forReportDD(orderPar.value).then(res => {
-    tableData.value = res.data
-    approvalStore.setListData(tableData.value)
-  }).catch(err => {
-  })
-}
-
-const init = async () => {
-  // getqyzxOrder()
-};
-init()
 </script>
 
 <style lang="scss" scoped>

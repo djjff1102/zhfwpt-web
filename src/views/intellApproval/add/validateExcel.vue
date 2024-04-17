@@ -63,6 +63,7 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { add, importData, deleteDataAfterDeleteExcel } from '@/api/intellApproval'
+import { singleuploadFileApi } from "@/api/file";
 import { download } from '@/api/file'
 import { exportBlob } from '@/utils/common'
 import { useApprovalStore } from '@/store/modules/approval'
@@ -160,19 +161,31 @@ async function handleUpload(options) {
     relationList.value = []
     tableData.value = res.data.fieldList
     uploadFlag.value = 0
-    // emits('updateFileData', uploadFlag.value)
+    approvalStore.setFileInfo({})
   } else if(res.data.relationList && res.data.relationList.length > 0) {
     fileList.value = [];
     tableData.value = []
     relationList.value = res.data.relationList
     uploadFlag.value = 0
-    // emits('updateFileData', uploadFlag.value)
-  } else {
+    approvalStore.setFileInfo({})
+  } else { // 上传成功，调一下上传接口，上传文件
     fileList.value = [options.file]
     uploadFlag.value = 1
-    // emits('updateFileData', uploadFlag.value)
+    UploadFile(options)
   }
 }
+
+async function UploadFile(options) {
+  // 上传API调用
+  const res = await singleuploadFileApi(options.file);
+   const businessDataMaterialList = {
+    fileType: 7,  // 附件
+    fileUrl: res.data,
+    judgeId: props.reportId
+  }
+  approvalStore.setFileInfo(businessDataMaterialList)
+}
+
 
 function handleDel() {
   let reportId = props.reportId;
