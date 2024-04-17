@@ -165,8 +165,8 @@
         </template>
       </m-table> -->
       <div class="flex-base-start sum-line">
-        <div style="margin-right: 16px">{{ nameMap[curTab] }}已选：<span class="num-light">待定</span></div>
-        <div>金额合计：<span class="num-light">{{ totalMoney }}</span></div>
+        <div style="margin-right: 16px">{{ nameMap[curTab] }}已选：<span class="num-light">{{ totalMoney?.count }}</span></div>
+        <div>金额合计：<span class="num-light">{{ totalMoney?.totalMoneySum }}</span></div>
       </div>
     </div>
     <div class="com-section">

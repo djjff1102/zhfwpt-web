@@ -91,7 +91,14 @@ export const useApprovalStore = defineStore("approvalstore", () => {
   // 表单提交前，整合数据
   function updateData(form: any) {
     const businessDataMaterialList: any = [];
+    const DDcode: any = [];
+    const HTcode: any = [];
+    const FPcode: any = [];
+    const YHcode: any = [];
+    const CCcode: any = [];
+    const WLcode: any = [];
     DDList.value.forEach((item: any) => {
+      DDcode.push(item.code);
       if (item?.businessDataMaterialList) {
         const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
         businessDataMaterialList.push(d);
@@ -99,6 +106,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       }
     });
     HTList.value.forEach((item: any) => {
+      HTcode.push(item.code);
       if (item?.businessDataMaterialList) {
         const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
         businessDataMaterialList.push(d);
@@ -106,6 +114,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       }
     });
     FPList.value.forEach((item: any) => {
+      FPcode.push(item.code);
       if (item?.businessDataMaterialList) {
         const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
         businessDataMaterialList.push(d);
@@ -113,27 +122,41 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       }
     });
     YHList.value.forEach((item: any) => {
+      YHcode.push(item.id);
+      console.log("银行code----------------------------：", YHcode);
       if (item?.businessDataMaterialList) {
         const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
         businessDataMaterialList.push(d);
         delete item.businessDataMaterialList;
       }
     });
-    CCList.value.forEach((item: any) => {
-      if (item?.businessDataMaterialList) {
-        const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
-        businessDataMaterialList.push(d);
-        delete item.businessDataMaterialList;
-      }
-    });
-    WLList.value.forEach((item: any) => {
-      if (item?.businessDataMaterialList) {
-        const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
-        businessDataMaterialList.push(d);
-        delete item.businessDataMaterialList;
-      }
-    });
+    // CCList.value.forEach((item: any) => {
+    //   // CCcode.push(item.code);
+    //   if (item?.businessDataMaterialList) {
+    //     const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
+    //     businessDataMaterialList.push(d);
+    //     delete item.businessDataMaterialList;
+    //   }
+    // });
+    // WLList.value.forEach((item: any) => {
+    //   // WLcode.push(item.code);
+    //   if (item?.businessDataMaterialList) {
+    //     const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
+    //     businessDataMaterialList.push(d);
+    //     delete item.businessDataMaterialList;
+    //   }
+    // });
+
+    //    orderMapRequestList: [], // 订单
+    // invoiceMapRequestList: [], // 发票
+    // warehouseMapRequestList: [], // 仓储
+    // bankStatementMapRequestList: [], // 银行流水
     form.businessDataMaterialList = businessDataMaterialList;
+    form.orderMapRequestList = DDcode;
+    form.transactionCertificateMapRequestList = HTcode;
+    form.invoiceMapRequestList = FPcode;
+    form.bankStatementMapRequestList = YHcode;
+    form.warehouseMapRequestList = CCcode; // 仓储
   }
 
   return {
