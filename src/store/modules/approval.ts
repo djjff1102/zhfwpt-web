@@ -105,7 +105,9 @@ export const useApprovalStore = defineStore("approvalstore", () => {
   // 表单提交前，整合数据
   function updateData(form: any) {
     const businessDataMaterialList: any = [];
-    businessDataMaterialList.push(fileInfo.value);
+    if (fileInfo.value && JSON.stringify(fileInfo.value) != "{}") {
+      businessDataMaterialList.push(fileInfo.value);
+    }
     const DDcode: any = [];
     const HTcode: any = [];
     const FPcode: any = [];
@@ -161,10 +163,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     //   }
     // });
 
-    //    orderMapRequestList: [], // 订单
-    // invoiceMapRequestList: [], // 发票
-    // warehouseMapRequestList: [], // 仓储
-    // bankStatementMapRequestList: [], // 银行流水
     form.businessDataMaterialList = businessDataMaterialList;
     form.orderMapRequestList = DDcode;
     form.transactionCertificateMapRequestList = HTcode;
