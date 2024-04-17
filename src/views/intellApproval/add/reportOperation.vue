@@ -30,9 +30,9 @@ const props = defineProps({
   type: {
     default: ''
   },
-  // tableData: {
-  //   default: []
-  // }
+  row: {
+    default: {}
+  }
 })
 
 const emits = defineEmits(['updateUploadRow'])
@@ -57,6 +57,7 @@ function checkError() {
 
 // 附件错误信息
 function handleError() {
+  
 }
 
 // 跳转订单详情

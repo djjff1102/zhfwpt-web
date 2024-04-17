@@ -2,7 +2,7 @@
  <div class="file-wrap">
     <div class="flie-item" v-for="(item, i) in file" :key="i">
       <img src="@/assets/base/file.png">
-      <div class="file-name">{{ item.fileName }}</div>
+      <div class="file-name">{{ item.fileName || (item.fileUrl && splitFiltName(item.fileUrl)) }}</div>
       <!-- <el-tooltip
         class="item"
         effect="dark"
@@ -22,7 +22,7 @@
 <script setup>
 import { ref } from 'vue'
 import { download } from '@/api/file'
-import { exportBlob } from '@/utils/common'
+import { exportBlob, splitFiltName } from '@/utils/common'
 
 const pros = defineProps({
   file: {

@@ -162,3 +162,25 @@ export function deleteDataAfterDeleteExcel(params: any) {
   });
 }
 
+/**
+ * 发票智能审批-带算法校验的提交-新增
+ */
+export function businessAdd(data: any) {
+  return request({
+    url: `/base/fpsp_report/businessAdd`,
+    method: "post",
+    data,
+  });
+} 
+
+
+/**
+ * 发票智能审批-带算法校验的提交-更新
+ */
+export function businessUpdate(data: any) {
+  return request({
+    url: `/base/fpsp_report/businessUpdate`,
+    method: "post",
+    data,
+  });
+} 

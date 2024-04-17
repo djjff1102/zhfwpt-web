@@ -114,9 +114,11 @@
         :form="form"
         :reportId="reportId"
         :errorFlag="errorFlag"
+        :defaultfileList="ziliaoFile"
         @updateReportId="updateReportId"
         @updateFileData="updateFileData"
         ></validateExcel>
+      <FileList v-else :file="ziliaoFile"></FileList>
       <card-tab
         :tabData="tabData"
         :showExtra="false"
@@ -179,8 +181,12 @@
     </div>
   </div>
   
-  <div v-if="initPageParam.edit" class="bottom flex-base-end">
-    <w-button v-hasPerm="btnApprovalCode.save" style="margin-right: 20px" @click="handleSave(1, '暂存')">暂存</w-button>
+  <div v-if="type == 'add'" class="bottom flex-base-end">
+    <w-button v-hasPerm="btnApprovalCode.save" style="margin-right: 20px" @click="handleSave(1, '提交')">暂存</w-button>
+    <w-button v-hasPerm="btnApprovalCode.submit" type="primary" @click="handleSave(2, '提交')">提交</w-button>
+  </div>
+  <div v-if="type == 'operate'" class="bottom flex-base-end">
+    <w-button v-hasPerm="btnApprovalCode.save" style="margin-right: 20px" @click="handleSave(3, '更新')">更新</w-button>
     <w-button v-hasPerm="btnApprovalCode.submit" type="primary" @click="handleSave(2, '提交')">提交</w-button>
   </div>
   <detail-com v-hasPerm="btnApprovalCode.approvalexcute" :companyId="form.companyId" :companyName="form.companyName" :reportId="route.query.id" :preStrMoney="form.preStrMoney"></detail-com>
@@ -190,12 +196,12 @@
 </div>
 </template>
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import addApplyCom from './addApplyCom.vue';
 import detailCom from './detailCom.vue'
 import ApprovalRecord from './ApprovalRecords.vue'
-import { searcht, add, update, getOneByCompanyName } from '@/api/intellApproval'
+import { searcht, add, update, getOneByCompanyName, businessUpdate, businessAdd } from '@/api/intellApproval'
 import { useUserStoreHook } from "@/store/modules/user";
 import { pro, nameMap } from '../type'
 import FileList from './FileList.vue';
@@ -482,18 +488,65 @@ function handleSave(type: any, msg: string) {
 }
 
 async function checkSave(type: any, msg: string) {
-  // 1暂存 2提交
-  form.value.dataStatus = type;
+  // 1暂存 2提交 3更新
+  // approveStatus：待审批_1", "通过_2", "驳回_3
+  // dataStatus：1：暂存 2：正常
   approvalStore.updateData(form.value)
-  await checkjudgeMaterial()
-  if(initPageParam.type == 1) {
-    // 更新
+  if(type == 1) { // 暂存
+    form.value.dataStatus = 1;
+    if(initPageParam.type == 1) {
+        form.value.id = initPageParam.id
+        handleUpdate(msg);
+      } else {
+        // 新增
+        handleAddNew(msg)
+      }
+  } else if(type == 2) {
+    form.value.dataStatus = 2;
+    form.value.approveStatus = 1; // 提交将状态改为待审批
+    if(initPageParam.type == 1) {
+        form.value.id = initPageParam.id
+        handleUpdateSubmit();
+      } else {
+        // 新增
+        handleAddNewSubmit()
+      }
+  } else { // 更新
+    form.value.dataStatus = 2
     form.value.id = initPageParam.id
     handleUpdate(msg);
-  } else {
-    // 新增
-    handleAddNew(msg)
   }
+}
+
+function handleUpdateSubmit() {
+  businessUpdate(form.value).then((res: any) => {
+    checkSubmitError(res)
+  }).catch(err => {
+    ElMessage.error( JSON.stringify(err));
+  })
+}
+
+function handleAddNewSubmit() {
+  businessAdd(form.value).then(res =>{
+    checkSubmitError(res)
+  }).catch(err => {
+    ElMessage.error( JSON.stringify(err));
+  })
+}
+
+function checkSubmitError(res: any) {
+  if(res.result == 1 && !res.message) {
+      ElMessage.success('提交成功');
+      setTimeout(()=>{
+        backToList()
+      },500)
+      noticeStore.refreshNotice()
+    }  else if(res.result == 1 && res.message) {
+      ElMessage.error(res.message);
+      // 处理异常
+    } else {
+      ElMessage.error(res?.message || '算法校验失败');
+    }
 }
 
 // 编辑新增成功，返回列表页
@@ -559,6 +612,7 @@ function getDetail(d) {
       reportId.value = res.data.id
       approvalStore.getTableData(reportId.value); // 获取订单、合同、发票等信息
     } else {
+      approvalStore.clearTable(); // 获取订单、合同、发票等信息
       getgetOneByCompanyName() // 当前返回数据为空，新增，且无暂存，则查询企业基本信息
     }
   }).catch(err => {})

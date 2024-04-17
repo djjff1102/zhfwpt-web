@@ -83,21 +83,20 @@ const props = defineProps({
   errorFlag: {
     default: false
   },
-  // defaultfileList: {
-  //   default: []
-  // }
+  defaultfileList: {
+    default: []
+  }
 })
 
-// watch(() => props.defaultfileList, (v) => {
-//   console.log('上窜文件------------：', v)
-//   if(v && v.length > 0) {
-//     nextTick(() => {
-//       fileList.value = [{name: splitFiltName(v[0].fileUrl)}]
-//     })
-//   }
-// }, {
-//   deep: true,
-// })
+watch(() => props.defaultfileList, (v) => {
+  if(v && v.length > 0 && v[0]?.fileUrl) {
+    nextTick(() => {
+      fileList.value = [{name: splitFiltName(v[0].fileUrl)}]
+    })
+  }
+}, {
+  deep: true,
+})
 
 const emits = defineEmits(['updateReportId', 'updateFileData'])
 
@@ -176,16 +175,19 @@ async function handleUpload(options) {
     tableData.value = res.data.fieldList
     uploadFlag.value = 0
     approvalStore.setFileInfo({})
+    ElMessage.warning("文件不符合要求，请重新上传");
   } else if(res.data.relationList && res.data.relationList.length > 0) {
     fileList.value = [];
     tableData.value = []
     relationList.value = res.data.relationList
     uploadFlag.value = 0
     approvalStore.setFileInfo({})
+    ElMessage.warning("文件不符合要求，请重新上传");
   } else { // 上传成功，调一下上传接口，上传文件
     fileList.value = [options.file]
     uploadFlag.value = 1
     UploadFile(options)
+    ElMessage.success("上传成功");
   }
 }
 
@@ -206,6 +208,7 @@ function handleDel() {
   deleteDataAfterDeleteExcel({ reportId }).then(res => {
     fileList.value = []
     uploadFlag.value = -1
+    approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
     emits('updateFileData')
   }).catch(err => {
     console.log('err------------:', err)

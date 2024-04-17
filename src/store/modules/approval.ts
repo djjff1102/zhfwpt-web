@@ -21,6 +21,15 @@ export const useApprovalStore = defineStore("approvalstore", () => {
   });
   const fileInfo = ref(); // 记录上传的附件
 
+  function clearTable() {
+    DDList.value = [];
+    HTList.value = [];
+    FPList.value = [];
+    YHList.value = [];
+    CCList.value = [];
+    WLList.value = [];
+  }
+
   // 保存上传的文件
   function setFileInfo(d: any) {
     fileInfo.value = d;
@@ -175,5 +184,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     updateData,
     getTableData,
     setFileInfo,
+    clearTable,
   };
 });

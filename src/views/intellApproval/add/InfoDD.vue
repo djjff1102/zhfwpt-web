@@ -18,8 +18,11 @@
         <template v-slot:moneySlot="{rowIndex}">
             <div>{{ formatNumber(tableData[rowIndex].totalMoney) }}</div>
         </template>
+        <template v-slot:materialslot="{rowIndex}">
+            <div>{{ tableData[rowIndex].material ? '已上传' : '未上传'  }}</div>
+        </template>
         <template v-slot:operations="{rowIndex}">
-          <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.DD"></reportOperation>
+          <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.DD" :row="tableData[rowIndex]"></reportOperation>
         </template>
       </m-table>
     </div>
@@ -127,6 +130,12 @@ const columns = reactive([
     width: 180,
     ellipsis: true,
     tooltip: {position: 'left'},
+  },
+  {
+    title: "附件",
+    dataIndex: "material",
+    width: 80,
+    slotName: 'materialslot'
   },
   {
     title: "操作",
