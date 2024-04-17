@@ -633,6 +633,7 @@ init()
 }
 .operate-wrap {
   padding: 30px 90px;
+  padding-bottom: 90px;
   height: calc(100vh - 120px);
   background: #fff;
   overflow-y: scroll;
