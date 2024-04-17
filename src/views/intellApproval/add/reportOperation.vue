@@ -21,27 +21,29 @@ const router = useRouter();
 const approvalStore = useApprovalStore();
 
 const props = defineProps({
-  row: {
-    default: {}
+  rowIndex: {
+    default: -1
+  },
+  rowId: {
+    default: -1
   },
   type: {
     default: ''
   },
-  tableData: {
-    default: []
-  }
+  // tableData: {
+  //   default: []
+  // }
 })
 
 const emits = defineEmits(['updateUploadRow'])
 
 function updateUpload(file) {
-  props.row.businessDataMaterialList = {
+  const businessDataMaterialList = {
     fileType: props.type,   //订单例子
     fileUrl: file,
-    judgeId: props.row.id
+    judgeId: props.rowId
   }
-  console.log('当前表单--------------：', props.tableData)
-  approvalStore.setListData(props.tableData, props.type)
+  approvalStore.setListData( props.type, props.rowIndex, businessDataMaterialList)
 }
 
 // 检验错误信息的状态

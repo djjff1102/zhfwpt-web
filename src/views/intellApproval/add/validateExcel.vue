@@ -65,6 +65,9 @@ import { ref, reactive, onMounted } from 'vue'
 import { add, importData, deleteDataAfterDeleteExcel } from '@/api/intellApproval'
 import { download } from '@/api/file'
 import { exportBlob } from '@/utils/common'
+import { useApprovalStore } from '@/store/modules/approval'
+
+const approvalStore = useApprovalStore();
 
 const successText = '上传成功，上传信息已展示在下述列表中，可上传相关附件，其中合同和银行流水的附件必须要上传'
 const acceptType = '.xlsx,.xls'
@@ -151,22 +154,23 @@ async function handleUpload(options) {
   formData.append("file", options.file);
   formData.append("reportId", props.reportId);
   const res = await importData(formData);
+  approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
   if(res.data.fieldList && res.data.fieldList.length > 0) {
     fileList.value = [];
     relationList.value = []
     tableData.value = res.data.fieldList
     uploadFlag.value = 0
-    emits('updateFileData', uploadFlag.value)
+    // emits('updateFileData', uploadFlag.value)
   } else if(res.data.relationList && res.data.relationList.length > 0) {
     fileList.value = [];
     tableData.value = []
     relationList.value = res.data.relationList
     uploadFlag.value = 0
-    emits('updateFileData', uploadFlag.value)
+    // emits('updateFileData', uploadFlag.value)
   } else {
     fileList.value = [options.file]
     uploadFlag.value = 1
-    emits('updateFileData', uploadFlag.value)
+    // emits('updateFileData', uploadFlag.value)
   }
 }
 

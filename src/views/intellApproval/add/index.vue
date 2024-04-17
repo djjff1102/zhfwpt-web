@@ -131,17 +131,17 @@
         </w-col>
       </w-row> -->
       <InfoDD
-        v-if="curTab == pro.DD" 
+        v-show="curTab == pro.DD" 
         :reportId="reportId"
       ></InfoDD>
       <InfoHT
-        v-if="curTab == pro.HT"
+        v-show="curTab == pro.HT"
         :reportId="reportId"
       ></InfoHT>
       <!-- 发票不区分进项和销项 -->
       <InfoFP
         :reportId="reportId"
-        v-if="curTab == pro.FP"
+        v-show="curTab == pro.FP"
       ></InfoFP>
       <InfoYH
         v-if="curTab == pro.YH"
@@ -326,11 +326,6 @@ function updateReportId(id) {
 // 文件上传成功，刷新列表
 function updateFileData(Flag: any) {
   if(Flag == 1) { // 上传成功
-    let tab = curTab.value;
-    curTab.value = '-1';
-    nextTick(() => {  // 上传失败
-      curTab.value = tab
-    })
     uploadFlag.value = Flag
   } else {
     uploadFlag.value = Flag

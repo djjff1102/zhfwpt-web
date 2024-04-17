@@ -19,7 +19,7 @@
             <div>{{ formatNumber(tableData[rowIndex].totalMoney) }}</div>
         </template>
         <template v-slot:operations="{rowIndex}">
-          <reportOperation :tableData="tableData" :row="tableData[rowIndex]" :type="pro.DD"></reportOperation>
+          <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.DD"></reportOperation>
         </template>
       </m-table>
     </div>
@@ -31,11 +31,14 @@ import { ref, reactive} from "vue";
 import { forReportDD } from '@/api/intellApproval/special'
 import { useRouter } from 'vue-router'
 import { formatNumber } from '@/utils/common'
-import { useApprovalStore } from '@/store/modules/approval'
 import reportOperation from './reportOperation.vue'
 import { pro } from '../type'
-
+import { useApprovalStore } from '@/store/modules/approval'
 const approvalStore = useApprovalStore();
+
+const tableData = computed(() => {
+  return approvalStore.DDList
+})
 
 const router = useRouter();
 
@@ -43,7 +46,7 @@ const props = defineProps({
   reportId: ''
 })
 
-const tableData = ref([]);
+// const tableData = ref([]);
 const columns = reactive([
   {
     title: "序号",
@@ -198,7 +201,7 @@ function getqyzxOrder() {
 }
 
 const init = async () => {
-  getqyzxOrder()
+  // getqyzxOrder()
 };
 init()
 </script>

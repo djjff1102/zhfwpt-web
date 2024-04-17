@@ -16,7 +16,7 @@
           {{ formatNumber(tableData[rowIndex].amount) }}
         </template>
         <template v-slot:operations="{rowIndex}">
-          <reportOperation :tableData="tableData" :row="tableData[rowIndex]" :type="pro.HT"></reportOperation>
+          <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.HT"></reportOperation>
         </template>
       </m-table>
     </div>
@@ -25,16 +25,23 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { qyzxTransactionCertificate } from '@/api/intellApproval/special'
+import { forReportDD } from '@/api/intellApproval/special'
 import { formatNumber } from '@/utils/common' 
 import reportOperation from './reportOperation.vue'
 import { pro } from '../type'
+import { useApprovalStore } from '@/store/modules/approval'
+const approvalStore = useApprovalStore();
+
+const tableData = computed(() => {
+  return approvalStore.HTList
+})
 
 const props = defineProps({
   reportId: ''
 })
 
 const loading = ref(false);
-const tableData = ref([]);
+// const tableData = ref([]);
 const columns = reactive([
   {
     title: "序号",
@@ -114,7 +121,7 @@ const init = async () => {
   searchPar.value.dataType = props.reportId
   getqyzxTransactionCertificate()
 };
-init();
+// init();
 
 </script>
 

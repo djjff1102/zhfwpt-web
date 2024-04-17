@@ -14,7 +14,7 @@
           {{ rowIndex + 1 }}
         </template>
         <template v-slot:operations="{rowIndex}">
-          <reportOperation :tableData="tableData" :row="tableData[rowIndex]" :type="pro.FP"></reportOperation>
+          <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.FP"></reportOperation>
         </template>
       </m-table>
     </div>
@@ -25,13 +25,13 @@ import { ref, reactive } from "vue";
 import { qyzxInvoic } from '@/api/intellApproval/special'
 import reportOperation from './reportOperation.vue'
 import { pro } from '../type'
+import { useApprovalStore } from '@/store/modules/approval'
+const approvalStore = useApprovalStore();
 
-const props = defineProps({
-  reportId: ''
+const tableData = computed(() => {
+  return approvalStore.FPList
 })
 
-const loading = ref(false);
-const tableData = ref([]);
 const columns = reactive([
   {
     title: "序号",
@@ -155,31 +155,6 @@ const scroll = ref({
   y: 800,
   x: 1080,
 });
-
-const searchPar = ref({
-  page_size: 100,
-  page: 1,
-  dataType:''
-})
-
-// 获取关联发票列表
-function getqyzxInvoic() {
-  if(loading.value) return
-  loading.value = true;
-  qyzxInvoic(searchPar.value).then(res => {
-    tableData.value = res.data;
-    loading.value = false;
-  }).catch(err => {
-    loading.value = false;
-  })
-}
-
-const init = async () => {
-  searchPar.value.dataType = props.reportId
-  getqyzxInvoic();
-};
-
-init();
 </script>
 
 <style lang="scss" scoped>
