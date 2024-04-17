@@ -65,7 +65,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { add, importData, deleteDataAfterDeleteExcel } from '@/api/intellApproval'
 import { singleuploadFileApi } from "@/api/file";
 import { download } from '@/api/file'
-import { exportBlob } from '@/utils/common'
+import { exportBlob, splitFiltName } from '@/utils/common'
 import { useApprovalStore } from '@/store/modules/approval'
 
 const approvalStore = useApprovalStore();
@@ -82,8 +82,22 @@ const props = defineProps({
   },
   errorFlag: {
     default: false
-  }
+  },
+  // defaultfileList: {
+  //   default: []
+  // }
 })
+
+// watch(() => props.defaultfileList, (v) => {
+//   console.log('上窜文件------------：', v)
+//   if(v && v.length > 0) {
+//     nextTick(() => {
+//       fileList.value = [{name: splitFiltName(v[0].fileUrl)}]
+//     })
+//   }
+// }, {
+//   deep: true,
+// })
 
 const emits = defineEmits(['updateReportId', 'updateFileData'])
 

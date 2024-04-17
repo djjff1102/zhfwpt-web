@@ -110,6 +110,7 @@
     <div class="com-section" >
       <div class="title-sub">申报资料</div>
       <validateExcel
+        v-if="initPageParam.edit"
         :form="form"
         :reportId="reportId"
         :errorFlag="errorFlag"
@@ -227,6 +228,7 @@ let companyName = userStore?.user?.organization?.name;
 const route = useRoute();
 const router = useRouter();
 
+const ziliaoFile = ref([]) // 申报资料上传的文件
 const reportId = ref(-1)
 const tabData = ref({
   HT: {
@@ -550,6 +552,7 @@ function getDetail(d) {
       // columns.value = columnsHT
       fileList.value = res.data.otherMaterialsResponseList
       dataList.value = res.data.transactionCertificateMapResponseList
+      ziliaoFile.value = [res.data.businessDataMaterialList[0]] as any;
       form.value = res.data as any
       form.value.taxAuthority = '东疆综合保税区税务局'
       curDate.value = [res.data.validDateStart, res.data.validDateEnd]
