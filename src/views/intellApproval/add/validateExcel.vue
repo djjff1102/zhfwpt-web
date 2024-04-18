@@ -12,7 +12,7 @@
           :show-file-list="false"
         >
           <div class="flex-base-start">
-            <w-button type="primary">上传文件</w-button>
+            <w-button type="primary" :loading="uploading">上传文件</w-button>
           </div>
         </el-upload>
         <div v-if="uploadFlag == 1" class="success-text flex-base-start">
@@ -55,6 +55,7 @@
       <div v-if="relationList && relationList.length > 0">
         <div class="relation-info" v-for="(item, i) in relationList" :key="i">{{ i+1 }}、{{ item }}</div>
       </div>
+      <div v-if="originResult">{{ originResult }}</div>
     </div>
     </el-dialog>
   </div>
@@ -70,6 +71,7 @@ import { useApprovalStore } from '@/store/modules/approval'
 
 const approvalStore = useApprovalStore();
 
+const uploading = ref(false)
 const successText = '上传成功，上传信息已展示在下述列表中，可上传相关附件，其中合同和银行流水的附件必须要上传'
 const acceptType = '.xlsx,.xls'
 
@@ -108,6 +110,7 @@ const loading = ref(false)
 const fileList = ref([])
 const dialogVisible = ref(false)
 const tableData = ref([])
+const originResult = ref('')
 const columns = reactive([
   {
     title: "序号",
@@ -163,6 +166,7 @@ async function handleBeforeUpload() {
 function handleExceed() {}
 
 async function handleUpload(options) {
+  uploading.value = true
   // 上传API调用
   const formData = new FormData();
   formData.append("file", options.file);
@@ -172,21 +176,35 @@ async function handleUpload(options) {
   if(res.data.fieldList && res.data.fieldList.length > 0) {
     fileList.value = [];
     relationList.value = []
+    originResult.value = []
     tableData.value = res.data.fieldList
     uploadFlag.value = 0
     approvalStore.setFileInfo({})
-    ElMessage.warning("文件不符合要求，请重新上传");
+    uploading.value = false
+    ElMessage.warning(res.data.result);
   } else if(res.data.relationList && res.data.relationList.length > 0) {
     fileList.value = [];
     tableData.value = []
+    originResult.value = []
     relationList.value = res.data.relationList
     uploadFlag.value = 0
     approvalStore.setFileInfo({})
-    ElMessage.warning("文件不符合要求，请重新上传");
+    uploading.value = false
+    ElMessage.warning(res.data.result);
+  } else if(res.data.originResult) {
+    fileList.value = [];
+    tableData.value = []
+    relationList.value = []
+    uploadFlag.value = 0
+    originResult.value = res.data.result+ ':' + res.data.originResult
+    approvalStore.setFileInfo({})
+    ElMessage.warning(res.data.originResult);
+    uploading.value = false
   } else { // 上传成功，调一下上传接口，上传文件
     fileList.value = [options.file]
     uploadFlag.value = 1
     UploadFile(options)
+    uploading.value = false
     ElMessage.success("上传成功");
   }
 }

@@ -131,7 +131,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       }
     });
     FPList.value.forEach((item: any) => {
-      FPcode.push(item.code);
+      FPcode.push(item.id);
       if (item?.businessDataMaterialList) {
         const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
         businessDataMaterialList.push(d);

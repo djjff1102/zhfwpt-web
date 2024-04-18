@@ -26,7 +26,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item field="receivingCompanyName" label="受票单位">
-          <el-input v-model="searchPar.receivingCompanyName" placeholder="请输入收票单位" clearable/>
+          <el-input v-model="searchPar.receivingCompanyName" placeholder="请输入受票单位" clearable/>
         </el-form-item>
         <!-- <el-form-item field="invoicingCompanyName" label="开票单位">
           <el-input v-model="searchPar.invoicingCompanyName" placeholder="请输入开票单位" />

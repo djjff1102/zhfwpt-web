@@ -23,7 +23,7 @@
         :infinite-scroll-watch-disabled="scrollDisabled"
         :infinite-scroll-distance="20">
         <div class="search-brief">
-          <div class="attention mb-12px">
+          <!-- <div class="attention mb-12px">
             <span class="label">关注企业：</span>
             <div class="label-value">
               <span
@@ -33,7 +33,7 @@
                 <span class="text-#FF9100">{{ formatNumber(attentResult?.riskInfo?.lowRiskNum) }}</span> 家，风险等级较低的</span>
                 <span class="text-#0594EB">{{ formatNumber(attentResult?.riskInfo?.mediumRiskNum) }}</span> 家
             </div>
-          </div>
+          </div> -->
           <div class="result-count mb-12px">
             <span class="label">检索结果：</span>
             <span class="label-value">
