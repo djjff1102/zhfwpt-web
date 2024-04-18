@@ -3,8 +3,8 @@
     <div class="title">{{ name }}基本信息</div>
     <BaseInfo v-if="name == '销项发票'" :order="fapiao"></BaseInfo>
     <BaseInfoIN v-else :order="fapiao"></BaseInfoIN>
-    <div class="title">商品单信息</div>
-    <SecondWarehousing :id="fapiao.id" :code="fapiao.code" :number="fapiao.number"></SecondWarehousing>
+    <div class="title">商品信息</div>
+    <SecondWarehousing :id="fapiao.id" :code="route.query.code" :number="route.query.number"></SecondWarehousing>
   </div>
 </template>
 <script setup>
@@ -14,15 +14,30 @@ import SecondWarehousing from "./components/SecondWarehousing.vue";
 import InvoiceInformation from "@/components/InvoiceInformation/components/InputInvoice.vue";
 import BaseInfoIN from './components/BaseInfoIN.vue'
 import { useRoute } from 'vue-router'
+import { qyzxInvoice } from '@/api/archives'
 
 const route = useRoute();
 
 const fapiao = ref({}) // 发票信息
 const name = ref(); // 
 
+// 发票详情
+function getqyzxInvoice() {
+  qyzxInvoice({
+    code: route.query.code,
+    number: route.query.number,
+    page: 1,
+    page_size: 10
+  }).then(res => {
+    fapiao.value = res.data[0] || {};
+  }).catch(err => {
+  })
+}
+
 function init() {
-  fapiao.value = JSON.parse(route.query.fapiao);
+  // fapiao.value = JSON.parse(route.query.fapiao);
   name.value = route.query.name
+  getqyzxInvoice()
 }
 
 init()

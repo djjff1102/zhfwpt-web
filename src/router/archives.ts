@@ -62,6 +62,22 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
+        path: "transactDetail",
+        component: () =>
+          import("@/components/TransactionVoucher/detail/index.vue"),
+        name: "transactDetail",
+        meta: {
+          title: "transactDetail",
+          activeMenu: "/archives",
+          icon: "tree",
+          hidden: true,
+          roles: ["ADMIN"],
+          keepAlive: true,
+          code: [303],
+          showMenu: false,
+        },
+      },
+      {
         path: "warehousingOrderDetail",
         component: () =>
           import(
@@ -96,7 +112,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: "fpdetail",
-        component: () => import("@/views/archives/fpdetail/index.vue"),
+        component: () => import("@/components/fpdetail/index.vue"),
         name: "Fpdetail",
         meta: {
           title: "发票详情",

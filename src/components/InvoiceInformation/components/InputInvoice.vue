@@ -246,8 +246,10 @@ function handleDetail(d) {
   router.push({
     path: '/archives/fpdetail',
     query: {
-      fapiao: JSON.stringify(d),
-      name:'进项发票'
+      // fapiao: JSON.stringify(d),
+      name:'进项发票',
+      number: d.number, // 发票号码
+      code: d.code // 发票代码
     }
   })
 }

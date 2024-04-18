@@ -85,13 +85,10 @@
   </div>
 </template>
 <script setup>
-import dayjs from "dayjs";
-// import TendencyChart from "./TendencyChart/index.vue";
 import { ref, reactive } from "vue";
-import { qyzxInvoice, groupByInvoiceDate } from '@/api/archives'
+import { qyzxInvoice } from '@/api/archives'
 import { useRoute, useRouter } from 'vue-router';
-import { formatData, formatNumber, formateDate } from '@/utils/common'
-// import { formatNumber,formateDate } from '@/utils/common'
+import { formatNumber, formateDate } from '@/utils/common'
 const route = useRoute();
 const router = useRouter();
 
@@ -254,8 +251,10 @@ function handleDetail(d) {
   router.push({
     path: '/archives/fpdetail',
     query: {
-      fapiao: JSON.stringify(d),
-      name:'销项发票'
+      // fapiao: JSON.stringify(d),
+      name:'销项发票',
+      number: d.number, // 发票号码
+      code: d.code // 发票代码
     }
   })
 }

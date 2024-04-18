@@ -1,7 +1,7 @@
 <template>
-  <!-- 合同 -->
+  <!-- 物流 -->
   <div>
-    <div class="search_box">
+    <!-- <div class="search_box">
       <el-form :model="searchPar" :inline="true" class="demo-form-inline">
         <el-form-item field="code" label="合同编号">
           <el-input v-model="searchPar.code" placeholder="请输入合同编号" clearable/>
@@ -29,7 +29,7 @@
           <w-button @click="reset">重置</w-button>
         </el-form-item>
       </el-form>
-    </div>
+    </div> -->
     <div class="table-warp">
       <m-table
         style="height: 100%"
@@ -44,12 +44,17 @@
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
         </template>
-        <template v-slot:amountSlot="{ rowIndex }">
-          {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].amount) }}{{ tableData[rowIndex].amountUnit }}
+        <template v-slot:slotgoodsWeight="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].goodsWeight) }}
         </template>
-        <template v-slot:operations="{ rowIndex }">
-          <el-button v-if="orderCode" type="text" disabled>原件</el-button>
-          <el-button v-if="companyName" type="text"  @click="toDetail(tableData[rowIndex])">详情</el-button>
+        <template v-slot:slotproviderOrderAmount="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].providerOrderAmount) }}
+        </template>
+        <template v-slot:slottransportationFeeAmount="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].transportationFeeAmount) }}
+        </template>
+        <template v-slot:operations>
+          <w-button type="text" disabled>原件</w-button>
         </template>
       </m-table>
     </div>
@@ -57,17 +62,14 @@
 </template>
 <script setup>
 import { ref, reactive } from "vue";
-import { qyzxTransactionCertificate } from '@/api/archives'
+import { transportationWL } from '@/api/archives'
 import { formatNumber, formateDate } from '@/utils/common' 
-import { useRouter } from 'vue-router'
-
-const router = useRouter();
 const props = defineProps({
   companyName: String,
   orderCode: String
 })
 
-const curDate = ref('')
+// const curDate = ref('')
 const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
@@ -78,45 +80,124 @@ const columns = reactive([
     fixed: "left",
   },
   {
-    title: "合同编号",
-    dataIndex: "code",
+    title: "发布企业名称",
+    dataIndex: "publisherEnterpriseName",
     fixed: "left",
     width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
-    title: "甲方（买方/采购方/需方）",
-    dataIndex: "partyA",
+    title: "入库单号",
+    dataIndex: "inboundOrder",
     width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
-    title: "乙方（卖方/销售方/供方）",
-    dataIndex: "partyB",
+    title: "仓库地址",
+    dataIndex: "warehouseAddress",
     width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
-    title: "签订地点",
+    title: "发布方企业纳税人识别号-暂无",
     dataIndex: "signAddress",
     width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
-    title: "签订日期",
-    dataIndex: "signDate",
+    title: "发单时间",
+    dataIndex: "orderDispatchTime",
     width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
-    title: "合同金额",
-    dataIndex: "amount",
-    slotName: 'amountSlot',
+    title: "接单时间-服务方接单签订协议时间",
+    dataIndex: "acceptToSignTime",
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "起始运输时间-运输货物发车时间",
+    dataIndex: "transportationToShippingTime",
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "订单结束时间-最终结算时间",
+    dataIndex: "completionToSettlementTime",
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+    {
+    title: "发布方(货主)订单金额",
+    dataIndex: "publisherOrderAmount",
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "起运地(始发地)",
+    dataIndex: "originLocation",
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "到达地(目的地)",
+    dataIndex: "destinationLocation",
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "所运货物",
+    dataIndex: "transportGood",
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "货物重量",
+    dataIndex: "goodsWeight",
+    slotName: 'slotgoodsWeight',
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "服务方订单金额",
+    dataIndex: "providerOrderAmount",
+    slotName: 'slotproviderOrderAmount',
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "货物运费金额",
+    dataIndex: "transportationFeeAmount",
+    slotName: 'slottransportationFeeAmount',
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+    {
+    title: "银行流水-资金流水",
+    dataIndex: "fundFlow",
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "提货单",
+    dataIndex: "ladingOrder",
     width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
@@ -140,12 +221,6 @@ const pagination = ref({
 const searchPar = ref({
   page_size: 10,
   page: 1,
-  signDateStart: '',
-  signDateEnd: '',
-  code: '',
-  companyName: '', // 传过来的公司名称
-  partyA: '', // 甲方
-  partyB: '', // 乙方
   orderCode: props.orderCode // 订单关联合同
 })
 const scroll = ref({
@@ -153,72 +228,53 @@ const scroll = ref({
   x: 1080,
 });
 
-
-// 跳转合同详情
-function toDetail(d) {
-  // 标记从合同跳走，针对back时，做模块定位
-  sessionStorage.setItem('detailId', 'TransactionVoucher')
-  router.push({
-    path: '/archives/transactDetail',
-    query: {
-      parentCode: d.code,
-    }
-  })
-}
-
 const changePagesize = (v) => {
   searchPar.value.page_size = v;
   pagination.value.pageSize = v;
   pagination.value.current = 1;
   searchPar.value.page = 1;
-  getqyzxTransactionCertificate();
+  gettransportationWL();
 };
 const changepage = (v) => {
   searchPar.value.page = v;
   pagination.value.current = v
-  getqyzxTransactionCertificate();
+  gettransportationWL();
 };
 
 // 时间选择
-function onChange(dateString, date) {
-  if(dateString && dateString.length > 0) {
-    searchPar.value.signDateStart = formateDate(dateString[0]);
-    searchPar.value.signDateEnd = formateDate(dateString[1]);
-  } else {
-    searchPar.value.signDateStart = '';
-    searchPar.value.signDateEnd = '';
-  }
-}
+// function onChange(dateString, date) {
+//   if(dateString && dateString.length > 0) {
+//     searchPar.value.signDateStart = formateDate(dateString[0]);
+//     searchPar.value.signDateEnd = formateDate(dateString[1]);
+//   } else {
+//     searchPar.value.signDateStart = '';
+//     searchPar.value.signDateEnd = '';
+//   }
+// }
 
 function search() {
   searchPar.value.page = 1;
   pagination.value.current = 1
-  getqyzxTransactionCertificate();
+  gettransportationWL();
 }
 
 function reset() {
   pagination.value.pageSize = 10;
-  let name = searchPar.value.companyName;
-  curDate.value = ''
+  pagination.value.current = 1
+  // curDate.value = ''
   searchPar.value = {
     page_size: 10,
     page: 1,
-    signDateStart: '',
-    signDateEnd: '',
-    code: '',
-    companyName: name, // 传过来的公司名称
-    partyA: '', // 甲方
-    partyB: '', // 乙方
     orderCode: props.orderCode
   }
-  getqyzxTransactionCertificate()
+  gettransportationWL()
 }
 
 // 交易凭证
-function getqyzxTransactionCertificate() {
+function gettransportationWL() {
   if(loading.value) return
   loading.value = true
-  qyzxTransactionCertificate(searchPar.value).then(res => {
+  transportationWL(searchPar.value).then(res => {
     tableData.value = res.data;
     loading.value = false
     pagination.value.total = res.total;
@@ -228,8 +284,7 @@ function getqyzxTransactionCertificate() {
 }
 
 const init = async () => {
-  searchPar.value.companyName = props.companyName
-  getqyzxTransactionCertificate()
+  gettransportationWL()
 };
 init();
 </script>

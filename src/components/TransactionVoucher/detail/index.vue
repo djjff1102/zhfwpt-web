@@ -2,23 +2,15 @@
   <div class="order-detail-container">
     <div class="title">基本信息</div>
     <BaseInfo :order="order"></BaseInfo>
-    <!-- <div class="title">子订单信息</div> -->
-    <div class="title">商品详情</div>
-    <SecondWarehousing :parentCode="code"></SecondWarehousing>
+    <div class="title">产品详情-暂时不做，合同需要拆表</div>
     <div>
-      <div class="title">关联合同</div>
-      <TransactionVoucher :orderCode="code"></TransactionVoucher>
+      <div class="title">关联发票</div>
+      <invoiceGL :certificateCode="code"></invoiceGL>
     </div>
     <div>
-      <div class="title">关联仓储--待联调</div>
+      <div class="title">关联流水</div>
+      <AccountStatement :certificateCode="code"></AccountStatement>
     </div>
-    <div>
-      <div class="title">关联物流</div>
-      <transportationWL :orderCode="code"></transportationWL>
-    </div>
-    <!-- <div>
-      <div class="title">关联发票列表</div>
-      <InvoiceInformation :parentCode="order.code"></InvoiceInformation></div> -->
     </div>
 </template>
 <script setup>
@@ -26,16 +18,16 @@ import  { ref } from 'vue';
 import BaseInfo from "./components/BaseInfo.vue"
 import SecondWarehousing from "./components/SecondWarehousing.vue";
 import { useRoute } from 'vue-router'
-import { qyzxOrder } from '@/api/archives'
+import { qyzxTransactionCertificate } from '@/api/archives'
 
 const route = useRoute();
 
-const order = ref({}) // 订单信息
-const code = ref(); // 订单编号
+const order = ref({}) // 合同信息
+const code = ref(); // 合同编号
 
 // 获取主订单列表及详情
-function getqyzxOrder() {
-  qyzxOrder({
+function getqyzxTransactionCertificate() {
+  qyzxTransactionCertificate({
     page_size: 10,
     page: 1,
     code: code.value
@@ -46,8 +38,8 @@ function getqyzxOrder() {
 }
 
 function init() {
-  code.value = route.query.orderCode;
-  getqyzxOrder()
+  code.value = route.query.parentCode;
+  getqyzxTransactionCertificate()
 }
 
 init()

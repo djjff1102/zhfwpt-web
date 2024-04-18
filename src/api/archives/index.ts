@@ -188,6 +188,19 @@ export function warehouseDropDownBox(
 }
 
 /**
+ * 物流
+ */
+export function transportationWL(
+  data: SelectSearch
+): CustomAxiosPromise<SelectResult> {
+  return request({
+    url: "/base/qyzx_transportation",
+    method: "post",
+    data,
+  });
+}
+
+/**
  * 主订单查询-下拉框
  */
 export function orderDropDownBox(

@@ -54,7 +54,7 @@
           {{ rowIndex + 1 }}
         </template>
         <template v-slot:paymentAmountSlot="{ rowIndex }">
-          {{ formatNumber(Number(tableData[rowIndex].paymentAmount)) }}
+          {{ tableData[rowIndex].currency }}{{ formatNumber(Number(tableData[rowIndex].paymentAmount)) }}
         </template>
         <template v-slot:operations>
           <w-button type="text" disabled>详情</w-button>
@@ -69,12 +69,11 @@ import { qyzxBankStatement } from '@/api/archives'
 import { formatNumber } from '@/utils/common' 
 
 const props = defineProps({
-  companyName: String
+  companyName: String,
+  certificateCode: String
 })
 
 const curDate = ref('')
-const current = ref(1);
-const size = ref(10);
 const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
@@ -155,6 +154,7 @@ const columns = reactive([
 const pagination = ref({
   total: 0,
   pageSize: 10,
+  current: 1,
   "show-total": true,
   "show-page-size": true,
   "show-jumper": true,
@@ -167,24 +167,24 @@ const searchPar = ref({
   paymentDateEnd: '',
   paymentCompany: '', // 付款方
   bank: '', // 银行网点
-  companyName: '' // 带过来的参数
+  companyName: '', // 带过来的参数
+  certificateCode: props.certificateCode
 })
-const scroll = ref({
-  y: 800,
-  x: 1080,
-});
-const form = ref({
-  name: "",
-  post: "",
-});
+// const scroll = ref({
+//   y: 800,
+//   x: 1080,
+// });
+
 const changePagesize = (v) => {
   searchPar.value.page_size = v;
   searchPar.value.page = 1;
+  pagination.value.current = 1;
   pagination.value.pageSize = v;
   getqyzxBankStatement()
 };
 const changepage = (v) => {
   searchPar.value.page = v;
+  pagination.value.current = v;
   getqyzxBankStatement();
 };
 
@@ -215,7 +215,8 @@ function reset() {
     paymentDateEnd: '',
     paymentCompany: '', // 付款方
     bank: '', // 银行网点
-    companyName: name // 带过来的参数
+    companyName: name, // 带过来的参数
+    certificateCode: props.certificateCode
   }
   getqyzxBankStatement();
 }

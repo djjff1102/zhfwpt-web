@@ -5,38 +5,6 @@
       <span class="mount-sum-item">金额总计：{{ formatNumber(jine) }} </span>
       <span> 税额总计：{{ formatNumber(shuie) }}</span>
     </div>
-    <!-- <div class="search_box">
-      <w-form :model="form" layout="inline">
-        <w-form-item class="mr-16px" field="post" label="商品类别">
-          <w-select v-model="form.post" placeholder="全部" >
-            <w-option v-for="(item, i) in subOrderList" :key="i">{{ item }}</w-option>
-          </w-select>
-        </w-form-item>
-        <w-form-item class="mr-16px" field="post" label="订单创建日期">
-          <w-range-picker
-            class="w-250px"
-            :time-picker-props="{
-              defaultValue: [
-                dayjs('00:00:00', 'HH:mm:ss'),
-                dayjs('09:09:06', 'HH:mm:ss'),
-              ],
-            }"
-            format="YYYY-MM-DD"
-            @change="onChange"
-            @select="onSelect"
-            @ok="onOk"
-          />
-        </w-form-item>
-        <w-form-item field="name" label="买方名称">
-          <w-input v-model="form.name" placeholder="请输入买方名称" />
-        </w-form-item>
-        <w-form-item field="name" label="订单编号">
-          <w-input v-model="form.name" placeholder="请输入订单编号" />
-        </w-form-item>
-        <w-button type="primary" class="mr-8px">搜索</w-button>
-        <w-button>重置</w-button>
-      </w-form>
-    </div> -->
     <div class="table-warp">
       <m-table
         style="height: 100%"
@@ -56,13 +24,16 @@
           {{  formatNumber(tableData[rowIndex].quantity) }}
         </template>
         <template v-slot:unitPriceSlot="{ rowIndex }">
-          {{ formatNumber(tableData[rowIndex].unitPrice) }}
+         {{ formatNumber(tableData[rowIndex].unitPrice) }}{{ tableData[rowIndex].amountUnit }}/{{ tableData[rowIndex].measureUnit}}
         </template>
         <template v-slot:amountIncludeTaxSlot="{ rowIndex }">
-          {{ formatNumber(tableData[rowIndex].amountIncludeTax) }}
+          {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].amountIncludeTax) }}{{ tableData[rowIndex].amountUnit }}
+        </template>
+        <template v-slot:slottaxRate="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].taxRate) }}%
         </template>
         <template v-slot:taxAmountSlot="{ rowIndex }">
-          {{ formatNumber(tableData[rowIndex].taxAmount) }}
+          {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].taxAmount) }}{{ tableData[rowIndex].amountUnit }}
         </template>
       </m-table>
     </div>
@@ -70,7 +41,7 @@
 </template>
 <script setup>
 import { ref, reactive } from "vue";
-import { goods,  suborderDropDownBox } from  '@/api/archives'
+import { goods } from  '@/api/archives'
 import { formatNumber } from '@/utils/common'
 
 const props = defineProps({
@@ -129,6 +100,7 @@ const columns = reactive([
   {
     title: "税率",
     dataIndex: "taxRate",
+    slotName:'slottaxRate'
   },
   {
     title: "税额",
@@ -153,6 +125,8 @@ const searchPar = ref({
   goodType: '',
   orderCreateDateStart: '',
   orderCreateDateEnd: '',
+  code: props.code,
+  number: props.number
 })
 const scroll = ref({
   y: 800,
@@ -176,7 +150,7 @@ const changepage = (v) => {
 
 function getSum(data) {
   let sum = 0;
-let n = 0
+  let n = 0
   data.forEach(e => {
     let total = e.amountIncludeTax || 0
     let taxAmount = e.taxAmount || 0
@@ -187,7 +161,7 @@ let n = 0
   shuie.value = n
 }
 
-// 子订单信息
+// 商品信息
 function getqyzxOrderSub() {
   goods(searchPar.value).then(res => {
     tableData.value = res.data;
