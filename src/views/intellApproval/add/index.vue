@@ -118,7 +118,9 @@
         @updateReportId="updateReportId"
         @updateFileData="updateFileData"
         ></validateExcel>
-      <FileList v-else :file="ziliaoFile"></FileList>
+      <div style="margin-bottom: 12px;"  v-else>
+        <FileList :file="ziliaoFile" :showOnline="false"></FileList>
+      </div>
       <card-tab
         :tabData="tabData"
         :showExtra="false"

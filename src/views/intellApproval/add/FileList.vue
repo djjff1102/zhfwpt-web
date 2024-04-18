@@ -12,7 +12,7 @@
         <div class="file-name">...{{ item.fileName.substr(-15) }}</div>
       </el-tooltip> -->
       
-      <Online-check :fileUrl="item.fileUrl" :viewFileUrl="item.viewFileUrl"></Online-check>
+      <Online-check v-if="showOnline" :fileUrl="item.fileUrl" :viewFileUrl="item.viewFileUrl"></Online-check>
       <!-- <div class="file-load" type="text" @click="load(item)"> -->
       <el-button :loading="loading && curLoadId == i" type="text" @click="load(item, i)" style="width: 80px">下载</el-button>
     </div>
@@ -27,6 +27,9 @@ import { exportBlob, splitFiltName } from '@/utils/common'
 const pros = defineProps({
   file: {
     default: []
+  },
+  showOnline: {
+    default: true
   }
 })
 
