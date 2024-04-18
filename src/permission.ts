@@ -1,7 +1,7 @@
 import router from "@/router";
 import { useUserStoreHook } from "@/store/modules/user";
 import { usePermissionStoreHook } from "@/store/modules/permission";
-
+import CryptoJS from "crypto-js";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 
@@ -15,6 +15,12 @@ const whiteList = ["/login"];
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
   const hasToken = localStorage.getItem("accessToken");
+  // if (to.query) {
+  //   to.query.encryptedData = CryptoJS.AES.encrypt(
+  //     JSON.stringify(to.query),
+  //     "Secret Passphrase"
+  //   ).toString();
+  // }
   if (hasToken) {
     if (to.path === "/login") {
       // 如果已登录，跳转首页

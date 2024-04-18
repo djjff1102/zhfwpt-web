@@ -23,6 +23,7 @@ import "./styles/element-variables.scss";
 // iconfont
 import "./assets/iconfont/iconfont.css";
 import infiniteScroll from "vue3-infinite-scroll-better";
+import VueCryptojs from "vue-cryptojs";
 
 const app = createApp(App);
 // 加载ElementUi-icon
@@ -36,4 +37,5 @@ setupDirective(app);
 setupStore(app);
 app.use(WinboxUI);
 app.use(infiniteScroll);
+app.use(VueCryptojs);
 app.use(router).use(i18n).mount("#app");
