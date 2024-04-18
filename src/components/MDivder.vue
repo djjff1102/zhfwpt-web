@@ -3,7 +3,8 @@
   <div class="open-icon-bg">
     <img src="@/assets/base/openclose.svg" style="cursor: pointer;">
     <span class="text-[#3470FF] open-btn" @click="handleOpen">
-      {{ isOpen ? "收起" : "展开" }}<el-icon :class="[!isOpen?'more-icon':'close-more-icon']" style="margin-top: -4px"><DArrowRight /></el-icon>
+      <spn style="line-height: 16px">{{ isOpen ? "收起" : "展开" }}</spn>
+      <el-icon :class="[!isOpen?'more-icon':'close-more-icon']"><DArrowRight /></el-icon>
     </span>
   </div>
     
@@ -44,11 +45,11 @@ function handleOpen() {
   transform: translate(-50%, -10%);
 }
 .more-icon {
-  margin-left: 8px;
+  margin: 0 4px;
   transform: rotate(90deg);
 }
 .close-more-icon {
-  margin-left: 8px;
+  margin: 0 4px;
   transform: rotate(270deg);
 }
 </style>

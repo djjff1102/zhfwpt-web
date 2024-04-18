@@ -8,6 +8,19 @@
     <!-- 企业用票需求预测 -->
     <div v-hasPerm="approvalMapping.approvalPredict">
       <div class="title base-title">企业进销项发票趋势</div>
+      <PredictCom data="22"></PredictCom>
+      <div class="date-month">
+        <el-date-picker
+          v-model="monthRange"
+          type="monthrange"
+          range-separator="到"
+          start-placeholder="开始月份"
+          end-placeholder="结束月份"
+          value-format="YYYY-MM-DD"
+          :clearable="false"
+          @change="changeMonth"
+        />
+      </div>
       <TendencyChart chartId="chartId1" :dataList="echartData" :time="echartData.x"></TendencyChart>
     </div>
     <!-- 历史审批情况 -->
@@ -28,6 +41,8 @@ import { queryFpspReport } from '@/api/intellApproval'
 import { formatData } from '@/utils/common'
 import { ref } from 'vue'
 import { approvalMapping } from '@/router/permissionCode'
+import PredictCom from './PredictCom.vue'
+import dayjs from "dayjs";
 
 const props = defineProps({
   companyName: {
@@ -44,6 +59,8 @@ const props = defineProps({
   }
 });
 const data = ref()
+const monthRange = ref('') // 时间月份
+
 watch(
   () => props.companyName,
   (name) => {
@@ -64,8 +81,8 @@ watch(
   () => props.companyId,
   (id) => {
     if(id) {
+      monthRange.value = [ dayjs().format('YYYY-MM-DD'), dayjs().add(1, 'year').format('YYYY-MM-DD') ]
       init(id)
-      // getfpspReport(id)
     }
   },
   {
@@ -100,11 +117,18 @@ const echartData = ref({
   ],
 })
 
+// 切换月份查询
+function changeMonth() {
+  init()
+}
+
 // 进项发票
 function getgroupByInvoiceDateIn() {
   return new Promise((resolve, reject) => {
     groupByInvoiceDate({
-      receivingCompanyName: data.value.name
+      receivingCompanyName: data.value.name,
+      invoiceDateStart: monthRange.value[0],
+      invoiceDateEnd: monthRange.value[1]
     }).then(res => {
       resolve(res.data)
     }).catch(err => {
@@ -117,7 +141,9 @@ function getgroupByInvoiceDateIn() {
 function getgroupByInvoiceDateOut() {
   return new Promise((resolve, reject) => {
     groupByInvoiceDate({
-      invoicingCompanyName: data.value.name
+      invoicingCompanyName: data.value.name,
+      invoiceDateStart: monthRange.value[0],
+      invoiceDateEnd: monthRange.value[1]
     }).then(res => {
       resolve(res.data)
     }).catch(err => {
@@ -142,6 +168,7 @@ function getfpspReport(id) {
   })
 }
 
+const test = [1,2,3,4,5,6,7,9]
 function init(id) {
   Promise.all([getgroupByInvoiceDateIn(), getgroupByInvoiceDateOut(), getfpspReport(id)])
   .then(results => {
@@ -150,13 +177,19 @@ function init(id) {
     const result2 = results[1]
     const result3 = results[2]
     // 进行处理
-    echartData.value.x =  formatData(result2.data).x;
+    echartData.value.x = formatData(result2.data).x;
     echartData.value.series[0].data = formatData(result1.data).y;
     echartData.value.series[1].data = formatData(result2.data).y;
     echartData.value.series[2].data = result3.y;
+
+    // TODO: 测试数据
+    // echartData.value.x = [1,2,3];
+    // echartData.value.series[0].data = [Math.random()*10, Math.random()*10, Math.random()*10, Math.random()*10]
+    // echartData.value.series[1].data = [Math.random()*10, Math.random()*10, Math.random()*10, Math.random()*10]
+    // echartData.value.series[2].data = [Math.random()*10, Math.random()*10, Math.random()*10, Math.random()*10]
   })
   .catch(error => {
-    console.error('Error fetching data:', error);
+    ElMessage.waring(JSON.stringify(error));
 });
 }
 
@@ -169,5 +202,9 @@ function init(id) {
   position: absolute;
   top: 0;
   right: 0;
+}
+.date-month {
+  margin-top: 24px;
+  text-align: right;
 }
 </style>

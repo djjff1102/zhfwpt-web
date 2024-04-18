@@ -39,7 +39,7 @@ const echartData = ref({
     grid: [
       {
         left: 120,
-        right: 120,
+        right: 20,
       },
     ],
     xAxis: [
