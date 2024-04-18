@@ -69,10 +69,21 @@
             <div :style="{color: taskStatusColor[tableData[rowIndex].taskStatus]}">{{ taskStatus[tableData[rowIndex].taskStatus] }}</div>
         </template>
         <template v-slot:operations="{rowIndex}">
-          <el-button v-hasPerm="btnApprovalCode.approval" type="text" @click="approval(tableData[rowIndex])">审批</el-button>
-          <el-button v-hasPerm="btnApprovalCode.edit" type="text" @click="operate('operate', tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == 2">编辑</el-button>
-          <el-button v-hasPerm="btnApprovalCode.detail" type="text" @click="operate('detail', tableData[rowIndex])">详情</el-button>
-          <el-button v-hasPerm="btnApprovalCode.del" type="danger" link @click="del(tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == 2">删除</el-button>
+          <el-button
+            v-hasPerm="btnApprovalCode.approval"
+            type="text"
+            :disabled="tableData[rowIndex].approveStatus != status.wait"
+            @click="approval(tableData[rowIndex])">审批</el-button>
+          <el-button
+            v-hasPerm="btnApprovalCode.edit"
+            type="text" @click="operate('operate', tableData[rowIndex])"
+            :disabled="tableData[rowIndex].approveStatus == status.pass">编辑</el-button>
+          <el-button
+            v-hasPerm="btnApprovalCode.detail"
+            type="text" @click="operate('detail', tableData[rowIndex])">详情</el-button>
+          <el-button
+            v-hasPerm="btnApprovalCode.del"
+            type="danger" link @click="del(tableData[rowIndex])" :disabled="tableData[rowIndex].approveStatus == status.pass">删除</el-button>
         </template>
       </m-table>
     </div>
@@ -85,7 +96,7 @@ import {  ref, reactive, watch } from "vue";
 import ApprovalDo from './add/ApprovalDo.vue';
 import { useRouter } from 'vue-router';
 import { fpspReport, approvalExport, delReport } from '@/api/intellApproval'
-import { approveStatus,approveStatusColor, statusList, taskStatus, taskStatusColor } from './type.ts'
+import { status, approveStatus,approveStatusColor, statusList, taskStatus, taskStatusColor } from './type.ts'
 import dayjs from "dayjs";
 import { btnApprovalCode, approvalMapping } from '@/router/permissionCode'
 import { useUserStoreHook } from "@/store/modules/user";

@@ -1,4 +1,4 @@
-enum status {
+export enum status {
   wait = 1,
   pass = 2,
   reject = 3,
