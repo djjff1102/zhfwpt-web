@@ -1,30 +1,52 @@
 <template>
   <div class="order-detail-container">
     <div class="title">基本信息</div>
-    <BaseInfo  :order="order"></BaseInfo>
-    <div class="title">子订单信息</div>
+    <BaseInfo :order="order"></BaseInfo>
+    <!-- <div class="title">子订单信息</div> -->
+    <div class="title">商品详情</div>
     <SecondWarehousing :parentCode="code"></SecondWarehousing>
     <div>
+      <div class="title">关联合同</div>
+      <TransactionVoucher :orderCode="code"></TransactionVoucher>
+    </div>
+    <div>
+      <div class="title">关联仓储--待联调</div>
+    </div>
+    <div>
+      <div class="title">关联物流--待联调</div>
+    </div>
+    <!-- <div>
       <div class="title">关联发票列表</div>
-      <InvoiceInformation :parentCode="order.code"></InvoiceInformation></div>
+      <InvoiceInformation :parentCode="order.code"></InvoiceInformation></div> -->
     </div>
 </template>
 <script setup>
 import  { ref } from 'vue';
 import BaseInfo from "./components/BaseInfo.vue"
 import SecondWarehousing from "./components/SecondWarehousing.vue";
-import InvoiceInformation from "@/components/InvoiceInformation/components/InputInvoice.vue";
 import { useRoute } from 'vue-router'
+import { qyzxOrder } from '@/api/archives'
 
 const route = useRoute();
 
 const order = ref({}) // 订单信息
-const fapiao = ref({}) // 发票信息
 const code = ref(); // 订单编号
 
+// 获取主订单列表及详情
+function getqyzxOrder() {
+  qyzxOrder({
+    page_size: 10,
+    page: 1,
+    code: code.value
+  }).then(res => {
+    order.value = res.data[0] || {}
+  }).catch(err => {
+  })
+}
+
 function init() {
-  order.value = JSON.parse(route.query.order);
-  code.value = order.value.code;
+  code.value = route.query.orderCode;
+  getqyzxOrder()
 }
 
 init()

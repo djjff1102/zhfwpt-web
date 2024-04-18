@@ -1,5 +1,5 @@
 <template>
-  <!-- 交易凭证 -->
+  <!-- 合同 -->
   <div>
     <div class="search_box">
       <el-form :model="searchPar" :inline="true" class="demo-form-inline">
@@ -45,28 +45,25 @@
           {{ rowIndex + 1 }}
         </template>
         <template v-slot:amountSlot="{ rowIndex }">
-          {{ formatNumber(tableData[rowIndex].amount) }}
+          {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].amount) }}{{ tableData[rowIndex].amountUnit }}
         </template>
         <template v-slot:operations>
-          <w-button type="text" disabled>详情</w-button>
+          <w-button type="text" disabled>原件</w-button>
         </template>
       </m-table>
     </div>
   </div>
 </template>
 <script setup>
-import dayjs from "dayjs";
-import { onMounted, ref, reactive, unref, computed, watch } from "vue";
+import { ref, reactive, unref, computed, watch } from "vue";
 import { qyzxTransactionCertificate } from '@/api/archives'
 import { formatNumber, formateDate } from '@/utils/common' 
-
 const props = defineProps({
-  companyName: String
+  companyName: String,
+  orderCode: String
 })
 
 const curDate = ref('')
-const current = ref(1);
-const size = ref(10);
 const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
@@ -79,38 +76,45 @@ const columns = reactive([
   {
     title: "合同编号",
     dataIndex: "code",
-    width: 220,
     fixed: "left",
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "甲方（买方/采购方/需方）",
     dataIndex: "partyA",
+    width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "乙方（卖方/销售方/供方）",
     dataIndex: "partyB",
-    fellipsis: true,
+    width: 220,
+    ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "签订地点",
     dataIndex: "signAddress",
+    width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "签订日期",
     dataIndex: "signDate",
+    width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "合同金额",
     dataIndex: "amount",
-    ellipsis: true,
     slotName: 'amountSlot',
+    width: 220,
+    ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
@@ -124,6 +128,7 @@ const columns = reactive([
 const pagination = ref({
   total: 0,
   pageSize: 10,
+  current: 1,
   "show-total": true,
   "show-page-size": true,
   "show-jumper": true,
@@ -136,7 +141,8 @@ const searchPar = ref({
   code: '',
   companyName: '', // 传过来的公司名称
   partyA: '', // 甲方
-  partyB: '' // 乙方
+  partyB: '', // 乙方
+  orderCode: props.orderCode // 订单关联合同
 })
 const scroll = ref({
   y: 800,
@@ -146,11 +152,13 @@ const scroll = ref({
 const changePagesize = (v) => {
   searchPar.value.page_size = v;
   pagination.value.pageSize = v;
+  pagination.value.current = 1;
   searchPar.value.page = 1;
   getqyzxTransactionCertificate();
 };
 const changepage = (v) => {
   searchPar.value.page = v;
+  pagination.value.current = v
   getqyzxTransactionCertificate();
 };
 
@@ -167,6 +175,7 @@ function onChange(dateString, date) {
 
 function search() {
   searchPar.value.page = 1;
+  pagination.value.current = 1
   getqyzxTransactionCertificate();
 }
 
@@ -182,7 +191,8 @@ function reset() {
     code: '',
     companyName: name, // 传过来的公司名称
     partyA: '', // 甲方
-    partyB: '' // 乙方
+    partyB: '', // 乙方
+    orderCode: props.orderCode
   }
   getqyzxTransactionCertificate()
 }

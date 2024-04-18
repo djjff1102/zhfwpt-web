@@ -21,7 +21,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item field="goodName" label="商品名称">
-          <el-input v-model="searchPar.goodName" placeholder="请输入买方名称" clearable/>
+          <el-input v-model="searchPar.goodName" placeholder="请输入商品名称" clearable/>
         </el-form-item>
         <el-form-item field="code" label="子订单编号">
           <el-input v-model="searchPar.code" placeholder="请输入子订单编号" clearable/>
@@ -44,7 +44,7 @@
         :bordered="false"
       >
         <template v-slot:totalMoneySlot="{ rowIndex }">
-          {{ formatNumber(tableData[rowIndex].totalMoney) }}
+          {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].totalMoney) }}{{ tableData[rowIndex].amountUnit }}
         </template>
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
@@ -70,8 +70,7 @@ const props = defineProps({
 })
 
 const currentDate = ref('')
-const current = ref(1);
-const size = ref(10);
+
 const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
@@ -82,44 +81,71 @@ const columns = reactive([
     fixed: "left",
   },
   {
-    title: "子订单编号",
-    dataIndex: "code",
-    width: 220,
+    title: "库存单编号",
+    dataIndex: "stockListNo",
+    width: 180,
     fixed: "left",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
-    title: "订单创建日期",
-    dataIndex: "orderCreateDate",
-    fixed: "left",
-    width: 220,
+    title: "商品编号",
+    dataIndex: "goodNo",
+    width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "商品类别",
     dataIndex: "goodType",
-    fixed: "left",
     ellipsis: true,
     tooltip: {position: 'left'},
-    // width: 220,
+    width: 180,
+  },
+  {
+    title: "商品名称",
+    dataIndex: "goodName",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    width: 180,
+  },
+  {
+    title: "商品所在地省",
+    dataIndex: "goodProvince",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    width: 180,
+  },
+  {
+    title: "商品所在地市",
+    dataIndex: "goodCity",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    width: 180,
+  },
+  {
+    title: "商品所在地址",
+    dataIndex: "goodAddress",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    width: 180,
+  },
+  {
+    title: "仓库名称",
+    dataIndex: "warehouseName",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    width: 180,
   },
   {
     title: "规格",
     dataIndex: "standards",
-    fixed: "left",
-    // width: 100,
+    width: 100,
   },
   {
     title: "数量",
     dataIndex: "quantity",
-    fixed: "left",
-    // width: 220,
-  },
-  {
-    title: "单位",
-    dataIndex: "unit",
-    fixed: "left",
-    // width: 100,
+    width: 180,
   },
   {
     title: "总金额",
@@ -127,19 +153,51 @@ const columns = reactive([
     slotName: 'totalMoneySlot',
     ellipsis: true,
     tooltip: {position: 'left'},
-    // width: 220,
+    width: 180,
   },
   {
-    title: "币种",
-    dataIndex: "currency",
-    // width: 100,
+    title: "合同文件地址",
+    dataIndex: "contractFileAddress",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    width: 180,
   },
   {
-    title: "金额单位",
-    dataIndex: "amountUnit",
-    // width: 100,
+    title: "订单状态",
+    dataIndex: "orderStatus",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    width: 180,
   },
+  {
+    title: "交收方式",
+    dataIndex: "settleMethod",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    width: 180,
+  },
+  {
+    title: "交收凭证号",
+    dataIndex: "settleCertificateNo",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    width: 180,
+  },
+  {
+    title: "付款时间",
+    dataIndex: "paymentDate",
+    ellipsis: true,
+    width: 180,
+  },
+  {
+    title: "交货时间",
+    dataIndex: "finishDate",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    width: 180,
+  }
 ]);
+
 const pagination = ref({
   current: 1,
   total: 0,
@@ -156,7 +214,8 @@ const searchPar = ref({
   orderCreateDateEnd: '',
   goodName: '', // 商品名称
   code: '', // 子订单编号
-  parentOrderCode: ''
+  parentOrderCode: '',
+  searchType: 2 // 0 查询真实数据  1仅查询审批 2不做限制
 })
 const subOrderList = ref([]) // 子订单商品类别
 const scroll = ref({
@@ -183,7 +242,8 @@ function reset() {
     orderCreateDateEnd: '',
     goodName: '',
     code: '',
-    parentOrderCode: props.parentCode
+    parentOrderCode: props.parentCode,
+    searchType: 2
   }
   currentDate.value = '';
   pagination.value.current = 1;
@@ -197,12 +257,15 @@ function search() {
 }
 
 const changePagesize = (v) => {
-  size.value = v;
   pagination.value.pageSize = v;
+  searchPar.value.page_size = v
+  pagination.value.current = 1
+  searchPar.value.page = 1
   init();
 };
 const changepage = (v) => {
-  current.value = v;
+  pagination.value.current = v
+  searchPar.value.page = v
   init();
 };
 

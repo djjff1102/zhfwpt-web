@@ -254,7 +254,7 @@ function toOrderDetail(d) {
   router.push({
     path: '/archives/orderDetail',
     query: {
-      order: JSON.stringify(d)
+      orderCode: d.code,
     }
   })
 }
