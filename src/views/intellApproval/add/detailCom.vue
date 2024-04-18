@@ -154,21 +154,15 @@ function getgroupByInvoiceDateOut() {
 
 // 近期申报
 function getfpspReport(id) {
-  return queryFpspReport({ id }).then(res => {
-    const data = res.data;
-    let x = []
-    let y = []
-    data.forEach(item =>{
-      x.push(item.yearMoth)
-      y.push(item.moneySum)
-    })
-    return {
-      x,y
-    }
+  return queryFpspReport({ 
+    companyId: id,
+    reportStartTime: monthRange.value[0],
+    reportEndTime: monthRange.value[1]
+   }).then(res => {
+    return res.data;
   })
 }
 
-const test = [1,2,3,4,5,6,7,9]
 function init(id) {
   Promise.all([getgroupByInvoiceDateIn(), getgroupByInvoiceDateOut(), getfpspReport(id)])
   .then(results => {
@@ -177,19 +171,13 @@ function init(id) {
     const result2 = results[1]
     const result3 = results[2]
     // 进行处理
-    echartData.value.x = formatData(result2.data).x;
-    echartData.value.series[0].data = formatData(result1.data).y;
-    echartData.value.series[1].data = formatData(result2.data).y;
-    echartData.value.series[2].data = result3.y;
-
-    // TODO: 测试数据
-    // echartData.value.x = [1,2,3];
-    // echartData.value.series[0].data = [Math.random()*10, Math.random()*10, Math.random()*10, Math.random()*10]
-    // echartData.value.series[1].data = [Math.random()*10, Math.random()*10, Math.random()*10, Math.random()*10]
-    // echartData.value.series[2].data = [Math.random()*10, Math.random()*10, Math.random()*10, Math.random()*10]
+    echartData.value.x = formatData(result2).x;
+    echartData.value.series[0].data = formatData(result1).y;
+    echartData.value.series[1].data = formatData(result2).y;
+    echartData.value.series[2].data = formatData(result3).y;
   })
   .catch(error => {
-    ElMessage.waring(JSON.stringify(error));
+    // ElMessage.waring(JSON.stringify(error));
 });
 }
 

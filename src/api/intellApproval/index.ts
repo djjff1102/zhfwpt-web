@@ -126,11 +126,11 @@ export function delReport(params: any): CustomAxiosPromise<DetailResult> {
 /**
  * 近期申报
  */
-export function queryFpspReport(params: any): CustomAxiosPromise<DetailResult> {
+export function queryFpspReport(data: any): CustomAxiosPromise<DetailResult> {
   return request({
-    url: `/base/fpsp_report/queryFpspReport/${params.id}`,
-    method: "get",
-    params,
+    url: `base/fpsp_report/queryFpspReport/groupByMoney`,
+    method: "post",
+    data,
   });
 }
 
