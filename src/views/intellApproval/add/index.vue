@@ -494,8 +494,8 @@ async function checkSave(type: any, msg: string) {
   approvalStore.updateData(form.value)
   if(type == 1) { // 暂存
     form.value.dataStatus = 1;
-    if(initPageParam.type == 1) {
-        form.value.id = initPageParam.id
+    if(reportId.value != -1) {
+        form.value.id = reportId.value
         handleUpdate(msg);
       } else {
         // 新增
@@ -504,8 +504,8 @@ async function checkSave(type: any, msg: string) {
   } else if(type == 2) {
     form.value.dataStatus = 2;
     form.value.approveStatus = 1; // 提交将状态改为待审批
-    if(initPageParam.type == 1) {
-        form.value.id = initPageParam.id
+    if(reportId.value != -1) {
+        form.value.id = reportId.value
         handleUpdateSubmit();
       } else {
         // 新增
@@ -591,7 +591,7 @@ function handleAddNew(msg: any) {
 }
 
 // 申报详情
-function getDetail(d) {
+function getDetail(d: any) {
   searcht(d).then(res => {
     if(JSON.stringify(res.data) != '{}') { // 编辑或者有暂存
       initPageParam.type = 1
