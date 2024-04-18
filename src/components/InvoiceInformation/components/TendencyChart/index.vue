@@ -20,6 +20,7 @@ const props = defineProps({
 })
 
 const echartData = ref({
+    // color: ['#5ECF69', '#3470FF'],
     title: {
       text: "近12个月开票总额度",
       left: "left",
@@ -42,6 +43,7 @@ const echartData = ref({
         right: 20,
       },
     ],
+    legend: {},
     xAxis: [
       {
         type: "category",

@@ -1,5 +1,5 @@
 <template>
-  <!-- 订单信息 -->
+  <!-- 订单详情信息 -->
   <div class="second-warehousing-container">
     <div class="search_box">
       <el-form :model="searchPar" inline="true" class="demo-form-inline">

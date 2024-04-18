@@ -5,7 +5,7 @@ export const formatData = (data) => {
     if (!item) {
       return;
     }
-    let time = `${item?.invoicing_year}.${item?.invoicing_month}`;
+    let time = `${item?.year}.${item?.month}`;
     let amount = item?.count || 0;
     timeArry.push(time);
     amountArry.push(amount);
