@@ -241,32 +241,32 @@ const reportId = ref(-1)
 const tabData = ref({
   HT: {
     name: '订单',
-    key: "2",
+    key: pro.DD,
     status: 0 // 默认状态为0 1为附件有误 2为正确
   },
   DD: {
     name: '合同',
-    key: "1",
+    key: pro.HT,
     status: 1 // 默认状态为0 1为附件有误 2为正确
   },
   PF: {
     name: '发票',
-    key: "3",
+    key: pro.FP,
     status: 2 // 默认状态为0 1为附件有误 2为正确
   },
   YH: {
     name: '银行流水',
-    key: "5",
+    key: pro.YH,
     status: 2 // 默认状态为0 1为附件有误 2为正确
   },
   CC: {
     name: '仓储',
-    key: "4",
+    key: pro.CC,
     status: 2 // 默认状态为0 1为附件有误 2为正确
   },
   WL: {
     name: '物流',
-    key: "6",
+    key: pro.WL,
     status: 0 // 默认状态为0 1为附件有误 2为正确
   },
 })

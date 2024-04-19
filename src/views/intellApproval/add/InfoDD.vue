@@ -159,16 +159,6 @@ function checkError(row) {
   }
 }
 
-// 上传附件
-function upload() {
-
-}
-
-// 附件错误信息
-function handleError() {
-
-}
-
 // 跳转订单详情
 function toOrderDetail(d) {
   // 标记从订单调走，针对back时，做模块定位

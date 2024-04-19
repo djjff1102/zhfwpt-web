@@ -59,8 +59,8 @@ export const statusListHis = [
 ];
 
 export enum pro {
-  HT = "1", // 合同
-  DD = "2", // 订单
+  HT = "2", // 合同
+  DD = "1", // 订单
   FP = "3", // 发票
   CC = "4", // 仓储
   YH = "5", // 银行流水

@@ -182,7 +182,7 @@ async function handleUpload(options) {
   if(res.data.fieldList && res.data.fieldList.length > 0) {
     fileList.value = [];
     relationList.value = []
-    originResult.value = []
+    originResult.value = ''
     tableData.value = res.data.fieldList
     uploadFlag.value = 0
     approvalStore.setFileInfo({})
@@ -191,7 +191,7 @@ async function handleUpload(options) {
   } else if(res.data.relationList && res.data.relationList.length > 0) {
     fileList.value = [];
     tableData.value = []
-    originResult.value = []
+    originResult.value = ''
     relationList.value = res.data.relationList
     uploadFlag.value = 0
     approvalStore.setFileInfo({})

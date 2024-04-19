@@ -83,9 +83,9 @@ export const useApprovalStore = defineStore("approvalstore", () => {
   function setListData(type: any, index: any, businessDataMaterialList: any) {
     switch (type) {
       case "1":
-        HTList.value[index].businessDataMaterialList = businessDataMaterialList;
-      case "2":
         DDList.value[index].businessDataMaterialList = businessDataMaterialList;
+      case "2":
+        HTList.value[index].businessDataMaterialList = businessDataMaterialList;
         break;
       case "3":
         FPList.value[index].businessDataMaterialList = businessDataMaterialList;
