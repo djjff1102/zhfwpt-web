@@ -17,7 +17,8 @@
           {{ formatNumber(Number(tableData[rowIndex].paymentAmount)) }}
         </template>
         <template v-slot:materialslot="{rowIndex}">
-            <div>{{ tableData[rowIndex].material ? '已上传' : '未上传'  }}</div>
+          <attachFile :row="tableData[rowIndex]"></attachFile>
+            <!-- <div>{{ tableData[rowIndex].material ? '已上传' : '未上传'  }}</div> -->
         </template>
         <template v-slot:operations="{rowIndex}">
           <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.YH" :row="tableData[rowIndex]"></reportOperation>
@@ -31,6 +32,8 @@ import { ref, reactive } from "vue";
 import { formatNumber } from '@/utils/common'
 import reportOperation from './reportOperation.vue'
 import { pro } from '../type'
+import attachFile from './attachFile.vue'
+
 import { useApprovalStore } from '@/store/modules/approval'
 const approvalStore = useApprovalStore();
 
@@ -118,7 +121,7 @@ const columns = reactive([
   {
     title: "附件",
     dataIndex: "material",
-    width: 80,
+    width: 120,
     slotName: 'materialslot'
   },
   {

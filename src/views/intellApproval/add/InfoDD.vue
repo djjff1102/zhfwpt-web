@@ -19,7 +19,12 @@
             <div>{{ formatNumber(tableData[rowIndex].totalMoney) }}</div>
         </template>
         <template v-slot:materialslot="{rowIndex}">
-            <div>{{ tableData[rowIndex].material ? '已上传' : '未上传'  }}</div>
+          <attachFile :row="tableData[rowIndex]"></attachFile>
+            <!-- <div v-if="!tableData[rowIndex].material">未上传</div>
+            <div v-if="tableData[rowIndex]?.material && tableData[rowIndex]?.materia?.judgeCode == 2" style="color: red">
+              {{ tableData[rowIndex]?.materia.fileName}} fileUrl</div>
+            <div v-if="tableData[rowIndex]?.material && tableData[rowIndex]?.materia?.judgeCode == 1" style="color: green">
+              {{ tableData[rowIndex]?.materia.fileName}} fileUrl</div> -->
         </template>
         <template v-slot:operations="{rowIndex}">
           <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.DD" :row="tableData[rowIndex]"></reportOperation>
@@ -36,6 +41,8 @@ import { formatNumber } from '@/utils/common'
 import reportOperation from './reportOperation.vue'
 import { pro } from '../type'
 import { useApprovalStore } from '@/store/modules/approval'
+import attachFile from './attachFile.vue'
+
 const approvalStore = useApprovalStore();
 
 const tableData = computed(() => {
@@ -134,7 +141,7 @@ const columns = reactive([
   {
     title: "附件",
     dataIndex: "material",
-    width: 80,
+    width: 120,
     slotName: 'materialslot'
   },
   {

@@ -65,3 +65,31 @@ export async function exportBlob(b, name) {
 //     CryptoJS.AES.decrypt(d, "Secret Passphrase").toString(CryptoJS.enc.Utf8)
 //   );
 // }
+
+// 检查附件上传的类型 
+// 1是有附件上传且全部正确
+// 2是有附件错误
+// 3其他情况
+
+// 0为未处理的，1为校验通过的，2为校验异常的，3为用户选择忽略或未校验的
+export function validateType(data) {
+  let errCode = false
+  let successCode = false
+  if (!data || data.length == 0) {
+    return 3
+  }
+  errCode = data.some((item) => {
+      return item?.material?.judgeCode == 2;
+    });
+  successCode = data.every((item) => {
+    return item?.material?.judgeCode == 1;
+  });
+
+  if(errCode) {
+    return 2 
+  } else if(successCode) {
+    return 1
+  } else {
+    return 3
+  }
+}

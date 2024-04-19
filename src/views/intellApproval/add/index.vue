@@ -198,7 +198,7 @@
 </div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import addApplyCom from './addApplyCom.vue';
 import detailCom from './detailCom.vue'
@@ -228,6 +228,10 @@ const approvalStore = useApprovalStore();
 
 const userStore = useUserStoreHook();
 
+const tabData = computed(() => {
+  return approvalStore.tabData
+})
+
 let userId = userStore.user.id;
 let username = userStore.user.name;
 let companyName = userStore?.user?.organization?.name;
@@ -238,38 +242,41 @@ const router = useRouter();
 
 const ziliaoFile = ref([]) // 申报资料上传的文件
 const reportId = ref(-1)
-const tabData = ref({
-  HT: {
-    name: '订单',
-    key: pro.DD,
-    status: 0 // 默认状态为0 1为附件有误 2为正确
-  },
-  DD: {
-    name: '合同',
-    key: pro.HT,
-    status: 1 // 默认状态为0 1为附件有误 2为正确
-  },
-  PF: {
-    name: '发票',
-    key: pro.FP,
-    status: 2 // 默认状态为0 1为附件有误 2为正确
-  },
-  YH: {
-    name: '银行流水',
-    key: pro.YH,
-    status: 2 // 默认状态为0 1为附件有误 2为正确
-  },
-  CC: {
-    name: '仓储',
-    key: pro.CC,
-    status: 2 // 默认状态为0 1为附件有误 2为正确
-  },
-  WL: {
-    name: '物流',
-    key: pro.WL,
-    status: 0 // 默认状态为0 1为附件有误 2为正确
-  },
-})
+
+// const tabData = ref({
+//   HT: {
+//     name: '订单',
+//     key: pro.DD,
+//     status: 0 // 默认状态为0 1为附件有误 2为正确
+//   },
+//   DD: {
+//     name: '合同',
+//     key: pro.HT,
+//     status: 1 // 默认状态为0 1为附件有误 2为正确
+//   },
+//   PF: {
+//     name: '发票',
+//     key: pro.FP,
+//     status: 2 // 默认状态为0 1为附件有误 2为正确
+//   },
+//   YH: {
+//     name: '银行流水',
+//     key: pro.YH,
+//     status: 2 // 默认状态为0 1为附件有误 2为正确
+//   },
+//   CC: {
+//     name: '仓储',
+//     key: pro.CC,
+//     status: 2 // 默认状态为0 1为附件有误 2为正确
+//   },
+//   WL: {
+//     name: '物流',
+//     key: pro.WL,
+//     status: 0 // 默认状态为0 1为附件有误 2为正确
+//   },
+// })
+
+
 const basefrom1 = ref();
 const basefrom2 = ref();
 const rules = reactive({

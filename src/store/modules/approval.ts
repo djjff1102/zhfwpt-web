@@ -6,6 +6,16 @@ import {
   qyzxInvoic,
   qyzxTransactionCertificate,
 } from "@/api/intellApproval/special";
+import { validateType } from "@/utils/common";
+
+enum pro {
+  DD = "1", // 订单
+  HT = "2", // 合同
+  FP = "3", // 发票
+  CC = "4", // 仓储
+  YH = "5", // 银行流水
+  WL = "6", // 物流
+}
 
 export const useApprovalStore = defineStore("approvalstore", () => {
   const DDList = ref([]);
@@ -20,6 +30,38 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     dataType: "",
   });
   const fileInfo = ref(); // 记录上传的附件
+  const tabData = ref({
+    DD: {
+      name: "订单",
+      key: pro.DD,
+      status: 3, // 默认状态为0 1为附件有误 2为正确
+    },
+    HT: {
+      name: "合同",
+      key: pro.HT,
+      status: 3, // 默认状态为0 1为附件有误 2为正确
+    },
+    PF: {
+      name: "发票",
+      key: pro.FP,
+      status: 3, // 默认状态为0 1为附件有误 2为正确
+    },
+    YH: {
+      name: "银行流水",
+      key: pro.YH,
+      status: 3, // 默认状态为0 1为附件有误 2为正确
+    },
+    CC: {
+      name: "仓储",
+      key: pro.CC,
+      status: 3, // 默认状态为0 1为附件有误 2为正确
+    },
+    WL: {
+      name: "物流",
+      key: pro.WL,
+      status: 3, // 默认状态为0 1为附件有误 2为正确
+    },
+  });
 
   function clearTable() {
     DDList.value = [];
@@ -49,6 +91,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     forReportDD(searchPar.value)
       .then((res) => {
         DDList.value = res.data;
+        tabData.value.DD.status = validateType(res.data);
       })
       .catch((err) => {});
   }
@@ -58,6 +101,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     qyzxTransactionCertificate(searchPar.value)
       .then((res) => {
         HTList.value = res.data;
+        tabData.value.HT.status = validateType(res.data);
       })
       .catch((err) => {});
   }
@@ -67,6 +111,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     qyzxInvoic(searchPar.value)
       .then((res) => {
         FPList.value = res.data;
+        tabData.value.FP.status = validateType(res.data);
       })
       .catch((err) => {});
   }
@@ -76,6 +121,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     qyzxBankStatement(searchPar.value)
       .then((res) => {
         YHList.value = res.data;
+        tabData.value.YH.status = validateType(res.data);
       })
       .catch((err) => {});
   }
@@ -178,6 +224,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     YHList,
     CCList,
     WLList,
+    tabData,
     setListData,
     updateData,
     getTableData,

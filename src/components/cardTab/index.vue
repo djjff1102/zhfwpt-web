@@ -5,8 +5,8 @@
       :key="tabData[item]?.key">
       <template #title>
         <div class="tab-item">{{ tabData[item]?.name }}
-          <img v-if="tabData[item]?.status == 2" class="success-img" src="@/assets/base/success.svg">
-          <div v-if="tabData[item]?.status == 1" class="file-error">附件有误</div>
+          <img v-if="tabData[item]?.status == 1" class="success-img" src="@/assets/base/success.svg">
+          <div v-if="tabData[item]?.status == 2" class="file-error">附件有误</div>
         </div>
       </template>
     </w-tab-pane>

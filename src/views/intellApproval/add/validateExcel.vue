@@ -63,7 +63,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { add, importData, deleteDataAfterDeleteExcel } from '@/api/intellApproval'
+import { add, update, importData, deleteDataAfterDeleteExcel } from '@/api/intellApproval'
 import { singleuploadFileApi } from "@/api/file";
 import { download } from '@/api/file'
 import { exportBlob, splitFiltName } from '@/utils/common'
@@ -157,7 +157,7 @@ async function downloadTemplate() {
 async function handleBeforeUpload() {
   if(props.reportId == -1) { 
     const data = JSON.parse(JSON.stringify(props.form))
-    data.dataStatus = 1
+    data.dataStatus = 1 // 暂存
     const result = await add(data)
     if(result.result == 1) {
       emits('updateReportId', result.data)
@@ -225,13 +225,17 @@ async function handleUpload(options) {
 }
 
 async function UploadFile(options) {
+  const data = JSON.parse(JSON.stringify(props.form))
+  data.dataStatus = 1 // 暂存
+  const result = await update(data) // 上传成功后，将资料文件和发票绑定关系
   // 上传API调用
   const res = await singleuploadFileApi(options.file);
-   const businessDataMaterialList = {
+  const businessDataMaterialList = {
     fileType: 7,  // 附件
     fileUrl: res.data,
     judgeId: props.reportId
   }
+
   approvalStore.setFileInfo(businessDataMaterialList)
 }
 

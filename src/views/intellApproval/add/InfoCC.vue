@@ -36,6 +36,7 @@ import { ref, reactive } from "vue";
 import { qyzxWarehouse, warehouseDropDownBox } from '@/api/archives';
 import { Warehouse } from '@/api/archives/type'
 import { formatNumber } from '@/utils/common'
+import attachFile from './attachFile.vue'
 
 const props = defineProps({
   companyName: {

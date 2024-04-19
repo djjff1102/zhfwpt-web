@@ -10,6 +10,19 @@
   >错误情况</el-button>
   <el-button type="text" @click="toDetail(row)">详情</el-button>
   <el-button type="text" disabled>取消</el-button>
+
+  <el-dialog
+      title="错误信息"
+      v-model="dialogVisible"
+      width="600"
+      :before-close="handleClose"
+    >
+    <div style="padding: 24px 30px">
+      <div class="click-txt">{{ row?.material.judgeResult }}</div>
+      <div>可前往 <span class="click-txt" @click="toFile"> 该[附件] </span> 中进行修改</div>
+      <div>可 <span class="click-txt" @click="abortMsg"> 忽略 </span>改错误信息</div>
+    </div>
+    </el-dialog>
 </div>
 </template>
 
@@ -35,7 +48,13 @@ const props = defineProps({
   }
 })
 
+const dialogVisible = ref(false)
+
 const emits = defineEmits(['updateUploadRow'])
+
+function abortMsg() {
+  dialogVisible.value = false
+}
 
 function updateUpload(file) {
   const businessDataMaterialList = {
@@ -57,7 +76,11 @@ function checkError() {
 
 // 附件错误信息
 function handleError() {
-  
+  dialogVisible.value = true
+}
+
+function toFile() {
+  dialogVisible.value = false
 }
 
 // 跳转订单详情
@@ -71,3 +94,12 @@ function toDetail(d) {
   // })
 }
 </script>
+
+<style scoped>
+.click-txt {
+  color:#3470FF;
+  cursor: pointer;
+  display: inline-block;
+  padding: 4px;
+}
+</style>
