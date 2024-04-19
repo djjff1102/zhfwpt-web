@@ -8,10 +8,10 @@
   <el-upload
     :before-upload="handleBeforeUpload"
     :http-request="handleUpload"
-    accept="'.pdf,.png,.jpg,.jpeg,.gif,.zip,.ppt,.pptx,.xlsx,.xls,.doc,.docx'"
     :limit="1"
     :show-file-list="false"
   >
+  <!-- accept="'.pdf,.png,.jpg,.jpeg,.gif,.zip,.ppt,.pptx,.xlsx,.xls,.doc,.docx'" -->
     <el-button type="text">附件</el-button>
   </el-upload>
 </template>

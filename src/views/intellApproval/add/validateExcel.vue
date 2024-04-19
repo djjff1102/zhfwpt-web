@@ -153,8 +153,9 @@ async function downloadTemplate() {
 }
 
 // 上传文件前，验证是否有审批id，没有审批id需要调暂存接口，生成审批id
+// 添加一个删除判断的逻辑，重新上传前，先删除在上传，因此此时肯定有reportId
 async function handleBeforeUpload() {
-  if(props.reportId == -1) {
+  if(props.reportId == -1) { 
     const data = JSON.parse(JSON.stringify(props.form))
     data.dataStatus = 1
     const result = await add(data)
@@ -172,47 +173,56 @@ async function handleBeforeUpload() {
 function handleExceed() {}
 
 async function handleUpload(options) {
+    if(relationList.value && relationList.value.length > 0) { // 删除在上传
+      await handleDel()
+    }
+    console.log(3333333333)
   uploading.value = true
   // 上传API调用
   const formData = new FormData();
   formData.append("file", options.file);
   formData.append("reportId", props.reportId);
-  const res = await importData(formData);
-  approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
-  if(res.data.fieldList && res.data.fieldList.length > 0) {
-    fileList.value = [];
-    relationList.value = []
-    originResult.value = ''
-    tableData.value = res.data.fieldList
-    uploadFlag.value = 0
-    approvalStore.setFileInfo({})
+  // const res = await importData(formData);
+  importData(formData).then(res=>{
+    approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
+    if(res.data.fieldList && res.data.fieldList.length > 0) {
+        fileList.value = [];
+        relationList.value = []
+        originResult.value = ''
+        tableData.value = res.data.fieldList
+        uploadFlag.value = 0
+        approvalStore.setFileInfo({})
+        uploading.value = false
+        ElMessage.warning(res.data.result);
+      } else if(res.data.relationList && res.data.relationList.length > 0) {
+        fileList.value = [];
+        tableData.value = []
+        originResult.value = ''
+        relationList.value = res.data.relationList
+        uploadFlag.value = 0
+        approvalStore.setFileInfo({})
+        uploading.value = false
+        ElMessage.warning(res.data.result);
+      } else if(res.data.originResult) {
+        fileList.value = [];
+        tableData.value = []
+        relationList.value = []
+        uploadFlag.value = 0
+        originResult.value = res.data.result+ ':' + res.data.originResult
+        approvalStore.setFileInfo({})
+        ElMessage.warning(res.data.originResult);
+        uploading.value = false
+      } else { // 上传成功，调一下上传接口，上传文件
+        // approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
+        fileList.value = [options.file]
+        uploadFlag.value = 1
+        UploadFile(options)
+        uploading.value = false
+        ElMessage.success("上传成功");
+      }
+  }).catch(err => {
     uploading.value = false
-    ElMessage.warning(res.data.result);
-  } else if(res.data.relationList && res.data.relationList.length > 0) {
-    fileList.value = [];
-    tableData.value = []
-    originResult.value = ''
-    relationList.value = res.data.relationList
-    uploadFlag.value = 0
-    approvalStore.setFileInfo({})
-    uploading.value = false
-    ElMessage.warning(res.data.result);
-  } else if(res.data.originResult) {
-    fileList.value = [];
-    tableData.value = []
-    relationList.value = []
-    uploadFlag.value = 0
-    originResult.value = res.data.result+ ':' + res.data.originResult
-    approvalStore.setFileInfo({})
-    ElMessage.warning(res.data.originResult);
-    uploading.value = false
-  } else { // 上传成功，调一下上传接口，上传文件
-    fileList.value = [options.file]
-    uploadFlag.value = 1
-    UploadFile(options)
-    uploading.value = false
-    ElMessage.success("上传成功");
-  }
+  })
 }
 
 async function UploadFile(options) {
@@ -227,14 +237,15 @@ async function UploadFile(options) {
 }
 
 
-function handleDel() {
+async function handleDel() {
   let reportId = props.reportId;
-  deleteDataAfterDeleteExcel({ reportId }).then(res => {
+  await deleteDataAfterDeleteExcel({ reportId }).then(res => {
     fileList.value = []
     uploadFlag.value = -1
     approvalStore.setFileInfo({})
     approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
     emits('updateFileData')
+    console.log(1111111111)
   }).catch(err => {
     console.log('err------------:', err)
   })
