@@ -1,7 +1,7 @@
 import router from "@/router";
 import { useUserStoreHook } from "@/store/modules/user";
 import { usePermissionStoreHook } from "@/store/modules/permission";
-import CryptoJS from "crypto-js";
+// import CryptoJS from "crypto-js";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 

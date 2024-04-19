@@ -94,6 +94,12 @@ watch(() => props.defaultfileList, (v) => {
   if(v && v.length > 0 && v[0]?.fileUrl) {
     nextTick(() => {
       fileList.value = [{name: splitFiltName(v[0].fileUrl)}]
+      const businessDataMaterialList = {
+        fileType: 7,  // 附件
+        fileUrl: v[0].fileUrl,
+        judgeId: props.reportId
+      }
+      approvalStore.setFileInfo(businessDataMaterialList)
     })
   }
 }, {
@@ -226,6 +232,7 @@ function handleDel() {
   deleteDataAfterDeleteExcel({ reportId }).then(res => {
     fileList.value = []
     uploadFlag.value = -1
+    approvalStore.setFileInfo({})
     approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
     emits('updateFileData')
   }).catch(err => {

@@ -1,4 +1,4 @@
-import CryptoJS from "crypto-js";
+// import CryptoJS from "crypto-js";
 export const formatData = (data) => {
   let timeArry = [];
   let amountArry = [];
@@ -60,8 +60,8 @@ export async function exportBlob(b, name) {
 }
 
 // 解密
-export function unlock(d) {
-  return JSON.parse(
-    CryptoJS.AES.decrypt(d, "Secret Passphrase").toString(CryptoJS.enc.Utf8)
-  );
-}
+// export function unlock(d) {
+//   return JSON.parse(
+//     CryptoJS.AES.decrypt(d, "Secret Passphrase").toString(CryptoJS.enc.Utf8)
+//   );
+// }

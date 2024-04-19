@@ -281,7 +281,7 @@ const rules = reactive({
   validDateStart: [{ required: true, message: '请选择起止有效期',trigger: ['blur', 'change'] }],
 })
 const type = ref('add')
-const dataList = ref([])
+// const dataList = ref([])
 // const columns = ref([])
 // const dataHT = ref([]) // 已选的合同list
 // const dataDD = ref([]) // 已选的订单list
@@ -523,6 +523,7 @@ async function checkSave(type: any, msg: string) {
 function handleUpdateSubmit() {
   businessUpdate(form.value).then((res: any) => {
     checkSubmitError(res)
+
   }).catch(err => {
     ElMessage.error( JSON.stringify(err));
   })
@@ -544,9 +545,11 @@ function checkSubmitError(res: any) {
       },500)
       noticeStore.refreshNotice()
     }  else if(res.result == 1 && res.message) {
+      approvalStore.getTableData(reportId.value);
       ElMessage.error(res.message);
       // 处理异常
     } else {
+      approvalStore.getTableData(reportId.value);
       ElMessage.error(res?.message || '算法校验失败');
     }
 }
@@ -556,15 +559,6 @@ function backToList() {
   router.push({
     path: '/intellApproval',
  });
-}
-
-// 算法校验
-function checkjudgeMaterial() {
-  judgeMaterial({ material: form.value?.businessDataMaterialList }).then(res => {
-
-  }).catch(err => {
-
-  })
 }
 
 function handleUpdate(msg: string) {
@@ -605,9 +599,11 @@ function getDetail(d: any) {
       // dataCC.value = res.data.warehouseMapResponseList
       // dataYH.value = res.data.bankStatementMapResponseList
       // columns.value = columnsHT
+      // dataList.value = res.data.transactionCertificateMapResponseList
       fileList.value = res.data.otherMaterialsResponseList
-      dataList.value = res.data.transactionCertificateMapResponseList
-      ziliaoFile.value = [res.data.businessDataMaterialList[0]] as any;
+      if(res.data.businessDataMaterialList[0] && res.data.businessDataMaterialList[0].fileType == 7 ) {
+        ziliaoFile.value = [res.data.businessDataMaterialList[0]] as any; // check第一个文件的type是不是7，是7再赋值
+      }
       form.value = res.data as any
       form.value.taxAuthority = '东疆综合保税区税务局'
       curDate.value = [res.data.validDateStart, res.data.validDateEnd]
