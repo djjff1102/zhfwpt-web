@@ -173,10 +173,9 @@ async function handleBeforeUpload() {
 function handleExceed() {}
 
 async function handleUpload(options) {
-    if(relationList.value && relationList.value.length > 0) { // 删除在上传
-      await handleDel()
-    }
-    console.log(3333333333)
+  if(fileList.value && fileList.value.length > 0) { // 删除再上传
+    await handleDel()
+  }
   uploading.value = true
   // 上传API调用
   const formData = new FormData();
