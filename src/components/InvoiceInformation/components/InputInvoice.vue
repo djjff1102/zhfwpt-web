@@ -81,7 +81,6 @@
   </div>
 </template>
 <script setup>
-import dayjs from "dayjs";
 import { ref, reactive } from "vue";
 import { qyzxInvoice, groupByInvoiceDate } from '@/api/archives'
 import { useRoute, useRouter } from 'vue-router';
@@ -102,8 +101,14 @@ const columns = reactive([
     fixed: "left",
   },
   {
-    title: "发票号码",
+    title: "发票代码",
     dataIndex: "code",
+    width: 180,
+    fixed: "left",
+  },
+  {
+    title: "发票号码",
+    dataIndex: "number",
     width: 180,
     fixed: "left",
   },
@@ -132,46 +137,7 @@ const columns = reactive([
     tooltip: {position: 'left'},
   },
   {
-    title: "收票单位",
-    dataIndex: "receivingCompanyName",
-    width: 220,
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "收票单位统一社会信用代码",
-    width: 220,
-    dataIndex: "receivingCreditNo",
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "项目名称",
-    dataIndex: "goodName",
-    width: 180,
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "规格型号",
-    dataIndex: "standard",
-    width: 180,
-  },
-  {
-    title: "数量",
-    dataIndex: "quantity",
-    width: 180,
-    ellipsis: true,
-    tooltip: {position: 'left'},
-    slotName: 'quantitySlot'
-  },
-  {
-    title: "计量单位",
-    dataIndex: "measureUnit",
-    width: 100,
-  },
-  {
-    title: "含税金额",
+    title: "金额总计(元)-待确认",
     dataIndex: "amountIncludeTax",
     width: 180,
     slotName: 'amountIncludeTaxSlot',
@@ -179,31 +145,84 @@ const columns = reactive([
     tooltip: {position: 'left'},
   },
   {
-    title: "税率",
-    dataIndex: "taxRate",
-    width: 180,
-    slotName: 'taxRateSlot'
-  },
-  {
-    title: "税额",
+    title: "税额总计(元)-待确认",
     dataIndex: "taxAmount",
     width: 180,
     slotName: 'taxAmountSlot'
   },
-  {
-    title: "单价",
-    dataIndex: "unitPrice",
-    slotName: 'unitPriceSlot',
-    width: 180,
-  },
-  {
-    title: "价税合计",
-    dataIndex: "amountTotal",
-    width: 180,
-    ellipsis: true,
-    slotName: 'amountTotalSlot',
-    tooltip: {position: 'left'},
-  },
+  // {
+  //   title: "受票单位",
+  //   dataIndex: "receivingCompanyName",
+  //   width: 220,
+  //   ellipsis: true,
+  //   tooltip: {position: 'left'},
+  // },
+  // {
+  //   title: "受票单位统一社会信用代码",
+  //   width: 220,
+  //   dataIndex: "receivingCreditNo",
+  //   ellipsis: true,
+  //   tooltip: {position: 'left'},
+  // },
+  // {
+  //   title: "项目名称",
+  //   dataIndex: "goodName",
+  //   width: 180,
+  //   ellipsis: true,
+  //   tooltip: {position: 'left'},
+  // },
+  // {
+  //   title: "规格型号",
+  //   dataIndex: "standard",
+  //   width: 180,
+  // },
+  // {
+  //   title: "数量",
+  //   dataIndex: "quantity",
+  //   width: 180,
+  //   ellipsis: true,
+  //   tooltip: {position: 'left'},
+  //   slotName: 'quantitySlot'
+  // },
+  // {
+  //   title: "计量单位",
+  //   dataIndex: "measureUnit",
+  //   width: 100,
+  // },
+  // {
+  //   title: "含税金额",
+  //   dataIndex: "amountIncludeTax",
+  //   width: 180,
+  //   slotName: 'amountIncludeTaxSlot',
+  //   ellipsis: true,
+  //   tooltip: {position: 'left'},
+  // },
+  // {
+  //   title: "税率",
+  //   dataIndex: "taxRate",
+  //   width: 180,
+  //   slotName: 'taxRateSlot'
+  // },
+  // {
+  //   title: "税额",
+  //   dataIndex: "taxAmount",
+  //   width: 180,
+  //   slotName: 'taxAmountSlot'
+  // },
+  // {
+  //   title: "单价",
+  //   dataIndex: "unitPrice",
+  //   slotName: 'unitPriceSlot',
+  //   width: 180,
+  // },
+  // {
+  //   title: "价税合计",
+  //   dataIndex: "amountTotal",
+  //   width: 180,
+  //   ellipsis: true,
+  //   slotName: 'amountTotalSlot',
+  //   tooltip: {position: 'left'},
+  // },
   {
     title: "操作",
      width: 100,
@@ -231,7 +250,7 @@ const searchPar = ref({
   invoiceDateEnd: '',
   type: '',
   code: '',
-  receivingCompanyName: '', // 收票单位（自己）
+  receivingCompanyName: '', // 受票单位（自己）
   invoicingCompanyName: '' // 开票单位(查询)
 })
 const scroll = ref({
@@ -294,7 +313,7 @@ function reset() {
     invoiceDateEnd: '',
     type: '',
     code: '',
-    receivingCompanyName: name, // 收票单位（自己）
+    receivingCompanyName: name, // 受票单位（自己）
     invoicingCompanyName: '' // 开票单位(查询)
   }
   getqyzxInvoice();

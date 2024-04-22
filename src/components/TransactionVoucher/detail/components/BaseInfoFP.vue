@@ -14,10 +14,10 @@
     <el-descriptions-item label="开票单位统一社会信用代码">
       {{ order?.invoicingCreditNo }}
     </el-descriptions-item>
-    <el-descriptions-item label="收票单位">
+    <el-descriptions-item label="受票单位">
       {{ order?.receivingCompanyName }}
     </el-descriptions-item>
-    <el-descriptions-item label="收票单位统一社会信用代码"> {{ order?.receivingCreditNo }} </el-descriptions-item>
+    <el-descriptions-item label="受票单位统一社会信用代码"> {{ order?.receivingCreditNo }} </el-descriptions-item>
     <el-descriptions-item label="项目名称">
       {{ order?.goodName }}
     </el-descriptions-item>

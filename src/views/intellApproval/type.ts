@@ -239,12 +239,12 @@ export const columnsFP = reactive([
     //width: 220,
   },
   {
-    title: "收票单位",
+    title: "受票单位",
     dataIndex: "receivingCompanyName",
     //width: 180,
   },
   {
-    title: "收票单位统一社会信用代码",
+    title: "受票单位统一社会信用代码",
     //width: 220,
     dataIndex: "receivingCreditNo",
   },

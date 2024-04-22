@@ -100,14 +100,14 @@ const columns = reactive([
     tooltip: {position: 'left'},
   },
   {
-    title: "收票单位",
+    title: "受票单位",
     dataIndex: "receivingCompanyName",
     width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
-    title: "收票单位统一社会信用代码",
+    title: "受票单位统一社会信用代码",
     width: 220,
     dataIndex: "receivingCreditNo",
     ellipsis: true,
@@ -241,7 +241,7 @@ const changepage = (v) => {
 //     invoiceDateEnd: '',
 //     type: '',
 //     code: '',
-//     receivingCompanyName: name, // 收票单位（自己）
+//     receivingCompanyName: name, // 受票单位（自己）
 //     invoicingCompanyName: '' // 开票单位(查询)
 //   }
 //   getqyzxInvoice();

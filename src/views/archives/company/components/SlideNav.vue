@@ -73,8 +73,20 @@ let navList = ref([
     show: true,
   },
   {
+    id: "TransactionVoucher",
+    name: "合同信息",
+    scoll: 0,
+    show: true,
+  },
+  {
     id: "InvoiceInformation",
     name: "发票信息",
+    scoll: 0,
+    show: true,
+  },
+  {
+    id: "AccountStatement",
+    name: "银行流水",
     scoll: 0,
     show: true,
   },
@@ -83,26 +95,13 @@ let navList = ref([
     name: "物流仓储信息",
     scoll: 0,
     show: true,
-  },
+  }
   // {
   //   id: "GoodsInformation",
   //   name: "主营商品信息",
   //   scoll: 0,
   //   show: true,
   // },
-  {
-    id: "TransactionVoucher",
-    name: "合同信息",
-    scoll: 0,
-    show: true,
-  },
-
-  {
-    id: "AccountStatement",
-    name: "银行流水",
-    scoll: 0,
-    show: true,
-  },
 ]);
 const isShowSlideNav = ref(true);
 const activeNav = ref("BusinessInformation");

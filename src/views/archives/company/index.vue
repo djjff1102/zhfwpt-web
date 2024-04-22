@@ -30,9 +30,17 @@
         <div class="title"><img :src="ddxx">订单信息</div>
         <OrderInformation :companyName="companyName"></OrderInformation>
       </div>
+      <div v-hasPerm="approvalMapping.TransactionVoucher" id="TransactionVoucher">
+        <div class="title"><img :src="jjpz">合同信息</div>
+        <TransactionVoucher :companyName="companyName"></TransactionVoucher>
+      </div>
       <div v-hasPerm="approvalMapping.InvoiceInformation" id="InvoiceInformation">
         <div class="title"><img :src="fpxx">发票信息</div>
         <InvoiceInformation></InvoiceInformation>
+      </div>
+      <div v-hasPerm="approvalMapping.AccountStatement" id="AccountStatement">
+        <div class="title"><img :src="yhls">银行流水</div>
+        <AccountStatement :companyName="companyName"></AccountStatement>
       </div>
       <div v-hasPerm="approvalMapping.LogisticsWarehousingInformation" id="LogisticsWarehousingInformation">
         <div class="title"><img :src="wlccxx">物流仓储信息</div>
@@ -42,14 +50,6 @@
         <div class="title"><img :src="zyspxx">主营商品信息</div>
         <GoodsInformation :companyName="companyName"></GoodsInformation>
       </div> -->
-      <div v-hasPerm="approvalMapping.TransactionVoucher" id="TransactionVoucher">
-        <div class="title"><img :src="jjpz">合同信息</div>
-        <TransactionVoucher :companyName="companyName"></TransactionVoucher>
-      </div>
-      <div v-hasPerm="approvalMapping.AccountStatement" id="AccountStatement">
-        <div class="title"><img :src="yhls">银行流水</div>
-        <AccountStatement :companyName="companyName"></AccountStatement>
-      </div>
     </div>
     <SlideNav></SlideNav>
   </div>

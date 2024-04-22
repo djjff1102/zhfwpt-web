@@ -8,7 +8,7 @@
             <el-option v-for="(item, i) in subOrderList" :key="i" :value="item" :label="item"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item class="mr-16px" field="post" label="订单创建日期">
+        <!-- <el-form-item class="mr-16px" field="post" label="订单创建日期">
           <el-date-picker
               v-model="currentDate"
               type="daterange"
@@ -19,14 +19,14 @@
               @change="onChange"
           >
           </el-date-picker>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item field="goodName" label="商品名称">
           <el-input v-model="searchPar.goodName" placeholder="请输入商品名称" clearable/>
         </el-form-item>
-        <el-form-item field="code" label="子订单编号">
+        <!-- <el-form-item field="code" label="子订单编号">
           <el-input v-model="searchPar.code" placeholder="请输入子订单编号" clearable/>
-        </el-form-item>
-         <el-form-item>
+        </el-form-item> -->
+        <el-form-item>
           <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
           <w-button @click="reset">重置</w-button>
          </el-form-item>

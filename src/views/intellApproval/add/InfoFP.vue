@@ -76,14 +76,14 @@ const columns = reactive([
     tooltip: {position: 'left'},
   },
   {
-    title: "收票单位",
+    title: "受票单位",
      width: 220,
     dataIndex: "receivingCompanyName",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
-    title: "收票单位统一社会信用代码",
+    title: "受票单位统一社会信用代码",
     width: 220,
     dataIndex: "receivingCreditNo",
     ellipsis: true,
