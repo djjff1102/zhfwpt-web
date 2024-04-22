@@ -29,6 +29,8 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { useApprovalStore } from '@/store/modules/approval'
+import { fileSave } from '@/api/intellApproval/special'
+import { splitFiltName } from '@/utils/common'
 
 const router = useRouter();
 const approvalStore = useApprovalStore();
@@ -45,6 +47,9 @@ const props = defineProps({
   },
   row: {
     default: {}
+  },
+  reportId: {
+    default: ''
   }
 })
 
@@ -57,12 +62,26 @@ function abortMsg() {
 }
 
 function updateUpload(file) {
-  const businessDataMaterialList = {
-    fileType: props.type,   //订单例子
+  // const businessDataMaterialList = {
+  //   fileType: props.type,   //订单例子
+  //   fileUrl: file,
+  //   judgeId: props.rowId
+  // }
+  const material = props.row.material || {}
+  const data = {
+    // id: material.id || '',
+    reportId: props.reportId,
     fileUrl: file,
-    judgeId: props.rowId
+    fileName: splitFiltName(file),
+    judgeId: props.rowId,
+    fileType: props.type, // 文件对应的数据类型，0为其他材料，1为订单，2为合同，3为发票，4为银行流水，5为仓储，6为物流
+    judgeCode: material.judgeCode || 0
   }
-  approvalStore.setListData( props.type, props.rowIndex, businessDataMaterialList)
+  fileSave( data ).then(res => {
+    approvalStore.setListData( props.type)
+  }).catch(err => {
+    ElMessage.success("附件更新失败：" + JSON.stringify(err));
+  })
 }
 
 // 检验错误信息的状态

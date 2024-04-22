@@ -21,7 +21,7 @@
             <!-- <div>{{ tableData[rowIndex].material ? '已上传' : '未上传'  }}</div> -->
         </template>
         <template v-slot:operations="{rowIndex}">
-          <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.YH" :row="tableData[rowIndex]"></reportOperation>
+          <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.YH" :row="tableData[rowIndex]" v-bind="$attrs"></reportOperation>
         </template>
       </m-table>
     </div>
@@ -39,10 +39,6 @@ const approvalStore = useApprovalStore();
 
 const tableData = computed(() => {
   return approvalStore.YHList
-})
-
-const props = defineProps({
-  reportId: ''
 })
 
 const columns = reactive([

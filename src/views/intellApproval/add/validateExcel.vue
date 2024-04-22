@@ -235,7 +235,6 @@ async function UploadFile(options) {
     fileUrl: res.data,
     judgeId: props.reportId
   }
-
   approvalStore.setFileInfo(businessDataMaterialList)
 }
 

@@ -12,8 +12,8 @@ enum pro {
   DD = "1", // 订单
   HT = "2", // 合同
   FP = "3", // 发票
-  CC = "4", // 仓储
-  YH = "5", // 银行流水
+  YH = "4", // 银行流水
+  CC = "5", // 仓储
   WL = "6", // 物流
 }
 
@@ -86,7 +86,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     getqyzxBankStatement();
   }
 
-  // 订单
+  // 订单1
   function getqyzxOrder() {
     forReportDD(searchPar.value)
       .then((res) => {
@@ -96,7 +96,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       .catch((err) => {});
   }
 
-  // 合同
+  // 合同2
   function getqyzxTransactionCertificate() {
     qyzxTransactionCertificate(searchPar.value)
       .then((res) => {
@@ -106,7 +106,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       .catch((err) => {});
   }
 
-  // 发票列表
+  // 发票列表3
   function getqyzxInvoic() {
     qyzxInvoic(searchPar.value)
       .then((res) => {
@@ -116,7 +116,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       .catch((err) => {});
   }
 
-  // 银行流水
+  // 银行流水4
   function getqyzxBankStatement() {
     qyzxBankStatement(searchPar.value)
       .then((res) => {
@@ -126,24 +126,29 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       .catch((err) => {});
   }
 
-  function setListData(type: any, index: any, businessDataMaterialList: any) {
+  // 附件上传完，刷新接口
+  function setListData(type: any) {
     switch (type) {
-      case "1":
-        DDList.value[index].businessDataMaterialList = businessDataMaterialList;
-      case "2":
-        HTList.value[index].businessDataMaterialList = businessDataMaterialList;
+      case pro.DD:
+        getqyzxOrder();
+      // DDList.value[index].businessDataMaterialList = businessDataMaterialList;
+      case pro.HT:
+        getqyzxTransactionCertificate();
+        // HTList.value[index].businessDataMaterialList = businessDataMaterialList;
         break;
-      case "3":
-        FPList.value[index].businessDataMaterialList = businessDataMaterialList;
+      case pro.FP:
+        getqyzxInvoic();
+        // FPList.value[index].businessDataMaterialList = businessDataMaterialList;
         break;
-      case "4":
-        YHList.value[index].businessDataMaterialList = businessDataMaterialList;
+      case pro.YH:
+        getqyzxBankStatement();
+        // YHList.value[index].businessDataMaterialList = businessDataMaterialList;
         break;
-      case "5":
-        CCList.value[index].businessDataMaterialList = businessDataMaterialList;
+      case pro.CC:
+        // CCList.value[index].businessDataMaterialList = businessDataMaterialList;
         break;
-      case "6":
-        WLList.value[index].businessDataMaterialList = businessDataMaterialList;
+      case pro.WL:
+        // WLList.value[index].businessDataMaterialList = businessDataMaterialList;
         break;
     }
   }

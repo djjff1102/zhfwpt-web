@@ -27,7 +27,7 @@
               {{ tableData[rowIndex]?.materia.fileName}} fileUrl</div> -->
         </template>
         <template v-slot:operations="{rowIndex}">
-          <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.DD" :row="tableData[rowIndex]"></reportOperation>
+          <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.DD" :row="tableData[rowIndex]" v-bind="$attrs"></reportOperation>
         </template>
       </m-table>
     </div>

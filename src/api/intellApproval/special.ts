@@ -66,3 +66,13 @@ export function getTotalMoney(data: any) {
     data,
   });
 }
+/**
+ * 上传的附件进行保存和更新
+ */
+export function fileSave(data: any) {
+  return request({
+    url: "base/fpsp_other_materials/saveAndUpdateMaterials",
+    method: "post",
+    data,
+  });
+}
