@@ -153,11 +153,26 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     }
   }
 
+  function formateMaterial(material: any, type: any) {
+    const data = {
+      fileType: type, // 附件
+      fileUrl: material.fileUrl || "",
+      judgeId: material.judgeId || "",
+    };
+    return data;
+  }
+
   // 表单提交前，整合数据
   function updateData(form: any) {
     const businessDataMaterialList: any = [];
-    if (fileInfo.value && JSON.stringify(fileInfo.value) != "{}") {
-      businessDataMaterialList.push(fileInfo.value);
+    // if (fileInfo.value && JSON.stringify(fileInfo.value) != "{}") {
+    //   businessDataMaterialList.push(fileInfo.value);
+    // }
+    if (
+      form.businessDataMaterialList &&
+      form.businessDataMaterialList[0].fileType == 7
+    ) {
+      businessDataMaterialList.push(form.businessDataMaterialList[0]);
     }
     const DDcode: any = [];
     const HTcode: any = [];
@@ -167,35 +182,51 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     const WLcode: any = [];
     DDList.value.forEach((item: any) => {
       DDcode.push(item.code);
-      if (item?.businessDataMaterialList) {
-        const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
+      if (item.material) {
+        const d = formateMaterial(item.material, pro.DD);
         businessDataMaterialList.push(d);
-        delete item.businessDataMaterialList;
       }
+      // if (item?.businessDataMaterialList) {
+      //   const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
+      //   businessDataMaterialList.push(d);
+      //   delete item.businessDataMaterialList;
+      // }
     });
     HTList.value.forEach((item: any) => {
       HTcode.push(item.code);
-      if (item?.businessDataMaterialList) {
-        const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
+      if (item.material) {
+        const d = formateMaterial(item.material, pro.HT);
         businessDataMaterialList.push(d);
-        delete item.businessDataMaterialList;
       }
+      // if (item?.businessDataMaterialList) {
+      //   const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
+      //   businessDataMaterialList.push(d);
+      //   delete item.businessDataMaterialList;
+      // }
     });
     FPList.value.forEach((item: any) => {
       FPcode.push(item.id);
-      if (item?.businessDataMaterialList) {
-        const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
+      if (item.material) {
+        const d = formateMaterial(item.material, pro.FP);
         businessDataMaterialList.push(d);
-        delete item.businessDataMaterialList;
       }
+      // if (item?.businessDataMaterialList) {
+      //   const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
+      //   businessDataMaterialList.push(d);
+      //   delete item.businessDataMaterialList;
+      // }
     });
     YHList.value.forEach((item: any) => {
       YHcode.push(item.id);
-      if (item?.businessDataMaterialList) {
-        const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
+      if (item.material) {
+        const d = formateMaterial(item.material, pro.YH);
         businessDataMaterialList.push(d);
-        delete item.businessDataMaterialList;
       }
+      // if (item?.businessDataMaterialList) {
+      //   const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
+      //   businessDataMaterialList.push(d);
+      //   delete item.businessDataMaterialList;
+      // }
     });
     // CCList.value.forEach((item: any) => {
     //   // CCcode.push(item.code);

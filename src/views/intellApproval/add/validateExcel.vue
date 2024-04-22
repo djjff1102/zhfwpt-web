@@ -227,7 +227,9 @@ async function handleUpload(options) {
 async function UploadFile(options) {
   const data = JSON.parse(JSON.stringify(props.form))
   data.dataStatus = 1 // 暂存
-  const result = await update(data) // 上传成功后，将资料文件和发票绑定关系
+  // TODO:等待后端接口开发，目前直接调save接口，会清空数据
+  // const result = await update(data) // 上传成功后，将资料文件和发票绑定关系
+  
   // 上传API调用
   const res = await singleuploadFileApi(options.file);
   const businessDataMaterialList = {
