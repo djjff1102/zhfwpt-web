@@ -50,12 +50,12 @@ const columns = reactive([
     title: "序号",
     width: 80,
     slotName: "index",
-    fixed: "left",
+    // fixed: "left",
   },
   {
     title: "发布企业名称",
     dataIndex: "publisherEnterpriseName",
-    fixed: "left",
+    // fixed: "left",
     width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
@@ -180,7 +180,8 @@ const columns = reactive([
     width: 180,
     dataIndex: "material",
     width: 120,
-    slotName: 'materialslot'
+    slotName: 'materialslot',
+    fixed: "right",
   },
   {
     title: "操作",

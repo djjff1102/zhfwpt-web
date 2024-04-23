@@ -44,22 +44,24 @@ const columns = reactive([
     title: "序号",
     width: 80,
     slotName: "index",
-    fixed: "left",
+    // fixed: "left",
   },
   {
     title: "合同编号",
     dataIndex: "code",
     width: 220,
-    fixed: "left",
+    // fixed: "left",
   },
   {
     title: "甲方（买方/采购方/需方）",
     dataIndex: "partyA",
+    width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "乙方（卖方/销售方/供方）",
+    width: 220,
     dataIndex: "partyB",
     fellipsis: true,
     tooltip: {position: 'left'},
@@ -67,17 +69,20 @@ const columns = reactive([
   {
     title: "签订地点",
     dataIndex: "signAddress",
+    width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "签订日期",
+    width: 220,
     dataIndex: "signDate",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "合同金额",
+    width: 220,
     dataIndex: "amount",
     ellipsis: true,
     slotName: 'amountSlot',
@@ -87,7 +92,8 @@ const columns = reactive([
     title: "附件",
     dataIndex: "material",
     width: 120,
-    slotName: 'materialslot'
+    slotName: 'materialslot',
+    fixed: "right",
   },
   {
     title: "操作",

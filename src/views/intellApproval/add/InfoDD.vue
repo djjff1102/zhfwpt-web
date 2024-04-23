@@ -57,11 +57,11 @@ const columns = reactive([
     title: "序号",
     width: 80,
     slotName: "index",
-    fixed: "left",
+    // fixed: "left",
   },
   {
     title: "订单编号",
-    fixed: "left",
+    // fixed: "left",
     dataIndex: "code",
     width: 200,
     ellipsis: true,
@@ -135,7 +135,8 @@ const columns = reactive([
     title: "附件",
     dataIndex: "material",
     width: 120,
-    slotName: 'materialslot'
+    slotName: 'materialslot',
+    fixed: "right",
   },
   {
     title: "操作",
