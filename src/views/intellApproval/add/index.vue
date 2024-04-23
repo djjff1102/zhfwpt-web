@@ -344,7 +344,7 @@ function closeError() {
 }
 
 // 更新审批id
-function updateReportId(id) {
+function updateReportId(id: any) {
   reportId.value = id;
 }
 
@@ -378,7 +378,7 @@ function changeDate(v) {
   }
 }
 // 切换时间类型
-function formateDate(now) {
+function formateDate(now: any) {
   return `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`
 }
 // 切换时间类型
@@ -400,7 +400,7 @@ function updateApprval() {
 }
 
 // 更新上传的文件
-function updateUpload(file) {
+function updateUpload(file: any) {
   form.value.otherMaterialsRequestList = file;
 }
 
@@ -489,9 +489,9 @@ function handleSave(type: any, msg: string) {
     errorFlag.value = true
     return;
   }
-  basefrom1.value.validate(v => {
+  basefrom1.value.validate((v: any) => {
     if(v) {
-      basefrom2.value.validate(k => {
+      basefrom2.value.validate((k: any) => {
         if(k) {
           checkSave(type, msg)
         } else {
@@ -556,7 +556,6 @@ async function checkSave(type: any, msg: string) {
 function handleUpdateSubmit() {
   businessUpdate(form.value).then((res: any) => {
     checkSubmitError(res)
-
   }).catch(err => {
     ElMessage.error( JSON.stringify(err));
   })
@@ -626,19 +625,6 @@ function getDetail(d: any) {
       initPageParam.type = 1
       initPageParam.id = res.data.id
       fileList.value = res.data.otherMaterialsResponseList
-      // TODO: 第一个版本的逻辑，选择河东订单前端本地缓存
-      // dataHT.value = res.data.transactionCertificateMapResponseList
-      // dataDD.value = res.data.orderMapResponseList
-      // dataFP.value = res.data.invoiceMapResponseList
-      // dataCC.value = res.data.warehouseMapResponseList
-      // dataYH.value = res.data.bankStatementMapResponseList
-      // columns.value = columnsHT
-      // dataList.value = res.data.transactionCertificateMapResponseList
-
-      
-      // if(res.data.businessDataMaterialList[0] && res.data.businessDataMaterialList[0].fileType == 7 ) {
-      //   ziliaoFile.value = [res.data.businessDataMaterialList[0]] as any; // check第一个文件的type是不是7，是7再赋值
-      // }
       res.data?.businessDataMaterialList.forEach((item: any) => {
         if(item.fileType == 7) {
           ziliaoFile.value = [item] as any; // check第一个文件的type是不是7，是7再赋值

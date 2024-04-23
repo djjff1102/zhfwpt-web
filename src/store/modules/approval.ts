@@ -41,7 +41,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       key: pro.HT,
       status: 3, // 默认状态为0 1为附件有误 2为正确
     },
-    PF: {
+    FP: {
       name: "发票",
       key: pro.FP,
       status: 3, // 默认状态为0 1为附件有误 2为正确
