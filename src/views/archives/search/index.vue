@@ -160,10 +160,6 @@ function handleSearchProvince(item) {
 
 // 注册成立时间
 function handleSearchTime(item, type) {
-  // minimumEstablish: '', // 创建时间查询字段（下限）
-  // maximumEstablish: '', // 创建时间查询字段（上限）
-  // randomMinimumEstablish: '', //创建时间日期范围 下限
-  // randomMinimumEstablish: '' //创建时间日期范围 上限
   if(type == 0) {
     searchPar.value.minimumEstablish = item.start;
     searchPar.value.maximumEstablish = item.end;
@@ -179,12 +175,15 @@ function handleSearchTime(item, type) {
   loading.value = true;
   tableData.value = [];
   loadPage();
-  console.log('item-------------时间：', item)
 }
 
 // 注册资本
-function handleSearchMoney() {
-
+function handleSearchMoney(item) {
+  searchPar.value.companyType = item.key
+  searchPar.value.page = 1;
+  loading.value = true;
+  tableData.value = [];
+  loadPage();
 }
 
 // 企业搜索 重置pageNum
