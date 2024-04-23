@@ -178,7 +178,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       fileType: type, // 附件
       fileUrl: material.fileUrl || "",
       judgeId: material.judgeId || "",
-      judgecode: material.material || 0,
+      judgeCode: material.judgeCode || 0,
     };
     return data;
   }
