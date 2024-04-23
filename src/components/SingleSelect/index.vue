@@ -46,6 +46,7 @@
         style="height: 22px"
         v-model="dateValue"
         type="daterange"
+        value-format="YYYY-MM-DD"
         range-separator="-"
         start-placeholder="开始日期"
         end-placeholder="结束日期"
@@ -114,13 +115,24 @@ function handleBlur() {
 
 // 选择完日期
 function handleDateSelect() {
-  if(!dateValue.value) {
+  if(!dateValue.value) { // 清除时间，默认选择到全部
     cur.value = ''
+    const item = {
+      start: '',
+      end: '',
+    }
+    emits('updateSeach', item, 0) // 第二个参数，针对成立时间，0是创建时间段  1是时间范围
+  } else {
+    emits('updateSeach', {
+      start: dateValue.value[0],
+      end: dateValue.value[1]
+    }, 1) // 第二个参数，针对成立时间，0是创建时间段  1是时间范围
   }
 }
 
 // 点击自定义-弹出日期框
 function handleShowDate() {
+  console.log('11111111111111')
   cur.value ='customdate'
   nextTick(() => {
     datePickRef.value.focus()
@@ -155,12 +167,13 @@ function formateList(d) {
 }
 
 function handleSearch(item) {
+  dateValue.value = ''
   if(item) {
     cur.value = item.key
   } else {
     cur.value = ''
   }
-  emits('updateSeach', item)
+  emits('updateSeach', item, 0) // 第二个参数，针对成立时间，0是创建时间段  1是时间范围
 }
 </script>
 

@@ -48,19 +48,19 @@
             :extraContent="true"
             @updateSeach="handleSearchProvince"
             ></SingleSelect>
-            <SingleSelect
+            <!-- <SingleSelect
               title="注册资本(￥)"
               :list="registerMoney"
               :customFun="true"
               customFunType="number"
               @updateSeach="handleSearchMoney"
-            ></SingleSelect>
+            ></SingleSelect> -->
             <SingleSelect
               title="成立时间"
               :list="establishDate"
               :customFun="true"
               customFunType="date"
-              @updateSeach="handleSearchMoney"
+              @updateSeach="handleSearchTime"
             ></SingleSelect>
             <SingleSelect
               title="企业类型"
@@ -112,7 +112,11 @@ const searchPar = ref({
   page: 1,
   allContentSearch: '',  //综合查询输入
   provinceShort: '', // 省份
-  userId: userStore.user.id
+  userId: userStore.user.id,
+  minimumEstablish: '', // 创建时间查询字段（下限）
+  maximumEstablish: '', // 创建时间查询字段（上限）
+  randomMinimumEstablish: '', //创建时间日期范围 下限
+  randomMaximumEstablish: '' //创建时间日期范围 上限
 })
 const total = ref(0) // 查询结果总数量
 const loading = ref(false); // 加载
@@ -152,6 +156,30 @@ function handleSearchProvince(item) {
   loading.value = true;
   tableData.value = [];
   loadPage();
+}
+
+// 注册成立时间
+function handleSearchTime(item, type) {
+  // minimumEstablish: '', // 创建时间查询字段（下限）
+  // maximumEstablish: '', // 创建时间查询字段（上限）
+  // randomMinimumEstablish: '', //创建时间日期范围 下限
+  // randomMinimumEstablish: '' //创建时间日期范围 上限
+  if(type == 0) {
+    searchPar.value.minimumEstablish = item.start;
+    searchPar.value.maximumEstablish = item.end;
+    searchPar.value.randomMinimumEstablish = ''
+    searchPar.value.randomMaximumEstablish = ''
+  } else  {
+    searchPar.value.minimumEstablish = '';
+    searchPar.value.maximumEstablish = '';
+    searchPar.value.randomMinimumEstablish = item.start;
+    searchPar.value.randomMaximumEstablish = item.end;
+  }
+  searchPar.value.page = 1;
+  loading.value = true;
+  tableData.value = [];
+  loadPage();
+  console.log('item-------------时间：', item)
 }
 
 // 注册资本

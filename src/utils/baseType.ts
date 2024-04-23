@@ -121,26 +121,38 @@ export const establishDate = [
   {
     value: "半年内",
     key: "1",
+    start: 0,
+    end: 0.5,
   },
   {
     value: "1年内",
     key: "2",
+    start: 0,
+    end: 1,
   },
   {
     value: "1~3年",
     key: "3",
+    start: 1,
+    end: 3,
   },
   {
     value: "3~5年",
     key: "4",
+    start: 3,
+    end: 5,
   },
   {
     value: "5~10年",
     key: "5",
+    start: 5,
+    end: 10,
   },
   {
     value: "10年以上",
     key: "6",
+    start: 10,
+    end: "",
   },
 ];
 
