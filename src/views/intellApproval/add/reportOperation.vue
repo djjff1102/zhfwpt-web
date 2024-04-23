@@ -20,7 +20,7 @@
     <div style="padding: 24px 30px">
       <div class="click-txt">{{ row?.material.judgeResult }}</div>
       <div>可前往 <span class="click-txt" @click="toFile"> 该[附件] </span> 中进行修改</div>
-      <div class="center-content" v-if="!hideType.includes(type)">可 <span class="click-txt" @click="abortMsg">忽略</span>
+      <div class="center-content">可 <span class="click-txt" @click="abortMsg">忽略</span>
         <w-popover
           placement="bottom">
           <template #content>
@@ -42,7 +42,7 @@ import { updateJudgeCode } from '@/api/intellApproval'
 import { splitFiltName } from '@/utils/common'
 import { pro } from '../type'
 
-const hideType = [ pro.FP, pro.YH] // 银行和发票不可忽略
+// const hideType = [ pro.FP, pro.YH] // 银行和发票不可忽略
 const router = useRouter();
 const approvalStore = useApprovalStore();
 
