@@ -11,6 +11,7 @@
     </div>
     <div>
       <div class="title">关联仓储--待联调</div>
+      <relationWarehouse :orderCode="code"></relationWarehouse>
     </div>
     <div>
       <div class="title">关联物流</div>

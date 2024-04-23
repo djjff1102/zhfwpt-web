@@ -394,3 +394,12 @@ export function fxjkFieldMapping(
     data,
   });
 }
+
+// 关联仓储
+export function qyzxWarehouseGood(data: any){
+  return request({
+    url: "base/qyzx_warehouse_good",
+    method: "post",
+    data,
+  });
+}
