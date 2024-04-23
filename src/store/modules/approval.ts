@@ -135,7 +135,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     forReportCC(searchPar.value)
       .then((res) => {
         CCList.value = res.data;
-        console.log("仓储---------------------：", CCList.value);
         tabData.value.CC.status = validateType(res.data);
       })
       .catch((err) => {});
@@ -179,6 +178,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       fileType: type, // 附件
       fileUrl: material.fileUrl || "",
       judgeId: material.judgeId || "",
+      judgecode: material.material || 0,
     };
     return data;
   }
