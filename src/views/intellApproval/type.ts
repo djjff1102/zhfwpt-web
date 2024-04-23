@@ -67,6 +67,15 @@ export enum pro {
   WL = "6", // 物流
 }
 
+export const urlMap = {
+  [pro.HT]: "/archives/transactDetail",
+  [pro.DD]: "/archives/orderDetail",
+  [pro.FP]: "/archives/fpdetail",
+  [pro.CC]: "",
+  [pro.YH]: "",
+  [pro.WL]: "",
+};
+
 export const nameMap = {
   [pro.HT]: "合同",
   [pro.DD]: "订单",

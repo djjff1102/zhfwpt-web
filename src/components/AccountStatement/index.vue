@@ -4,18 +4,6 @@
     <div class="search_box">
       <el-form :model="searchPar" :inline="true" class="demo-form-inline">
         <el-form-item field="name" label="付款日期">
-          <!-- <w-range-picker
-            class="w-250px"
-            :time-picker-props="{
-              defaultValue: [
-                dayjs('00:00:00', 'HH:mm:ss'),
-                dayjs('09:09:06', 'HH:mm:ss'),
-              ],
-            }"
-            clearable
-            format="YYYY-MM-DD"
-            @change="onChange"
-          /> -->
           <el-date-picker
             v-model="curDate"
             type="daterange"

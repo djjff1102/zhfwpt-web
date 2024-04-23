@@ -11,7 +11,6 @@ const permissionStore = usePermissionStoreHook();
 
 // 白名单路由
 const whiteList = ["/login"];
-
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
   const hasToken = localStorage.getItem("accessToken");
@@ -33,7 +32,10 @@ router.beforeEach(async (to, from, next) => {
       if (hasRoles) {
         // 未匹配到任何路由，跳转404
         if (to.matched.length === 0) {
-          from.name ? next({ name: from.name }) : next("/404");
+          // from.name ? next({ name: from.name }) : next("/404");
+          from.name
+            ? next({ path: from.path, query: from.query })
+            : next("/404");
         } else {
           next();
         }

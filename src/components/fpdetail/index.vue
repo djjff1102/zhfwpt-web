@@ -1,8 +1,9 @@
 <template>
   <div class="order-detail-container">
     <div class="title">{{ name }}基本信息</div>
+    <BaseInfoBoth v-if="name == '发票详情'" :order="fapiao"></BaseInfoBoth>
     <BaseInfo v-if="name == '销项发票'" :order="fapiao"></BaseInfo>
-    <BaseInfoIN v-else :order="fapiao"></BaseInfoIN>
+    <BaseInfoIN v-if="name == '进项发票'" :order="fapiao"></BaseInfoIN>
     <div class="title">商品信息</div>
     <SecondWarehousing :id="fapiao.id" :code="route.query.code" :number="route.query.number"></SecondWarehousing>
   </div>
@@ -11,7 +12,6 @@
 import  { ref } from 'vue';
 import BaseInfo from "./components/BaseInfo.vue"
 import SecondWarehousing from "./components/SecondWarehousing.vue";
-import InvoiceInformation from "@/components/InvoiceInformation/components/InputInvoice.vue";
 import BaseInfoIN from './components/BaseInfoIN.vue'
 import { useRoute } from 'vue-router'
 import { qyzxInvoice } from '@/api/archives'

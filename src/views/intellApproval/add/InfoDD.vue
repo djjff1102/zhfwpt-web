@@ -20,11 +20,6 @@
         </template>
         <template v-slot:materialslot="{rowIndex}">
           <attachFile :row="tableData[rowIndex]"></attachFile>
-            <!-- <div v-if="!tableData[rowIndex].material">未上传</div>
-            <div v-if="tableData[rowIndex]?.material && tableData[rowIndex]?.materia?.judgeCode == 2" style="color: red">
-              {{ tableData[rowIndex]?.materia.fileName}} fileUrl</div>
-            <div v-if="tableData[rowIndex]?.material && tableData[rowIndex]?.materia?.judgeCode == 1" style="color: green">
-              {{ tableData[rowIndex]?.materia.fileName}} fileUrl</div> -->
         </template>
         <template v-slot:operations="{rowIndex}">
           <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.DD" :row="tableData[rowIndex]" v-bind="$attrs"></reportOperation>
@@ -150,17 +145,6 @@ const scroll = ref({
   y: 800,
   x: 1080,
 });
-
-// 跳转订单详情
-function toOrderDetail(d) {
-  // 标记从订单调走，针对back时，做模块定位
-  router.push({
-    path: '/archives/orderDetail',
-    query: {
-      order: JSON.stringify(d)
-    }
-  })
-}
 </script>
 
 <style lang="scss" scoped>

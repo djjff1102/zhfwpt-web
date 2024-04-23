@@ -8,7 +8,7 @@
     @click="handleError(row)"
     :disabled="checkError(row)"
   >错误情况</el-button>
-  <el-button type="text" @click="toDetail(row)">详情</el-button>
+  <el-button  :disabled="[pro.YH, pro.CC, pro.WL].includes(type)" type="text" @click="toDetail(row)">详情</el-button>
   <el-button type="text" disabled>取消</el-button>
 
   <el-dialog
@@ -38,11 +38,9 @@
 import { useRouter } from 'vue-router'
 import { useApprovalStore } from '@/store/modules/approval'
 import { fileSave } from '@/api/intellApproval/special'
-import { updateJudgeCode } from '@/api/intellApproval'
 import { splitFiltName } from '@/utils/common'
-import { pro } from '../type'
+import { pro, urlMap } from '../type'
 
-// const hideType = [ pro.FP, pro.YH] // 银行和发票不可忽略
 const router = useRouter();
 const approvalStore = useApprovalStore();
 
@@ -70,7 +68,6 @@ const emits = defineEmits(['updateUploadRow'])
 
 // 忽略错误信息
 function abortMsg() {
-  const material = props.row.material || {}
   const data = {
     reportId: props.reportId,
     judgeId: props.rowId,
@@ -87,7 +84,6 @@ function abortMsg() {
 function updateUpload(file) {
   const material = props.row.material || {}
   const data = {
-    // id: material.id || '',
     reportId: props.reportId,
     fileUrl: file,
     fileName: splitFiltName(file),
@@ -123,12 +119,39 @@ function toFile() {
 // 跳转订单详情
 function toDetail(d) {
   // 标记从订单调走，针对back时，做模块定位
-  // router.push({
-  //   path: '/archives/orderDetail',
-  //   query: {
-  //     order: JSON.stringify(d)
-  //   }
-  // })
+  switch(props.type) {
+    case pro.DD:
+      formateURL( urlMap[pro.DD], {orderCode: d.code})
+      break;
+    case pro.HT:
+      formateURL( urlMap[pro.HT], {parentCode: d.code})
+      break;
+    case pro.FP:
+      const query = {
+        name:'发票详情',
+        number: d.number, // 发票号码
+        code: d.code // 发票代码
+      }
+      formateURL( urlMap[pro.FP], query)
+      break;
+    case pro.YH:
+      // formateURL( urlMap[pro.HT], {parentCode: d.code})
+      break;
+    case pro.CC:
+      // formateURL( urlMap[pro.HT], {parentCode: d.code})
+      break;
+    case pro.WL:
+      // formateURL( urlMap[pro.HT], {parentCode: d.code})
+      break;
+  }
+
+}
+
+function formateURL(path, query) {
+  router.push({
+    path,
+    query
+  })
 }
 </script>
 
