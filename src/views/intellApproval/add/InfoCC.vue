@@ -1,57 +1,63 @@
 <template>
-  <!-- 物流仓储信息 -->
-  <div class="warehousing-container">
+  <!-- 订单信息 -->
+  <div class="order-container">
     <div class="table-warp">
       <m-table
         style="height: 100%"
         :data="tableData"
         :columns="columns"
         :scroll="scroll"
-        :pagination="pagination"
+        :pagination="false"
         @page-change="changepage"
         @page-size-change="changePagesize"
         :bordered="false"
       >
-        <template v-slot:index="{ rowIndex }">
-          {{ rowIndex + 1 }}
+        <template v-slot:index="{rowIndex}">
+            <div>{{ rowIndex + 1 }}</div>
+        </template> 
+        <!-- <template v-slot:moneySlot="{rowIndex}">
+            <div>{{ formatNumber(tableData[rowIndex].totalMoney) }}</div>
+        </template> -->
+        <template v-slot:warehousingQuantitySlot="{rowIndex}">
+            <div>{{ formatNumber(tableData[rowIndex].warehousingQuantity) }}</div>
         </template>
-        <template v-slot:orderMoneySumSlot="{ rowIndex }">
-          {{ formatNumber(tableData[rowIndex].orderMoneySum) }}
+        <template v-slot:registrationWeightSlot="{rowIndex}">
+          <div>{{ formatNumber(tableData[rowIndex].registrationWeight) }}</div>
         </template>
-        <template v-slot:orderCountSlot="{ rowIndex }">
-          {{ formatNumber(tableData[rowIndex].orderCount) }}
+        <template v-slot:distributionWeightSlot="{rowIndex}">
+          <div>{{ formatNumber(tableData[rowIndex].distributionWeight) }}</div>
         </template>
-        <!-- <template v-slot:index="{ rowIndex }">
-          {{ rowIndex + 1 }}
-        </template>orderMoneySumSlot -->
-        <template v-slot:operations>
-          <w-button type="text" disabled>详情</w-button>
+        <template v-slot:warehousingUnitSlot="{rowIndex}">
+          <div>{{ formatNumber(tableData[rowIndex].warehousingUnit) }}</div>
+        </template>
+        <template v-slot:materialslot="{rowIndex}">
+          <attachFile :row="tableData[rowIndex]"></attachFile>
+        </template>
+        <template v-slot:operations="{rowIndex}">
+          <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.CC" :row="tableData[rowIndex]" v-bind="$attrs"></reportOperation>
         </template>
       </m-table>
     </div>
   </div>
 </template>
-<script lang="ts" setup>
-import { ref, reactive } from "vue";
-import { qyzxWarehouse, warehouseDropDownBox } from '@/api/archives';
-import { Warehouse } from '@/api/archives/type'
+
+<script setup>
+import { ref, reactive} from "vue";
+import { useRouter } from 'vue-router'
 import { formatNumber } from '@/utils/common'
+import reportOperation from './reportOperation.vue'
+import { pro } from '../type'
+import { useApprovalStore } from '@/store/modules/approval'
 import attachFile from './attachFile.vue'
 
-const props = defineProps({
-  companyName: {
-    type: String,
-    default: ''
-  },
-  showSearch: {
-    default: true
-  }
+const approvalStore = useApprovalStore();
+
+const tableData = computed(() => {
+  return approvalStore.CCList
 })
 
-const current = ref(1);
-const size = ref(10);
-const loading = ref(false);
-const tableData = ref<Warehouse[]>([]);
+const router = useRouter();
+
 const columns = reactive([
   {
     title: "序号",
@@ -59,145 +65,145 @@ const columns = reactive([
     slotName: "index",
     fixed: "left",
   },
-  {
-    title: "仓库简称",
-    dataIndex: "shortName",
+    {
+    title: "库存单编号",
+    dataIndex: "inventoryListNo",
     width: 180,
     fixed: "left",
   },
   {
-    title: "所属地区",
-    dataIndex: "locationProvince",
+    title: "仓库名称",
+    dataIndex: "shortName",
     width: 180,
   },
   {
     title: "仓库地址",
     dataIndex: "locationAddress",
+    width: 180,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
-    title: "涉及订单数量",
-    dataIndex: "orderCount",
-    slotName: 'orderCountSlot'
-  },
-  {
-    title: "货物运输总金额",
-    dataIndex: "orderMoneySum",
-    slotName: 'orderMoneySumSlot'
-  },
-  {
-    title: "仓库企业名称",
-    dataIndex: "companyName",
+    title: "库存单注册时间",
+    width: 180,
+    dataIndex: "inventoryListRegistrationDate	",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
-    title: "企业纳税人识别号",
-    dataIndex: "creditNo",
+    title: "库存单注册人",
+    width: 180,
+    dataIndex: "inventoryRegistrar",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
-  // {
-  //   title: "操作",
-  //   width: 100,
-  //   dataIndex: "operations",
-  //   slotName: "operations",
-  //   fixed: "right",
-  // },
+  {
+    title: "注册重量",
+    width: 180,
+    dataIndex: "registrationWeight",
+    slotName: 'registrationWeightSlot',
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "配货重量",
+    width: 180,
+    dataIndex: "distributionWeight",
+    slotName: 'distributionWeightSlot',
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "商品名称",
+    width: 180,
+    dataIndex: "warehousingGoods",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "商品类别",
+    width: 180,
+    dataIndex: "productCategary",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "货物状态",
+    width: 180,
+    dataIndex: "cargoStatus",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "卡号/批次号",
+    width: 180,
+    dataIndex: "batchNumber",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+    {
+    title: "件数",
+    width: 180,
+    dataIndex: "warehousingQuantity",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    slotName: 'warehousingQuantitySlot'
+  },
+  {
+    title: "重量单位",
+    width: 180,
+    dataIndex: "warehousingUnit",
+    slotName: 'warehousingUnitSlot',
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "存货凭证地址",
+    width: 180,
+    dataIndex: "inventoryCertificateAddress",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "附件",
+    width: 180,
+    dataIndex: "material",
+    width: 120,
+    slotName: 'materialslot'
+  },
+  {
+    title: "操作",
+    dataIndex: "operations",
+    slotName: "operations",
+    width: 220,
+    fixed: "right",
+  },
 ]);
-const pagination = ref({
-  total: 0,
-  pageSize: 10,
-  current:1,
-  "show-total": true,
-  "show-page-size": true,
-  "show-jumper": true,
-});
-const searchPar = ref({
-  page_size: 10,
-  page: 1,
-  companyName: '', // 带过来的公司名称
-  locationProvince: '', // 所属地区
-  locationAddress: '', //仓库地址
-  shortName: '' //仓库简称
-})
-const wareList = ref([])
+
 const scroll = ref({
   y: 800,
   x: 1080,
 });
 
-const changePagesize = (v) => {
-  pagination.value.pageSize = v;
-  searchPar.value.page_size = v;
-  searchPar.value.page = 1;
-  pagination.value.current = 1;
-  getqyzxWarehouse();
-};
-
-const changepage = (v) => {
-  pagination.value.current = v;
-  searchPar.value.page = v;
-  getqyzxWarehouse();
-};
-
-function search() {
-  searchPar.value.page = 1;
-  getqyzxWarehouse();
-}
-
-function reset() {
-  let name = searchPar.value.companyName
-  searchPar.value = {
-    page_size: 10,
-    page: 1,
-    companyName: name, // 带过来的公司名称
-    locationProvince: '', // 所属地区
-    locationAddress: '', //仓库地址
-    shortName: '' //仓库简称
-  }
-  searchPar.value.page = 1;
-  getqyzxWarehouse();
-}
-
-// 仓储物流信息
-function getqyzxWarehouse() {
-  if(loading.value) return
-  loading.value = true
-  qyzxWarehouse(searchPar.value).then(res => {
-    const data = res.data;
-    tableData.value = data as any;
-    pagination.value.total = res.total as any;
-    loading.value = false
-  }).catch(err => {
-    loading.value = false
+// 跳转订单详情
+function toDetail(d) {
+  // 标记从订单调走，针对back时，做模块定位
+  router.push({
+    path: '',
+    query: {
+      order: JSON.stringify(d)
+    }
   })
 }
-
-function getwarehouseDropDownBox() {
-  const data = {
-    page_size: 50,
-    page: 1,
-    companyName: props.companyName
-  }
-  warehouseDropDownBox(data).then(res => {
-    wareList.value = res.data as any;
-  }).catch(err => {})
-}
-
-const init = async () => {
-  searchPar.value.companyName = props.companyName;
-  getqyzxWarehouse();
-  getwarehouseDropDownBox();
-};
-init();
 </script>
 
 <style lang="scss" scoped>
-.warehousing-container {
+.order-container {
+  height: 100%;
+  overflow: auto;
 }
 .table-warp {
   height: calc(100% - 100px);
 }
 </style>
+

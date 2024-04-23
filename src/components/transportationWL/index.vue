@@ -118,28 +118,28 @@ const columns = reactive([
   {
     title: "接单时间-服务方接单签订协议时间",
     dataIndex: "acceptToSignTime",
-    width: 220,
+    width: 280,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "起始运输时间-运输货物发车时间",
     dataIndex: "transportationToShippingTime",
-    width: 220,
+    width: 280,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "订单结束时间-最终结算时间",
     dataIndex: "completionToSettlementTime",
-    width: 220,
+    width: 280,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
     {
     title: "发布方(货主)订单金额",
     dataIndex: "publisherOrderAmount",
-    width: 220,
+    width: 280,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
@@ -210,6 +210,7 @@ const columns = reactive([
     fixed: "right",
   },
 ]);
+
 const pagination = ref({
   total: 0,
   pageSize: 10,

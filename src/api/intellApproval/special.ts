@@ -46,6 +46,28 @@ export function qyzxBankStatement(data: any) {
 }
 
 /**
+ * 仓储
+ */
+export function forReportCC(data: any) {
+  return request({
+    url: "base/qyzx_warehouse_good/forReport",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 物流
+ */
+export function forReportWL(data: any) {
+  return request({
+    url: "/base/qyzx_transportation/forReport",
+    method: "post",
+    data,
+  });
+}
+
+/**
  * 算法校验
  */
 export function judgeMaterial(data: any) {

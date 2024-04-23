@@ -131,13 +131,6 @@ const columns = reactive([
     slotName: "moneySlot",
     tooltip: {position: 'left'},
   },
-  // {
-  //   title: "合同编号",
-  //   dataIndex: "certificateCode",
-  //   width: 180,
-  //   ellipsis: true,
-  //   tooltip: {position: 'left'},
-  // },
   {
     title: "附件",
     dataIndex: "material",
@@ -156,15 +149,6 @@ const scroll = ref({
   y: 800,
   x: 1080,
 });
-
-// 检验错误信息的状态
-function checkError(row) {
-  if( row?.material?.judgeCode == 2 ) {
-    return false;
-  } else {
-    return true
-  }
-}
 
 // 跳转订单详情
 function toOrderDetail(d) {

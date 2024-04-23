@@ -5,6 +5,8 @@ import {
   forReportDD,
   qyzxInvoic,
   qyzxTransactionCertificate,
+  forReportCC,
+  forReportWL,
 } from "@/api/intellApproval/special";
 import { validateType } from "@/utils/common";
 
@@ -84,6 +86,8 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     getqyzxTransactionCertificate();
     getqyzxInvoic();
     getqyzxBankStatement();
+    getCC();
+    getWL();
   }
 
   // 订单1
@@ -126,29 +130,46 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       .catch((err) => {});
   }
 
+  // 仓储5
+  function getCC() {
+    forReportCC(searchPar.value)
+      .then((res) => {
+        CCList.value = res.data;
+        console.log("仓储---------------------：", CCList.value);
+        tabData.value.CC.status = validateType(res.data);
+      })
+      .catch((err) => {});
+  }
+
+  // 物流6
+  function getWL() {
+    forReportWL(searchPar.value)
+      .then((res) => {
+        WLList.value = res.data;
+        tabData.value.WL.status = validateType(res.data);
+      })
+      .catch((err) => {});
+  }
+
   // 附件上传完，刷新接口
   function setListData(type: any) {
     switch (type) {
       case pro.DD:
         getqyzxOrder();
-      // DDList.value[index].businessDataMaterialList = businessDataMaterialList;
       case pro.HT:
         getqyzxTransactionCertificate();
-        // HTList.value[index].businessDataMaterialList = businessDataMaterialList;
         break;
       case pro.FP:
         getqyzxInvoic();
-        // FPList.value[index].businessDataMaterialList = businessDataMaterialList;
         break;
       case pro.YH:
         getqyzxBankStatement();
-        // YHList.value[index].businessDataMaterialList = businessDataMaterialList;
         break;
       case pro.CC:
-        // CCList.value[index].businessDataMaterialList = businessDataMaterialList;
+        getCC();
         break;
       case pro.WL:
-        // WLList.value[index].businessDataMaterialList = businessDataMaterialList;
+        getWL();
         break;
     }
   }
@@ -250,23 +271,32 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       //   delete item.businessDataMaterialList;
       // }
     });
-    // CCList.value.forEach((item: any) => {
-    //   // CCcode.push(item.code);
-    //   if (item?.businessDataMaterialList) {
-    //     const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
-    //     businessDataMaterialList.push(d);
-    //     delete item.businessDataMaterialList;
-    //   }
-    // });
-    // WLList.value.forEach((item: any) => {
-    //   // WLcode.push(item.code);
-    //   if (item?.businessDataMaterialList) {
-    //     const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
-    //     businessDataMaterialList.push(d);
-    //     delete item.businessDataMaterialList;
-    //   }
-    // });
 
+    CCList.value.forEach((item: any) => {
+      CCcode.push(item.id);
+      if (item.material) {
+        const d = formateMaterial(item.material, pro.CC);
+        businessDataMaterialList.push(d);
+        if (item.material.judgeCode == 2) {
+          errdata.flag = true;
+          errdata.CC.title = "您仓储附件异常，请核实";
+          errdata.CC.list.push(item);
+        }
+      }
+    });
+
+    WLList.value.forEach((item: any) => {
+      WLcode.push(item.code);
+      if (item.material) {
+        const d = formateMaterial(item.material, pro.WL);
+        businessDataMaterialList.push(d);
+        if (item.material.judgeCode == 2) {
+          errdata.flag = true;
+          errdata.WL.title = "您仓储附件异常，请核实";
+          errdata.WL.list.push(item);
+        }
+      }
+    });
     form.businessDataMaterialList = businessDataMaterialList;
     form.orderMapRequestList = DDcode;
     form.transactionCertificateMapRequestList = HTcode;
