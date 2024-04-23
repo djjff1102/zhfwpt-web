@@ -66,6 +66,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { add, update, importData, deleteDataAfterDeleteExcel } from '@/api/intellApproval'
 import { singleuploadFileApi } from "@/api/file";
 import { download } from '@/api/file'
+import { fileSave } from '@/api/intellApproval/special'
 import { exportBlob, splitFiltName } from '@/utils/common'
 import { useApprovalStore } from '@/store/modules/approval'
 
@@ -220,6 +221,7 @@ async function handleUpload(options) {
         ElMessage.success("上传成功");
       }
   }).catch(err => {
+    approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
     uploading.value = false
   })
 }
@@ -238,6 +240,15 @@ async function UploadFile(options) {
     judgeId: props.reportId
   }
   approvalStore.setFileInfo(businessDataMaterialList)
+  if(res.result == 1) {
+    fileSave({
+      reportId: props.reportId, //'申报ID,审批ID'
+      fileUrl: res.data, //上传附件路径
+      fileName: splitFiltName(res.data),  //附件文件名称
+      fileType: "7",      // 文件对应的数据类型 7为excel本身的附件
+      // judgeCode: 0 
+    }).then(res => {})
+  }
 }
 
 
@@ -249,7 +260,6 @@ async function handleDel() {
     approvalStore.setFileInfo({})
     approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
     emits('updateFileData')
-    console.log(1111111111)
   }).catch(err => {
     console.log('err------------:', err)
   })

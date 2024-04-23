@@ -6,13 +6,13 @@
     <template #header>
       <div class="dia-header">错误信息</div>
     </template>
-    <div>
-      <div v-if="errObj.DD.title">{{ errObj.DD.title }}</div>
-      <div v-if="errObj.HT.title ">{{ errObj.HT.title }}</div>
-      <div v-if="errObj.FP.title">{{ errObj.FP.title }}</div>
-      <div v-if="errObj.YH.title">{{ errObj.YH.title }}</div>
-      <div v-if="errObj.CC.title">{{ errObj.CC.title }}</div>
-      <div v-if="errObj.WL.title">{{ errObj.WL.title }}</div>
+    <div class="err-main">
+      <div class="err-item" v-if="errObj.DD.title">{{ errObj.DD.title }}</div>
+      <div class="err-item" v-if="errObj.HT.title ">{{ errObj.HT.title }}</div>
+      <div class="err-item" v-if="errObj.FP.title">{{ errObj.FP.title }}</div>
+      <div class="err-item" v-if="errObj.YH.title">{{ errObj.YH.title }}</div>
+      <div class="err-item" v-if="errObj.CC.title">{{ errObj.CC.title }}</div>
+      <div class="err-item" v-if="errObj.WL.title">{{ errObj.WL.title }}</div>
     </div>
     <template #footer>
       <span class="dialog-footer">
@@ -56,6 +56,13 @@ async function handleBeforeClose(done: any) {
 </script>
 
 <style lang="scss" scoped>
+.err-main {
+
+}
+.err-item {
+  margin-bottom: 8px;
+  color: #3470FF;
+}
 .proval-content {
   padding: 12px 24px;
   position: relative;

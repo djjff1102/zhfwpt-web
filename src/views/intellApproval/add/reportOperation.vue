@@ -20,7 +20,15 @@
     <div style="padding: 24px 30px">
       <div class="click-txt">{{ row?.material.judgeResult }}</div>
       <div>可前往 <span class="click-txt" @click="toFile"> 该[附件] </span> 中进行修改</div>
-      <div v-if="!hideType.includes(type)">可 <span class="click-txt" @click="abortMsg"> 忽略 </span>改错误信息</div>
+      <div class="center-content" v-if="!hideType.includes(type)">可 <span class="click-txt" @click="abortMsg">忽略</span>
+        <w-popover
+          placement="bottom">
+          <template #content>
+          <span class="err-msg">若选择忽略，提交时不会再进行错误提示</span>
+          </template>
+          <img style="width: 20px" src="@/assets/tip.png">
+        </w-popover> 
+         改错误信息</div>
     </div>
   </el-dialog>
 </div>
@@ -129,6 +137,15 @@ function toDetail(d) {
   color:#3470FF;
   cursor: pointer;
   display: inline-block;
-  padding: 4px;
+  /* padding: 4px; */
+}
+.err-msg {
+  font-size: 12px;
+  color: #333;
+}
+.center-content {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 </style>

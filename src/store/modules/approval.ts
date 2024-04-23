@@ -189,7 +189,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
         businessDataMaterialList.push(d);
         if (item.material.judgeCode == 2) {
           errdata.flag = true;
-          errdata.DD.title = "订单附件异常";
+          errdata.DD.title = "您订单附件异常，请核实";
           errdata.DD.list.push(item);
         }
       }
@@ -206,7 +206,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
         businessDataMaterialList.push(d);
         if (item.material.judgeCode == 2) {
           errdata.flag = true;
-          errdata.HT.title = "合同附件异常";
+          errdata.HT.title = "您合同附件异常，请核实";
           // errdata.HT.list.push(item);
         }
       }
@@ -223,12 +223,12 @@ export const useApprovalStore = defineStore("approvalstore", () => {
         businessDataMaterialList.push(d);
         if (item.material.judgeCode == 2) {
           errdata.flag = true;
-          errdata.FP.title = "发票附件异常";
+          errdata.FP.title = "您有发票附件异常，请核实";
           // errdata.FP.list.push(item);
         }
       } else {
         errdata.flag = true;
-        errdata.FP.title = "发票附件待上传";
+        errdata.FP.title = "您有发票附件待上传，请核实";
         // errdata.FP.emptyList.push(item);
       }
       // if (item?.businessDataMaterialList) {
@@ -244,12 +244,12 @@ export const useApprovalStore = defineStore("approvalstore", () => {
         businessDataMaterialList.push(d);
         if (item.material.judgeCode == 2) {
           errdata.flag = true;
-          errdata.YH.title = "银行附件异常";
+          errdata.YH.title = "您银行附件异常，请核实";
           // errdata.YH.list.push(item);
         }
       } else {
         errdata.flag = true;
-        errdata.YH.title = "银行附件待上传";
+        errdata.YH.title = "您银行附件待上传，请核实";
         // errdata.YH.emptyList.push(item);
       }
       // if (item?.businessDataMaterialList) {

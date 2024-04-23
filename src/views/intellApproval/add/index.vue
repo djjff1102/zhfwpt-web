@@ -625,6 +625,7 @@ function getDetail(d: any) {
     if(JSON.stringify(res.data) != '{}') { // 编辑或者有暂存
       initPageParam.type = 1
       initPageParam.id = res.data.id
+      fileList.value = res.data.otherMaterialsResponseList
       // TODO: 第一个版本的逻辑，选择河东订单前端本地缓存
       // dataHT.value = res.data.transactionCertificateMapResponseList
       // dataDD.value = res.data.orderMapResponseList
@@ -633,10 +634,16 @@ function getDetail(d: any) {
       // dataYH.value = res.data.bankStatementMapResponseList
       // columns.value = columnsHT
       // dataList.value = res.data.transactionCertificateMapResponseList
-      fileList.value = res.data.otherMaterialsResponseList
-      if(res.data.businessDataMaterialList[0] && res.data.businessDataMaterialList[0].fileType == 7 ) {
-        ziliaoFile.value = [res.data.businessDataMaterialList[0]] as any; // check第一个文件的type是不是7，是7再赋值
-      }
+
+      
+      // if(res.data.businessDataMaterialList[0] && res.data.businessDataMaterialList[0].fileType == 7 ) {
+      //   ziliaoFile.value = [res.data.businessDataMaterialList[0]] as any; // check第一个文件的type是不是7，是7再赋值
+      // }
+      res.data?.businessDataMaterialList.forEach((item: any) => {
+        if(item.fileType == 7) {
+          ziliaoFile.value = [item] as any; // check第一个文件的type是不是7，是7再赋值
+        }
+      })
       form.value = res.data as any
       form.value.taxAuthority = '东疆综合保税区税务局'
       curDate.value = [res.data.validDateStart, res.data.validDateEnd]

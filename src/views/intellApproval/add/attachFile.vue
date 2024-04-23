@@ -1,11 +1,9 @@
 <template>
   <div>
-    {{ row?.materia }}
     <div v-if="!row.material">未上传</div>
-    <div class="file-load" v-if="row?.material?.judgeCode == '2'" style="color: red" @click="load(row.material)">
-      {{ row?.material.fileName}}</div>
-    <div class="file-load" v-if="row?.material?.judgeCode == '1'" style="color: green" @click="load(row.material)">
-        {{ row?.material.fileName}}</div>
+    <el-button type="text" v-else @click="load(row.material)"> {{ row?.material.fileName}}</el-button>
+    <!-- <div class="file-load" v-if="row?.material?.judgeCode == '1'" style="color: green" @click="load(row.material)">
+        {{ row?.material.fileName}}</div> -->
   </div>
 </template>
 
@@ -23,7 +21,6 @@ const props = defineProps({
 })
 
 async function load(item) {
-  console.log('item--------------:', item)
   if(loading.value) return;
   loading.value = true;
   download({
