@@ -165,16 +165,8 @@ export const useApprovalStore = defineStore("approvalstore", () => {
   // 表单提交前，整合数据
   function updateData(form: any, errdata: any) {
     const businessDataMaterialList: any = [];
-    // if (fileInfo.value && JSON.stringify(fileInfo.value) != "{}") {
-    //   businessDataMaterialList.push(fileInfo.value);
-    // }
-    console.log("表单------------------：", form);
-    if (
-      form.businessDataMaterialList &&
-      form.businessDataMaterialList[0] &&
-      form.businessDataMaterialList[0].fileType == 7
-    ) {
-      businessDataMaterialList.push(form.businessDataMaterialList[0]);
+    if (fileInfo.value && JSON.stringify(fileInfo.value) != "{}") {
+      businessDataMaterialList.push(fileInfo.value);
     }
     const DDcode: any = [];
     const HTcode: any = [];

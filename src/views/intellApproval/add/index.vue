@@ -171,7 +171,7 @@
       </m-table> -->
       <div class="flex-base-start sum-line">
         <div style="margin-right: 16px">{{ nameMap[curTab] }}已选：<span class="num-light">{{ totalMoney?.count }}</span></div>
-        <div>金额合计：<span class="num-light">{{ totalMoney?.totalMoneySum }}</span></div>
+        <div v-if="![pro.CC, pro.WL].includes(curTab)">金额合计：<span class="num-light">{{ totalMoney?.totalMoneySum }}</span></div>
       </div>
     </div>
     <div class="com-section">
@@ -221,9 +221,8 @@ import InfoYH from './InfoYH.vue'
 import InfoCC from './InfoCC.vue'
 import fileError from './fileError.vue'
 import { useApprovalStore } from '@/store/modules/approval'
-import { judgeMaterial, getTotalMoney } from '@/api/intellApproval/special'
+import { getTotalMoney } from '@/api/intellApproval/special'
 import { useNoticeApprovalStore } from '@/store/modules/notice'
-import { fa } from 'element-plus/es/locale';
 
 const noticeStore = useNoticeApprovalStore()
 
@@ -419,7 +418,9 @@ function updateUpload(file: any) {
 
 function handleTab(v: any) {
   curTab.value = v;
-  getCurSumMoney(v)
+  if(![pro.CC as any, pro.WL as any].includes(curTab.value)) {
+    getCurSumMoney(v) // 仓储和物流需要调该接口
+  }
   // updateTable(dataHT.value, dataDD.value, dataFP.value, dataCC.value, dataYH.value);
 }
 
@@ -628,6 +629,12 @@ function getDetail(d: any) {
       res.data?.businessDataMaterialList.forEach((item: any) => {
         if(item.fileType == 7) {
           ziliaoFile.value = [item] as any; // check第一个文件的type是不是7，是7再赋值
+          const businessDataMaterialList = {
+            fileType: 7,  // 附件
+            fileUrl: item.fileUrl,
+            judgeId: item.judgeId
+          }
+          approvalStore.setFileInfo(businessDataMaterialList)
         }
       })
       form.value = res.data as any
