@@ -184,3 +184,14 @@ export function businessUpdate(data: any) {
     data,
   });
 } 
+
+/**
+ * 忽略附件错误
+*/
+export function updateJudgeCode(data: any) {
+  return request({
+    url: `/base/fpsp_other_materials/updateJudgeCode`,
+    method: "post",
+    data,
+  });
+} 

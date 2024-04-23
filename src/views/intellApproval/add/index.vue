@@ -195,6 +195,7 @@
   <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com>
   <approval-record :showRecord="showRecord" :reportId="route.query.id" @updateAdd="showRecord = false"></approval-record>
   <ApprovalDo :showAdd="showApproval" @updateAdd="updateApprval" @updateData="updateApprovalStatus" :reportId="route.query.id"></ApprovalDo>
+  <fileError :showAdd="errdata.flag" :errObj="errdata" @updateAdd="closeError"></fileError>
 </div>
 </template>
 <script lang="ts" setup>
@@ -218,9 +219,11 @@ import InfoFP from './InfoFP.vue'
 import InfoWL from './InfoWL.vue'
 import InfoYH from './InfoYH.vue'
 import InfoCC from './InfoCC.vue'
+import fileError from './fileError.vue'
 import { useApprovalStore } from '@/store/modules/approval'
 import { judgeMaterial, getTotalMoney } from '@/api/intellApproval/special'
 import { useNoticeApprovalStore } from '@/store/modules/notice'
+import { fa } from 'element-plus/es/locale';
 
 const noticeStore = useNoticeApprovalStore()
 
@@ -334,6 +337,11 @@ const fileList = ref([]) // 已经提交的文件
 const queryPar = ref({}) // 路由查询参数
 const uploadFlag = ref(-1) // -1未上传文件 0 上传文件失败 1上传成功
 const errorFlag = ref(false) // 信息提交时，深白资料有误，提示信息
+
+//关闭错误弹窗
+function closeError() {
+  errdata.value.flag = false
+}
 
 // 更新审批id
 function updateReportId(id) {
@@ -496,11 +504,29 @@ function handleSave(type: any, msg: string) {
   })
 }
 
+const errdata = ref({
+  flag: false,
+  DD: {},
+  FP: {},
+  HT: {},
+  YH: {},
+  CC: {},
+  WL: {}
+}) // 记录错误信息
 async function checkSave(type: any, msg: string) {
   // 1暂存 2提交 3更新
   // approveStatus：待审批_1", "通过_2", "驳回_3
   // dataStatus：1：暂存 2：正常
-  approvalStore.updateData(form.value)
+  errdata.value = {flag: false,
+    DD: {},
+    FP: {},
+    HT: {},
+    YH: {},
+    CC: {},
+    WL: {}} // 重新校验附件错误/空之前，清空之前的校验
+  approvalStore.updateData(form.value, errdata.value)
+  if(errdata.value.flag) return;
+
   if(type == 1) { // 暂存
     form.value.dataStatus = 1;
     if(reportId.value != -1) {

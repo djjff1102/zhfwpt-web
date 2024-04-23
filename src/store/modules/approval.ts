@@ -163,13 +163,15 @@ export const useApprovalStore = defineStore("approvalstore", () => {
   }
 
   // 表单提交前，整合数据
-  function updateData(form: any) {
+  function updateData(form: any, errdata: any) {
     const businessDataMaterialList: any = [];
     // if (fileInfo.value && JSON.stringify(fileInfo.value) != "{}") {
     //   businessDataMaterialList.push(fileInfo.value);
     // }
+    console.log("表单------------------：", form);
     if (
       form.businessDataMaterialList &&
+      form.businessDataMaterialList[0] &&
       form.businessDataMaterialList[0].fileType == 7
     ) {
       businessDataMaterialList.push(form.businessDataMaterialList[0]);
@@ -185,6 +187,11 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       if (item.material) {
         const d = formateMaterial(item.material, pro.DD);
         businessDataMaterialList.push(d);
+        if (item.material.judgeCode == 2) {
+          errdata.flag = true;
+          errdata.DD.title = "订单附件异常";
+          errdata.DD.list.push(item);
+        }
       }
       // if (item?.businessDataMaterialList) {
       //   const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
@@ -197,6 +204,11 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       if (item.material) {
         const d = formateMaterial(item.material, pro.HT);
         businessDataMaterialList.push(d);
+        if (item.material.judgeCode == 2) {
+          errdata.flag = true;
+          errdata.HT.title = "合同附件异常";
+          // errdata.HT.list.push(item);
+        }
       }
       // if (item?.businessDataMaterialList) {
       //   const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
@@ -209,6 +221,15 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       if (item.material) {
         const d = formateMaterial(item.material, pro.FP);
         businessDataMaterialList.push(d);
+        if (item.material.judgeCode == 2) {
+          errdata.flag = true;
+          errdata.FP.title = "发票附件异常";
+          // errdata.FP.list.push(item);
+        }
+      } else {
+        errdata.flag = true;
+        errdata.FP.title = "发票附件待上传";
+        // errdata.FP.emptyList.push(item);
       }
       // if (item?.businessDataMaterialList) {
       //   const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
@@ -221,6 +242,15 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       if (item.material) {
         const d = formateMaterial(item.material, pro.YH);
         businessDataMaterialList.push(d);
+        if (item.material.judgeCode == 2) {
+          errdata.flag = true;
+          errdata.YH.title = "银行附件异常";
+          // errdata.YH.list.push(item);
+        }
+      } else {
+        errdata.flag = true;
+        errdata.YH.title = "银行附件待上传";
+        // errdata.YH.emptyList.push(item);
       }
       // if (item?.businessDataMaterialList) {
       //   const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));

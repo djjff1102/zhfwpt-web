@@ -90,65 +90,6 @@ const columns = reactive([
     tooltip: {position: 'left'},
   },
   {
-    title: "项目名称",
-     width: 180,
-    dataIndex: "goodName",
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "规格型号",
-    width: 180,
-    dataIndex: "standard",
-  },
-  {
-    title: "数量",
-    dataIndex: "quantity",
-    width: 180,
-    ellipsis: true,
-    tooltip: {position: 'left'},
-    slotName: 'quantitySlot'
-  },
-  {
-    title: "计量单位",
-    width: 100,
-    dataIndex: "measureUnit",
-  },
-  {
-    title: "含税金额",
-    width: 180,
-    dataIndex: "amountIncludeTax",
-    slotName: 'amountIncludeTaxSlot',
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "税率",
-    dataIndex: "taxRate",
-    width: 180,
-    slotName: 'taxRateSlot'
-  },
-  {
-    title: "税额",
-     width: 180,
-    dataIndex: "taxAmount",
-    slotName: 'taxAmountSlot'
-  },
-  {
-    title: "单价",
-     width: 180,
-    dataIndex: "unitPrice",
-    slotName: 'unitPriceSlot',
-  },
-  {
-    title: "价税合计",
-    width: 180,
-    dataIndex: "amountTotal",
-    ellipsis: true,
-    slotName: 'amountTotalSlot',
-    tooltip: {position: 'left'},
-  },
-    {
     title: "附件",
     dataIndex: "material",
     width: 120,

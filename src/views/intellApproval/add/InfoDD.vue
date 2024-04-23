@@ -131,13 +131,13 @@ const columns = reactive([
     slotName: "moneySlot",
     tooltip: {position: 'left'},
   },
-  {
-    title: "合同编号",
-    dataIndex: "certificateCode",
-    width: 180,
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
+  // {
+  //   title: "合同编号",
+  //   dataIndex: "certificateCode",
+  //   width: 180,
+  //   ellipsis: true,
+  //   tooltip: {position: 'left'},
+  // },
   {
     title: "附件",
     dataIndex: "material",

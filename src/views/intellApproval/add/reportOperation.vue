@@ -20,9 +20,9 @@
     <div style="padding: 24px 30px">
       <div class="click-txt">{{ row?.material.judgeResult }}</div>
       <div>可前往 <span class="click-txt" @click="toFile"> 该[附件] </span> 中进行修改</div>
-      <div>可 <span class="click-txt" @click="abortMsg"> 忽略 </span>改错误信息</div>
+      <div v-if="!hideType.includes(type)">可 <span class="click-txt" @click="abortMsg"> 忽略 </span>改错误信息</div>
     </div>
-    </el-dialog>
+  </el-dialog>
 </div>
 </template>
 
@@ -30,8 +30,11 @@
 import { useRouter } from 'vue-router'
 import { useApprovalStore } from '@/store/modules/approval'
 import { fileSave } from '@/api/intellApproval/special'
+import { updateJudgeCode } from '@/api/intellApproval'
 import { splitFiltName } from '@/utils/common'
+import { pro } from '../type'
 
+const hideType = [ pro.FP, pro.YH] // 银行和发票不可忽略
 const router = useRouter();
 const approvalStore = useApprovalStore();
 
@@ -57,16 +60,23 @@ const dialogVisible = ref(false)
 
 const emits = defineEmits(['updateUploadRow'])
 
+// 忽略错误信息
 function abortMsg() {
+  const material = props.row.material || {}
+  const data = {
+    reportId: props.reportId,
+    judgeId: props.rowId,
+    judgeCode: 3
+  }
+  fileSave( data).then(res => {
+    approvalStore.setListData( props.type) // 忽略成功刷新接口
+  }).catch(err => {
+    ElMessage.success("忽略附件错误失败：" + JSON.stringify(err));
+  })
   dialogVisible.value = false
 }
 
 function updateUpload(file) {
-  // const businessDataMaterialList = {
-  //   fileType: props.type,   //订单例子
-  //   fileUrl: file,
-  //   judgeId: props.rowId
-  // }
   const material = props.row.material || {}
   const data = {
     // id: material.id || '',
