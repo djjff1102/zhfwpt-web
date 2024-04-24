@@ -11,7 +11,7 @@
       <TaxpayerQualification v-bind="$attrs"></TaxpayerQualification>
     </el-tab-pane>
     <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveCompany)" label="企业图谱">
-      <CompanyGraph></CompanyGraph>
+      <CompanyGraph v-bind="$attrs"></CompanyGraph>
     </el-tab-pane>
     <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveStockRight)" label="股权穿透">
       <EquityPenetration></EquityPenetration>

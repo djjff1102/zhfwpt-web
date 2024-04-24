@@ -24,7 +24,7 @@
       </div>
       <div v-hasPerm="approvalMapping.ManagementInformation" id="ManagementInformation">
         <div class="title"><img :src="jyxx">经营信息</div>
-        <ManagementInformation :companyName="companyName"></ManagementInformation>
+        <ManagementInformation :companyName="companyName" :companyId="id"></ManagementInformation>
       </div>
       <div v-hasPerm="approvalMapping.OrderInformation" id="OrderInformation">
         <div class="title"><img :src="ddxx">订单信息</div>

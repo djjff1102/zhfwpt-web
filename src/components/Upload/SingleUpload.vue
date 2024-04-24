@@ -43,7 +43,7 @@ const allFileList = ref<string[]>([])
 async function handleUpload(options: UploadRequestOptions): Promise<any> {
   // 上传API调用
   singleuploadFileApi(options.file).then(res => {
-    allFileList.value.push(res.data);
+    allFileList.value = [res.data as any];
     let name = splitFiltName(res.data)
     fileList.value.push(name)
     ElMessage.success(`附件${name}上传成`);

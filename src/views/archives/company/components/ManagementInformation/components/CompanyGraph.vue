@@ -1,143 +1,39 @@
 <template>
-  <el-tabs type="border-card">
-    <el-tab-pane label="进出口信用"> </el-tab-pane>
-    <el-tab-pane label="进出口信用"> </el-tab-pane>
-  </el-tabs>
-  <div class="search_box">
-    <w-form :model="form" layout="inline">
-      <w-form-item class="mr-16px" field="post" label="许可机关">
-        <w-select v-model="form.post" placeholder="不限" />
-      </w-form-item>
-      <w-button type="primary" class="mr-8px">搜索</w-button>
-      <w-button>重置</w-button>
-    </w-form>
-  </div>
-  <div class="table-warp">
-    <m-table
-      style="height: 100%"
-      :data="tableData"
-      :columns="columns"
-      :scroll="scroll"
-      :pagination="pagination"
-      @page-change="changepage"
-      @page-size-change="changePagesize"
-      :bordered="false"
-    >
-      <template v-slot:index="{ $index }">
-        {{ $index + 1 }}
-      </template>
-      <template v-slot:operations>
-        <w-button type="text">详情</w-button>
-      </template>
-    </m-table>
-  </div>
+  <div>
+    <guquan id="companyGid"></guquan>
+    </div>
 </template>
 <script setup>
-import dayjs from "dayjs";
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
+import { getenterpriseMapQuery } from '@/api/archives'
+import { getGraphConfig } from '../option'
 
-const current = ref(1);
-const size = ref(10);
-const loading = ref(false);
-const tableData = ref([]);
-const columns = reactive([
-  {
-    title: "序号",
-    width: 80,
-    slotName: "index",
-    fixed: "left",
+const props = defineProps({
+  companyName: {
+    default: ''
   },
-  {
-    title: "订单编号",
-    dataIndex: "name",
-    width: 180,
-    fixed: "left",
-  },
-  {
-    title: "订单创建日期",
-    dataIndex: "salary",
-    fixed: "left",
-  },
-  {
-    title: "商品类别",
-    dataIndex: "address",
-    fixed: "left",
-  },
-  {
-    title: "买方名称",
-    dataIndex: "email",
-  },
-  {
-    title: "买方信用代码",
-    dataIndex: "email",
-  },
-  {
-    title: "卖方名称",
-    dataIndex: "email",
-  },
-  {
-    title: "卖方信用代码",
-    dataIndex: "email",
-  },
-  {
-    title: "商品所在地址",
-    dataIndex: "email",
-  },
-  {
-    title: "仓库名称",
-    dataIndex: "email",
-  },
-  {
-    title: "总金额",
-    dataIndex: "email",
-  },
-  {
-    title: "合同编号",
-    dataIndex: "email",
-  },
-  {
-    title: "操作",
-    dataIndex: "operations",
-    slotName: "operations",
-    fixed: "right",
-  },
-]);
-const pagination = ref({
-  total: 0,
-  pageSize: 10,
-  "show-total": true,
-  "show-page-size": true,
-  "show-jumper": true,
-});
-const scroll = ref({
-  y: 800,
-  x: 1080,
-});
-const form = ref({
-  name: "",
-  post: "",
-});
-const changePagesize = (v) => {
-  size.value = v;
-  pagination.value.pageSize = v;
-  init();
+  companyId: {
+    default: ''
+  }
+})
+
+watch( () => props.companyId, (v) => {
+  if(v) {
+    nextTick(() =>{
+      init()
+    })
+  }
+}, {
+  immediate: true
+})
+
+const init = async () => {
+  getenterpriseMapQuery({
+    companyId: '04bbe3814ee17efb0d2e3e0b3b1ed2c4'
+  }).then(res => {
+
+  }).catch(err => {})
 };
-const changepage = (v) => {
-  current.value = v;
-  init();
-};
-function onSelect(dateString, date) {
-  console.log("onSelect", dateString, date);
-}
-
-function onChange(dateString, date) {
-  console.log("onChange: ", dateString, date);
-}
-
-function onOk(dateString, date) {
-  console.log("onOk: ", dateString, date);
-}
-const init = async () => {};
 </script>
 
 <style lang="scss" scoped>

@@ -20,9 +20,25 @@ export const EXPAND_ICON = function EXPAND_ICON(x, y, r) {
   ];
 };
 
+const result = [
+  {
+    name: "莱佛公司",
+    type: 1,
+    id: "公司id",
+    label: "莱佛公司",
+    children: [
+      {
+        name: "李某某",
+        id: "用户id",
+        label: "法定代表人", // 角色
+      },
+    ],
+  },
+];
+
 export const data = {
-  id: "root",
-  label: "root",
+  id: "公司id",
+  label: "莱佛公司",
   children: [
     {
       id: "c1",
@@ -35,54 +51,12 @@ export const data = {
         {
           id: "c1-2",
           label: "c1-2",
-          children: [
-            {
-              id: "c1-2-1",
-              label: "c1-2-1",
-            },
-            {
-              id: "c1-2-2",
-              label: "c1-2-2",
-            },
-          ],
         },
       ],
     },
     {
       id: "c2",
       label: "c2",
-    },
-    {
-      id: "c3",
-      label: "c3",
-      children: [
-        {
-          id: "c3-1",
-          label: "c3-1",
-        },
-        {
-          id: "c3-2",
-          label: "c3-2",
-          children: [
-            {
-              id: "c3-2-1",
-              label: "c3-2-1",
-            },
-            {
-              id: "c3-2-2",
-              label: "c3-2-2",
-            },
-            {
-              id: "c3-2-3",
-              label: "c3-2-3",
-            },
-          ],
-        },
-        {
-          id: "c3-3",
-          label: "c3-3",
-        },
-      ],
     },
   ],
 };

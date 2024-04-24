@@ -421,3 +421,12 @@ export function queryRiskInfoCountByCompanyInfo(data: any) {
     data,
   });
 }
+
+// 企业图谱
+export function getenterpriseMapQuery(params: any) {
+  return request({
+    url: `base/company_base/enterpriseMapQuery/${params.companyId}`,
+    method: "get",
+    params,
+  });
+}

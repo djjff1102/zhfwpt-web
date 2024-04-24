@@ -1,5 +1,5 @@
 <template>
-  <div id="container">
+  <div :id="id">
   </div>
 </template>
 
@@ -7,6 +7,12 @@
 import { ref, onMounted } from 'vue';
 import G6 from '@antv/g6';
 import { COLLAPSE_ICON, EXPAND_ICON, data, defaultStateStyles, defaultNodeStyle, defaultEdgeStyle, defaultLayout, defaultLabelCfg } from './data.js'
+
+const props = defineProps({
+  id: {
+    default:'G6id'
+  }
+})
 
 const windowWidth = ref(0);
 
@@ -22,20 +28,11 @@ onMounted(() => {
 
 function init() {
   const graph = new G6.TreeGraph({
-    container: 'container',
+    container: props.id,
     width: windowWidth.value - 200, // 因为右侧导航栏，调整一下图的居中位置
-    height: 500,
+    height: 200,
     linkCenter: true,
     modes: {
-      // default: [
-      //   'drag-canvas',
-      //   {
-      //     type: 'zoom-canvas',
-      //     sensitivity: 1, // 缩放灵敏度
-      //     minZoom: 0.5,
-      //     maxZoom: 1.5
-      //   }
-      // ]
       default: [
         {
           type: 'collapse-expand',
