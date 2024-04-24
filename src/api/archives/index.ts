@@ -412,3 +412,12 @@ export function getwarehouseList(data: any) {
     data,
   });
 }
+
+// 风险分类展示
+export function queryRiskInfoCountByCompanyInfo(data: any) {
+  return request({
+    url: "/base/fxjk_index_data/queryRiskInfoCountByCompanyInfo",
+    method: "post",
+    data,
+  });
+}

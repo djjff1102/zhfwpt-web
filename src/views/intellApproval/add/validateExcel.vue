@@ -65,7 +65,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { add, update, importData, deleteDataAfterDeleteExcel } from '@/api/intellApproval'
 import { singleuploadFileApi } from "@/api/file";
-import { download } from '@/api/file'
+import { download, templatedownload } from '@/api/file'
 import { fileSave } from '@/api/intellApproval/special'
 import { exportBlob, splitFiltName } from '@/utils/common'
 import { useApprovalStore } from '@/store/modules/approval'
@@ -143,9 +143,7 @@ const relationList = ref([]) // 关联关系错误
 async function downloadTemplate() {
   if(loading.value) return;
   loading.value = true;
-  download({
-    file_name: '20240411/1778318595530911746@quesoar@审批上传模版.xlsx'
-  }).then(async(res) => {
+  templatedownload({}).then(async(res) => {
     await exportBlob(res.data, '审批上传模版')
     loading.value = false;
   }).catch(err=>{

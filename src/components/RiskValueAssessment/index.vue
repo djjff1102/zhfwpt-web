@@ -28,10 +28,10 @@
         <div class="danger-point">
           <div class="danger-point-title">
             <img :src="highPoint" alt="" style="width: 64px"/>
-            风险分类展示 - 待接口联调
+            风险分类展示
           </div>
           <div class="danger-point-content">
-            <RiskTypeList></RiskTypeList>
+            <RiskTypeList :riskTypeChart="riskTypeChart"></RiskTypeList>
             <!-- <Dangershow :data="suggestData.riskInfoVoList"></Dangershow> -->
           </div>
         </div>
@@ -118,8 +118,8 @@ import RiskTypeList from './components/RiskChart/RiskTypeList.vue'
 // import Dangershow from './components/Dangershow.vue'
 import suggest from "@/assets/images/suggest.png";
 import highPoint from "@/assets/images/high-point.png";
-import { suggestion, queryRiskInfoByCompanyInfo } from '@/api/archives'
-import fxzpg from "@/assets/images/moduleIcon/风险值评估.png";
+// queryRiskInfoByCompanyInfo风险点  queryRiskInfoCountByCompanyInfo风险分类
+import { suggestion, queryRiskInfoByCompanyInfo, queryRiskInfoCountByCompanyInfo } from '@/api/archives'
 import highIcon from '@/assets/riskleval/high.png'
 import middleIcon from '@/assets/riskleval/middle.png'
 import lowIcon from '@/assets/riskleval/low.png'
@@ -256,6 +256,10 @@ const columnsAll = reactive([
   },
 ]);
 const exportFlag = ref(false)
+const riskTypeChart = ref({ // 风险分类展示的x轴和y轴
+  x: [],
+  y: []
+})
 
 // 收起显示table显示的数据
 const tableDataCom = computed(() => {
@@ -315,12 +319,6 @@ function search() {
 function reset() {
   searchPar.value.riskType = ''
   searchPar.value.indexName = ''
-  // searchPar.value = {
-  //   companyName: pro,
-  //   companyId: '',
-  //   riskType: '',
-  //   name: '' // 风险名称
-  // }
   getqueryRiskInfoByCompanyInfo()
 }
 
@@ -376,10 +374,33 @@ function getAllData() {
   })
 }
 
+// 获取风险分类展示
+function getRiskTypeList() {
+  queryRiskInfoCountByCompanyInfo({
+    companyId: props.companyId,
+    companyName: props.companyName,
+  }).then(res => {
+    const result = res.data;
+    const y1 = [] // 高风险
+    const y2 = [] // 中风险
+    const y3 = [] // 低风险
+    const x = []
+    Object.keys(result).forEach(item => {
+      x.push(item)
+      y1.push(result[item][0])
+      y2.push(result[item][1])
+      y3.push(result[item][2])
+    })
+    riskTypeChart.value.x = x
+    riskTypeChart.value.y = [y1, y2, y3]
+  }).catch(err => {})
+}
+
 function init() {
-  getAllData()
-  getqueryRiskInfoByCompanyInfo();
+  getAllData() // 获取所有风险点,
+  getqueryRiskInfoByCompanyInfo(); // 风险点
   getsuggestion();
+  getRiskTypeList(); // 获取风险分类展示
 }
 
 // init()

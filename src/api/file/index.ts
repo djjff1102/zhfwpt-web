@@ -42,12 +42,24 @@ export function singleuploadFileApi(file: File): AxiosPromise<FileInfo> {
 /**
  * 下载
  *
- * @param file load
  */
 export function download(file: any): AxiosPromise<FileInfo> {
   return request({
     responseType: "blob",
     url: "/base/minio/download",
+    method: "get",
+    params: file,
+  });
+}
+
+/**
+ * 获取发票智能审批下载模版
+ *
+ */
+export function templatedownload(file: any): any {
+  return request({
+    responseType: "blob",
+    url: "base/fpsp_other_materials/getExcelTemplateDownloadInfo",
     method: "get",
     params: file,
   });

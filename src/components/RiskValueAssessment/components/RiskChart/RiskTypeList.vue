@@ -8,24 +8,36 @@ import * as echarts from "echarts";
 import { onMounted, onUnmounted, ref, reactive } from "vue";
 
 const props = defineProps({
-  riskData: {
-    default: 0
-  },
-  leval: { // 1高风险 2 中风险 3低风险
-    default: -1
+  riskTypeChart: {
+    default: {
+      x: [],
+      y: []
+    }
   }
 })
+
+watch(
+  () => props.riskTypeChart,
+  (v) => {
+    if(v && v.x && v.x.length > 0) {
+      nextTick(() => {
+        option.value.series[0].data = v.y[0];
+        option.value.series[1].data = v.y[1];
+        option.value.series[2].data = v.y[2];
+        option.value.xAxis[0].data = v.x;
+        init()
+      })
+    }
+  }, {
+    deep: true
+  }
+);
 
 const option = ref({
   tooltip: {
     trigger: 'axis',
     axisPointer: {
-      type: 'shadow',
-      // lineStyle: {
-      //   type: 'solid',
-      //   width: 36, // 设置阴影的宽度
-      //   color: 'rgba(236, 238, 245, 0.7)', // 设置阴影的颜色和透明度
-      // }
+      type: 'shadow'
     }
   },
   legend: {},
@@ -38,7 +50,7 @@ const option = ref({
   xAxis: [
     {
       type: 'category',
-      data: ['经营备案', '物流仓储', '合同数据风险', '风险', '票据政务风险', '超限量申请风险'],
+      data: [],
       axisTick: {
         //y轴刻度线
         show: false,
@@ -62,6 +74,7 @@ const option = ref({
   yAxis: [
     {
       type: 'value',
+      data: [1,2,3],
       splitLine :{    //网格线
         lineStyle:{
           color: 'rgba(82, 100, 122, 0.2)',
@@ -81,7 +94,7 @@ const option = ref({
         focus: 'series'
       },
       color: '#F76161',
-      data: [120, 132, 101, 134, 90, 230, 210]
+      data: []
     },
     {
       name: '中风险',
@@ -91,7 +104,7 @@ const option = ref({
         focus: 'series'
       },
       color: '#FF9100',
-      data: [220, 182, 191, 234, 290, 330, 310]
+      data: []
     },
     {
       name: '低风险',
@@ -101,21 +114,14 @@ const option = ref({
         focus: 'series'
       },
       color: '#5ECF69',
-      data: [150, 232, 201, 154, 190, 330, 410]
+      data: []
     }
   ]
 })
 
 
-// watch(
-//   () => props.riskData,
-//   (d) => {
-//     init();
-//   }
-// );
-
 onMounted(() => {
-  init();
+  // init();
   nextTick(() => {
     window.addEventListener('resize', handleResize);
   })
