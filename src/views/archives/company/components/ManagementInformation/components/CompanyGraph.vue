@@ -6,7 +6,6 @@
 <script setup>
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
 import { getenterpriseMapQuery } from '@/api/archives'
-import { getGraphConfig } from '../option'
 
 const props = defineProps({
   companyName: {

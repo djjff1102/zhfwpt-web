@@ -13,18 +13,26 @@ const props = defineProps({
     default: 0
   },
   leval: { // 1高风险 2 中风险 3低风险
-    default: -1
+    default: 3
   }
 })
 
 const colorArr = reactive(['#F76161', '#FF9100', '#5ECF69']) // leval-1分别取颜色值 1高风险 2 中风险 3低风险
 
+onMounted(() => {
+  handleColor()
+  init();
+})
+
 watch(
   () => props.riskData,
   (d) => {
-    handleColor()
-    option.value.series[0].data[0].value =  Math.floor(d);
-    init();
+    nextTick(() => {
+      handleColor()
+      option.value.series[0].data[0].value =  Math.floor(d);
+      init();
+    })
+
   }
 );
 
