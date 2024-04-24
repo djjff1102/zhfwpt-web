@@ -8,7 +8,7 @@
     <!-- 企业用票需求预测 -->
     <div v-hasPerm="approvalMapping.approvalPredict">
       <div class="title base-title">企业进销项发票趋势</div>
-      <PredictCom data="22"></PredictCom>
+      <PredictCom :data="preStrMoney"></PredictCom>
       <div class="date-month">
         <el-date-picker
           v-model="monthRange"
