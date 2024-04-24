@@ -1,8 +1,5 @@
 <template>
   <el-dialog v-model="visible" :before-close="handleBeforeClose" :width="700">
-    <div class="proval-content">
-       
-    </div>
     <template #header>
       <div class="dia-header">错误信息</div>
     </template>

@@ -1,37 +1,39 @@
 <template>
-<div class="flex-base-around">
-  <SingleUpload
-    @updateUpload="updateUpload">
-  </SingleUpload>
-  <el-button
-    type="text"
-    @click="handleError(row)"
-    :disabled="checkError(row)"
-  >错误情况</el-button>
-  <el-button  :disabled="[pro.YH, pro.CC, pro.WL].includes(type)" type="text" @click="toDetail(row)">详情</el-button>
-  <el-button type="text" disabled>取消</el-button>
-
-  <el-dialog
-      title="错误信息"
-      v-model="dialogVisible"
-      width="600"
-      :before-close="handleClose"
-    >
-    <div style="padding: 24px 30px">
-      <div class="click-txt">{{ row?.material.judgeResult }}</div>
-      <div>可前往 <span class="click-txt" @click="toFile"> 该[附件] </span> 中进行修改</div>
-      <div class="center-content">可 <span class="click-txt" @click="abortMsg">忽略</span>
-        <w-popover
-          placement="bottom">
-          <template #content>
-          <span class="err-msg">若选择忽略，提交时不会再进行错误提示</span>
-          </template>
-          <img style="width: 20px" src="@/assets/tip.png">
-        </w-popover> 
-         改错误信息</div>
+  <div>
+    <div class="flex-base-around">
+      <SingleUpload
+        @updateUpload="updateUpload">
+      </SingleUpload>
+      <el-button
+        type="text"
+        @click="handleError(row)"
+        :disabled="checkError(row)"
+      >错误情况</el-button>
+      <el-button  :disabled="[pro.YH, pro.CC, pro.WL].includes(type)" type="text" @click="toDetail(row)">详情</el-button>
+      <el-button type="text" disabled>取消</el-button>
     </div>
-  </el-dialog>
-</div>
+    <el-dialog
+        title="错误信息"
+        v-model="dialogVisible"
+        width="600"
+        :before-close="handleClose"
+      >
+      <div style="padding: 24px 30px">
+        <div class="common-click-txt">{{ row?.material.judgeResult }}</div>
+        <div class="common-click-txt">可前往该附件中进行修改</div>
+        <!-- <div>可前往 <span class="click-txt" @click="toFile"> 该[附件] </span> 中进行修改</div> -->
+        <div class="common-click-txt center-content">可 <span class="click-txt" @click="abortMsg">忽略</span>
+          <w-popover
+            placement="bottom">
+            <template #content>
+            <span class="err-msg">若选择忽略，提交时不会再进行错误提示</span>
+            </template>
+            <img style="width: 20px" src="@/assets/tip.png">
+          </w-popover> 
+            改错误信息</div>
+      </div>
+    </el-dialog>
+  </div>
 </template>
 
 <script setup>
@@ -156,6 +158,9 @@ function formateURL(path, query) {
 </script>
 
 <style scoped>
+.common-click-txt {
+  margin-bottom: 4px;
+}
 .click-txt {
   color:#3470FF;
   cursor: pointer;

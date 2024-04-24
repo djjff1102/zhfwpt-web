@@ -50,7 +50,7 @@ watch(
 
 .isMix {
   .menu-wrap {
-    z-index: 99;
+    z-index: 9;
     width: 100% !important;
     height: 64px;
     background: linear-gradient(
