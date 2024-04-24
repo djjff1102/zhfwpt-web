@@ -286,7 +286,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     });
 
     WLList.value.forEach((item: any) => {
-      WLcode.push(item.code);
+      WLcode.push(item.id);
       if (item.material) {
         const d = formateMaterial(item.material, pro.WL);
         businessDataMaterialList.push(d);
