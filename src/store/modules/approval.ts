@@ -64,6 +64,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       status: 3, // 默认状态为0 1为附件有误 2为正确
     },
   });
+  const pageType = ref(""); // 当前页面类型 add operate detail
 
   function clearTable() {
     DDList.value = [];
@@ -90,12 +91,25 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     getWL();
   }
 
+  // 重置tab状态
+  function resetTab(type: any) {
+    pageType.value = type;
+    tabData.value.DD.status = 0;
+    tabData.value.HT.status = 0;
+    tabData.value.FP.status = 0;
+    tabData.value.YH.status = 0;
+    tabData.value.CC.status = 0;
+    tabData.value.WL.status = 0;
+  }
+
   // 订单1
   function getqyzxOrder() {
     forReportDD(searchPar.value)
       .then((res) => {
         DDList.value = res.data;
-        tabData.value.DD.status = validateType(res.data);
+        if (pageType.value != "detail") {
+          tabData.value.DD.status = validateType(res.data);
+        }
       })
       .catch((err) => {});
   }
@@ -105,7 +119,9 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     qyzxTransactionCertificate(searchPar.value)
       .then((res) => {
         HTList.value = res.data;
-        tabData.value.HT.status = validateType(res.data);
+        if (pageType.value != "detail") {
+          tabData.value.HT.status = validateType(res.data);
+        }
       })
       .catch((err) => {});
   }
@@ -115,7 +131,9 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     qyzxInvoic(searchPar.value)
       .then((res) => {
         FPList.value = res.data;
-        tabData.value.FP.status = validateType(res.data);
+        if (pageType.value != "detail") {
+          tabData.value.FP.status = validateType(res.data);
+        }
       })
       .catch((err) => {});
   }
@@ -125,7 +143,9 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     qyzxBankStatement(searchPar.value)
       .then((res) => {
         YHList.value = res.data;
-        tabData.value.YH.status = validateType(res.data);
+        if (pageType.value != "detail") {
+          tabData.value.YH.status = validateType(res.data);
+        }
       })
       .catch((err) => {});
   }
@@ -135,7 +155,9 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     forReportCC(searchPar.value)
       .then((res) => {
         CCList.value = res.data;
-        tabData.value.CC.status = validateType(res.data);
+        if (pageType.value != "detail") {
+          tabData.value.CC.status = validateType(res.data);
+        }
       })
       .catch((err) => {});
   }
@@ -145,7 +167,9 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     forReportWL(searchPar.value)
       .then((res) => {
         WLList.value = res.data;
-        tabData.value.WL.status = validateType(res.data);
+        if (pageType.value != "detail") {
+          tabData.value.WL.status = validateType(res.data);
+        }
       })
       .catch((err) => {});
   }
@@ -319,5 +343,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     getTableData,
     setFileInfo,
     clearTable,
+    resetTab,
   };
 });

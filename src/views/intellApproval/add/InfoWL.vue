@@ -31,7 +31,7 @@
 
 <script setup>
 import { ref, reactive} from "vue";
-import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { formatNumber } from '@/utils/common'
 import reportOperation from './reportOperation.vue'
 import { pro } from '../type'
@@ -44,7 +44,7 @@ const tableData = computed(() => {
   return approvalStore.WLList
 })
 
-const router = useRouter();
+const route = useRoute();
 const columns = reactive([
   {
     title: "序号",
@@ -197,15 +197,9 @@ const scroll = ref({
   x: 1080,
 });
 
-// 跳转订单详情
-function toDetail(d) {
-  // 标记从订单调走，针对back时，做模块定位
-  router.push({
-    path: '',
-    query: {
-      order: JSON.stringify(d)
-    }
-  })
+const pageType = route.query.type // 当前页面add operate detail
+if(pageType == 'detail') {
+  columns.pop()
 }
 </script>
 

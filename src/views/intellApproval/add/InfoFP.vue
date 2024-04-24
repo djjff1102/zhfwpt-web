@@ -30,6 +30,8 @@ import reportOperation from './reportOperation.vue'
 import { pro } from '../type'
 import { useApprovalStore } from '@/store/modules/approval'
 import attachFile from './attachFile.vue'
+import { useRoute } from "vue-router";
+const route = useRoute()
 
 const approvalStore = useApprovalStore();
 
@@ -108,6 +110,11 @@ const scroll = ref({
   y: 800,
   x: 1080,
 });
+
+const pageType = route.query.type // 当前页面add operate detail
+if(pageType == 'detail') {
+  columns.pop()
+}
 </script>
 
 <style lang="scss" scoped>

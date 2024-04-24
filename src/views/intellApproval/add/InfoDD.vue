@@ -31,7 +31,7 @@
 
 <script setup>
 import { ref, reactive} from "vue";
-import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { formatNumber } from '@/utils/common'
 import reportOperation from './reportOperation.vue'
 import { pro } from '../type'
@@ -44,9 +44,8 @@ const tableData = computed(() => {
   return approvalStore.DDList
 })
 
-const router = useRouter();
+const route = useRoute();
 
-// const tableData = ref([]);
 const columns = reactive([
   {
     title: "序号",
@@ -145,6 +144,11 @@ const scroll = ref({
   y: 800,
   x: 1080,
 });
+
+const pageType = route.query.type // 当前页面add operate detail
+if(pageType == 'detail') {
+  columns.pop()
+}
 </script>
 
 <style lang="scss" scoped>

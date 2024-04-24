@@ -653,6 +653,8 @@ function getgetOneByCompanyName() {
 function init() {
   type.value = route.query.type as any; // add新增 edit编辑 detail详情
   queryPar.value = route.query;
+  // 重置tab的状态
+  approvalStore.resetTab(type.value); // 重置tab的状态
   let id = route.query.id // 申请人发票ID
   if(type.value === 'detail') {
     initPageParam.edit = false;

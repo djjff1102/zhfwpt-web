@@ -49,14 +49,14 @@ import reportOperation from './reportOperation.vue'
 import { pro } from '../type'
 import { useApprovalStore } from '@/store/modules/approval'
 import attachFile from './attachFile.vue'
+import { useRoute } from "vue-router";
 
 const approvalStore = useApprovalStore();
+const route = useRoute()
 
 const tableData = computed(() => {
   return approvalStore.CCList
 })
-
-const router = useRouter();
 
 const columns = reactive([
   {
@@ -186,15 +186,9 @@ const scroll = ref({
   x: 1080,
 });
 
-// 跳转订单详情
-function toDetail(d) {
-  // 标记从订单调走，针对back时，做模块定位
-  router.push({
-    path: '',
-    query: {
-      order: JSON.stringify(d)
-    }
-  })
+const pageType = route.query.type // 当前页面add operate detail
+if(pageType == 'detail') {
+  columns.pop()
 }
 </script>
 

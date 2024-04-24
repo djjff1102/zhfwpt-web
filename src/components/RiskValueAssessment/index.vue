@@ -376,11 +376,15 @@ function getAllData() {
 
 // 获取风险分类展示
 function getRiskTypeList() {
-  queryRiskInfoCountByCompanyInfo({
+  const data = {
     companyId: props.companyId,
     companyName: props.companyName,
     reportId: props.reportId,
-  }).then(res => {
+  }
+  if(!props.reportId) {
+    delete data.reportId;
+  }
+  queryRiskInfoCountByCompanyInfo(data).then(res => {
     const result = res.data;
     const y1 = [] // 高风险
     const y2 = [] // 中风险
