@@ -303,6 +303,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     form.invoiceMapRequestList = FPcode;
     form.bankStatementMapRequestList = YHcode;
     form.warehouseMapRequestList = CCcode; // 仓储
+    form.transportationRequestList = WLcode; // 物流
   }
 
   return {

@@ -379,6 +379,7 @@ function getRiskTypeList() {
   queryRiskInfoCountByCompanyInfo({
     companyId: props.companyId,
     companyName: props.companyName,
+    reportId: props.reportId,
   }).then(res => {
     const result = res.data;
     const y1 = [] // 高风险

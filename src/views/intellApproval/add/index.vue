@@ -195,12 +195,17 @@
       @click="handleSave(3, '更新')">更新</w-button>
     <w-button v-hasPerm="btnApprovalCode.submit" type="primary" @click="handleSave(2, '提交')">提交</w-button>
   </div>
-  <detail-com v-if="type == 'detail'" v-hasPerm="btnApprovalCode.approvalexcute" 
-  :companyId="form.companyId" :companyName="form.companyName" 
-  :reportId="route.query.id" :preStrMoney="form.preStrMoney"></detail-com>
+  <detail-com 
+    v-if="type == 'detail'"
+    v-hasPerm="btnApprovalCode.approvalexcute" 
+    :companyId="form.companyId"
+    :companyName="form.companyName" 
+    :reportId="reportId"
+    :preStrMoney="form.preStrMoney"
+  ></detail-com>
   <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com>
-  <approval-record :showRecord="showRecord" :reportId="route.query.id" @updateAdd="showRecord = false"></approval-record>
-  <ApprovalDo :showAdd="showApproval" @updateAdd="updateApprval" @updateData="updateApprovalStatus" :reportId="route.query.id"></ApprovalDo>
+  <approval-record :showRecord="showRecord" :reportId="reportId" @updateAdd="showRecord = false"></approval-record>
+  <ApprovalDo :showAdd="showApproval" @updateAdd="updateApprval" @updateData="updateApprovalStatus" :reportId="reportId"></ApprovalDo>
   <fileError :showAdd="errdata.flag" :errObj="errdata" @updateAdd="closeError"></fileError>
 </div>
 </template>
@@ -243,7 +248,6 @@ const tabData = computed(() => {
 let userId = userStore.user.id;
 let username = userStore.user.name;
 let companyName = userStore?.user?.organization?.name;
-// const dataPermissionCode = userStore.user.dataPermissionCode || []; // 模块权限码
 
 const route = useRoute();
 const router = useRouter();
@@ -251,41 +255,6 @@ const router = useRouter();
 const loading = ref(false)
 const ziliaoFile = ref([]) // 申报资料上传的文件
 const reportId = ref(-1)
-
-// const tabData = ref({
-//   HT: {
-//     name: '订单',
-//     key: pro.DD,
-//     status: 0 // 默认状态为0 1为附件有误 2为正确
-//   },
-//   DD: {
-//     name: '合同',
-//     key: pro.HT,
-//     status: 1 // 默认状态为0 1为附件有误 2为正确
-//   },
-//   PF: {
-//     name: '发票',
-//     key: pro.FP,
-//     status: 2 // 默认状态为0 1为附件有误 2为正确
-//   },
-//   YH: {
-//     name: '银行流水',
-//     key: pro.YH,
-//     status: 2 // 默认状态为0 1为附件有误 2为正确
-//   },
-//   CC: {
-//     name: '仓储',
-//     key: pro.CC,
-//     status: 2 // 默认状态为0 1为附件有误 2为正确
-//   },
-//   WL: {
-//     name: '物流',
-//     key: pro.WL,
-//     status: 0 // 默认状态为0 1为附件有误 2为正确
-//   },
-// })
-
-
 const basefrom1 = ref();
 const basefrom2 = ref();
 const rules = reactive({
@@ -297,13 +266,6 @@ const rules = reactive({
   validDateStart: [{ required: true, message: '请选择起止有效期',trigger: ['blur', 'change'] }],
 })
 const type = ref('add')
-// const dataList = ref([])
-// const columns = ref([])
-// const dataHT = ref([]) // 已选的合同list
-// const dataDD = ref([]) // 已选的订单list
-// const dataFP = ref([]) // 已选的发票list
-// const dataCC = ref([]) // 已选的仓储list
-// const dataYH = ref([]) // 已选的银行流水list
 const initPageParam = reactive({
   title: '新增',
   edit: true,
@@ -331,7 +293,8 @@ const form = ref({
   bankStatementMapRequestList: [], // 银行流水
   otherMaterialsRequestList: [], // 其他资料
   preStrMoney: '',// 需求预测
-  businessDataMaterialList: []
+  businessDataMaterialList: [],
+  transportationRequestList: []
 })
 const defaultKey = ref('1'); // 默认打开的tab
 const curTab = ref('1') // 当前打开的tab
