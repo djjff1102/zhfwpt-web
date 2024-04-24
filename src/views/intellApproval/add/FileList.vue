@@ -43,7 +43,8 @@ async function load(item, i) {
   download({
     file_name: item.fileUrl
   }).then(async(res) => {
-    await exportBlob(res.data, item.fileName)
+    let fileName = item.fileName || splitFiltName(item.fileUrl) // 兼容申报资料上传和其他资料上传
+    await exportBlob(res.data, fileName)
     loading.value = false;
   }).catch(err=>{
     loading.value = false;

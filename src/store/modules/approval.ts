@@ -222,6 +222,10 @@ export const useApprovalStore = defineStore("approvalstore", () => {
           errdata.HT.title = "您合同附件异常，请核实";
           // errdata.HT.list.push(item);
         }
+      } else {
+        errdata.flag = true;
+        errdata.HT.title = "您有合同附件待上传，请核实";
+        // errdata.FP.emptyList.push(item);
       }
       // if (item?.businessDataMaterialList) {
       //   const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
@@ -239,10 +243,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
           errdata.FP.title = "您有发票附件异常，请核实";
           // errdata.FP.list.push(item);
         }
-      } else {
-        errdata.flag = true;
-        errdata.FP.title = "您有发票附件待上传，请核实";
-        // errdata.FP.emptyList.push(item);
       }
       // if (item?.businessDataMaterialList) {
       //   const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));

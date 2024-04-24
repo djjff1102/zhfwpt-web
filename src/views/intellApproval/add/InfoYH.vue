@@ -1,7 +1,7 @@
 <template>
   <!-- 银行流水 -->
   <div>
-    <div class="msg-tip">* 发票附件必须上传</div>
+    <div class="msg-tip">* 银行附件必须上传</div>
     <div class="table-warp">
       <m-table
         style="height: 100%"

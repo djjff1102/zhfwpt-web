@@ -66,12 +66,9 @@ export async function exportBlob(b, name) {
 //   );
 // }
 
-// 检查附件上传的类型 
-// 1是有附件上传且全部正确
-// 2是有附件错误
-// 3其他情况
-
-// 0为未处理的，1为校验通过的，2为校验异常的，3为用户选择忽略或未校验的
+// judgeCode 0为未处理的，1为校验通过的，2为校验异常的，3为用户选择忽略
+// 返回1 全部上传文件或已上传忽略的
+// 返回2 有错误附件
 export function validateType(data) {
   let errCode = false
   let successCode = false
@@ -82,7 +79,7 @@ export function validateType(data) {
       return item?.material?.judgeCode == 2;
     });
   successCode = data.every((item) => {
-    return item?.material?.judgeCode == 1;
+    return item?.material?.judgeCode == 1 || item?.material?.judgeCode == 3;
   });
 
   if(errCode) {

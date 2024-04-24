@@ -10,21 +10,6 @@
         </div>
       </template>
     </w-tab-pane>
-    <!-- <w-tab-pane key="1" title="合同">
-      <slot name="applycontent"></slot>
-    </w-tab-pane>
-    <w-tab-pane key="2" title="订单">
-      <slot name="applycontent"></slot>
-    </w-tab-pane>
-    <w-tab-pane key="3" title="发票">
-      <slot name="applycontent"></slot>
-    </w-tab-pane>
-    <w-tab-pane key="4" title="仓储">
-      <slot name="applycontent"></slot>
-    </w-tab-pane>
-    <w-tab-pane key="5" title="银行流水">
-      <slot name="applycontent"></slot>
-    </w-tab-pane> -->
   </w-tabs>
 </template>
 

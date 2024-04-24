@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="msg-tip">* 合同附件必须上传</div>
     <div class="table-warp">
       <m-table
         style="height: 100%"

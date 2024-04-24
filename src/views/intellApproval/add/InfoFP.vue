@@ -1,7 +1,6 @@
 <template>
   <!-- 发票信息--不区分进项和销项 -->
   <div class="input-invoice-container">
-    <div class="msg-tip">* 发票附件必须上传</div>
     <div class="table-warp">
       <m-table
         style="height: 100%"

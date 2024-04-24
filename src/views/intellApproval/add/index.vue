@@ -188,7 +188,11 @@
     <w-button v-hasPerm="btnApprovalCode.submit" type="primary" @click="handleSave(2, '提交')">提交</w-button>
   </div>
   <div v-if="type == 'operate'" class="bottom flex-base-end">
-    <w-button v-hasPerm="btnApprovalCode.save" style="margin-right: 20px" @click="handleSave(3, '更新')">更新</w-button>
+    <w-button
+      v-loading.fullscreen.lock="loading"
+      v-hasPerm="btnApprovalCode.save"
+      style="margin-right: 20px"
+      @click="handleSave(3, '更新')">更新</w-button>
     <w-button v-hasPerm="btnApprovalCode.submit" type="primary" @click="handleSave(2, '提交')">提交</w-button>
   </div>
   <detail-com v-if="type == 'detail'" v-hasPerm="btnApprovalCode.approvalexcute" :companyId="form.companyId" :companyName="form.companyName" :reportId="route.query.id" :preStrMoney="form.preStrMoney"></detail-com>
@@ -242,6 +246,7 @@ let companyName = userStore?.user?.organization?.name;
 const route = useRoute();
 const router = useRouter();
 
+const loading = ref(false)
 const ziliaoFile = ref([]) // 申报资料上传的文件
 const reportId = ref(-1)
 
@@ -326,7 +331,7 @@ const form = ref({
   preStrMoney: '',// 需求预测
   businessDataMaterialList: []
 })
-const defaultKey = ref('2'); // 默认打开的tab
+const defaultKey = ref('1'); // 默认打开的tab
 const curTab = ref('2') // 当前打开的tab
 const showAdd = ref(false); // 新增资料弹窗
 const showRecord = ref(false); // 审批记录
@@ -485,6 +490,7 @@ function getCurSumMoney(v: any) {
 // 新增暂存、新增提交
 
 function handleSave(type: any, msg: string) {
+  if(loading.value) return;
   if(uploadFlag.value == 0) {
     ElMessage.warning("申报资料有误");
     errorFlag.value = true
@@ -555,17 +561,25 @@ async function checkSave(type: any, msg: string) {
 }
 
 function handleUpdateSubmit() {
+  if(loading.value) return;
+  loading.value = true
   businessUpdate(form.value).then((res: any) => {
+    loading.value = false
     checkSubmitError(res)
   }).catch(err => {
+    loading.value = false
     ElMessage.error( JSON.stringify(err));
   })
 }
 
 function handleAddNewSubmit() {
+  if(loading.value) return;
+  loading.value = true
   businessAdd(form.value).then(res =>{
+    loading.value = false
     checkSubmitError(res)
   }).catch(err => {
+    loading.value = false
     ElMessage.error( JSON.stringify(err));
   })
 }
@@ -595,27 +609,35 @@ function backToList() {
 }
 
 function handleUpdate(msg: string) {
+  if(loading.value) return;
+  loading.value = true
   update(form.value).then(res => {
     ElMessage.success(msg + "成功！");
+    loading.value = false
     setTimeout(()=>{
       backToList()
     },500)
     noticeStore.refreshNotice()
   }).catch(err => {
-    ElMessage.error(msg + "失败！");
+    loading.value = false
+    ElMessage.error("失败:" + JSON.stringify(err));
   })
 }
 
 // 新增
 function handleAddNew(msg: any) {
+  if(loading.value) return;
+  loading.value = true
   add(form.value).then(res => {
     ElMessage.success(msg + "成功！");
+    loading.value = false
     setTimeout(()=>{
       backToList()
     },500)
     noticeStore.refreshNotice()
   }).catch(err => {
-    ElMessage.error(msg + "失败！");
+    loading.value = false
+    ElMessage.error("失败:" + JSON.stringify(err));
   })
 }
 
