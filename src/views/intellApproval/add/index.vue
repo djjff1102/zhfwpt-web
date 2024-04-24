@@ -332,7 +332,7 @@ const form = ref({
   businessDataMaterialList: []
 })
 const defaultKey = ref('1'); // 默认打开的tab
-const curTab = ref('2') // 当前打开的tab
+const curTab = ref('1') // 当前打开的tab
 const showAdd = ref(false); // 新增资料弹窗
 const showRecord = ref(false); // 审批记录
 const showApproval = ref(false) // 审批窗口
