@@ -403,3 +403,12 @@ export function qyzxWarehouseGood(data: any){
     data,
   });
 }
+
+// 物流仓储
+export function getwarehouseList(data: any) {
+  return request({
+    url: "/base/qyzx_warehouse_good/get_warehouse",
+    method: "post",
+    data,
+  });
+}

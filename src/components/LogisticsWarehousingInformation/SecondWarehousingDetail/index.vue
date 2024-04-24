@@ -9,6 +9,27 @@
 <script setup>
 import BaseInfo from "../detail/components/BaseInfo.vue";
 import OrderInformation from "@/components/OrderInformation/index.vue";
+import { getwarehouseList } from '@/api/archives'
+import { useRoute } from 'vue-router'
+import { ref } from 'vue'
+
+const route = useRoute();
+
+const info = ref()
+
+function init() {
+  const data =  {
+    company_name: route.query.companyName,
+    shortName: route.query.shortName,
+    locationAddress: route.query.locationAddress
+  }
+  getwarehouseList( data ).then(res => {
+    info.data = res.data
+  }).catch(err => {
+    ElMessage.error(JSON.stringify(err))
+  })
+}
+init()
 </script>
 <style lang="scss" scoped>
 .second-warehousing-container {

@@ -2,9 +2,9 @@
   <div class="content-one">
     <div class="risk-result">{{ info.result }}</div>
     <el-descriptions class="margin-top" :column="2" border style="margin: 16px 0">
-      <el-descriptions-item label="经营范围">
+      <!-- <el-descriptions-item label="经营范围">
         测试数据----
-      </el-descriptions-item>
+      </el-descriptions-item> -->
     </el-descriptions>
     <m-table
       :columns="columns"

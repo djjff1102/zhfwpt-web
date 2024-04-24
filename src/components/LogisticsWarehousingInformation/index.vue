@@ -44,8 +44,8 @@
         <!-- <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
         </template>orderMoneySumSlot -->
-        <template v-slot:operations>
-          <w-button type="text" disabled>详情</w-button>
+        <template v-slot:operations="{ rowIndex }">
+          <el-button type="text" @click="toDetail(tableData[rowIndex])">详情</el-button>
         </template>
       </m-table>
     </div>
@@ -53,9 +53,12 @@
 </template>
 <script lang="ts" setup>
 import { ref, reactive } from "vue";
+import { useRouter } from 'vue-router'
 import { qyzxWarehouse, warehouseDropDownBox } from '@/api/archives';
 import { Warehouse } from '@/api/archives/type'
 import { formatNumber } from '@/utils/common'
+
+const router = useRouter();
 
 const props = defineProps({
   companyName: {
@@ -64,8 +67,6 @@ const props = defineProps({
   }
 })
 
-const current = ref(1);
-const size = ref(10);
 const loading = ref(false);
 const tableData = ref<Warehouse[]>([]);
 const columns = reactive([
@@ -114,13 +115,13 @@ const columns = reactive([
     ellipsis: true,
     tooltip: {position: 'left'},
   },
-  // {
-  //   title: "操作",
-  //   width: 100,
-  //   dataIndex: "operations",
-  //   slotName: "operations",
-  //   fixed: "right",
-  // },
+  {
+    title: "操作",
+    width: 100,
+    dataIndex: "operations",
+    slotName: "operations",
+    fixed: "right",
+  },
 ]);
 const pagination = ref({
   total: 0,
@@ -144,7 +145,20 @@ const scroll = ref({
   x: 1080,
 });
 
-const changePagesize = (v) => {
+function toDetail(item: any) {
+  // 标记从发票调走，针对back时，做模块定位
+  sessionStorage.setItem('detailId', 'LogisticsWarehousingInformation')
+  router.push({
+    path: '/archives/warehousingOrderDetail',
+    query: {
+      companyName: props.companyName, // 公司名称
+      shortName: item.shortName, // 仓储名称
+      locationAddress: item.locationAddress // 仓储地址
+    }
+  })
+}
+
+const changePagesize = (v: any) => {
   pagination.value.pageSize = v;
   searchPar.value.page_size = v;
   searchPar.value.page = 1;

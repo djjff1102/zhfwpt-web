@@ -17,7 +17,7 @@
       </template>
       <abnormal-one v-if="riskType == 2" :info="info" :columns="columns"></abnormal-one>
       <abnormal-two v-if="riskType == 1" :info="info" :columns="columns"></abnormal-two>
-      <abnormal-three v-if="riskType == 1" :info="info"></abnormal-three>
+      <abnormal-three v-if="riskType == 3" :info="info"></abnormal-three>
     </el-dialog>
   </div>
 </template>
@@ -48,15 +48,15 @@ const getWidth = computed(() => {
 })
 
 // 获取汉字和英文关系
-function getfxjkFieldMapping(code) {
-  fxjkFieldMapping({
-    indexCode: code
-  }).then(res => {
-    let d = JSON.parse(res.data[0].fieldMapping);
-    formateWord(d);
-  }).catch(err => {
-  })
-}
+// function getfxjkFieldMapping(code) {
+//   fxjkFieldMapping({
+//     indexCode: code
+//   }).then(res => {
+//     let d = JSON.parse(res.data[0].fieldMapping);
+//     formateWord(d);
+//   }).catch(err => {
+//   })
+// }
 
 // 处理数据，生成columns
 function formateWord(d) {
@@ -79,16 +79,18 @@ function formateWord(d) {
 
 function handleResult() {
   dialogTableVisible.value = true;
-  let code = props.info.code
-  if(JYriskCode.includes(code)) {   // 经营类异常
-    getfxjkFieldMapping(code)
-    riskType.value = 1
-  } else if(TSriskCode.includes(code)) {
-    getfxjkFieldMapping(code)
-    riskType.value = 2
-  } else {
-    riskType.value = 3
-  }
+  formateWord( JSON.parse(props.info.fieldMapping));
+  riskType.value = props.info.handleMethod
+  // let code = props.info.code
+  // if(JYriskCode.includes(code)) {   // 经营类异常
+  //   getfxjkFieldMapping(code)
+  //   riskType.value = 1
+  // } else if(TSriskCode.includes(code)) {
+  //   getfxjkFieldMapping(code)
+  //   riskType.value = 2
+  // } else {
+  //   riskType.value = 3
+  // }
 }
 
 </script>
