@@ -1,8 +1,7 @@
 <template>
   <div class="content-one">
     <div class="risk-result">{{ info.result }}</div>
-    TODO: 计算公式待替换
-    <img src="./img/djpl.svg" class="pl-img">
+    <img src="./img/jygm.svg" class="pl-img">
     <m-table
       :columns="columns"
       :data="JSON.parse(info.source)"
