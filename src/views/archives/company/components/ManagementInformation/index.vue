@@ -14,7 +14,7 @@
       <CompanyGraph v-bind="$attrs"></CompanyGraph>
     </el-tab-pane>
     <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveStockRight)" label="股权穿透">
-      <EquityPenetration></EquityPenetration>
+      <EquityPenetration v-bind="$attrs"></EquityPenetration>
     </el-tab-pane>
     <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveSupply)" label="供应链分析">
       <SupplyChainAnalysis></SupplyChainAnalysis>

@@ -34,7 +34,6 @@ watch(() => props.data, (v) => {
 const windowWidth = ref(0);
 
 window.addEventListener('resize', getWindow())
-getWindow()
 function getWindow() {
   windowWidth.value = document.documentElement.clientWidth || document.body.clientWidth;
 }
@@ -43,7 +42,7 @@ function init(d) {
   const graph = new G6.TreeGraph({
     container: props.id,
     width: windowWidth.value - 200, // 因为右侧导航栏，调整一下图的居中位置
-    height: 400,
+    height: 200,
     linkCenter: true,
     modes: {
       default: [
@@ -164,7 +163,7 @@ G6.registerNode(
         attrs: {
           ...styles,
           x: -w / 2,
-          y: -h / 2,
+          y: -h / 2
         },
       });
       if (cfg.point_type == '主要人员') {
@@ -230,6 +229,7 @@ G6.registerEdge('flow-line', {
     const startPoint = cfg.startPoint;
     const endPoint = cfg.endPoint;
     const { style } = cfg;
+    console.log('边---------------：', cfg)
     const shape = group.addShape('path', {
       attrs: {
         stroke: style.stroke,
@@ -242,28 +242,14 @@ G6.registerEdge('flow-line', {
         ],
       },
     });
-    if (cfg.targetNode._cfg.model.point_message['职位']) {
-        const label = cfg.targetNode._cfg.model.point_message['职位']
+    if (cfg.targetNode._cfg.model.point_message['股份占比']) {
+        const label = Number(cfg.targetNode._cfg.model.point_message['股份占比']) * 100 + '%'
         group.addShape('text', {
           attrs: {
             text: label,
             x: endPoint.x + 4,
             y: (startPoint.y + endPoint.y) / 2,
             fill: 'green',
-            stroke: '#fff',
-          },
-          name: 'text-node'
-        })
-      }
-
-      if (cfg.targetNode._cfg.model.point_type == '控股企业') {
-        const label = '控股企业'
-        group.addShape('text', {
-          attrs: {
-            text: label,
-            x: endPoint.x + 4,
-            y: (startPoint.y + endPoint.y) / 2,
-            fill: '#4ea2f0',
             stroke: '#fff',
           },
           name: 'text-node'

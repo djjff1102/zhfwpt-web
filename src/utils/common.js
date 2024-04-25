@@ -90,3 +90,42 @@ export function validateType(data) {
     return 3
   }
 }
+
+// 处理节点node
+export function tupuNode(data) {
+  data.forEach((item) => {
+    item.id = item.point_id;
+  });
+}
+
+// 处理节点间的边
+export function tupuEdge(data) {
+  data.forEach((item) => {
+    item.source = item.source_id;
+    item.target = item.target_id;
+  });
+}
+
+// 将node和边转为树
+export function arrayToTree(nodes, edges) {
+  const map = {}; // 使用一个对象来存储每个节点的引用，以便快速查找
+  let tree = []; // 存储树的顶层节点
+ const nodeID = []
+  // 遍历数组，为每个节点创建引用，并将其添加到map中
+  nodes.forEach((node) => {
+    nodeID.push(node.point_id);
+    map[node.point_id] = { ...node, id: node.point_id, label: '11111111', children: [] }; // 将当前节点作为对象的副本存储，并添加一个空的children数组
+  });
+  // 遍历出父节点
+  edges.forEach(item => {
+    let index = nodeID.indexOf(item.target_id);
+    index !==-1 ? nodeID.splice(index, 1) : ''
+  })
+  // 遍历数组，构建树形结构
+  edges.forEach((edge) => {
+      // 如果节点有父节点，则将其添加为父节点的子节点
+      map[edge.source_id].children.push(map[edge.target_id]);
+  });
+  tree = map[nodeID[0]];
+  return tree;
+}

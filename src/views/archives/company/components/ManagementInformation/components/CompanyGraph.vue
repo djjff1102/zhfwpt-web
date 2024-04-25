@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <guquan id="companyGid"></guquan>
-    </div>
+    <guquan id="companyGid" :data="data"></guquan>
 </template>
 <script setup>
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
 import { getenterpriseMapQuery } from '@/api/archives'
+import { arrayToTree } from '@/utils/common'
 
 const props = defineProps({
   companyName: {
@@ -15,6 +14,7 @@ const props = defineProps({
     default: ''
   }
 })
+const data = ref()
 
 watch( () => props.companyId, (v) => {
   if(v) {
@@ -30,8 +30,11 @@ const init = async () => {
   getenterpriseMapQuery({
     companyId: '04bbe3814ee17efb0d2e3e0b3b1ed2c4'
   }).then(res => {
-
-  }).catch(err => {})
+    const d = arrayToTree(res.data.point_list, res.data.line_list)
+    data.value = d
+  }).catch(err => {
+    console.log('err:', err)
+  })
 };
 </script>
 
