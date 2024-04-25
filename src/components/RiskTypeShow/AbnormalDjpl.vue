@@ -1,10 +1,18 @@
 <template>
   <div class="content-one">
-    <div class="risk-result">深圳市超级饰科技有限公司重庆市第三分公司，于2022年08月04日注销。</div>
-    <div class="risk-reason">
-      <line-echart></line-echart>
-      <!-- <line-chart-right :chartId="rightId"></line-chart-right> -->
-    </div>
+    <div class="risk-result">{{ info.result }}</div>
+    <img src="./img/djpl.svg" class="pl-img">
+    <m-table
+      :columns="columns"
+      :data="JSON.parse(info.source)"
+      style="height: 100%"
+      :pagination="false"
+      :bordered="false"
+    >
+    <template v-slot:index="{ rowIndex }">
+      {{ rowIndex + 1 }}
+    </template>
+  </m-table>
   </div>
 </template>
 
@@ -12,13 +20,16 @@
 const props = defineProps({
   info: { // 风险信息
     default: {}
+  },
+  columns: {
+    default: []
   }
 })
 </script>
 
 <style lang="scss" scoped>
 .content-one {
-  padding: 16px 24px;
+  padding: 16px 0;
   font-family: PingFangSC, PingFang SC;
   font-weight: 400;
   font-size: 14px;
@@ -26,6 +37,7 @@ const props = defineProps({
   line-height: 20px;
   text-align: left;
   font-style: normal;
+  overflow: hidden;
   .risk-result {
     background: #FFF4E5;
     border-radius: 8px;
@@ -40,5 +52,13 @@ const props = defineProps({
       flex-shrink: 0;
     }
   }
+}
+.pl-img {
+  display: block;
+  margin: 18px 0;
+  width: 100%;
+}
+:deep(.el-descriptions__cell) {
+  width: 100px;
 }
 </style>

@@ -10,18 +10,35 @@ import * as echarts from "echarts";
 import { onMounted, watch, onUnmounted } from "vue";
 
 const props = defineProps({
-  time: {
-    default: []
-  },
-  dataList: {
-    default: []
+  echartData: {
+    default: {
+      left: [],
+      right: [],
+      yValue: []
+    }
   },
   chartId: {
     default: 'tendencyChart'
   }
 })
-let manData = [100, 200, 300, 400, 500];
-let womanData = [100, 200, 300, 400, 500];
+
+watch(() => props.echartData, (v) => {
+  if(v) {
+    
+    barNum.value = v.left.length;
+    echartData.value.series[0].name = '1'
+    echartData.value.series[1].name = '2'
+    echartData.value.series[0].data = v.left
+    echartData.value.series[1].data = v.right
+    echartData.value.yAxis[1].data = v.yValue
+    console.log('echartData--------------:', echartData.value)
+    init()
+  }
+}, {
+  deep: true
+})
+
+const barNum = ref(1) // 柱子的个数
 const echartData = ref({
   tooltip: {
     show: false
@@ -85,7 +102,6 @@ const echartData = ref({
         //y轴刻度线
         show: false,
       },
-      // data: ["技术", "人才", "数据", "存储", "运输"],
       axisLine: {
         //轴线
         show: false,
@@ -126,13 +142,7 @@ const echartData = ref({
         //y轴刻度线
         show: false,
       },
-      data: [
-        "技术技术技术技术技",
-        "人才",
-        "数据",
-        "运输",
-        "存储",
-      ]
+      data: [1,2,2,2]
     },
     {
       gridIndex: 2,
@@ -153,18 +163,18 @@ const echartData = ref({
           color: "rgba(25, 35, 57,0.2)",
         },
       },
-      data: ["16-20", "21-30", "31-40", "41-50", "51-60"],
+      data: [],
     },
   ],
   series: [
     {
       type: "bar",
       barWidth: 24,
-      name: "男",
+      name: "",
       itemStyle: {
         color: "#3470FF",
       },
-      data: manData,
+      data: [],
       label: {
         show: true,
         color: '#fff'
@@ -175,11 +185,11 @@ const echartData = ref({
       barWidth: 24,
       xAxisIndex: 2,
       yAxisIndex: 2,
-      name: "女",
+      name: "",
       itemStyle: {
         color: "#FF9100",
       },
-      data: womanData,
+      data: [],
       label: {
         show: true,
         color: '#fff'
@@ -187,19 +197,6 @@ const echartData = ref({
     },
   ]
 })
-
-// watch(
-//   () => props.dataList,
-//   (v) => {
-//     if(v && v.length > 0 ) {
-//       echartData.value.series[0].data = v;
-//       echartData.value.xAxis[0].data = props.time;
-//       init()
-//     }
-//   }, {
-//     deep: true,
-//   }
-// );
 
 onMounted(() => {
   init();
@@ -209,9 +206,10 @@ function init() {
   const tendencyDom = document.getElementById(props.chartId);
   const tendencyChart = echarts.init(tendencyDom, null, {
     width: "800",
-    height: 48 * 5, // 每根柱子宽24，间距24  计算画布的高
+    height: 48 , // 每根柱子宽24，间距24  计算画布的高
   });
   tendencyChart.setOption(echartData.value);
+  handleResize()
   window.addEventListener('resize', handleResize);
 }
 

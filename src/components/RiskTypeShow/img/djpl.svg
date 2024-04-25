@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1014px" height="70px" viewBox="0 0 1014 70" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="138.041715%" id="linearGradient-1">
+            <stop stop-color="#F0F5FD" offset="0%"></stop>
+            <stop stop-color="#F0F2F6" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="20240402阶段2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1大宗贸易-3企业资信档案库-1详情-3单价偏离度校验异常" transform="translate(-213.000000, -216.000000)">
+            <g id="编组" transform="translate(183.000000, 149.000000)">
+                <g transform="translate(30.000000, 67.000000)" id="编组-3">
+                    <rect id="矩形" fill="url(#linearGradient-1)" x="0" y="0" width="1014" height="70" rx="4"></rect>
+                    <g id="编组-2" transform="translate(232.000000, 15.000000)">
+                        <text id="偏离度计算=" font-family="SourceHanSansCN-Regular, Source Han Sans CN" font-size="14" font-weight="normal" fill="#000000">
+                            <tspan x="0.115" y="26">偏离度计算=</tspan>
+                        </text>
+                        <text id="市场单价" font-family="SourceHanSansCN-Regular, Source Han Sans CN" font-size="14" font-weight="normal" fill="#000000">
+                            <tspan x="187" y="39">市场单价</tspan>
+                        </text>
+                        <text id="市场单价-合同单价" font-family="SourceHanSansCN-Regular, Source Han Sans CN" font-size="14" font-weight="normal" fill="#000000">
+                            <tspan x="156.571" y="12">市场单价-合同单价</tspan>
+                        </text>
+                        <text id="100%=±10%为合理的偏离量" font-family="SourceHanSansCN-Regular, Source Han Sans CN" font-size="14" font-weight="normal" fill="#000000">
+                            <tspan x="365.796" y="26">100%=±10%为合理的偏离量</tspan>
+                        </text>
+                        <line x1="90" y1="20.5" x2="338.5" y2="21" id="路径" stroke="#D9DDE6"></line>
+                        <g id="编组" transform="translate(351.000000, 17.000000)" fill="#000000" fill-rule="nonzero">
+                            <polygon id="路径" points="4.49998586 3.50003457 8.00001257 0 9 1.00000079 5.49997329 4.50002828 9 8.00000629 8.00001257 9 4.49998586 5.500022 1.00000157 9 0 8.00000629 3.49999843 4.50002828 0 1.00000079 1.00000157 0"></polygon>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

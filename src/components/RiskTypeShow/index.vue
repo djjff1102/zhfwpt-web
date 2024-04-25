@@ -15,17 +15,22 @@
           <w-button type="primary" @click="dialogTableVisible = false">知道了</w-button>
         </span>
       </template>
-      <abnormal-one v-if="riskType == 2" :info="info" :columns="columns"></abnormal-one>
-      <abnormal-two v-if="riskType == 1" :info="info" :columns="columns"></abnormal-two>
-      <abnormal-three v-if="riskType == 3" :info="info"></abnormal-three>
+      <abnormal-ty v-if="riskType == abnormalStatus.TY" :info="info" :columns="columns"></abnormal-ty>
+      <abnormal-djpl v-else-if="riskType == abnormalStatus.DJPL" :info="info" :columns="columns"></abnormal-djpl>
+      <abnormal-cfwjy v-else-if="riskType == abnormalStatus.CFWJY" :info="info" :columns="columns"></abnormal-cfwjy>
+      <abnormal-jxxsp v-else-if="riskType == abnormalStatus.JXXSP" :info="info"></abnormal-jxxsp>
+      <abnormal-glyc v-else-if="riskType == abnormalStatus.GLYC" :info="info" :columns="columns"></abnormal-glyc>
+      <abnormal-htzt v-else-if="riskType == abnormalStatus.HTZT" :info="info" :columns="columns"></abnormal-htzt>
+      <abnormal-jygm v-else-if="riskType == abnormalStatus.JYGM" :info="info" :columns="columns"></abnormal-jygm>
     </el-dialog>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch, onMounted, computed } from 'vue'
 import { fxjkFieldMapping } from '@/api/archives'
 import { JYriskCode, TSriskCode } from '@/utils/baseType'
+import { abnormalStatus } from './type'
 
 const props = defineProps({
   info: { // 风险信息
@@ -36,27 +41,17 @@ const props = defineProps({
 const dialogTableVisible = ref(false)
 const riskType = ref(-1); // 根据风险类型控制页面显示
 const columns = ref([])
+const barJXX = ref() // 企业进销项商品匹配异常
 
 const getWidth = computed(() => {
-  if(riskType.value == 2) {
-    return 550;
+  if(riskType.value == abnormalStatus.DJPL) {
+    return 1074;
   } else if(riskType.value == 1){
     return 900;
   } else {
     return 900;
   }
 })
-
-// 获取汉字和英文关系
-// function getfxjkFieldMapping(code) {
-//   fxjkFieldMapping({
-//     indexCode: code
-//   }).then(res => {
-//     let d = JSON.parse(res.data[0].fieldMapping);
-//     formateWord(d);
-//   }).catch(err => {
-//   })
-// }
 
 // 处理数据，生成columns
 function formateWord(d) {
@@ -77,20 +72,23 @@ function formateWord(d) {
   columns.value = arr;
 }
 
+// 处理数据，处理成图标的Y轴值 处理成符合柱状的数据
+function formateY(d) {
+  columns.value = []
+  const arr = []
+  const left = [];
+  const right = [];
+  Object.keys(d).forEach(item => {
+    arr.push(d[item])
+  })
+  columns.value = arr;
+}
+
+// 处理字段对应关系
 function handleResult() {
   dialogTableVisible.value = true;
-  formateWord( JSON.parse(props.info.fieldMapping));
   riskType.value = props.info.handleMethod
-  // let code = props.info.code
-  // if(JYriskCode.includes(code)) {   // 经营类异常
-  //   getfxjkFieldMapping(code)
-  //   riskType.value = 1
-  // } else if(TSriskCode.includes(code)) {
-  //   getfxjkFieldMapping(code)
-  //   riskType.value = 2
-  // } else {
-  //   riskType.value = 3
-  // }
+  formateWord(JSON.parse(props.info.fieldMapping)); // 字段对应关系
 }
 
 </script>

@@ -34,19 +34,19 @@ const echartData = ref({
       left: "8%",
       width: "90%",
       containLabel: true,
-    },
+    }
   ],
   xAxis: [
     {
       type: "value",
-      inverse: false,
+      inverse: true,
       show: false
     }
   ],
   yAxis: [
     {
       axisLabel: {
-        show: true,
+        show: false,
       },
       align: "center",
       type: "category",
@@ -59,8 +59,7 @@ const echartData = ref({
         //轴线
         show: false,
         lineStyle: {
-          color: "rgba(25, 35, 57)",
-          align: 'center' //设置标签居中
+          color: "rgba(25, 35, 57,0.2)",
         },
       },
     },
@@ -119,13 +118,27 @@ const echartData = ref({
       barWidth: 24,
       name: "男",
       itemStyle: {
-        color: "#FF9100",
+        color: "#3470FF",
       },
       data: manData,
       label: {
         show: true
       }
-    }
+    },
+    // {
+    //   type: "bar",
+    //   barWidth: 24,
+    //   xAxisIndex: 2,
+    //   yAxisIndex: 2,
+    //   name: "女",
+    //   itemStyle: {
+    //     color: "#FF9100",
+    //   },
+    //   data: womanData,
+    //   label: {
+    //     show: true
+    //   }
+    // },
   ]
 })
 
