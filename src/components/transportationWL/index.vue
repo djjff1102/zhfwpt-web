@@ -54,7 +54,7 @@
           {{ formatNumber(tableData[rowIndex].transportationFeeAmount) }}
         </template>
         <template v-slot:operations>
-          <w-button type="text" disabled>原件</w-button>
+          <w-button type="text" disabled>2原件</w-button>
         </template>
       </m-table>
     </div>
@@ -202,13 +202,13 @@ const columns = reactive([
     ellipsis: true,
     tooltip: {position: 'left'},
   },
-  {
-    title: "操作",
-    width:100,
-    dataIndex: "operations",
-    slotName: "operations",
-    fixed: "right",
-  },
+  // {
+  //   title: "操作",
+  //   width:100,
+  //   dataIndex: "operations",
+  //   slotName: "operations",
+  //   fixed: "right",
+  // },
 ]);
 
 const pagination = ref({

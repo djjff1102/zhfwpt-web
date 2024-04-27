@@ -17,6 +17,7 @@
           start-placeholder="开始月份"
           end-placeholder="结束月份"
           value-format="YYYY-MM-DD"
+          :shortcuts="shortcuts"
           :clearable="false"
           @change="changeMonth"
         />
@@ -60,6 +61,32 @@ const props = defineProps({
 });
 const data = ref()
 const monthRange = ref('') // 时间月份
+const shortcuts = ref([
+  {
+    text: '近一年',
+    value: () => {
+      const now = dayjs();
+      const twelveMonthsAgo = now.subtract(11, 'month');
+      return [ twelveMonthsAgo.format('YYYY-MM-DD'), now.format('YYYY-MM-DD') ]
+    }
+  },
+  {
+    text: '近半年',
+    value: () => {
+      const now = dayjs();
+      const fiveMonthsAgo = now.subtract(5, 'month');
+      return [ fiveMonthsAgo.format('YYYY-MM-DD'), now.format('YYYY-MM-DD') ]
+    },
+  },
+  {
+    text: '今年至今',
+    value: () => {
+      const firstday = dayjs().startOf('year')
+      const now = dayjs();
+      return [ firstday.format('YYYY-MM-DD'), now.format('YYYY-MM-DD') ]
+    },
+  },
+])
 
 watch(
   () => props.companyName,
@@ -81,7 +108,11 @@ watch(
   () => props.companyId,
   (id) => {
     if(id) {
-      monthRange.value = [ dayjs().format('YYYY-MM-DD'), dayjs().add(1, 'year').format('YYYY-MM-DD') ]
+      const now = dayjs();
+      // 计算11个月前的日期
+      const twelveMonthsAgo = now.subtract(11, 'month');
+      monthRange.value = [ twelveMonthsAgo.format('YYYY-MM-DD'), now.format('YYYY-MM-DD') ]
+      // monthRange.value = [ dayjs().add(-1, 'year').format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD') ]
       init(id)
     }
   },
@@ -119,7 +150,7 @@ const echartData = ref({
 
 // 切换月份查询
 function changeMonth() {
-  init()
+  init(props.companyId)
 }
 
 // 进项发票

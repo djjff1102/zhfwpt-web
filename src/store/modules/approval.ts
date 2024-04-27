@@ -213,6 +213,8 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     if (fileInfo.value && JSON.stringify(fileInfo.value) != "{}") {
       businessDataMaterialList.push(fileInfo.value);
     }
+    let HTEmptyflag = false; // 合同有待上传的附件
+    let YHEmptyflag = false; // 银行有待上传的附件
     const DDcode: any = [];
     const HTcode: any = [];
     const FPcode: any = [];
@@ -226,15 +228,10 @@ export const useApprovalStore = defineStore("approvalstore", () => {
         businessDataMaterialList.push(d);
         if (item.material.judgeCode == 2) {
           errdata.flag = true;
-          errdata.DD.title = "您订单附件异常，请核实";
+          errdata.DD.title = "订单附件异常，请核实";
           errdata.DD.list.push(item);
         }
       }
-      // if (item?.businessDataMaterialList) {
-      //   const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
-      //   businessDataMaterialList.push(d);
-      //   delete item.businessDataMaterialList;
-      // }
     });
     HTList.value.forEach((item: any) => {
       HTcode.push(item.code);
@@ -243,19 +240,13 @@ export const useApprovalStore = defineStore("approvalstore", () => {
         businessDataMaterialList.push(d);
         if (item.material.judgeCode == 2) {
           errdata.flag = true;
-          errdata.HT.title = "您合同附件异常，请核实";
-          // errdata.HT.list.push(item);
+          errdata.HT.title = "合同附件异常，请核实";
         }
       } else {
         errdata.flag = true;
-        errdata.HT.title = "您有合同附件待上传，请核实";
-        // errdata.FP.emptyList.push(item);
+        HTEmptyflag = true;
+        errdata.HT.title = "合同附件待上传，请核实";
       }
-      // if (item?.businessDataMaterialList) {
-      //   const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
-      //   businessDataMaterialList.push(d);
-      //   delete item.businessDataMaterialList;
-      // }
     });
     FPList.value.forEach((item: any) => {
       FPcode.push(item.id);
@@ -264,15 +255,9 @@ export const useApprovalStore = defineStore("approvalstore", () => {
         businessDataMaterialList.push(d);
         if (item.material.judgeCode == 2) {
           errdata.flag = true;
-          errdata.FP.title = "您有发票附件异常，请核实";
-          // errdata.FP.list.push(item);
+          errdata.FP.title = "发票附件异常，请核实";
         }
       }
-      // if (item?.businessDataMaterialList) {
-      //   const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
-      //   businessDataMaterialList.push(d);
-      //   delete item.businessDataMaterialList;
-      // }
     });
     YHList.value.forEach((item: any) => {
       YHcode.push(item.id);
@@ -281,19 +266,13 @@ export const useApprovalStore = defineStore("approvalstore", () => {
         businessDataMaterialList.push(d);
         if (item.material.judgeCode == 2) {
           errdata.flag = true;
-          errdata.YH.title = "您银行附件异常，请核实";
-          // errdata.YH.list.push(item);
+          errdata.YH.title = "银行附件异常，请核实";
         }
       } else {
         errdata.flag = true;
-        errdata.YH.title = "您银行附件待上传，请核实";
-        // errdata.YH.emptyList.push(item);
+        YHEmptyflag = true;
+        errdata.YH.title = "银行流水附件待上传，请核实";
       }
-      // if (item?.businessDataMaterialList) {
-      //   const d = JSON.parse(JSON.stringify(item?.businessDataMaterialList));
-      //   businessDataMaterialList.push(d);
-      //   delete item.businessDataMaterialList;
-      // }
     });
 
     CCList.value.forEach((item: any) => {
@@ -303,7 +282,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
         businessDataMaterialList.push(d);
         if (item.material.judgeCode == 2) {
           errdata.flag = true;
-          errdata.CC.title = "您仓储附件异常，请核实";
+          errdata.CC.title = "仓储附件异常，请核实";
           errdata.CC.list.push(item);
         }
       }
@@ -316,11 +295,16 @@ export const useApprovalStore = defineStore("approvalstore", () => {
         businessDataMaterialList.push(d);
         if (item.material.judgeCode == 2) {
           errdata.flag = true;
-          errdata.WL.title = "您仓储附件异常，请核实";
+          errdata.WL.title = "仓储附件异常，请核实";
           errdata.WL.list.push(item);
         }
       }
     });
+    if (YHEmptyflag && HTEmptyflag) {
+      // 合同和银行都有待上传的附件，显示成一条提示信息
+      errdata.YH.title = "";
+      errdata.HT.title = "合同、银行流水附件待上传，请核实";
+    }
     form.businessDataMaterialList = businessDataMaterialList;
     form.orderMapRequestList = DDcode;
     form.transactionCertificateMapRequestList = HTcode;

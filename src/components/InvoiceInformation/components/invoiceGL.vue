@@ -160,13 +160,13 @@ const columns = reactive([
   //   slotName: 'amountTotalSlot',
   //   tooltip: {position: 'left'},
   // },
-  // {
-  //   title: "操作",
-  //    width: 100,
-  //   dataIndex: "operations",
-  //   slotName: "operations",
-  //   fixed: "right",
-  // },
+  {
+    title: "操作",
+     width: 100,
+    dataIndex: "operations",
+    slotName: "operations",
+    fixed: "right",
+  },
 ]);
 const pagination = ref({
   current: 1,
@@ -188,15 +188,15 @@ const scroll = ref({
 
 // 跳转发票详情
 function handleDetail(d) {
-  // 标记从发票调走，针对back时，做模块定位
-  // sessionStorage.setItem('detailId', 'InvoiceInformation')
-  // router.push({
-  //   path: '/archives/fpdetail',
-  //   query: {
-  //     fapiao: JSON.stringify(d),
-  //     name:'进项发票'
-  //   }
-  // })
+  const query = {
+    name:'发票详情',
+    number: d.number, // 发票号码
+    code: d.code // 发票代码
+  }
+  router.push({
+    path: '/archives/fpdetail',
+    query
+  })
 }
 
 const changePagesize = (v) => {

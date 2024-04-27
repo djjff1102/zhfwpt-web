@@ -5,13 +5,13 @@
     <BaseInfo v-if="name == '销项发票'" :order="fapiao"></BaseInfo>
     <BaseInfoIN v-if="name == '进项发票'" :order="fapiao"></BaseInfoIN>
     <div class="title">商品信息</div>
-    <SecondWarehousing :id="fapiao.id" :code="route.query.code" :number="route.query.number"></SecondWarehousing>
+    <goodinfo :id="fapiao.id" :code="route.query.code" :number="route.query.number"></goodinfo>
   </div>
 </template>
 <script setup>
 import  { ref } from 'vue';
 import BaseInfo from "./components/BaseInfo.vue"
-import SecondWarehousing from "./components/SecondWarehousing.vue";
+import goodinfo from "./components/goodinfo.vue";
 import BaseInfoIN from './components/BaseInfoIN.vue'
 import { useRoute } from 'vue-router'
 import { qyzxInvoice } from '@/api/archives'

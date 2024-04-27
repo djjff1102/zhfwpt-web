@@ -5,30 +5,61 @@
       {{ order?.code || '--' }}
     </el-descriptions-item>
     <el-descriptions-item label="订单创建日期">{{ order?.orderCreateDate || '--' }}</el-descriptions-item>
+    
+    <el-descriptions-item label="买方信息" :span="4"></el-descriptions-item>
     <el-descriptions-item label="买方名称">
       {{ order?.buyerCompanyName || '--' }}
     </el-descriptions-item>
-    <el-descriptions-item label="买方信用代码">
-      {{ order?.buyerCreditNo || '--' }}
+    <el-descriptions-item label="交易商编号">
+      {{ order?.buyerTransactNo || '--' }}
     </el-descriptions-item>
-    <el-descriptions-item label="卖方名称">
-      {{ order?.sellerCompanyName || '--' }}
+    <el-descriptions-item label="营业执照号">
+      {{  order?.buyerCreditNo || '--' }}
     </el-descriptions-item>
-    <el-descriptions-item label="卖方信用代码">
+    <el-descriptions-item label="注册地省">
+      {{ order?.buyerRegisterProvince || '--' }}
+    </el-descriptions-item>
+    <el-descriptions-item label="注册地市">
+      {{  order?.buyerRegisterCity ||'--' }}
+    </el-descriptions-item>
+    <el-descriptions-item label="注册地址">
+      {{  order?.buyerRegisterAddress || '--' }}
+    </el-descriptions-item>
+    <el-descriptions-item label="操作人">
+      {{  order?.buyerUserName || '--' }}
+    </el-descriptions-item>
+    <el-descriptions-item label="订单确认时间">
+      {{ order?.buyerOrderConfirmDate || '--' }}
+    </el-descriptions-item>
+
+
+    <el-descriptions-item label="卖方信息"  :span="4">
+      {{  '--' }}
+    </el-descriptions-item>
+        <el-descriptions-item label="买方名称">
+      {{ order?.buyerCompanyName || '--' }}
+    </el-descriptions-item>
+    <el-descriptions-item label="交易商编号">
+      {{ order?.sellerTransactNo ||'--' }}
+    </el-descriptions-item>
+    <el-descriptions-item label="营业执照号">
       {{ order?.sellerCreditNo || '--' }}
     </el-descriptions-item>
-    <el-descriptions-item label="商品所在地省"> {{ order?.goodProvince || '--' }} </el-descriptions-item>
-    <el-descriptions-item label="商品所在地市">
-      {{ order?.goodAddress || '--' }}
+    <el-descriptions-item label="注册地省">
+      {{ order?.sellerRegisterProvince || '--' }}
     </el-descriptions-item>
-    <el-descriptions-item label="商品所在地址">
-      {{ order?.goodAddress || '--' }}
+    <el-descriptions-item label="注册地市">
+      {{  order?.sellerRegisterCity || '--' }}
     </el-descriptions-item>
-    <el-descriptions-item label="仓库名称"> {{ order?.warehouseName || '--' }} </el-descriptions-item>
-    <el-descriptions-item label="合同编号">
-     {{ order?.certificateCode || '--' }}
+    <el-descriptions-item label="注册地址">
+      {{  order?.sellerRegisterAddress || '' }}
     </el-descriptions-item>
-    <el-descriptions-item label="总金额"> {{ formatNumber(order?.totalMoney) || '--' }} </el-descriptions-item>
+    <el-descriptions-item label="操作人">
+      {{ order?.sellerUserName || '--' }}
+    </el-descriptions-item>
+    <el-descriptions-item label="订单确认时间">
+      {{ order?.sellerOrderConfirmDate || '--'  }}
+    </el-descriptions-item>
   </el-descriptions>
 </template>
 <script setup>

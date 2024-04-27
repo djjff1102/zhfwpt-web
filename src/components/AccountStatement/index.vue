@@ -42,7 +42,8 @@
           {{ rowIndex + 1 }}
         </template>
         <template v-slot:paymentAmountSlot="{ rowIndex }">
-          {{ tableData[rowIndex].currency }}{{ formatNumber(Number(tableData[rowIndex].paymentAmount)) }}
+          {{ tableData[rowIndex].currency }}{{ formatNumber(Number(tableData[rowIndex].paymentAmount)) }}{{ tableData[rowIndex].amountUnit }}
+          <!-- {{ tableData[rowIndex].currency }}{{ formatNumber(Number(tableData[rowIndex].paymentAmount)) }} -->
         </template>
         <template v-slot:operations>
           <w-button type="text" disabled>详情</w-button>

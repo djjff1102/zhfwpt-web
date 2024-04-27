@@ -4,7 +4,7 @@
     <BaseInfo :order="order"></BaseInfo>
     <!-- <div class="title">子订单信息</div> -->
     <div class="title">商品详情</div>
-    <SecondWarehousing :parentCode="code"></SecondWarehousing>
+    <goodinfo :parentCode="code"></goodinfo>
     <div>
       <div class="title">关联合同</div>
       <TransactionVoucher :orderCode="code"></TransactionVoucher>
@@ -25,7 +25,7 @@
 <script setup>
 import  { ref } from 'vue';
 import BaseInfo from "./components/BaseInfo.vue"
-import SecondWarehousing from "./components/SecondWarehousing.vue";
+import goodinfo from "./components/goodinfo.vue";
 import { useRoute } from 'vue-router'
 import { qyzxOrder } from '@/api/archives'
 

@@ -1,7 +1,7 @@
 <template>
   <!-- 合同 -->
   <div>
-    <div class="search_box">
+    <div v-if="companyName" class="search_box">
       <el-form :model="searchPar" :inline="true" class="demo-form-inline">
         <el-form-item field="code" label="合同编号">
           <el-input v-model="searchPar.code" placeholder="请输入合同编号" clearable/>
@@ -48,7 +48,12 @@
           {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].amount) }}{{ tableData[rowIndex].amountUnit }}
         </template>
         <template v-slot:operations="{ rowIndex }">
-          <el-button v-if="orderCode" type="text" disabled>原件</el-button>
+          <el-button
+            v-if="tableData[rowIndex]?.material?.fileUrl"
+            :loading="curRow == rowIndex && loading"
+            type="text"
+            @click="load(tableData[rowIndex].material)"> {{ splitFiltName(tableData[rowIndex].material.fileUrl) }}</el-button>
+          <!-- <el-button v-if="orderCode" type="text" >1原件</el-button> -->
           <el-button v-if="companyName" type="text"  @click="toDetail(tableData[rowIndex])">详情</el-button>
         </template>
       </m-table>
@@ -60,6 +65,8 @@ import { ref, reactive } from "vue";
 import { qyzxTransactionCertificate } from '@/api/archives'
 import { formatNumber, formateDate } from '@/utils/common' 
 import { useRouter } from 'vue-router'
+import { download } from '@/api/file'
+import { exportBlob, splitFiltName } from '@/utils/common'
 
 const router = useRouter();
 const props = defineProps({
@@ -67,6 +74,7 @@ const props = defineProps({
   orderCode: String
 })
 
+const curRow = ref(-1)
 const curDate = ref('')
 const loading = ref(false);
 const tableData = ref([]);
@@ -123,7 +131,7 @@ const columns = reactive([
   },
   {
     title: "操作",
-    width:100,
+    width: 160,
     dataIndex: "operations",
     slotName: "operations",
     fixed: "right",
@@ -153,6 +161,18 @@ const scroll = ref({
   x: 1080,
 });
 
+async function load(item) {
+  if(loading.value) return;
+  loading.value = true;
+  download({
+    file_name: item.fileUrl
+  }).then(async(res) => {
+    await exportBlob(res.data, item.fileName)
+    loading.value = false;
+  }).catch(err=>{
+    loading.value = false;
+  })
+}
 
 // 跳转合同详情
 function toDetail(d) {

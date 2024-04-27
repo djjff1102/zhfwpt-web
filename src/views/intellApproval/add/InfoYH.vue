@@ -15,7 +15,7 @@
           {{ rowIndex + 1 }}
         </template>
         <template v-slot:paymentAmountSlot="{ rowIndex }">
-          {{ formatNumber(Number(tableData[rowIndex].paymentAmount)) }}
+          {{ tableData[rowIndex].currency }}{{ formatNumber(Number(tableData[rowIndex].paymentAmount)) }}{{ tableData[rowIndex].amountUnit }}
         </template>
         <template v-slot:materialslot="{rowIndex}">
           <attachFile :row="tableData[rowIndex]"></attachFile>

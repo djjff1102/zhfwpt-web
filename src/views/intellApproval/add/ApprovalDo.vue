@@ -7,10 +7,10 @@
               <el-option v-for="(item, i) in appravalResultList" :key="i" :value="item.value" :label="item.label"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item prop="approveOpinion" label="审批意见" required>
+          <el-form-item prop="approveOpinion" label="审批意见">
             <el-input type="textarea" v-model="form.approveOpinion" placeholder="请输入审批意见"></el-input>
           </el-form-item>
-          <el-form-item prop="approveRemark" label="备注" required>
+          <el-form-item prop="approveRemark" label="备注">
             <el-input type="textarea" v-model="form.approveRemark" placeholder="请输入备注"></el-input>
           </el-form-item>
           <el-form-item prop="fileUrl" label="调研报告">
@@ -54,10 +54,10 @@ const baseForm = ref()
 const rules = reactive({
   approveResult: [{ required: true, message: "请选择审批结果", trigger: "blur" }],
   approveOpinion: [
-    { required: true, message: "请输入审批意见", trigger: ["blur", "change"] },
+    { required: false, message: "请输入审批意见", trigger: ["blur", "change"] },
   ],
   approveRemark: [
-    { required: true, message: "请输入备注", trigger: "blur" },
+    { required: false, message: "请输入备注", trigger: "blur" },
   ]
 });
 const visible = ref(false)

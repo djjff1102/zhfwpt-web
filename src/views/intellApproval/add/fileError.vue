@@ -6,8 +6,8 @@
     <div class="err-main">
       <div class="err-item" v-if="errObj.DD.title">{{ errObj.DD.title }}</div>
       <div class="err-item" v-if="errObj.HT.title ">{{ errObj.HT.title }}</div>
-      <div class="err-item" v-if="errObj.FP.title">{{ errObj.FP.title }}</div>
       <div class="err-item" v-if="errObj.YH.title">{{ errObj.YH.title }}</div>
+      <div class="err-item" v-if="errObj.FP.title">{{ errObj.FP.title }}</div>
       <div class="err-item" v-if="errObj.CC.title">{{ errObj.CC.title }}</div>
       <div class="err-item" v-if="errObj.WL.title">{{ errObj.WL.title }}</div>
     </div>

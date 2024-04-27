@@ -10,7 +10,10 @@
         </span>
     </div>
     <div v-if="initPageParam.title == '详情'" class="section-sub flex-base-end">
-      <w-button v-hasPerm="btnApprovalCode.approvallist" style="margin-right: 8px;" @click="showRecord = true">审批记录</w-button>
+      <approval-record
+        v-hasPerm="btnApprovalCode.approvallist"
+      ></approval-record>
+      <!-- <w-button v-hasPerm="btnApprovalCode.approvallist" style="margin-right: 8px;" @click="showRecord = true">审批记录</w-button> -->
       <w-button v-hasPerm="btnApprovalCode.approval" type="primary" @click="updateApprval">审批</w-button>
     </div>
   </div>
@@ -184,7 +187,7 @@
   </div>
   
   <div v-if="type == 'add'" class="bottom flex-base-end">
-    <w-button v-hasPerm="btnApprovalCode.save" style="margin-right: 20px" @click="handleSave(1, '提交')">暂存</w-button>
+    <w-button v-hasPerm="btnApprovalCode.save" style="margin-right: 20px" @click="handleSave(1, '暂存')">暂存</w-button>
     <w-button v-hasPerm="btnApprovalCode.submit" type="primary" @click="handleSave(2, '提交')">提交</w-button>
   </div>
   <div v-if="type == 'operate'" class="bottom flex-base-end">
@@ -192,7 +195,7 @@
       v-loading.fullscreen.lock="loading"
       v-hasPerm="btnApprovalCode.save"
       style="margin-right: 20px"
-      @click="handleSave(3, '更新')">更新</w-button>
+      @click="handleSave(2, '更新')">更新</w-button>
     <w-button v-hasPerm="btnApprovalCode.submit" type="primary" @click="handleSave(2, '提交')">提交</w-button>
   </div>
   <detail-com 
@@ -204,7 +207,6 @@
     :preStrMoney="form.preStrMoney"
   ></detail-com>
   <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com>
-  <approval-record :showRecord="showRecord" :reportId="reportId" @updateAdd="showRecord = false"></approval-record>
   <ApprovalDo :showAdd="showApproval" @updateAdd="updateApprval" @updateData="updateApprovalStatus" :reportId="reportId"></ApprovalDo>
   <fileError :showAdd="errdata.flag" :errObj="errdata" @updateAdd="closeError"></fileError>
 </div>
@@ -341,7 +343,7 @@ function handleChangeDate() {
   }
 }
 // 切换时间类型
-function changeDate(v) {
+function changeDate(v: any) {
   if(form.value.limitType == '2' && form.value.adjustType == '1') { //1当月
     form.value.validDateEnd = dayjs(form.value.validDateStart).add(30, 'day').format('YYYY-MM-DD')
   }
@@ -351,7 +353,7 @@ function formateDate(now: any) {
   return `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`
 }
 // 切换时间类型
-function changeDateRange(v) {
+function changeDateRange(v: any) {
   form.value.validDateStart = formateDate(curDate.value[0])
   form.value.validDateEnd = formateDate(curDate.value[1])
 }
@@ -487,17 +489,16 @@ const errdata = ref({
 }) // 记录错误信息
 async function checkSave(type: any, msg: string) {
   // 1暂存 2提交 3更新
-  // approveStatus：待审批_1", "通过_2", "驳回_3
+  // approveStatus：待审批1, 通过2, 驳回3
   // dataStatus：1：暂存 2：正常
-  errdata.value = {flag: false,
+  errdata.value = {
+    flag: false,
     DD: {},
     FP: {},
     HT: {},
     YH: {},
     CC: {},
     WL: {}} // 重新校验附件错误/空之前，清空之前的校验
-  approvalStore.updateData(form.value, errdata.value)
-  if(errdata.value.flag) return;
 
   if(type == 1) { // 暂存
     form.value.dataStatus = 1;
@@ -509,60 +510,65 @@ async function checkSave(type: any, msg: string) {
         handleAddNew(msg)
       }
   } else if(type == 2) {
+    approvalStore.updateData(form.value, errdata.value)
+    if(errdata.value.flag) return;
     form.value.dataStatus = 2;
     form.value.approveStatus = 1; // 提交将状态改为待审批
     if(reportId.value != -1) {
         form.value.id = reportId.value
-        handleUpdateSubmit();
+        handleUpdateSubmit(msg);
       } else {
         // 新增
-        handleAddNewSubmit()
+        handleAddNewSubmit(msg)
       }
-  } else { // 更新
-    form.value.dataStatus = 2
-    form.value.id = initPageParam.id
-    handleUpdate(msg);
-  }
+  } 
+  // else { // 更新
+  //   approvalStore.updateData(form.value, errdata.value)
+  //   if(errdata.value.flag) return;
+  //   form.value.dataStatus = 2
+  //   form.value.id = initPageParam.id as any;
+  //   handleUpdate(msg);
+  // }
 }
 
-function handleUpdateSubmit() {
+function handleUpdateSubmit(msg: any) {
   if(loading.value) return;
   loading.value = true
   businessUpdate(form.value).then((res: any) => {
     loading.value = false
-    checkSubmitError(res)
+    checkSubmitError(res, msg)
   }).catch(err => {
     loading.value = false
     ElMessage.error( JSON.stringify(err));
   })
 }
 
-function handleAddNewSubmit() {
+function handleAddNewSubmit(msg: any) {
   if(loading.value) return;
   loading.value = true
   businessAdd(form.value).then(res =>{
     loading.value = false
-    checkSubmitError(res)
+    checkSubmitError(res, msg)
   }).catch(err => {
     loading.value = false
     ElMessage.error( JSON.stringify(err));
   })
 }
 
-function checkSubmitError(res: any) {
+function checkSubmitError(res: any, msg: any) {
   if(res.result == 1 && !res.message) {
-      ElMessage.success('提交成功');
+      ElMessage.success(msg +'成功');
       setTimeout(()=>{
         backToList()
       },500)
       noticeStore.refreshNotice()
     }  else if(res.result == 1 && res.message) {
       approvalStore.getTableData(reportId.value);
-      ElMessage.error(res.message);
+      // ElMessage.error(res.message);
       // 处理异常
     } else {
       approvalStore.getTableData(reportId.value);
-      ElMessage.error(res?.message || '算法校验失败');
+      // ElMessage.error(res?.message || '算法校验失败');
     }
 }
 
@@ -626,7 +632,7 @@ function getDetail(d: any) {
       })
       form.value = res.data as any
       form.value.taxAuthority = '东疆综合保税区税务局'
-      curDate.value = [res.data.validDateStart, res.data.validDateEnd]
+      curDate.value = [res.data.validDateStart, res.data.validDateEnd] as any
       reportId.value = res.data.id
       approvalStore.getTableData(reportId.value); // 获取订单、合同、发票等信息
     } else {
@@ -671,7 +677,7 @@ function init() {
   } else {
     // 编辑 查询详情
     initPageParam.title = '编辑'
-    reportId.value = route.query.id
+    reportId.value = route.query.id as any
     getDetail({
       id,
     })

@@ -47,16 +47,21 @@
         <template v-slot:approvalstatus="{rowIndex}">
             <div>{{ approveStatus[tableData[rowIndex].approveStatus] }}</div>
         </template>
+        <template v-slot:operations="{rowIndex}">
+          <el-button type="text" @click="toDetail(tableData[rowIndex])">详情</el-button>
+        </template> 
       </m-table>
     </div>
   </div>
 </template>
 <script setup>
-import dayjs from "dayjs";
-import { onMounted, ref, reactive, unref, computed, watch } from "vue";
+import { ref, reactive } from "vue";
 import { reporthistroy } from '@/api/intellApproval'
 import { approveStatus, statusList } from './type'
 import { formatNumber, formateDate } from '@/utils/common'
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const props = defineProps({
   companyId: {
@@ -65,9 +70,6 @@ const props = defineProps({
 })
 
 const curDate = ref('')
-const current = ref(1);
-const size = ref(10);
-const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
     {
@@ -85,15 +87,7 @@ const columns = reactive([
     title: '申报日期',
     dataIndex: 'createDate',
     width: 180,
-    // sortable: {
-    //   sortDirections: ['ascend', 'descend']
-    // }
   },
-  // {
-  //   title: "申报单位",
-  //   dataIndex: "companyName",
-  //   width: 180
-  // },
   {
     title: '申报额度',
     dataIndex: 'money',
@@ -134,24 +128,13 @@ const columns = reactive([
     slotName: "descriptionSlot",
     tooltip: {position: 'left'},
   },
-  // {
-  //   title: "风险评估任务",
-  //   dataIndex: "taskStatus",
-  //   width: 180,
-  // },
-  // {
-  //   title: "审批操作-指定操作的人才能看到",
-  //   dataIndex: "status",
-  //   slotName: 'approvalstatus',
-  //   width: 180,
-  // },
-  // {
-  //   title: "操作",
-  //   dataIndex: "operations",
-  //   slotName: "operations",
-  //   fixed: "right",
-  //   width: 240,
-  // }
+  {
+    title: "操作",
+    dataIndex: "operations",
+    slotName: "operations",
+    fixed: "right",
+    width: 80,
+  }
 ])
 
 const pagination = ref({
@@ -179,6 +162,19 @@ const searchPar = ref({
   companyId: '',
   approveResultList: [1, 2, 3]
 })
+
+function toDetail(data) {
+  router.push({ 
+    name: 'IntellApprovalOperate', 
+    query: {
+      id: data?.id || '-1',
+      reportCode: data?.reportCode,
+      approveStatus: approveStatus[data?.approveStatus],
+      applyUserId: data?.applyUserId || '-1',
+      type:'detail'
+    }
+ });
+}
 
 const changePagesize = (v) => {
   searchPar.value.page_size = v;

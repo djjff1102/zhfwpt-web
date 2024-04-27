@@ -9,7 +9,7 @@
     </div>
     <div>
       <div class="title">关联流水</div>
-      <AccountStatement :certificateCode="code"></AccountStatement>
+      <liushui :certificateCode="code"></liushui>
     </div>
     </div>
 </template>

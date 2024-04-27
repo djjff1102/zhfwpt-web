@@ -1,39 +1,46 @@
 <template>
-  <el-dialog v-model="visible" :before-close="handleBeforeClose" :width="1200">
-    <div class="dia-content">
-      <m-table
-        :data="tableData"
-        :columns="columns"
-        :pagination="pagination"
-        @page-change="changepage"
-        @page-size-change="changePagesize"
-        :bordered="false"
-      >
-        <template v-slot:approveName="{rowIndex}">
-          <div>{{ tableData[rowIndex].organizationName}}-{{ tableData[rowIndex].approveUserName }}</div>
+  <div>
+    <w-button style="margin-right: 8px;" @click="visible = true">审批记录</w-button>
+    <el-dialog v-model="visible" :before-close="handleBeforeClose" :width="1200">
+        <div class="dia-content">
+          <m-table
+            :data="tableData"
+            :columns="columns"
+            :pagination="pagination"
+            @page-change="changepage"
+            @page-size-change="changePagesize"
+            :bordered="false"
+          >
+            <template v-slot:index="{rowIndex}">
+                <div>{{ rowIndex + 1 }}</div>
+            </template> 
+            <template v-slot:approveName="{rowIndex}">
+              <div>{{ tableData[rowIndex].organizationName}}-{{ tableData[rowIndex].approveUserName }}</div>
+            </template>
+            <template v-slot:approveResultSlot="{rowIndex}">
+              <div>{{ approveStatus[tableData[rowIndex].approveResult] }}</div>
+            </template>
+            <template v-slot:fileName="{rowIndex}">
+              <el-button
+                :loading="curLoadIndex == i && curLoadRowIndex == rowIndex && loading"
+                v-for="(item, i) in tableData[rowIndex]?.fileNames"
+                :key="item"
+                type="text"
+                @click="load(tableData[rowIndex]?.fileUrls[i], item, i, rowIndex)"
+                >{{ getFileName(item) }}</el-button>
+            </template>
+        </m-table>
+        </div>
+        <template #header>
+          <div class="dia-header">审批记录</div>
         </template>
-        <template v-slot:approveResultSlot="{rowIndex}">
-          <div>{{ approveStatus[tableData[rowIndex].approveResult] }}</div>
+        <template #footer>
+          <span class="dialog-footer">
+            <w-button type="primary" @click="handleCancel">知道了</w-button>
+          </span>
         </template>
-        <template v-slot:fileName="{rowIndex}">
-          <el-button
-            v-for="(item, i) in tableData[rowIndex]?.fileNames"
-            :key="item"
-            type="text"
-            @click="load(tableData[rowIndex]?.fileUrls[i], item)"
-            >{{ getFileName(item) }}</el-button>
-        </template>
-    </m-table>
-    </div>
-    <template #header>
-      <div class="dia-header">审批记录</div>
-    </template>
-    <template #footer>
-      <span class="dialog-footer">
-        <w-button type="primary" @click="handleCancel">知道了</w-button>
-      </span>
-    </template>
-  </el-dialog>
+      </el-dialog>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -53,8 +60,17 @@ const props = defineProps({
   }
 })
 
+const loading = ref(false)
+const curLoadIndex = ref(-1) // 当前正在下载的index
+const curLoadRowIndex = ref(-1) // 当前正在下载的行index
 const tableData = ref([])
 const columns = ref([
+  {
+    title: "序号",
+    width: 80,
+    slotName: "index",
+    // fixed: "left",
+  },
   {
     title: "审批人",
     dataIndex: "approveUserName",
@@ -95,10 +111,6 @@ const columns = ref([
     width: 240,
   },
 ])
-const scroll = ref({
-  y: 800,
-  x: 1080,
-});
 const pagination = ref({
   total: 0,
   pageSize: 10,
@@ -109,14 +121,10 @@ const visible = ref(false)
 const searchPar = ref({
   page_size: 10,
   page: 1,
-  reportId: props.reportId
+  reportId: ''
 })
 
 const emits = defineEmits(['updateAdd'])
-
-watch(() => props.showRecord, (newValue) => {
-  visible.value = newValue;
-})
 
 function getFileName(fullFileName: string) {
   if(fullFileName.length > 12) {
@@ -128,12 +136,23 @@ function getFileName(fullFileName: string) {
   }
 }
 
-function load(fileUrl: any, filename: any) {
+function load(fileUrl: any, filename: any, i: any, rowIndex: any) {
+  if(loading.value) return
+  loading.value = true
+  curLoadIndex.value = i
+  curLoadRowIndex.value = rowIndex
   download({
     file_name: fileUrl
   }).then(res => {
     exportBlob(res.data,filename )
-  }).catch(err=>{})
+    loading.value = false
+    curLoadIndex.value = -1
+    curLoadRowIndex.value = -1
+  }).catch(err=>{
+    loading.value = false
+    curLoadIndex.value = -1
+    curLoadRowIndex.value = -1
+  })
 }
 
 // 导出
@@ -166,18 +185,24 @@ const changepage = (v) => {
 
 async function handleBeforeClose(done) {
   await done()
-  emits('updateAdd', false)
+  // visible.value = false
 }
 
 function handleCancel (v) {
-  emits('updateAdd', false)
+  visible.value = false
 }
 
 function getfpspApproveDetail() {
+  if(loading.value) return 
+  loading.value = true
+  searchPar.value.reportId = props.reportId as any
   fpspApproveDetail(searchPar.value).then(res => {
-    tableData.value = res.data;
-    pagination.value.total = res.total
-  }).catch(err => {})
+    tableData.value = res.data as any;
+    pagination.value.total = res.total as any
+    loading.value = false
+  }).catch(err => {
+    loading.value = false
+  })
 }
 
 getfpspApproveDetail()
