@@ -28,7 +28,7 @@ watch( () => props.companyId, (v) => {
 
 const init = async () => {
   getenterpriseMapQuery({
-    companyId: '04bbe3814ee17efb0d2e3e0b3b1ed2c4'
+    companyId: props.companyId
   }).then(res => {
     const d = arrayToTree(res.data.point_list, res.data.line_list)
     data.value = d

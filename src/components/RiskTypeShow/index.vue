@@ -72,22 +72,12 @@ function formateWord(d) {
   columns.value = arr;
 }
 
-// 处理数据，处理成图标的Y轴值 处理成符合柱状的数据
-function formateY(d) {
-  columns.value = []
-  const arr = []
-  const left = [];
-  const right = [];
-  Object.keys(d).forEach(item => {
-    arr.push(d[item])
-  })
-  columns.value = arr;
-}
 
 // 处理字段对应关系
 function handleResult() {
   dialogTableVisible.value = true;
   riskType.value = props.info.handleMethod
+  console.log('mapding--------------:', props.info.fieldMapping)
   formateWord(JSON.parse(props.info.fieldMapping)); // 字段对应关系
 }
 

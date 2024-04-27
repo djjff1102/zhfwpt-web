@@ -3,7 +3,7 @@
     <!-- <div class="risk-result">{{ info.result }}</div> -->
     <div class="flex-base-around">
       <span class="bar-name">进项数量</span>
-      <span class="bar-unit">单位：</span>
+      <span class="bar-unit">单位：{{ unit }}</span>
       <span class="bar-name">销项数量</span>
     </div>
     <div class="risk-reason flex-base-center">
@@ -22,6 +22,8 @@ const echartData = ref({
   right: [],
   yValue: []
 })
+const unit = ref()
+
 const props = defineProps({
   info: { // 风险信息
     default: {}
@@ -44,9 +46,10 @@ function handleData(d) {
   const yValue = []
   const otherSource = JSON.parse(d.otherSource);
   JSON.parse(d.source).forEach((e, i) => {
-    yValue.push(e.good_name);
-    left.push(e.quantitiy);
-    right.push(otherSource[i].quantitiy)
+    yValue.push(e.goodName);
+    left.push(e.quantity);
+    right.push(otherSource[i].quantity)
+    unit.value = otherSource[i].unit
   });
   echartData.value.left = left
   echartData.value.right = right
