@@ -1,6 +1,6 @@
 <template>
   <div>
-    <qiyetupu id="companyGid2" :data="data"></qiyetupu>
+    <guquan id="companyGid" :data="data"></guquan>
     </div>
 </template>
 <script setup>

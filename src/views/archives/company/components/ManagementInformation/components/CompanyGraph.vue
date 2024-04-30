@@ -1,9 +1,9 @@
 <template>
-    <guquan id="companyGid" :data="data"></guquan>
+  <qiyetupu id="companyGid2" :data="data"></qiyetupu>
 </template>
 <script setup>
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
-import { getenterpriseMapQuery } from '@/api/archives'
+import { getenterpriseMapQuery, getenterpriseMapQueryTree } from '@/api/archives'
 import { arrayToTree } from '@/utils/common'
 
 const props = defineProps({
@@ -27,11 +27,10 @@ watch( () => props.companyId, (v) => {
 })
 
 const init = async () => {
-  getenterpriseMapQuery({
+  getenterpriseMapQueryTree({
     companyId: props.companyId
   }).then(res => {
-    const d = arrayToTree(res.data.point_list, res.data.line_list)
-    data.value = d
+    data.value = res.data
   }).catch(err => {
     console.log('err:', err)
   })

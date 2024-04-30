@@ -6,7 +6,7 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import G6 from '@antv/g6';
-import { COLLAPSE_ICON, EXPAND_ICON, data, defaultStateStyles, defaultNodeStyle, defaultEdgeStyle, defaultLayout, defaultLabelCfg } from './data.js'
+import { COLLAPSE_ICON, EXPAND_ICON, defaultStateStyles, defaultNodeStyle, defaultEdgeStyle, defaultLayout, defaultLabelCfg } from './data.js'
 
 const props = defineProps({
   id: {
@@ -24,7 +24,7 @@ watch(() => props.data, (v) => {
       d.children.forEach(e => {
         delete e.children
       });
-        init(d)
+      init(d)
     })
   }
 }, {
@@ -42,7 +42,7 @@ function init(d) {
   const graph = new G6.TreeGraph({
     container: props.id,
     width: windowWidth.value - 200, // 因为右侧导航栏，调整一下图的居中位置
-    height: 200,
+    height: 600,
     linkCenter: true,
     modes: {
       default: [
@@ -79,70 +79,7 @@ function init(d) {
 graph.data(d);
 graph.render();
 graph.fitView();
-
-// graph.on('node:mouseenter', (evt) => {
-//   const { item } = evt;
-//   graph.setItemState(item, 'hover', true);
-// });
-
-// graph.on('node:mouseleave', (evt) => {
-//   const { item } = evt;
-//   graph.setItemState(item, 'hover', false);
-// });
-
-// graph.on('node:click', (evt) => {
-//   const { item, target } = evt;
-//   const targetType = target.get('type');
-//   const name = target.get('name');
-
-//   // 增加元素
-//   if (targetType === 'marker') {
-//     const model = item.getModel();
-//     if (name === 'add-item') {
-//       if (!model.children) {
-//         model.children = [];
-//       }
-//       const id = `n-${Math.random()}`;
-//       model.children.push({
-//         id,
-//         label: id.substr(0, 8),
-//         leftIcon: {
-//           style: {
-//             fill: '#e6fffb',
-//             stroke: '#e6fffb',
-//           },
-//           img:
-//             'https://gw.alipayobjects.com/mdn/rms_f8c6a0/afts/img/A*Q_FQT6nwEC8AAAAAAAAAAABkARQnAQ',
-//         },
-//       });
-//       graph.updateChild(model, model.id);
-//     } else if (name === 'remove-item') {
-//       graph.removeChild(model.id);
-//     }
-//   }
-// });
-
-// if (typeof window !== 'undefined') {
-//   window.onresize = () => {
-//     if (!graph || graph.get('destroyed')) return;
-//     if (!container || !container.scrollWidth || !container.scrollHeight) return;
-//     graph.changeSize(container.scrollWidth, container.scrollHeight);
-//   };
-// }
 }
-
-
-// 注册节点左侧icon
-// G6.Util.traverseTree(data, (d) => {
-//   d.leftIcon = {
-//     style: {
-//       fill: '#e6fffb',
-//       stroke: '#e6fffb',
-//     },
-//     img: 'https://gw.alipayobjects.com/mdn/rms_f8c6a0/afts/img/A*Q_FQT6nwEC8AAAAAAAAAAABkARQnAQ',
-//   };
-//   return true;
-// });
 
 G6.registerNode(
   'icon-node',
@@ -153,6 +90,7 @@ G6.registerNode(
       fill: 'red',
     },
     draw(cfg, group) {
+      console.log('node----------------:', cfg)
       const styles = this.getShapeStyle(cfg);
       const { labelCfg = {} } = cfg;
 
@@ -166,55 +104,60 @@ G6.registerNode(
           y: -h / 2
         },
       });
-      if (cfg.point_type == '主要人员') {
-        // group.addShape('rect', {
-        //   attrs: {
-        //     x: 1 - w / 2,
-        //     y: 1 - h / 2,
-        //     width: 38,
-        //     height: styles.height - 2,
-        //     fill: '#8c8c8c',
-        //     // ...style,
-        //   },
-        // });
-
-        group.addShape('image', {
-          attrs: {
-            x: 8 - w / 2,
-            y: 8 - h / 2,
-            width: 24,
-            height: 24,
-            img:'https://g.alicdn.com/cm-design/arms-trace/1.0.155/styles/armsTrace/images/TAIR.png',
-          },
-          name: 'image-shape',
-        });
-        group.addShape('text', {
-          attrs: {
-            ...labelCfg.style,
-            text: getName(cfg.point_message),
-            width: getName(cfg.point_message).length * 14
-          },
-        });
-      }
-      if(cfg.point_id == 1) {
-        group.addShape('text', {
-          attrs: {
-            ...labelCfg.style,
-            text: cfg.point_type,
-          },
-        });
-      }
-      if (cfg.point_message) {
-        group.addShape('text', {
-          attrs: {
-            ...labelCfg.style,
-            text: getName(cfg.point_message),
-            width: getName(cfg.point_message).length * 14
-            // x: 2,
-            // y: 25 - h / 2,
-          },
-        });
-      }
+      
+      group.addShape('text', {
+        attrs: {
+          ...labelCfg.style,
+          text:'niode',
+          width: 200
+          
+        },
+      });
+      // if (cfg.point_type == '主要人员') {
+      //   group.addShape('image', {
+      //     attrs: {
+      //       x: 8 - w / 2,
+      //       y: 8 - h / 2,
+      //       width: 24,
+      //       height: 24,
+      //       img:'https://g.alicdn.com/cm-design/arms-trace/1.0.155/styles/armsTrace/images/TAIR.png',
+      //     },
+      //     name: 'image-shape',
+      //   });
+      //   group.addShape('text', {
+      //     attrs: {
+      //       ...labelCfg.style,
+      //       text: getName(cfg.point_message),
+      //       width: getName(cfg.point_message).length * 14
+      //     },
+      //   });
+      // } else if(cfg.point_id == 1) {
+      //   group.addShape('text', {
+      //     attrs: {
+      //       ...labelCfg.style,
+      //       text: cfg.point_type,
+      //     },
+      //   });
+      // } else if (cfg.point_message) {
+      //   group.addShape('text', {
+      //     attrs: {
+      //       ...labelCfg.style,
+      //       text: getName(cfg.point_message),
+      //       width: getName(cfg.point_message).length * 14
+      //       // x: 2,
+      //       // y: 25 - h / 2,
+      //     },
+      //   });
+      // } else {
+      //   group.addShape('text', {
+      //     attrs: {
+      //       ...labelCfg.style,
+      //       text:'niode',
+      //       width: 200
+            
+      //     },
+      //   });
+      // }
 
       return keyShape;
     },
@@ -229,7 +172,7 @@ G6.registerEdge('flow-line', {
     const startPoint = cfg.startPoint;
     const endPoint = cfg.endPoint;
     const { style } = cfg;
-    // console.log('边---------------：', cfg)
+    console.log('边---------------：', cfg)
     const shape = group.addShape('path', {
       attrs: {
         stroke: style.stroke,
@@ -259,13 +202,4 @@ G6.registerEdge('flow-line', {
   },
 });
 
-function getName(d) {
-  let m = ''
-  Object.keys(d).forEach((item, i) => {
-    if(i == 0) {
-      m = d[item]
-    }
-  })
-  return m
-}
 </script>

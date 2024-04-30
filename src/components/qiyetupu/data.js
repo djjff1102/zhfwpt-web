@@ -19,23 +19,6 @@ export const EXPAND_ICON = function EXPAND_ICON(x, y, r) {
     ["L", x, y - 2],
   ];
 };
-
-const result = [
-  {
-    name: "莱佛公司",
-    type: 1,
-    id: "公司id",
-    label: "莱佛公司",
-    children: [
-      {
-        name: "李某某",
-        id: "用户id",
-        label: "法定代表人", // 角色
-      },
-    ],
-  },
-];
-
 export const data = {
   id: "公司id",
   label: "莱佛公司",
@@ -85,7 +68,7 @@ export const defaultEdgeStyle = {
 
 export const defaultLayout = {
   type: "compactBox",
-  direction: "TB", // V
+  direction: "V", // V
   getId: function getId(d) {
     // d是一个node
     return d.id;

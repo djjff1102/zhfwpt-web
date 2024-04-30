@@ -431,6 +431,14 @@ export function getenterpriseMapQuery(params: any) {
   });
 }
 
+export function getenterpriseMapQueryTree(params: any) {
+  return request({
+    url: `base/company_base/enterpriseMapTreeQuery/${params.companyId}`,
+    method: "get",
+    params,
+  });
+}
+
 // 股权
 export function stockQuery(params: any) {
   return request({
