@@ -12,8 +12,8 @@
         <el-form-item field="locationAddress" label="仓库地址">
           <w-input v-model="searchPar.locationAddress" placeholder="请输入仓库地址" clearable/>
         </el-form-item>
-        <el-form-item field="shortName" label="仓库简称">
-          <w-input v-model="searchPar.shortName" placeholder="请输入仓库简称" clearable/>
+        <el-form-item field="shortName" label="仓库名称">
+          <w-input v-model="searchPar.shortName" placeholder="请输入仓库名称" clearable/>
         </el-form-item>
         <el-form-item>
           <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
@@ -77,16 +77,16 @@ const columns = reactive([
     fixed: "left",
   },
   {
-    title: "仓库简称",
+    title: "仓库名称",
     dataIndex: "shortName",
     width: 180,
     fixed: "left",
   },
-  {
-    title: "所属地区",
-    dataIndex: "locationProvince",
-    width: 180,
-  },
+  // {
+  //   title: "所属地区",
+  //   dataIndex: "locationProvince",
+  //   width: 180,
+  // },
   {
     title: "仓库地址",
     dataIndex: "locationAddress",
@@ -103,18 +103,18 @@ const columns = reactive([
     dataIndex: "orderMoneySum",
     slotName: 'orderMoneySumSlot'
   },
-  {
-    title: "仓库企业名称",
-    dataIndex: "companyName",
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "企业纳税人识别号",
-    dataIndex: "creditNo",
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
+  // {
+  //   title: "仓库企业名称",
+  //   dataIndex: "companyName",
+  //   ellipsis: true,
+  //   tooltip: {position: 'left'},
+  // },
+  // {
+  //   title: "企业纳税人识别号",
+  //   dataIndex: "creditNo",
+  //   ellipsis: true,
+  //   tooltip: {position: 'left'},
+  // },
   {
     title: "操作",
     width: 100,

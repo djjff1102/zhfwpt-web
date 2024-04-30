@@ -36,4 +36,5 @@ export const approvalMapping = {
   InvoiceInformation: "10031", // 发票信息
   AccountStatement: "10032", // 银行流水
   LogisticsWarehousingInformation: "10033", // 仓储信息
+  FileErrorMsg: "10035", // 附件错误信息
 };

@@ -17,6 +17,11 @@
           <attachFile :row="tableData[rowIndex]"></attachFile>
             <!-- <div>{{ tableData[rowIndex].material ? '已上传' : '未上传'  }}</div> -->
         </template>
+        <template v-slot:materialErrorslot="{rowIndex}">
+          <span v-for="(item, i) in tableData[rowIndex]?.material?.judgeResult" :key="i">
+            {{ item }} {{ (tableData[rowIndex]?.material?.judgeResult.length - 1) == i ? '': '、' }}
+          </span>
+        </template>
         <template v-slot:operations="{rowIndex}">
           <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.FP" :row="tableData[rowIndex]" v-bind="$attrs"></reportOperation>
         </template>
@@ -26,6 +31,7 @@
 </template>
 <script setup>
 import { ref, reactive } from "vue";
+import { checkFileError } from '@/utils/common'
 import reportOperation from './reportOperation.vue'
 import { pro } from '../type'
 import { useApprovalStore } from '@/store/modules/approval'
@@ -111,9 +117,22 @@ const scroll = ref({
   x: 1080,
 });
 
-const pageType = route.query.type // 当前页面add operate detail
+const pageType = route.query.type // 发票详情页仅显示详情
+
 if(pageType == 'detail') {
-  columns.pop()
+  columns[columns.length -1].width = 80;
+  let len = columns.length - 2;
+  if(checkFileError()) {
+    const item = {
+      title: "错误情况",
+      dataIndex: "material",
+      width: 120,
+      ellipsis: true,
+      tooltip: {position: 'left'},
+      slotName: 'materialErrorslot',
+    }
+    columns.splice(len, 0, item);
+  }
 }
 </script>
 

@@ -1,3 +1,18 @@
+import { useUserStoreHook } from "@/store/modules/user";
+const userStore = useUserStoreHook();
+import { approvalMapping } from "@/router/permissionCode";
+
+// 判断当前用户是否有查看错误信息的权限
+export function checkFileError() {
+  if (
+    userStore.user.dataPermissionCode.includes(approvalMapping.FileErrorMsg)
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 // import CryptoJS from "crypto-js";
 export const formatData = (data) => {
   let timeArry = [];
@@ -70,24 +85,24 @@ export async function exportBlob(b, name) {
 // 返回1 全部上传文件或已上传忽略的
 // 返回2 有错误附件
 export function validateType(data) {
-  let errCode = false
-  let successCode = false
+  let errCode = false;
+  let successCode = false;
   if (!data || data.length == 0) {
-    return 3
+    return 3;
   }
   errCode = data.some((item) => {
-      return item?.material?.judgeCode == 2;
-    });
+    return item?.material?.judgeCode == 2;
+  });
   successCode = data.every((item) => {
     return item?.material?.judgeCode == 1 || item?.material?.judgeCode == 3;
   });
 
-  if(errCode) {
-    return 2 
-  } else if(successCode) {
-    return 1
+  if (errCode) {
+    return 2;
+  } else if (successCode) {
+    return 1;
   } else {
-    return 3
+    return 3;
   }
 }
 
@@ -110,21 +125,26 @@ export function tupuEdge(data) {
 export function arrayToTree(nodes, edges) {
   const map = {}; // 使用一个对象来存储每个节点的引用，以便快速查找
   let tree = []; // 存储树的顶层节点
- const nodeID = []
+  const nodeID = [];
   // 遍历数组，为每个节点创建引用，并将其添加到map中
   nodes.forEach((node) => {
     nodeID.push(node.point_id);
-    map[node.point_id] = { ...node, id: node.point_id, label: '11111111', children: [] }; // 将当前节点作为对象的副本存储，并添加一个空的children数组
+    map[node.point_id] = {
+      ...node,
+      id: node.point_id,
+      label: "11111111",
+      children: [],
+    }; // 将当前节点作为对象的副本存储，并添加一个空的children数组
   });
   // 遍历出父节点
-  edges.forEach(item => {
+  edges.forEach((item) => {
     let index = nodeID.indexOf(item.target_id);
-    index !==-1 ? nodeID.splice(index, 1) : ''
-  })
+    index !== -1 ? nodeID.splice(index, 1) : "";
+  });
   // 遍历数组，构建树形结构
   edges.forEach((edge) => {
-      // 如果节点有父节点，则将其添加为父节点的子节点
-      map[edge.source_id].children.push(map[edge.target_id]);
+    // 如果节点有父节点，则将其添加为父节点的子节点
+    map[edge.source_id].children.push(map[edge.target_id]);
   });
   tree = map[nodeID[0]];
   return tree;

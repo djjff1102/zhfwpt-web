@@ -77,10 +77,10 @@ const columns = reactive([
     title: "规格",
     dataIndex: "standards",
   },
-   {
-    title: "单位",
-    dataIndex: "measureUnit",
-  },
+  //  {
+  //   title: "单位",
+  //   dataIndex: "measureUnit",
+  // },
   {
     title: "数量",
     dataIndex: "quantity",

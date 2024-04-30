@@ -45,6 +45,9 @@
           {{ tableData[rowIndex].currency }}{{ formatNumber(Number(tableData[rowIndex].paymentAmount)) }}{{ tableData[rowIndex].amountUnit }}
           <!-- {{ tableData[rowIndex].currency }}{{ formatNumber(Number(tableData[rowIndex].paymentAmount)) }} -->
         </template>
+        <template v-slot:collectionAmountSlot="{ rowIndex }">
+          {{ tableData[rowIndex].currency }}{{ formatNumber(Number(tableData[rowIndex].collectionAmount)) }}{{ tableData[rowIndex].amountUnit }}
+        </template>
         <template v-slot:operations>
           <w-button type="text" disabled>详情</w-button>
         </template>
@@ -73,31 +76,19 @@ const columns = reactive([
     fixed: "left",
   },
   {
-    title: "付款编号",
-    dataIndex: "paymentCode",
-    width: 220,
-    fixed: "left",
+    title: "关联订单编号",
+    dataIndex: "orderCode",
+    width: 220
   },
+  // {
+  //   title: "付款编号",
+  //   dataIndex: "paymentCode",
+  //   width: 220
+  // },
   {
     title: "付款日期",
     dataIndex: "paymentDate",
     width: 220,
-  },
-  {
-    title: "付款状态",
-    dataIndex: "paymentStatus",
-    width: 180,
-  },
-  {
-    title: "付款银行",
-    dataIndex: "paymentBank",
-    width: 220,
-  },
-  {
-    title: "付款额度",
-    dataIndex: "paymentAmount",
-    width: 220,
-    slotName: 'paymentAmountSlot'
   },
   {
     title: "付款方",
@@ -107,9 +98,20 @@ const columns = reactive([
     tooltip: {position: 'left'},
   },
   {
+    title: "付款银行",
+    dataIndex: "paymentBank",
+    width: 220,
+  },
+  {
     title: "付款账号",
     dataIndex: "paymentAccount",
      width: 220,
+  },
+  {
+    title: "付款额度",
+    dataIndex: "paymentAmount",
+    width: 220,
+    slotName: 'paymentAmountSlot'
   },
   {
     title: "收款时间",
@@ -134,11 +136,16 @@ const columns = reactive([
      width: 220,
   },
   {
-    title: "关联订单编号",
-    dataIndex: "orderCode",
-    width: 220,
-    fixed: "right",
-  },
+    title: "收款金额",
+    dataIndex: "collectionAmount",
+    slotName: 'collectionAmountSlot',
+    width: 180,
+  }
+  // {
+  //   title: "付款状态",
+  //   dataIndex: "paymentStatus",
+  //   width: 180,
+  // },
 ]);
 const pagination = ref({
   total: 0,

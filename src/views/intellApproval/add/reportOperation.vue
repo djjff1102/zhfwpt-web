@@ -2,15 +2,17 @@
   <div>
     <div class="flex-base-around">
       <SingleUpload
+        v-if="pageType != 'detail'"
         @updateUpload="updateUpload">
       </SingleUpload>
       <el-button
+        v-if="pageType != 'detail'"
         type="text"
         @click="handleError(row)"
         :disabled="checkError(row)"
       >错误情况</el-button>
-      <el-button  :disabled="[pro.YH, pro.CC, pro.WL].includes(type)" type="text" @click="toDetail(row)">详情</el-button>
-      <el-button type="text" disabled>取消</el-button>
+      <el-button :disabled="[pro.YH, pro.CC, pro.WL].includes(type)" type="text" @click="toDetail(row)">详情</el-button>
+      <!-- <el-button type="text" disabled>取消</el-button> -->
     </div>
     <el-dialog
         title="错误信息"
@@ -19,8 +21,8 @@
         :before-close="handleClose"
       >
       <div style="padding: 24px 30px">
-        <div class="common-click-txt">{{ row?.material.judgeResult }}</div>
-        <div class="common-click-txt">可前往该附件中进行修改</div>
+        <div v-for="(item, i) in row?.material.judgeResult" :key="item" class="common-click-txt">{{ i+ 1}}、{{ item }}</div>
+        <div class="common-click-txt" style="margin-top: 16px">可前往该附件中进行修改</div>
         <!-- <div>可前往 <span class="click-txt" @click="toFile"> 该[附件] </span> 中进行修改</div> -->
         <div class="common-click-txt center-content">可 <span class="click-txt" @click="abortMsg">忽略</span>
           <w-popover
@@ -37,13 +39,15 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useApprovalStore } from '@/store/modules/approval'
 import { fileSave } from '@/api/intellApproval/special'
 import { splitFiltName } from '@/utils/common'
 import { pro, urlMap } from '../type'
 
 const router = useRouter();
+const route = useRoute();
+
 const approvalStore = useApprovalStore();
 
 const props = defineProps({
@@ -65,6 +69,7 @@ const props = defineProps({
 })
 
 const dialogVisible = ref(false)
+const pageType = ref(route.query.type)
 
 const emits = defineEmits(['updateUploadRow'])
 

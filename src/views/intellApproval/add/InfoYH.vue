@@ -21,6 +21,11 @@
           <attachFile :row="tableData[rowIndex]"></attachFile>
             <!-- <div>{{ tableData[rowIndex].material ? '已上传' : '未上传'  }}</div> -->
         </template>
+        <template v-slot:materialErrorslot="{rowIndex}">
+          <span v-for="(item, i) in tableData[rowIndex]?.material?.judgeResult" :key="i">
+            {{ item }} {{ (tableData[rowIndex]?.material?.judgeResult.length - 1) == i ? '': '、' }}
+          </span>
+        </template>
         <template v-slot:operations="{rowIndex}">
           <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.YH" :row="tableData[rowIndex]" v-bind="$attrs"></reportOperation>
         </template>
@@ -30,7 +35,7 @@
 </template>
 <script setup>
 import { ref, reactive } from "vue";
-import { formatNumber } from '@/utils/common'
+import { formatNumber, checkFileError } from '@/utils/common'
 import reportOperation from './reportOperation.vue'
 import { pro } from '../type'
 import attachFile from './attachFile.vue'
@@ -139,8 +144,21 @@ const scroll = ref({
 });
 
 const pageType = route.query.type // 当前页面add operate detail
+
 if(pageType == 'detail') {
   columns.pop()
+  let len = columns.length - 1;
+  if(checkFileError()) {
+    const item = {
+      title: "错误情况",
+      dataIndex: "material",
+      width: 120,
+      ellipsis: true,
+      tooltip: {position: 'left'},
+      slotName: 'materialErrorslot',
+    }
+    columns.splice(len, 0, item);
+  }
 }
 </script>
 

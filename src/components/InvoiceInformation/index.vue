@@ -20,6 +20,7 @@
           end-placeholder="结束月份"
           value-format="YYYY-MM-DD"
           :clearable="false"
+          :shortcuts="shortcuts"
           @change="changeMonth"
         />
       </div>
@@ -37,6 +38,34 @@ import { useRoute } from 'vue-router';
 import { formatData } from '@/utils/common'
 import dayjs from 'dayjs'
 const route = useRoute();
+
+const shortcuts = ref([
+  {
+    text: '近一年',
+    value: () => {
+      const now = dayjs();
+      const twelveMonthsAgo = now.subtract(11, 'month');
+      return [ twelveMonthsAgo.format('YYYY-MM-DD'), now.format('YYYY-MM-DD') ]
+    }
+  },
+  {
+    text: '近半年',
+    value: () => {
+      const now = dayjs();
+      const fiveMonthsAgo = now.subtract(5, 'month');
+      return [ fiveMonthsAgo.format('YYYY-MM-DD'), now.format('YYYY-MM-DD') ]
+    },
+  },
+  {
+    text: '今年至今',
+    value: () => {
+      const firstday = dayjs().startOf('year')
+      const now = dayjs();
+      return [ firstday.format('YYYY-MM-DD'), now.format('YYYY-MM-DD') ]
+    },
+  },
+])
+
 
 const monthRange = ref('') // 时间月份
 const activeName = ref('output')
@@ -111,8 +140,10 @@ function init() {
     console.error('Error fetching data:', error);
 });
 }
-
-monthRange.value = [ dayjs().format('YYYY-MM-DD'), dayjs().add(1, 'year').format('YYYY-MM-DD') ]
+const now = dayjs();
+const twelveMonthsAgo = now.subtract(11, 'month');
+monthRange.value = [ twelveMonthsAgo.format('YYYY-MM-DD'), now.format('YYYY-MM-DD') ]
+// monthRange.value = [ dayjs().format('YYYY-MM-DD'), dayjs().add(1, 'year').format('YYYY-MM-DD') ]
 init();
 
 </script>

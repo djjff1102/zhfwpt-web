@@ -173,8 +173,8 @@
         </template>
       </m-table> -->
       <div class="flex-base-start sum-line">
-        <div style="margin-right: 16px">{{ nameMap[curTab] }}已选：<span class="num-light">{{ totalMoney?.count }}</span></div>
-        <div v-if="![pro.CC, pro.WL].includes(curTab)">金额合计：<span class="num-light">{{ totalMoney?.totalMoneySum }}</span></div>
+        <div style="margin-right: 16px">{{ nameMap[curTab] }}已选：<span class="num-light">{{ formatNumber(totalMoney?.count) || 0 }}</span></div>
+        <div v-if="![pro.CC, pro.WL].includes(curTab)">金额合计：<span class="num-light">{{ formatNumber(totalMoney?.totalMoneySum) || 0 }}</span></div>
       </div>
     </div>
     <div class="com-section">
@@ -209,6 +209,19 @@
   <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com>
   <ApprovalDo :showAdd="showApproval" @updateAdd="updateApprval" @updateData="updateApprovalStatus" :reportId="reportId"></ApprovalDo>
   <fileError :showAdd="errdata.flag" :errObj="errdata" @updateAdd="closeError"></fileError>
+  <el-dialog v-model="suafaErr.flag" :width="700">
+    <template #header>
+      <div class="dia-header">错误信息</div>
+    </template>
+    <div class="err-main">
+      <div v-for="(item, i) in suafaErr.data" :key="i">{{ item }}</div>
+    </div>
+    <template #footer>
+      <span class="dialog-footer">
+        <w-button type="primary" style="margin-left: 16px;" @click="suafaErr.flag = false">确定</w-button>
+      </span>
+    </template>
+  </el-dialog>
 </div>
 </template>
 <script lang="ts" setup>
@@ -236,6 +249,7 @@ import fileError from './fileError.vue'
 import { useApprovalStore } from '@/store/modules/approval'
 import { getTotalMoney } from '@/api/intellApproval/special'
 import { useNoticeApprovalStore } from '@/store/modules/notice'
+import { formatNumber } from '@/utils/common'
 
 const noticeStore = useNoticeApprovalStore()
 
@@ -254,6 +268,10 @@ let companyName = userStore?.user?.organization?.name;
 const route = useRoute();
 const router = useRouter();
 
+const suafaErr = ref({
+  flag: false,
+  data: []
+})
 const loading = ref(false)
 const ziliaoFile = ref([]) // 申报资料上传的文件
 const reportId = ref(-1)
@@ -563,10 +581,14 @@ function checkSubmitError(res: any, msg: any) {
       },500)
       noticeStore.refreshNotice()
     }  else if(res.result == 1 && res.message) {
+      suafaErr.value.flag = true;
+      suafaErr.value.data = res.data || []
       approvalStore.getTableData(reportId.value);
       // ElMessage.error(res.message);
       // 处理异常
     } else {
+      suafaErr.value.flag = true;
+      suafaErr.value.data = res.data || []
       approvalStore.getTableData(reportId.value);
       // ElMessage.error(res?.message || '算法校验失败');
     }

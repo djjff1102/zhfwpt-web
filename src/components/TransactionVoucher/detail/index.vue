@@ -1,6 +1,8 @@
 <template>
   <div class="order-detail-container">
-    <div class="title">基本信息</div>
+    <div class="title">基本信息 
+      <span v-if="fileUrl"> <fileDownLoad :fileUrl="fileUrl" :fileName="fileName"></fileDownLoad></span>
+    </div>
     <BaseInfo :order="order"></BaseInfo>
     <div class="title">产品详情-暂时不做，合同需要拆表</div>
     <div>
@@ -24,6 +26,8 @@ const route = useRoute();
 
 const order = ref({}) // 合同信息
 const code = ref(); // 合同编号
+const fileUrl = ref('') // 文件下载路径
+const fileName = ref('') // 文件名
 
 // 获取主订单列表及详情
 function getqyzxTransactionCertificate() {
@@ -33,6 +37,8 @@ function getqyzxTransactionCertificate() {
     code: code.value
   }).then(res => {
     order.value = res.data[0] || {}
+    fileName.value = order.value?.material?.fileName || ''
+    fileUrl.value = order.value?.material?.fileUrl || ''
   }).catch(err => {
   })
 }
@@ -45,6 +51,10 @@ function init() {
 init()
 </script>
 <style lang="scss" scoped>
+.file-load {
+  font-size: 14px;
+  color: #1890ff;
+}
 .title {
   position: relative;
   margin: 16px 0;

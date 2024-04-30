@@ -40,7 +40,7 @@ const echartData = ref({
     grid: [
       {
         left: 120,
-        right: 20,
+        right: 60,
       },
     ],
     legend: {},

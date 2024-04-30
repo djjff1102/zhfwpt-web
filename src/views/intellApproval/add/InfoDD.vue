@@ -16,10 +16,15 @@
             <div>{{ rowIndex + 1 }}</div>
         </template> 
         <template v-slot:moneySlot="{rowIndex}">
-            <div>{{ formatNumber(tableData[rowIndex].totalMoney) }}</div>
+            <div>{{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].totalMoney) }}{{ tableData[rowIndex].amountUnit }}</div>
         </template>
         <template v-slot:materialslot="{rowIndex}">
           <attachFile :row="tableData[rowIndex]"></attachFile>
+        </template>
+        <template v-slot:materialErrorslot="{rowIndex}">
+            <span v-for="(item, i) in tableData[rowIndex]?.material?.judgeResult" :key="i">
+              {{ item }} {{ (tableData[rowIndex]?.material?.judgeResult.length - 1) == i ? '': '、' }}
+            </span>
         </template>
         <template v-slot:operations="{rowIndex}">
           <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.DD" :row="tableData[rowIndex]" v-bind="$attrs"></reportOperation>
@@ -32,11 +37,12 @@
 <script setup>
 import { ref, reactive} from "vue";
 import { useRoute } from 'vue-router'
-import { formatNumber } from '@/utils/common'
+import { formatNumber, checkFileError } from '@/utils/common'
 import reportOperation from './reportOperation.vue'
 import { pro } from '../type'
 import { useApprovalStore } from '@/store/modules/approval'
 import attachFile from './attachFile.vue'
+
 
 const approvalStore = useApprovalStore();
 
@@ -145,9 +151,21 @@ const scroll = ref({
   x: 1080,
 });
 
-const pageType = route.query.type // 当前页面add operate detail
+const pageType = route.query.type // 订单详情页仅显示详情
 if(pageType == 'detail') {
-  columns.pop()
+  columns[columns.length -1].width = 80;
+  let len = columns.length - 2;
+  if(checkFileError()) {
+    const item = {
+      title: "错误情况",
+      dataIndex: "material",
+      width: 120,
+      ellipsis: true,
+      tooltip: {position: 'left'},
+      slotName: 'materialErrorslot',
+    }
+    columns.splice(len, 0, item);
+  }
 }
 </script>
 
