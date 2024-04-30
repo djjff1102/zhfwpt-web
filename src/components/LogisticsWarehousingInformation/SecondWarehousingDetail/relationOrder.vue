@@ -26,8 +26,10 @@
         <el-form-item field="code" label="订单编号">
           <w-input v-model="orderPar.code" placeholder="请输入订单编号" clearable/>
         </el-form-item>
-        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
-        <w-button @click="reset">重置</w-button>
+        <el-form-item>
+          <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+          <w-button @click="reset">重置</w-button>
+        </el-form-item>
       </el-form>
     </div>
     <div class="table-warp">
@@ -45,7 +47,7 @@
             <div>{{ rowIndex + 1 }}</div>
         </template> 
         <template v-slot:moneySlot="{rowIndex}">
-            <div>{{ formatNumber(tableData[rowIndex].totalMoney) }}</div>
+           {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].totalMoney) }}{{ tableData[rowIndex].amountUnit }}
         </template>
         <template v-slot:operations="{rowIndex}">
           <el-button type="text" @click="toOrderDetail(tableData[rowIndex])">详情</el-button>
@@ -56,20 +58,13 @@
 </template>
 
 <script setup>
-import dayjs from "dayjs";
 import { ref, reactive} from "vue";
-import { qyzxOrder, orderDropDownBox } from '@/api/archives'
-import { useRouter } from 'vue-router'
+import { getwarehouseAsscoiationOrderList } from '@/api/archives'
+import { useRouter, useRoute } from 'vue-router'
 import { formatNumber,formateDate } from '@/utils/common'
 
 const router = useRouter();
-
-const props = defineProps({
-  companyName: {
-    type: String,
-    default: ''
-  }
-})
+const route = useRoute()
 
 const curDate = ref('')
 const loading = ref(false);
@@ -132,41 +127,13 @@ const columns = reactive([
     tooltip: {position: 'left'},
   },
   {
-    title: "商品所在地址",
-    dataIndex: "goodAddress",
-    width: 280,
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "仓库名称",
-    dataIndex: "warehouseName",
-    width: 180,
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
     title: "总金额",
     dataIndex: "totalMoney",
     width: 180,
     ellipsis: true,
     slotName: "moneySlot",
     tooltip: {position: 'left'},
-  },
-  // {
-  //   title: "合同编号",
-  //   dataIndex: "certificateCode",
-  //   width: 180,
-  //   ellipsis: true,
-  //   tooltip: {position: 'left'},
-  // },
-  {
-    title: "操作",
-    dataIndex: "operations",
-    slotName: "operations",
-    width: 80,
-    fixed: "right",
-  },
+  }
 ]);
 const pagination = ref({
   total: 0,
@@ -182,8 +149,10 @@ const orderPar = ref({
   orderCreateDateStart: '',
   orderCreateDateEnd: '',
   buyerCompanyName: '', // 买方名称
-  sellerCompanyName: '', // 上个页面带过来的公司名称
-  code: '' // 订单编号
+  companyName: '', // 路由公司名称
+  code: '', // 订单编号
+  shortName: '', // 仓库名称
+  locationAddress: '' // 仓库地址
 })
 const orderList = ref([]) // 订单商品类别
 const scroll = ref({
@@ -229,29 +198,31 @@ function reset() {
     orderCreateDateStart: '',
     orderCreateDateEnd: '',
     buyerCompanyName: '', // 买方名称
-    sellerCompanyName: props.companyName, // 上个页面带过来的公司名称
-    code: '' // 订单编号
+    companyName: props.companyName, // 上个页面带过来的公司名称
+    code: '', // 订单编号
+    shortName: props.shortName, // 仓库名称
+    locationAddress: props.locationAddress // 仓库地址
   }
   getqyzxOrder();
 }
 
 // 跳转订单详情
-function toOrderDetail(d) {
-  // 标记从订单调走，针对back时，做模块定位
-  sessionStorage.setItem('detailId', 'OrderInformation')
-  router.push({
-    path: '/archives/orderDetail',
-    query: {
-      orderCode: d.code,
-    }
-  })
-}
+// function toOrderDetail(d) {
+//   // 标记从订单调走，针对back时，做模块定位
+//   sessionStorage.setItem('detailId', 'OrderInformation')
+//   router.push({
+//     path: '/archives/orderDetail',
+//     query: {
+//       orderCode: d.code,
+//     }
+//   })
+// }
 
 // 获取主订单列表及详情
 function getqyzxOrder() {
   if(loading.value) return
   loading.value = true;
-  qyzxOrder(orderPar.value).then(res => {
+  getwarehouseAsscoiationOrderList(orderPar.value).then(res => {
     tableData.value = res.data
     pagination.value.total = res.total;
     loading.value = false;
@@ -260,22 +231,13 @@ function getqyzxOrder() {
   })
 }
 
-function getorderDropDownBox() {
-  const data = {
-    page_size: 50,
-    page: 1,
-    sellerCompanyName: props.companyName
-  }
-  orderDropDownBox(data).then(res => {
-    orderList.value = res.data
-  }).catch(err => {})
-}
-
 const init = async () => {
-  orderPar.value.sellerCompanyName = props.companyName;
+  orderPar.value.companyName = route.query.companyName
+  orderPar.value.shortName = route.query.shortName
+  orderPar.value.locationAddress = route.query.locationAddress
   getqyzxOrder()
-  getorderDropDownBox();
 };
+
 init();
 </script>
 

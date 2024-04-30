@@ -439,3 +439,12 @@ export function stockQuery(params: any) {
     params,
   });
 }
+
+// 物流关联订单
+export function getwarehouseAsscoiationOrderList(data: any) {
+  return request({
+    url: `base/qyzx_order/warehouseAsscoiationOrderList`,
+    method: "post",
+    data,
+  });
+}
