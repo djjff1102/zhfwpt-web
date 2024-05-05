@@ -1,42 +1,55 @@
 <template>
-  <div :id="id">
-  </div>
+  <div :id="id"></div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
-import G6 from '@antv/g6';
-import { COLLAPSE_ICON, EXPAND_ICON, data, defaultStateStyles, defaultNodeStyle, defaultEdgeStyle, defaultLayout, defaultLabelCfg } from './data.js'
+import { ref, onMounted, watch } from "vue";
+import G6 from "@antv/g6";
+import {
+  COLLAPSE_ICON,
+  EXPAND_ICON,
+  data,
+  defaultStateStyles,
+  defaultNodeStyle,
+  defaultEdgeStyle,
+  defaultLayout,
+  defaultLabelCfg,
+} from "./data.js";
 
 const props = defineProps({
   id: {
-    default:'G6id'
+    default: "G6id",
   },
   data: {
-    deafult: []
-  }
-})
+    deafult: [],
+  },
+});
 
-watch(() => props.data, (v) => {
-  if(v) {
-    nextTick(() =>{
-      const d =JSON.parse(JSON.stringify(v))
-      d.children.forEach(e => {
-        delete e.children
+watch(
+  () => props.data,
+  (v) => {
+    if (v) {
+      nextTick(() => {
+        const d = JSON.parse(JSON.stringify(v));
+        d.children.forEach((e) => {
+          delete e.children;
+        });
+        init(d);
       });
-        init(d)
-    })
+    }
+  },
+  {
+    deep: true,
   }
-}, {
-  deep: true
-})
+);
 
 const windowWidth = ref(0);
 
-window.addEventListener('resize', getWindow())
-getWindow()
+window.addEventListener("resize", getWindow());
+getWindow();
 function getWindow() {
-  windowWidth.value = document.documentElement.clientWidth || document.body.clientWidth;
+  windowWidth.value =
+    document.documentElement.clientWidth || document.body.clientWidth;
 }
 
 function init(d) {
@@ -48,28 +61,30 @@ function init(d) {
     modes: {
       default: [
         {
-          type: 'collapse-expand',
+          type: "collapse-expand",
           onChange: function onChange(item, collapsed) {
             const data = item.getModel();
             data.collapsed = collapsed;
-            return true
+            return true;
           },
         },
-        'drag-canvas', 'zoom-canvas'],
+        "drag-canvas",
+        "zoom-canvas",
+      ],
     },
     defaultNode: {
-      type: 'icon-node',
+      type: "icon-node",
       anchorPoints: [
         [0.5, 0],
-        [0.5, 1]
+        [0.5, 1],
       ],
       size: [200, 40],
-      textAlign: 'center', // 设置文本居中
+      textAlign: "center", // 设置文本居中
       style: defaultNodeStyle,
       labelCfg: defaultLabelCfg,
     },
     defaultEdge: {
-      type: 'flow-line',
+      type: "flow-line",
       style: defaultEdgeStyle,
     },
     nodeStateStyles: defaultStateStyles,
@@ -77,61 +92,60 @@ function init(d) {
     layout: defaultLayout,
   });
 
-graph.data(d);
-graph.render();
-graph.fitView();
+  graph.data(d);
+  graph.render();
+  graph.fitView();
 
-// graph.on('node:mouseenter', (evt) => {
-//   const { item } = evt;
-//   graph.setItemState(item, 'hover', true);
-// });
+  // graph.on('node:mouseenter', (evt) => {
+  //   const { item } = evt;
+  //   graph.setItemState(item, 'hover', true);
+  // });
 
-// graph.on('node:mouseleave', (evt) => {
-//   const { item } = evt;
-//   graph.setItemState(item, 'hover', false);
-// });
+  // graph.on('node:mouseleave', (evt) => {
+  //   const { item } = evt;
+  //   graph.setItemState(item, 'hover', false);
+  // });
 
-// graph.on('node:click', (evt) => {
-//   const { item, target } = evt;
-//   const targetType = target.get('type');
-//   const name = target.get('name');
+  // graph.on('node:click', (evt) => {
+  //   const { item, target } = evt;
+  //   const targetType = target.get('type');
+  //   const name = target.get('name');
 
-//   // 增加元素
-//   if (targetType === 'marker') {
-//     const model = item.getModel();
-//     if (name === 'add-item') {
-//       if (!model.children) {
-//         model.children = [];
-//       }
-//       const id = `n-${Math.random()}`;
-//       model.children.push({
-//         id,
-//         label: id.substr(0, 8),
-//         leftIcon: {
-//           style: {
-//             fill: '#e6fffb',
-//             stroke: '#e6fffb',
-//           },
-//           img:
-//             'https://gw.alipayobjects.com/mdn/rms_f8c6a0/afts/img/A*Q_FQT6nwEC8AAAAAAAAAAABkARQnAQ',
-//         },
-//       });
-//       graph.updateChild(model, model.id);
-//     } else if (name === 'remove-item') {
-//       graph.removeChild(model.id);
-//     }
-//   }
-// });
+  //   // 增加元素
+  //   if (targetType === 'marker') {
+  //     const model = item.getModel();
+  //     if (name === 'add-item') {
+  //       if (!model.children) {
+  //         model.children = [];
+  //       }
+  //       const id = `n-${Math.random()}`;
+  //       model.children.push({
+  //         id,
+  //         label: id.substr(0, 8),
+  //         leftIcon: {
+  //           style: {
+  //             fill: '#e6fffb',
+  //             stroke: '#e6fffb',
+  //           },
+  //           img:
+  //             'https://gw.alipayobjects.com/mdn/rms_f8c6a0/afts/img/A*Q_FQT6nwEC8AAAAAAAAAAABkARQnAQ',
+  //         },
+  //       });
+  //       graph.updateChild(model, model.id);
+  //     } else if (name === 'remove-item') {
+  //       graph.removeChild(model.id);
+  //     }
+  //   }
+  // });
 
-// if (typeof window !== 'undefined') {
-//   window.onresize = () => {
-//     if (!graph || graph.get('destroyed')) return;
-//     if (!container || !container.scrollWidth || !container.scrollHeight) return;
-//     graph.changeSize(container.scrollWidth, container.scrollHeight);
-//   };
-// }
+  // if (typeof window !== 'undefined') {
+  //   window.onresize = () => {
+  //     if (!graph || graph.get('destroyed')) return;
+  //     if (!container || !container.scrollWidth || !container.scrollHeight) return;
+  //     graph.changeSize(container.scrollWidth, container.scrollHeight);
+  //   };
+  // }
 }
-
 
 // 注册节点左侧icon
 // G6.Util.traverseTree(data, (d) => {
@@ -146,12 +160,12 @@ graph.fitView();
 // });
 
 G6.registerNode(
-  'icon-node',
+  "icon-node",
   {
     options: {
       size: [60, 20],
-      stroke: 'red',
-      fill: 'red',
+      stroke: "red",
+      fill: "red",
     },
     draw(cfg, group) {
       const styles = this.getShapeStyle(cfg);
@@ -160,14 +174,28 @@ G6.registerNode(
       const w = styles.width;
       const h = styles.height;
 
-      const keyShape = group.addShape('rect', {
+      if (cfg.point_id == "1") {
+        styles.fill = "#3470FF";
+      }
+      const keyShape = group.addShape("rect", {
         attrs: {
           ...styles,
           x: -w / 2,
           y: -h / 2,
         },
       });
-      if (cfg.point_type == '主要人员') {
+      // console.log("cfg----------:", cfg);
+      if (cfg.point_id == "1") {
+        group.addShape("text", {
+          attrs: {
+            ...labelCfg.style,
+            fill: "#fff",
+            text: cfg.point_type,
+            // width: getName(cfg.point_type).length * 14,
+          },
+        });
+      }
+      if (cfg.point_type == "主要人员") {
         // group.addShape('rect', {
         //   attrs: {
         //     x: 1 - w / 2,
@@ -178,39 +206,21 @@ G6.registerNode(
         //     // ...style,
         //   },
         // });
+        group.addShape("text", {
+          attrs: {
+            ...labelCfg.style,
+            text: getName(cfg.point_message),
+            width: getName(cfg.point_message).length * 14,
+          },
+        });
+      }
 
-        group.addShape('image', {
-          attrs: {
-            x: 8 - w / 2,
-            y: 8 - h / 2,
-            width: 24,
-            height: 24,
-            img:'https://g.alicdn.com/cm-design/arms-trace/1.0.155/styles/armsTrace/images/TAIR.png',
-          },
-          name: 'image-shape',
-        });
-        group.addShape('text', {
-          attrs: {
-            ...labelCfg.style,
-            text: getName(cfg.point_message),
-            width: getName(cfg.point_message).length * 14
-          },
-        });
-      }
-      if(cfg.point_id == 1) {
-        group.addShape('text', {
-          attrs: {
-            ...labelCfg.style,
-            text: cfg.point_type,
-          },
-        });
-      }
       if (cfg.point_message) {
-        group.addShape('text', {
+        group.addShape("text", {
           attrs: {
             ...labelCfg.style,
             text: getName(cfg.point_message),
-            width: getName(cfg.point_message).length * 14
+            width: getName(cfg.point_message).length * 14,
             // x: 2,
             // y: 25 - h / 2,
           },
@@ -221,65 +231,67 @@ G6.registerNode(
     },
     update: undefined,
   },
-  'rect',
+  "rect"
 );
 
 // 边绘制为折线
-G6.registerEdge('flow-line', {
+G6.registerEdge("flow-line", {
   draw(cfg, group) {
     const startPoint = cfg.startPoint;
     const endPoint = cfg.endPoint;
     const { style } = cfg;
-    const shape = group.addShape('path', {
+    console.log("边msg-----------:", cfg.targetNode._cfg.model);
+    console.log("边-----------:", cfg);
+    const shape = group.addShape("path", {
       attrs: {
         stroke: style.stroke,
         endArrow: style.endArrow,
         path: [
-          ['M', startPoint.x, startPoint.y],
-          ['L', startPoint.x, (startPoint.y + endPoint.y) / 2],
-          ['L', endPoint.x, (startPoint.y + endPoint.y) / 2],
-          ['L', endPoint.x, endPoint.y],
+          ["M", startPoint.x, startPoint.y],
+          ["L", startPoint.x, (startPoint.y + endPoint.y) / 2],
+          ["L", endPoint.x, (startPoint.y + endPoint.y) / 2],
+          ["L", endPoint.x, endPoint.y],
         ],
       },
     });
-    if (cfg.targetNode._cfg.model.point_message['职位']) {
-        const label = cfg.targetNode._cfg.model.point_message['职位']
-        group.addShape('text', {
-          attrs: {
-            text: label,
-            x: endPoint.x + 4,
-            y: (startPoint.y + endPoint.y) / 2,
-            fill: 'green',
-            stroke: '#fff',
-          },
-          name: 'text-node'
-        })
-      }
+    if (cfg.targetNode._cfg.model.point_message["职位"]) {
+      const label = cfg.targetNode._cfg.model.point_message["职位"];
+      group.addShape("text", {
+        attrs: {
+          text: label,
+          x: endPoint.x + 4,
+          y: (startPoint.y + endPoint.y) / 2,
+          fill: "green",
+          stroke: "#fff",
+        },
+        name: "text-node",
+      });
+    }
 
-      if (cfg.targetNode._cfg.model.point_type == '控股企业') {
-        const label = '控股企业'
-        group.addShape('text', {
-          attrs: {
-            text: label,
-            x: endPoint.x + 4,
-            y: (startPoint.y + endPoint.y) / 2,
-            fill: '#4ea2f0',
-            stroke: '#fff',
-          },
-          name: 'text-node'
-        })
-      }
+    if (cfg.targetNode._cfg.model.point_type == "控股企业") {
+      const label = "控股企业";
+      group.addShape("text", {
+        attrs: {
+          text: label,
+          x: endPoint.x + 4,
+          y: (startPoint.y + endPoint.y) / 2,
+          fill: "#4ea2f0",
+          stroke: "#fff",
+        },
+        name: "text-node",
+      });
+    }
     return shape;
   },
 });
 
 function getName(d) {
-  let m = ''
+  let m = "";
   Object.keys(d).forEach((item, i) => {
-    if(i == 0) {
-      m = d[item]
+    if (i == 0) {
+      m = d[item];
     }
-  })
-  return m
+  });
+  return m;
 }
 </script>

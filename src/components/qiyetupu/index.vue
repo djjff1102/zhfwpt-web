@@ -1,74 +1,105 @@
 <template>
-  <div :id="id">
-  </div>
+  <div :id="id"></div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
-import G6 from '@antv/g6';
-import { COLLAPSE_ICON, EXPAND_ICON, defaultStateStyles, defaultNodeStyle, defaultEdgeStyle, defaultLayout, defaultLabelCfg } from './data.js'
+import { ref, onMounted, watch } from "vue";
+import G6 from "@antv/g6";
+import {
+  COLLAPSE_ICON,
+  EXPAND_ICON,
+  data,
+  defaultStateStyles,
+  defaultNodeStyle,
+  defaultEdgeStyle,
+  defaultLayout,
+  defaultLabelCfg,
+} from "./data.js";
+
+const colorObj = {
+  主要人员: "#379C0D",
+  对外投资: "#2691E8",
+  法定代表人: "#D3AF07",
+  最终受益人: "#FF7B44",
+  股东信息: "#00E1E1",
+  分支机构: "#2691E8",
+};
 
 const props = defineProps({
   id: {
-    default:'G6id'
+    default: "G6id",
   },
   data: {
-    deafult: []
-  }
-})
+    deafult: [],
+  },
+});
 
-watch(() => props.data, (v) => {
-  if(v) {
-    nextTick(() =>{
-      const d =JSON.parse(JSON.stringify(v))
-      d.children.forEach(e => {
-        delete e.children
+watch(
+  () => props.data,
+  (v) => {
+    if (v) {
+      nextTick(() => {
+        const d = JSON.parse(JSON.stringify(v));
+        // d.children.forEach((e) => {
+        //   delete e.children;
+        // });
+        init(d);
       });
-      init(d)
-    })
+    }
+  },
+  {
+    deep: true,
   }
-}, {
-  deep: true
-})
+);
 
 const windowWidth = ref(0);
 
-window.addEventListener('resize', getWindow())
+window.addEventListener("resize", getWindow());
+getWindow();
 function getWindow() {
-  windowWidth.value = document.documentElement.clientWidth || document.body.clientWidth;
+  windowWidth.value =
+    document.documentElement.clientWidth || document.body.clientWidth;
 }
 
 function init(d) {
   const graph = new G6.TreeGraph({
     container: props.id,
     width: windowWidth.value - 200, // 因为右侧导航栏，调整一下图的居中位置
-    height: 600,
+    height: 400,
     linkCenter: true,
     modes: {
       default: [
         {
-          type: 'collapse-expand',
+          type: "collapse-expand",
           onChange: function onChange(item, collapsed) {
-            const data = item.getModel();
+            var data = item.get("model");
+            var icon = item.get("group").findByClassName("collapse-icon");
+            if (collapsed) {
+              icon.attr("symbol", EXPAND_ICON);
+            } else {
+              icon.attr("symbol", COLLAPSE_ICON);
+            }
             data.collapsed = collapsed;
-            return true
+            return true;
           },
         },
-        'drag-canvas', 'zoom-canvas'],
+        "drag-canvas",
+        "zoom-canvas",
+      ],
     },
     defaultNode: {
-      type: 'icon-node',
+      type: "icon-node-en",
       anchorPoints: [
         [0.5, 0],
-        [0.5, 1]
+        [0.5, 1],
       ],
       size: [200, 40],
-      textAlign: 'center', // 设置文本居中
+      textAlign: "center", // 设置文本居中
       style: defaultNodeStyle,
       labelCfg: defaultLabelCfg,
     },
     defaultEdge: {
-      type: 'flow-line',
+      type: "flow-line-en",
       style: defaultEdgeStyle,
     },
     nodeStateStyles: defaultStateStyles,
@@ -76,130 +107,174 @@ function init(d) {
     layout: defaultLayout,
   });
 
-graph.data(d);
-graph.render();
-graph.fitView();
+  graph.data(d);
+  graph.render();
+  graph.fitView();
+
+  // graph.on('node:mouseenter', (evt) => {
+  //   const { item } = evt;
+  //   graph.setItemState(item, 'hover', true);
+  // });
+
+  // graph.on('node:mouseleave', (evt) => {
+  //   const { item } = evt;
+  //   graph.setItemState(item, 'hover', false);
+  // });
+
+  // graph.on('node:click', (evt) => {
+  //   const { item, target } = evt;
+  //   const targetType = target.get('type');
+  //   const name = target.get('name');
+
+  //   // 增加元素
+  //   if (targetType === 'marker') {
+  //     const model = item.getModel();
+  //     if (name === 'add-item') {
+  //       if (!model.children) {
+  //         model.children = [];
+  //       }
+  //       const id = `n-${Math.random()}`;
+  //       model.children.push({
+  //         id,
+  //         label: id.substr(0, 8),
+  //         leftIcon: {
+  //           style: {
+  //             fill: '#e6fffb',
+  //             stroke: '#e6fffb',
+  //           },
+  //           img:
+  //             'https://gw.alipayobjects.com/mdn/rms_f8c6a0/afts/img/A*Q_FQT6nwEC8AAAAAAAAAAABkARQnAQ',
+  //         },
+  //       });
+  //       graph.updateChild(model, model.id);
+  //     } else if (name === 'remove-item') {
+  //       graph.removeChild(model.id);
+  //     }
+  //   }
+  // });
+
+  // if (typeof window !== 'undefined') {
+  //   window.onresize = () => {
+  //     if (!graph || graph.get('destroyed')) return;
+  //     if (!container || !container.scrollWidth || !container.scrollHeight) return;
+  //     graph.changeSize(container.scrollWidth, container.scrollHeight);
+  //   };
+  // }
 }
 
+// 注册节点左侧icon
+// G6.Util.traverseTree(data, (d) => {
+//   d.leftIcon = {
+//     style: {
+//       fill: '#e6fffb',
+//       stroke: '#e6fffb',
+//     },
+//     img: 'https://gw.alipayobjects.com/mdn/rms_f8c6a0/afts/img/A*Q_FQT6nwEC8AAAAAAAAAAABkARQnAQ',
+//   };
+//   return true;
+// });
+
 G6.registerNode(
-  'icon-node',
+  "icon-node-en",
   {
-    options: {
-      size: [60, 20],
-      stroke: 'red',
-      fill: 'red',
-    },
     draw(cfg, group) {
-      console.log('node----------------:', cfg)
       const styles = this.getShapeStyle(cfg);
       const { labelCfg = {} } = cfg;
-
+      // console.log("cfg=", cfg);
+      // console.log("styles=", styles);
       const w = styles.width;
       const h = styles.height;
-
-      const keyShape = group.addShape('rect', {
+      if (cfg.point_type == 1) {
+        styles.fill = "#3470FF";
+      }
+      if (cfg.point_type == 2) {
+        styles.stroke = "#fff";
+      }
+      const keyShape = group.addShape("rect", {
         attrs: {
           ...styles,
           x: -w / 2,
-          y: -h / 2
+          y: -h / 2,
         },
       });
-      
-      group.addShape('text', {
-        attrs: {
-          ...labelCfg.style,
-          text:'niode',
-          width: 200
-          
-        },
-      });
-      // if (cfg.point_type == '主要人员') {
-      //   group.addShape('image', {
-      //     attrs: {
-      //       x: 8 - w / 2,
-      //       y: 8 - h / 2,
-      //       width: 24,
-      //       height: 24,
-      //       img:'https://g.alicdn.com/cm-design/arms-trace/1.0.155/styles/armsTrace/images/TAIR.png',
-      //     },
-      //     name: 'image-shape',
-      //   });
-      //   group.addShape('text', {
-      //     attrs: {
-      //       ...labelCfg.style,
-      //       text: getName(cfg.point_message),
-      //       width: getName(cfg.point_message).length * 14
-      //     },
-      //   });
-      // } else if(cfg.point_id == 1) {
-      //   group.addShape('text', {
-      //     attrs: {
-      //       ...labelCfg.style,
-      //       text: cfg.point_type,
-      //     },
-      //   });
-      // } else if (cfg.point_message) {
-      //   group.addShape('text', {
-      //     attrs: {
-      //       ...labelCfg.style,
-      //       text: getName(cfg.point_message),
-      //       width: getName(cfg.point_message).length * 14
-      //       // x: 2,
-      //       // y: 25 - h / 2,
-      //     },
-      //   });
-      // } else {
-      //   group.addShape('text', {
-      //     attrs: {
-      //       ...labelCfg.style,
-      //       text:'niode',
-      //       width: 200
-            
-      //     },
-      //   });
-      // }
+      if (cfg.point_type == 1) {
+        group.addShape("text", {
+          attrs: {
+            ...labelCfg.style,
+            text: cfg.point_name,
+            fill: "#fff",
+            // width: getName(cfg.point_message).length * 14,
+          },
+        });
+      } else if (cfg.point_type == 2) {
+        const textObj = group.addShape("text", {
+          attrs: {
+            ...labelCfg.style,
+            text: cfg.point_name + "-2",
+          },
+        });
+        let textX = Math.floor(textObj.getBBox().maxX);
+        var hasChildren = cfg.children && cfg.children.length > 0;
+        if (hasChildren) {
+          group.addShape("marker", {
+            attrs: {
+              x: textX + 14,
+              y: h / 2 - 16,
+              r: 6,
+              symbol: COLLAPSE_ICON,
+              stroke: "#3470FF",
+              lineWidth: 1,
+            },
+            className: "collapse-icon",
+          });
+        }
+        let color = colorObj[cfg.point_name] || "#379C0D";
+        group.addShape("circle", {
+          attrs: {
+            x: -(w - textX) / 2 + 34,
+            y: 0,
+            r: 6, // 圆的半径
+            fill: color, // 小圆点的颜色
+          },
+          name: "circle-shape",
+        });
+      } else {
+        // console.log("其他-------cfg", cfg);
+        group.addShape("text", {
+          attrs: {
+            ...labelCfg.style,
+            text: cfg.point_name + "-" + cfg.point_type,
+          },
+        });
+      }
 
       return keyShape;
     },
     update: undefined,
   },
-  'rect',
+  "rect"
 );
 
 // 边绘制为折线
-G6.registerEdge('flow-line', {
+G6.registerEdge("flow-line-en", {
   draw(cfg, group) {
     const startPoint = cfg.startPoint;
     const endPoint = cfg.endPoint;
     const { style } = cfg;
-    console.log('边---------------：', cfg)
-    const shape = group.addShape('path', {
+    // console.log("边-----------：", cfg);
+    const shape = group.addShape("path", {
       attrs: {
         stroke: style.stroke,
-        endArrow: style.endArrow,
+        // endArrow: false,
         path: [
-          ['M', startPoint.x, startPoint.y],
-          ['L', startPoint.x, (startPoint.y + endPoint.y) / 2],
-          ['L', endPoint.x, (startPoint.y + endPoint.y) / 2],
-          ['L', endPoint.x, endPoint.y],
+          ["M", startPoint.x, startPoint.y],
+          ["L", startPoint.x, (startPoint.y + endPoint.y) / 2],
+          ["L", endPoint.x, (startPoint.y + endPoint.y) / 2],
+          ["L", endPoint.x, endPoint.y],
         ],
       },
     });
-    if (cfg.targetNode._cfg.model.point_message['股份占比']) {
-        const label = Number(cfg.targetNode._cfg.model.point_message['股份占比']) * 100 + '%'
-        group.addShape('text', {
-          attrs: {
-            text: label,
-            x: endPoint.x + 4,
-            y: (startPoint.y + endPoint.y) / 2,
-            fill: 'green',
-            stroke: '#fff',
-          },
-          name: 'text-node'
-        })
-      }
     return shape;
   },
 });
-
 </script>

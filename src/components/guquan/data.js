@@ -70,15 +70,22 @@ export const defaultStateStyles = {
 
 export const defaultNodeStyle = {
   fill: "#ffffff",
-  stroke: "#40a9ff",
+  stroke: "rgba(52, 112, 255, 1)",
   radius: 5,
 };
 
+// export const defaultEdgeStyle = {
+//   type: "polyline",
+//   stroke: "rgba(191, 196, 205, 0.5)",
+//   endArrow: false,
+// };
 export const defaultEdgeStyle = {
-  stroke: "#91d5ff",
+  stroke: "rgba(191, 196, 205, 0.5)",
   endArrow: {
     path: "M 0,0 L 12, 6 L 9,0 L 12, -6 Z",
-    fill: "#91d5ff",
+    // path: "M30,0 L0,30 L60,30 Z",
+    fill: "rgba(52, 112, 255, 1)",
+    stroke: "rgba(52, 112, 255, 1)",
     d: -20,
   },
 };

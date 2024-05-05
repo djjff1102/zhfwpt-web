@@ -3,37 +3,46 @@
 </template>
 <script setup>
 import { onMounted, ref, reactive, unref, computed, watch } from "vue";
-import { getenterpriseMapQuery, getenterpriseMapQueryTree } from '@/api/archives'
-import { arrayToTree } from '@/utils/common'
+import {
+  getenterpriseMapQuery,
+  getenterpriseMapQueryTree,
+} from "@/api/archives";
+import { arrayToTree } from "@/utils/common";
 
 const props = defineProps({
   companyName: {
-    default: ''
+    default: "",
   },
   companyId: {
-    default: ''
-  }
-})
-const data = ref()
+    default: "",
+  },
+});
+const data = ref();
 
-watch( () => props.companyId, (v) => {
-  if(v) {
-    nextTick(() =>{
-      init()
-    })
+watch(
+  () => props.companyId,
+  (v) => {
+    if (v) {
+      nextTick(() => {
+        init();
+      });
+    }
+  },
+  {
+    immediate: true,
   }
-}, {
-  immediate: true
-})
+);
 
 const init = async () => {
   getenterpriseMapQueryTree({
-    companyId: props.companyId
-  }).then(res => {
-    data.value = res.data
-  }).catch(err => {
-    console.log('err:', err)
+    companyId: props.companyId,
   })
+    .then((res) => {
+      data.value = res.data;
+    })
+    .catch((err) => {
+      console.log("err:", err);
+    });
 };
 </script>
 
