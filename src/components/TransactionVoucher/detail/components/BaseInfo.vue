@@ -4,7 +4,9 @@
     <el-descriptions-item label="合同编号">
       {{ order?.code || '--' }}
     </el-descriptions-item>
-    <el-descriptions-item label="合同金额">{{ formatNumber(order?.amount) || '--' }}</el-descriptions-item>
+    <el-descriptions-item label="合同金额">
+      {{ formatNumber(order?.amount) || '--' }}{{ order?.amountUnit }}{{ order?.currency }}
+    </el-descriptions-item>
     <el-descriptions-item label="甲方(买方/采购方/需方)">
       {{ order?.partyA || '--' }}
     </el-descriptions-item>
