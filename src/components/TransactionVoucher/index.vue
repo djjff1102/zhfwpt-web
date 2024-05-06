@@ -48,11 +48,11 @@
           {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].amount) }}{{ tableData[rowIndex].amountUnit }}
         </template>
         <template v-slot:operations="{ rowIndex }">
-          <el-button
+          <!-- <el-button
             v-if="tableData[rowIndex]?.material?.fileUrl"
             :loading="curRow == rowIndex && loading"
             type="text"
-            @click="load(tableData[rowIndex].material)"> {{ splitFiltName(tableData[rowIndex].material.fileUrl) }}</el-button>
+            @click="load(tableData[rowIndex].material)"> {{ splitFiltName(tableData[rowIndex].material.fileUrl) }}</el-button> -->
           <!-- <el-button v-if="orderCode" type="text" >1原件</el-button> -->
           <el-button v-if="companyName" type="text"  @click="toDetail(tableData[rowIndex])">详情</el-button>
         </template>
@@ -131,7 +131,7 @@ const columns = reactive([
   },
   {
     title: "操作",
-    width: 160,
+    width: 80,
     dataIndex: "operations",
     slotName: "operations",
     fixed: "right",

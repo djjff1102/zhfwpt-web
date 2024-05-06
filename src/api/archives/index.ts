@@ -413,6 +413,15 @@ export function getwarehouseList(data: any) {
   });
 }
 
+// 物流仓储-关联订单-下拉框
+export function getAssociationDropDownBox(data: any) {
+  return request({
+    url: "/base/qyzx_order/getAssociationDropDownBox",
+    method: "post",
+    data,
+  });
+}
+
 // 风险分类展示
 export function queryRiskInfoCountByCompanyInfo(data: any) {
   return request({

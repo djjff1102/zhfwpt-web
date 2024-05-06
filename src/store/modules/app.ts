@@ -74,7 +74,7 @@ export const useAppStore = defineStore("app", () => {
    * 混合模式顶部切换
    */
   function changeTopActive(val: string) {
-    console.log("切换菜单----------：", val);
+    // console.log("切换菜单----------：", val);
     activeTopMenu.value = val;
   }
   return {
