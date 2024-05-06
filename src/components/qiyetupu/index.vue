@@ -210,7 +210,7 @@ G6.registerNode(
         const textObj = group.addShape("text", {
           attrs: {
             ...labelCfg.style,
-            text: cfg.point_name + "-2",
+            text: cfg.point_name,
           },
         });
         let textX = Math.floor(textObj.getBBox().maxX);
@@ -243,7 +243,7 @@ G6.registerNode(
         group.addShape("text", {
           attrs: {
             ...labelCfg.style,
-            text: cfg.point_name + "-" + cfg.point_type,
+            text: cfg.point_name + "-",
           },
         });
       }
