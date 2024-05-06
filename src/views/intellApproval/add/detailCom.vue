@@ -117,7 +117,9 @@ watch(
       const twelveMonthsAgo = now.subtract(11, 'month');
       monthRange.value = [ twelveMonthsAgo.format('YYYY-MM-DD'), now.format('YYYY-MM-DD') ]
       // monthRange.value = [ dayjs().add(-1, 'year').format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD') ]
-      init(id)
+      setTimeout(() => {
+        init(id)
+      }, 0)
     }
   },
   {
@@ -161,7 +163,7 @@ function changeMonth() {
 function getgroupByInvoiceDateIn() {
   return new Promise((resolve, reject) => {
     groupByInvoiceDate({
-      receivingCompanyName: data.value.name,
+      receivingCompanyName: props.companyName,
       invoiceDateStart: monthRange.value[0],
       invoiceDateEnd: monthRange.value[1]
     }).then(res => {
@@ -176,7 +178,8 @@ function getgroupByInvoiceDateIn() {
 function getgroupByInvoiceDateOut() {
   return new Promise((resolve, reject) => {
     groupByInvoiceDate({
-      invoicingCompanyName: data.value.name,
+      // invoicingCompanyName: data.value.name,
+      invoicingCompanyName: props.companyName,
       invoiceDateStart: monthRange.value[0],
       invoiceDateEnd: monthRange.value[1]
     }).then(res => {
