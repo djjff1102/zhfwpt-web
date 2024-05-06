@@ -5,7 +5,7 @@
     <BaseInfo v-if="name == '销项发票'" :order="fapiao"></BaseInfo>
     <BaseInfoIN v-if="name == '进项发票'" :order="fapiao"></BaseInfoIN>
     <div class="title">商品信息</div>
-    <goodinfo :id="fapiao.id" :code="route.query.code" :number="route.query.number"></goodinfo>
+    <goodinfo :id="fapiao.id" :code="route.query.code" :number="route.query.number" :fapiao="fapiao"></goodinfo>
   </div>
 </template>
 <script setup>

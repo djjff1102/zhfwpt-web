@@ -21,6 +21,9 @@
         <template v-slot:quantitySlot="{ rowIndex }">
           {{ formatNumber(tableData[rowIndex].quantity) }}
         </template>
+        <template v-slot:taxRateSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].taxRate) }}%
+        </template>
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
         </template>
@@ -96,6 +99,7 @@ const columns = reactive([
     title: "税率",
     dataIndex: "taxRate",
     width: 100,
+    slotName: 'taxRateSlot'
   },
 ]);
 

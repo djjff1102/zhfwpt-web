@@ -26,8 +26,8 @@
         <template v-slot:unitPriceSlot="{ rowIndex }">
          {{ formatNumber(tableData[rowIndex].unitPrice) }}{{ tableData[rowIndex].amountUnit }}/{{ tableData[rowIndex].measureUnit}}
         </template>
-        <template v-slot:amountIncludeTaxSlot="{ rowIndex }">
-          {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].amountIncludeTax) || 0 }}{{ tableData[rowIndex].amountUnit }}
+        <template v-slot:amountTotal="{ rowIndex }">
+          {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].amountTotal) || 0 }}{{ tableData[rowIndex].amountUnit }}
         </template>
         <template v-slot:slottaxRate="{ rowIndex }">
           {{ formatNumber(tableData[rowIndex].taxRate) }}%
@@ -57,6 +57,12 @@ const props = defineProps({
     type: String,
     default: ''
   },
+  fapiao: {
+    default: {
+      allGoodTaxSum: 0,
+      allGoodMoneySum: 0
+    }
+  }
 })
 
 const loading = ref(false);
@@ -94,8 +100,8 @@ const columns = reactive([
   },
   {
     title: "金额",
-    dataIndex: "amountIncludeTax",
-    slotName: 'amountIncludeTaxSlot'
+    dataIndex: "amountTotal",
+    slotName: 'amountTotal'
   },
   {
     title: "税率",
@@ -153,18 +159,13 @@ function getSum(data) {
   let n = 0;
   let currency = ''; // 币种
   let amountUnit = '' // 单位
-  data.forEach((e, i) => {
-    if(i == 0) {
-      currency = e.currency;
-      amountUnit = e.amountUnit;
-    }
-    let total = e.amountIncludeTax || 0
-    let taxAmount = e.taxAmount || 0
-    sum += total;
-    n += taxAmount
-  });
-  jine.value = currency + formatNumber(sum) + amountUnit
-  shuie.value = currency + formatNumber(n) + amountUnit
+  if(data && data[0]) {
+    currency = data[0].currency;
+    amountUnit = data[0].amountUnit;
+  }
+ 
+  jine.value = currency + formatNumber(props.fapiao.allGoodMoneySum) + amountUnit
+  shuie.value = currency + formatNumber(props.fapiao.allGoodTaxSum) + amountUnit
 }
 
 // 商品信息
