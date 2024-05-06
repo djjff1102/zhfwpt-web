@@ -176,11 +176,15 @@ G6.registerNode(
 
       if (cfg.point_id == "1") {
         styles.fill = "#3470FF";
+        if(cfg.point_type.length > 12) {
+          styles.width = cfg.point_type.length * 14;
+        }
       }
+    
       const keyShape = group.addShape("rect", {
         attrs: {
           ...styles,
-          x: -w / 2,
+          x: -styles.width / 2,
           y: -h / 2,
         },
       });
@@ -196,16 +200,6 @@ G6.registerNode(
         });
       }
       if (cfg.point_type == "主要人员") {
-        // group.addShape('rect', {
-        //   attrs: {
-        //     x: 1 - w / 2,
-        //     y: 1 - h / 2,
-        //     width: 38,
-        //     height: styles.height - 2,
-        //     fill: '#8c8c8c',
-        //     // ...style,
-        //   },
-        // });
         group.addShape("text", {
           attrs: {
             ...labelCfg.style,
@@ -240,8 +234,8 @@ G6.registerEdge("flow-line", {
     const startPoint = cfg.startPoint;
     const endPoint = cfg.endPoint;
     const { style } = cfg;
-    console.log("边msg-----------:", cfg.targetNode._cfg.model);
-    console.log("边-----------:", cfg);
+    // console.log("边msg-----------:", cfg.targetNode._cfg.model);
+    // console.log("边-----------:", cfg);
     const shape = group.addShape("path", {
       attrs: {
         stroke: style.stroke,

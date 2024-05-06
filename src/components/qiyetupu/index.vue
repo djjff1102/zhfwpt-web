@@ -185,15 +185,20 @@ G6.registerNode(
       const w = styles.width;
       const h = styles.height;
       if (cfg.point_type == 1) {
+        console.log("cfg=", cfg);
+        console.log("styles=", styles);
         styles.fill = "#3470FF";
       }
       if (cfg.point_type == 2) {
         styles.stroke = "#fff";
       }
+      if(cfg.point_name.length > 12) {
+        styles.width = cfg.point_name.length * 14;
+      }
       const keyShape = group.addShape("rect", {
         attrs: {
           ...styles,
-          x: -w / 2,
+          x: -styles.width / 2,
           y: -h / 2,
         },
       });
@@ -231,7 +236,8 @@ G6.registerNode(
         let color = colorObj[cfg.point_name] || "#379C0D";
         group.addShape("circle", {
           attrs: {
-            x: -(w - textX) / 2 + 34,
+            // x: -(w - textX) / 2 + 34,
+            x: -(textX + 14),
             y: 0,
             r: 6, // 圆的半径
             fill: color, // 小圆点的颜色
