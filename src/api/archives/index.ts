@@ -456,3 +456,12 @@ export function getwarehouseAsscoiationOrderList(data: any) {
     data,
   });
 }
+
+// 合同关联产品
+export function getqyzxcertificategood(data: any) {
+  return request({
+    url: `base/qyzx_certificate_good`,
+    method: "post",
+    data,
+  });
+}

@@ -4,7 +4,10 @@
       <span v-if="fileUrl"> <fileDownLoad :fileUrl="fileUrl" :fileName="fileName"></fileDownLoad></span>
     </div>
     <BaseInfo :order="order"></BaseInfo>
-    <div class="title">产品详情-暂时不做，合同需要拆表</div>
+    <div>
+      <div class="title">产品详情</div>
+      <chanpin :certificateCode="code"></chanpin>
+    </div>
     <div>
       <div class="title">关联发票</div>
       <invoiceGL :certificateCode="code"></invoiceGL>
@@ -21,6 +24,7 @@ import BaseInfo from "./components/BaseInfo.vue"
 import SecondWarehousing from "./components/SecondWarehousing.vue";
 import { useRoute } from 'vue-router'
 import { qyzxTransactionCertificate } from '@/api/archives'
+import chanpin from './components/chanpin.vue'
 
 const route = useRoute();
 
