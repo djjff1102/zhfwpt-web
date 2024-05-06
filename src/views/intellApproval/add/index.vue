@@ -329,7 +329,9 @@ const curTab = ref('1') // 当前打开的tab
 const showAdd = ref(false); // 新增资料弹窗
 const showRecord = ref(false); // 审批记录
 const showApproval = ref(false) // 审批窗口
-const totalMoney = ref(0);
+const totalMoney = ref({
+  count: 0
+});
 const fileList = ref([]) // 已经提交的文件
 const queryPar = ref({}) // 路由查询参数
 const uploadFlag = ref(-1) // -1未上传文件 0 上传文件失败 1上传成功
@@ -418,8 +420,11 @@ function handleTab(v: any) {
   curTab.value = v;
   if(![pro.CC as any, pro.WL as any].includes(curTab.value)) {
     getCurSumMoney(v) // 仓储和物流需要调该接口
+  } else if(curTab.value == pro.CC){
+    totalMoney.value.count = approvalStore.getListLength('CC') as any
+  } else if(curTab.value == pro.WL) {
+    totalMoney.value.count = approvalStore.getListLength('WL') as any
   }
-  // updateTable(dataHT.value, dataDD.value, dataFP.value, dataCC.value, dataYH.value);
 }
 
 function getCurSumMoney(v: any) {

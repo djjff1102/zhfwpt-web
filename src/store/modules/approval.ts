@@ -66,6 +66,13 @@ export const useApprovalStore = defineStore("approvalstore", () => {
   });
   const pageType = ref(""); // 当前页面类型 add operate detail
 
+  function getListLength(type: any) {
+    if (type == "CC") {
+      return CCList.value.length;
+    } else if (type == "WL") {
+      return WLList.value.length;
+    }
+  }
   function clearTable() {
     DDList.value = [];
     HTList.value = [];
@@ -328,5 +335,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     setFileInfo,
     clearTable,
     resetTab,
+    getListLength,
   };
 });
