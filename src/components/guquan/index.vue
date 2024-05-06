@@ -248,7 +248,7 @@ G6.registerEdge("flow-line", {
     const startPoint = cfg.startPoint;
     const endPoint = cfg.endPoint;
     const { style } = cfg;
-    console.log("股权穿透-边msg-----------:", cfg.targetNode._cfg.model);
+    // console.log("股权穿透-边msg-----------:", cfg.targetNode._cfg.model);
     // console.log("边-----------:", cfg);
     const shape = group.addShape("path", {
       attrs: {

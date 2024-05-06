@@ -59,7 +59,11 @@ const props = defineProps({
     default: ''
   }
 });
-const data = ref()
+const data = ref({
+  name: '',
+  id: '',
+  reportId: ''
+})
 const monthRange = ref('') // 时间月份
 const shortcuts = ref([
   {

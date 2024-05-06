@@ -299,7 +299,7 @@ const form = ref({
   money: 0,
   taxAuthority: '', // 主管税务机关
   limitType: '', // 申请额度调整类型
-  companyName: companyName, // 申请单位
+  companyName: '', // 申请单位
   adjustType:'', // 发票短期调整类型
   registerAddress: '', // 注册地址
   validDateStart: '', // 起始有效期-开始
