@@ -59,7 +59,7 @@
 
 <script setup>
 import { ref, reactive} from "vue";
-import { getwarehouseAsscoiationOrderList } from '@/api/archives'
+import { getwarehouseAsscoiationOrderList, getAssociationDropDownBox } from '@/api/archives'
 import { useRouter, useRoute } from 'vue-router'
 import { formatNumber,formateDate } from '@/utils/common'
 
@@ -231,11 +231,18 @@ function getqyzxOrder() {
   })
 }
 
+function getSelect() {
+  getAssociationDropDownBox(orderPar.value).then(res => {
+    orderList.value = res.data
+  })
+}
+
 const init = async () => {
   orderPar.value.companyName = route.query.companyName
   orderPar.value.shortName = route.query.shortName
   orderPar.value.locationAddress = route.query.locationAddress
   getqyzxOrder()
+  getSelect()
 };
 
 init();
