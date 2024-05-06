@@ -18,14 +18,14 @@
         <template v-slot:quantitySlot="{ rowIndex }">
           {{ formatNumber(tableData[rowIndex].quantity) }}
         </template>
-        <template v-slot:amountIncludeTaxSlot="{ rowIndex }">
-          {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].amountIncludeTax) }}{{ tableData[rowIndex].measureUnit }}
+        <template v-slot:allGoodMoneySum="{ rowIndex }">
+          {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].allGoodMoneySum) }}{{ tableData[rowIndex].amountUnit }}
         </template>
         <template v-slot:taxRateSlot="{ rowIndex }">
           {{ formatNumber(tableData[rowIndex].taxRate) }}
         </template>
-        <template v-slot:taxAmountSlot="{ rowIndex }">
-          {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].taxAmount) }}{{ tableData[rowIndex].measureUnit }}
+        <template v-slot:allGoodTaxSum="{ rowIndex }">
+          {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].allGoodTaxSum) }}{{ tableData[rowIndex].amountUnit }}
         </template>
         <template v-slot:unitPriceSlot="{ rowIndex }">
           {{ formatNumber(tableData[rowIndex].unitPrice) }}
@@ -128,9 +128,9 @@ const columns = reactive([
   // },
   {
     title: "金额总计",
-    dataIndex: "amountIncludeTax",
+    dataIndex: "allGoodMoneySum",
     width: 180,
-    slotName: 'amountIncludeTaxSlot',
+    slotName: 'allGoodMoneySum',
     ellipsis: true,
     tooltip: {position: 'left'},
   },
@@ -142,9 +142,9 @@ const columns = reactive([
   // },
   {
     title: "税额总计",
-    dataIndex: "taxAmount",
+    dataIndex: "allGoodTaxSum",
     width: 180,
-    slotName: 'taxAmountSlot'
+    slotName: 'allGoodTaxSum'
   },
   // {
   //   title: "单价",
