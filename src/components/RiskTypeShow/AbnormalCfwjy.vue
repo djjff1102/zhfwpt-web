@@ -3,7 +3,9 @@
     <div class="risk-result">{{ info.result }}</div>
     <el-descriptions class="margin-top" :column="2" border style="margin: 16px 0">
       <el-descriptions-item label="经营范围">
-        {{ info?.otherSource || '暂无' }}
+        <p class="three-row" :title="info?.otherSource">
+          {{ info?.otherSource || '暂无' }}
+        </p>
       </el-descriptions-item>
     </el-descriptions>
     <m-table
@@ -32,6 +34,14 @@ const props = defineProps({
 </script>
 
 <style lang="scss" scoped>
+.three-row {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;/*省略几行写几*/
+    -webkit-box-orient: vertical;
+    cursor: pointer;
+}
 .content-one {
   padding: 16px 24px;
   font-family: PingFangSC, PingFang SC;

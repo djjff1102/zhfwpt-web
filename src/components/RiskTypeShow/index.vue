@@ -41,15 +41,12 @@ const props = defineProps({
 const dialogTableVisible = ref(false)
 const riskType = ref(-1); // 根据风险类型控制页面显示
 const columns = ref([])
-const barJXX = ref() // 企业进销项商品匹配异常
 
 const getWidth = computed(() => {
-  if(riskType.value == abnormalStatus.DJPL) {
-    return 1074;
-  } else if(riskType.value == 1){
+  if(riskType.value == 1){
     return 900;
   } else {
-    return 900;
+    return 1200;
   }
 })
 
@@ -65,7 +62,10 @@ function formateWord(d) {
   Object.keys(d).forEach(item => {
     let cur = {
       title: d[item],
-      dataIndex: item
+      dataIndex: item,
+      width: d[item].length * 28,
+      ellipsis: true,
+      tooltip: {position: 'left'},
     }
     arr.push(cur)
   })

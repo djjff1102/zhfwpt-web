@@ -22,7 +22,7 @@
     <div class="section">
     <div class="section-sub">
       <div class="title-sub">申报人信息</div>
-      <el-form ref="basefrom1" :model="form" layout="vertical" :rules="rules">
+      <el-form v-if="initPageParam.edit" ref="basefrom1" :model="form" layout="vertical" :rules="rules">
         <el-form-item prop="taxAuthority"  label="主管税务机关" required>
           <w-input v-if="initPageParam.edit" style="height: 32px" disabled  v-model="form.taxAuthority" placeholder="请输入主管税务机关" />
           <div v-else>{{ form?.taxAuthority }}</div>
@@ -53,10 +53,11 @@
            <span v-if="initPageParam.edit" class="date-msg">请填写在税务申报系统提交申报时的日期</span>
         </el-form-item>
       </el-form>
+      <personInfo v-else :data="form"></personInfo>
     </div>
     <div class="section-sub">
       <div class="title-sub">申报额度信息</div>
-      <el-form ref="basefrom2" :model="form" layout="vertical" :rules="rules">
+      <el-form v-if="initPageParam.edit" ref="basefrom2" :model="form" layout="vertical" :rules="rules">
          <el-form-item prop="money" label="申请额度" required>
           <w-input-number v-if="initPageParam.edit" v-model="form.money" placeholder="请输入额度" style="height: 32px">
           </w-input-number>
@@ -107,6 +108,7 @@
           <div v-else>{{ form.reason }}</div>
         </el-form-item>
       </el-form>
+      <moneyInfo v-else :data="form"></moneyInfo>
     </div>
     </div>
     
@@ -250,6 +252,8 @@ import { useApprovalStore } from '@/store/modules/approval'
 import { getTotalMoney } from '@/api/intellApproval/special'
 import { useNoticeApprovalStore } from '@/store/modules/notice'
 import { formatNumber } from '@/utils/common'
+import moneyInfo from './moneyInfo.vue'
+import personInfo from './personInfo.vue';
 
 const noticeStore = useNoticeApprovalStore()
 
@@ -580,18 +584,23 @@ function checkSubmitError(res: any, msg: any) {
         backToList()
       },500)
       noticeStore.refreshNotice()
-    }  else if(res.result == 1 && res.message) {
-      suafaErr.value.flag = true;
-      suafaErr.value.data = res.data || []
-      approvalStore.getTableData(reportId.value);
-      // ElMessage.error(res.message);
-      // 处理异常
     } else {
       suafaErr.value.flag = true;
-      suafaErr.value.data = res.data || []
+      suafaErr.value.data = ['附件上传有误, 请核实'] as any
       approvalStore.getTableData(reportId.value);
       // ElMessage.error(res?.message || '算法校验失败');
-    }
+    } 
+    // else if(res.result == 1 && res.message) {
+    //   suafaErr.value.flag = true;
+    //   suafaErr.value.data = res.data || []
+    //   approvalStore.getTableData(reportId.value);
+    //   // 处理异常
+    // } else {
+    //   suafaErr.value.flag = true;
+    //   suafaErr.value.data = res.data || []
+    //   approvalStore.getTableData(reportId.value);
+    //   // ElMessage.error(res?.message || '算法校验失败');
+    // }
 }
 
 // 编辑新增成功，返回列表页
