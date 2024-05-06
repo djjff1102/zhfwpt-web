@@ -19,7 +19,7 @@
           {{ formatNumber(tableData[rowIndex].amount) }}{{ tableData[rowIndex].currency }}
         </template>
         <template v-slot:quantitySlot="{ rowIndex }">
-          {{ formatNumber(tableData[rowIndex].quantity) }}
+          {{ formatNumber(tableData[rowIndex].quantity) }}{{ tableData[rowIndex].unit }}
         </template>
         <template v-slot:taxRateSlot="{ rowIndex }">
           {{ formatNumber(tableData[rowIndex].taxRate) }}%
