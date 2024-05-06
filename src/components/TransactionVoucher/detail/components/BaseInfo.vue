@@ -17,9 +17,9 @@
     <el-descriptions-item label="签订地点">
       {{ order?.signAddress || '--' }}
     </el-descriptions-item>
-    <el-descriptions-item label="交货方式"> {{ '待确认' || '--' }} </el-descriptions-item>
+    <el-descriptions-item label="交货方式"> {{ order?.deliveryType || '--' }} </el-descriptions-item>
     <el-descriptions-item label="交货地点">
-      {{'待确认' || '--' }}
+      {{order.deliveryAddress || '--' }}
     </el-descriptions-item>
   </el-descriptions>
 </template>
