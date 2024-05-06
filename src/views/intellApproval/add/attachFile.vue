@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="!row.material">未上传</div>
-    <el-button type="text" v-else @click="load(row.material)"> {{ row?.material.fileName}}</el-button>
+    <el-button type="text" v-else @click="load(row.material)">下载</el-button>
     <!-- <div class="file-load" v-if="row?.material?.judgeCode == '1'" style="color: green" @click="load(row.material)">
         {{ row?.material.fileName}}</div> -->
   </div>
