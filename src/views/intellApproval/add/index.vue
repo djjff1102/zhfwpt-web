@@ -14,7 +14,11 @@
         v-hasPerm="btnApprovalCode.approvallist"
       ></approval-record>
       <!-- <w-button v-hasPerm="btnApprovalCode.approvallist" style="margin-right: 8px;" @click="showRecord = true">审批记录</w-button> -->
-      <w-button v-hasPerm="btnApprovalCode.approval" type="primary" @click="updateApprval">审批</w-button>
+      <w-button
+        v-hasPerm="btnApprovalCode.approval" 
+        type="primary"
+        :disabled="form?.approveStatus != status.wait" 
+        @click="updateApprval">审批</w-button>
     </div>
   </div>
   <!-- 企业用户申报详情 -->
@@ -239,7 +243,7 @@ import FileList from './FileList.vue';
 import ApprovalDo from './ApprovalDo.vue';
 import dayjs from "dayjs";
 import { btnApprovalCode, approvalMapping } from '@/router/permissionCode'
-import { approveStatus,approveStatusColor } from '../type'
+import { approveStatus,approveStatusColor, status } from '../type'
 import validateExcel from './validateExcel.vue'
 import InfoDD from './InfoDD.vue'
 import InfoHT from './InfoHT.vue'
