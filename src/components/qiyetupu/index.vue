@@ -243,7 +243,7 @@ G6.registerNode(
         group.addShape("text", {
           attrs: {
             ...labelCfg.style,
-            text: cfg.point_name + "-",
+            text: cfg.point_name,
           },
         });
       }
