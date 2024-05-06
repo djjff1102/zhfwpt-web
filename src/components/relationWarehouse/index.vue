@@ -69,79 +69,97 @@ const columns = reactive([
   },
   {
     title: "仓库地址",
+    width: 180,
     dataIndex: "locationAddress",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    
+  },
+  {
+    title: "库存单注册时间",
+    width: 180,
+    dataIndex: "inventoryListRegistrationDate",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
-    title: "库存单注册时间",
-    dataIndex: "inventoryListRegistrationDate",
-    slotName: ''
-  },
-  {
     title: "库存单注册人",
+    width: 120,
     dataIndex: "inventoryRegistrar",
-    slotName: ''
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "注册重量",
+    width: 120,
     dataIndex: "registrationWeight",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "配货重量",
+    width: 120,
     dataIndex: "distributionWeight",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "商品名称",
-    dataIndex: "",
-    slotName: 'warehousingGoods'
+     width: 120,
+    dataIndex: "warehousingGoods",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    // slotName: 'warehousingGoods'
   },
   {
     title: "商品类别",
+     width: 120,
     dataIndex: "cargoStatus",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "货物状态",
+     width: 120,
     dataIndex: "cargoStatus",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "卡号/批次号",
+    width: 120,
     dataIndex: "batchNumber",
-    slotName: 'orderMoneySumSlot'
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "件数",
+    width: 120,
     dataIndex: "warehousingQuantity",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "重量单位",
+    width: 120,
     dataIndex: "warehousingUnit",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "存货凭证地址",
+    width: 160,
     dataIndex: "inventoryCertificateAddress",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
-  {
-    title: "操作",
-    width: 100,
-    dataIndex: "operations",
-    slotName: "operations",
-    fixed: "right",
-  },
+  // {
+  //   title: "操作",
+  //   width: 100,
+  //   dataIndex: "operations",
+  //   slotName: "operations",
+  //   fixed: "right",
+  // },
 ]);
 const pagination = ref({
   total: 0,

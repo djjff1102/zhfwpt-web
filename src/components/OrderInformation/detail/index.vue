@@ -10,7 +10,7 @@
       <TransactionVoucher :orderCode="code"></TransactionVoucher>
     </div>
     <div>
-      <div class="title">关联仓储--待联调</div>
+      <div class="title">关联仓储</div>
       <relationWarehouse :orderCode="code"></relationWarehouse>
     </div>
     <div>

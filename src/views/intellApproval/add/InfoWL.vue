@@ -80,7 +80,7 @@ const columns = reactive([
     tooltip: {position: 'left'},
   },
   {
-    title: "发布方企业纳税人识别号-暂无",
+    title: "发布方企业纳税人识别号",
     dataIndex: "signAddress",
     width: 220,
     ellipsis: true,
