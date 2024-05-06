@@ -675,6 +675,7 @@ function getDetail(d: any) {
       curDate.value = [res.data.validDateStart, res.data.validDateEnd] as any
       reportId.value = res.data.id
       approvalStore.getTableData(reportId.value); // 获取订单、合同、发票等信息
+      getCurSumMoney(curTab.value)
     } else {
       approvalStore.clearTable(); // 获取订单、合同、发票等信息
       getgetOneByCompanyName() // 当前返回数据为空，新增，且无暂存，则查询企业基本信息
