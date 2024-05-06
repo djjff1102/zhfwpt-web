@@ -65,7 +65,7 @@ function init(d) {
   const graph = new G6.TreeGraph({
     container: props.id,
     width: windowWidth.value - 200, // 因为右侧导航栏，调整一下图的居中位置
-    height: 400,
+    height: 500,
     linkCenter: true,
     modes: {
       default: [
@@ -185,14 +185,12 @@ G6.registerNode(
       const w = styles.width;
       const h = styles.height;
       if (cfg.point_type == 1) {
-        console.log("cfg=", cfg);
-        console.log("styles=", styles);
         styles.fill = "#3470FF";
       }
       if (cfg.point_type == 2) {
         styles.stroke = "#fff";
       }
-      if(cfg.point_name.length > 12) {
+      if(cfg.point_name.length > 12 ) {
         styles.width = cfg.point_name.length * 14;
       }
       const keyShape = group.addShape("rect", {

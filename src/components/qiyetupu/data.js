@@ -74,15 +74,15 @@ export const defaultLayout = {
     return 16;
   },
   getWidth: function getWidth() {
-    return 300;
+    return 240;
   },
   getVGap: function getVGap() {
     // 节点的水平间隙
-    return 40;
+    return 30;
   },
   getHGap: function getHGap() {
     // 节点的垂直间隙
-    return 70;
+    return 10;
   },
 };
 

@@ -56,7 +56,7 @@ function init(d) {
   const graph = new G6.TreeGraph({
     container: props.id,
     width: windowWidth.value - 200, // 因为右侧导航栏，调整一下图的居中位置
-    height: 400,
+    height: 300,
     linkCenter: true,
     modes: {
       default: [
@@ -180,6 +180,15 @@ G6.registerNode(
           styles.width = cfg.point_type.length * 14;
         }
       }
+      let nodeMsg = ''
+      if(cfg.point_type == '法定代表人') {
+        nodeMsg = cfg.point_message['法定代表人']
+      } else if(cfg.point_type == '控股企业') {
+        nodeMsg = cfg.point_message['公司名称']
+      }
+      if(nodeMsg.length > 12 ) {
+        styles.width = nodeMsg.length * 14;
+      }
     
       const keyShape = group.addShape("rect", {
         attrs: {
@@ -188,7 +197,7 @@ G6.registerNode(
           y: -h / 2,
         },
       });
-      // console.log("cfg----------:", cfg);
+
       if (cfg.point_id == "1") {
         group.addShape("text", {
           attrs: {
@@ -199,28 +208,33 @@ G6.registerNode(
           },
         });
       }
-      if (cfg.point_type == "主要人员") {
-        group.addShape("text", {
-          attrs: {
-            ...labelCfg.style,
-            text: getName(cfg.point_message),
-            width: getName(cfg.point_message).length * 14,
-          },
-        });
-      }
-
+      // if (cfg.point_type == "主要人员") {
+      //   group.addShape("text", {
+      //     attrs: {
+      //       ...labelCfg.style,
+      //       text: getName(cfg.point_message),
+      //       width: getName(cfg.point_message).length * 14,
+      //     },
+      //   });
+      // }
       if (cfg.point_message) {
         group.addShape("text", {
           attrs: {
             ...labelCfg.style,
-            text: getName(cfg.point_message),
-            width: getName(cfg.point_message).length * 14,
-            // x: 2,
-            // y: 25 - h / 2,
+            text: nodeMsg,
+            // width: getName(cfg.point_message).length * 14,
           },
         });
       }
-
+      // if (cfg.point_message) {
+      //   group.addShape("text", {
+      //     attrs: {
+      //       ...labelCfg.style,
+      //       text: getName(cfg.point_message),
+      //       width: getName(cfg.point_message).length * 14,
+      //     },
+      //   });
+      // }
       return keyShape;
     },
     update: undefined,
@@ -234,7 +248,7 @@ G6.registerEdge("flow-line", {
     const startPoint = cfg.startPoint;
     const endPoint = cfg.endPoint;
     const { style } = cfg;
-    // console.log("边msg-----------:", cfg.targetNode._cfg.model);
+    console.log("股权穿透-边msg-----------:", cfg.targetNode._cfg.model);
     // console.log("边-----------:", cfg);
     const shape = group.addShape("path", {
       attrs: {
@@ -248,44 +262,35 @@ G6.registerEdge("flow-line", {
         ],
       },
     });
-    if (cfg.targetNode._cfg.model.point_message["职位"]) {
-      const label = cfg.targetNode._cfg.model.point_message["职位"];
+    if (cfg.targetNode._cfg.model.point_message["股份占比"]) {
+      const label = cfg.targetNode._cfg.model.point_message["股份占比"] * 100 + '%';
       group.addShape("text", {
         attrs: {
           text: label,
           x: endPoint.x + 4,
           y: (startPoint.y + endPoint.y) / 2,
-          fill: "green",
+          fill: "#3470FF",
           stroke: "#fff",
         },
         name: "text-node",
       });
     }
 
-    if (cfg.targetNode._cfg.model.point_type == "控股企业") {
-      const label = "控股企业";
-      group.addShape("text", {
-        attrs: {
-          text: label,
-          x: endPoint.x + 4,
-          y: (startPoint.y + endPoint.y) / 2,
-          fill: "#4ea2f0",
-          stroke: "#fff",
-        },
-        name: "text-node",
-      });
-    }
+    // if (cfg.targetNode._cfg.model.point_type == "控股企业") {
+    //   const label = "控股企业";
+    //   group.addShape("text", {
+    //     attrs: {
+    //       text: label,
+    //       x: endPoint.x + 4,
+    //       y: (startPoint.y + endPoint.y) / 2,
+    //       fill: "#4ea2f0",
+    //       stroke: "#fff",
+    //     },
+    //     name: "text-node",
+    //   });
+    // }
     return shape;
   },
 });
 
-function getName(d) {
-  let m = "";
-  Object.keys(d).forEach((item, i) => {
-    if (i == 0) {
-      m = d[item];
-    }
-  });
-  return m;
-}
 </script>
