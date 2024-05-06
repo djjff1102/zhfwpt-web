@@ -92,6 +92,11 @@ const columns = reactive([
     slotName:'amountSlot',
     width: 100,
   },
+  {
+    title: "税率",
+    dataIndex: "taxRate",
+    width: 100,
+  },
 ]);
 
 const pagination = ref({
