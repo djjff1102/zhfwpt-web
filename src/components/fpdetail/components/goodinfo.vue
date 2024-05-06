@@ -2,8 +2,8 @@
   <!-- 订单信息 -->
   <div class="second-warehousing-container">
     <div class="mount-sum">
-      <span class="mount-sum-item">金额总计：{{ jine }} </span>
-      <span> 税额总计：{{ shuie }}</span>
+      <span class="mount-sum-item">金额总计：{{ currency}}{{ fapiao.allGoodMoneySum }}{{unit}} </span>
+      <span> 税额总计：{{ currency }}{{ fapiao.allGoodTaxSum }}{{unit}}</span>
     </div>
     <div class="table-warp">
       <m-table
@@ -139,8 +139,8 @@ const scroll = ref({
   x: 1080,
 });
 
-const jine = ref(0) // 金额总计
-const shuie = ref(0) // 税额
+const currency = ref(0) // 币种
+const unit = ref(0) // 单位
 const changePagesize = (v) => {
   pagination.value.pageSize = v;
   pagination.value.current = 1;
@@ -155,17 +155,10 @@ const changepage = (v) => {
 };
 
 function getSum(data) {
-  let sum = 0;
-  let n = 0;
-  let currency = ''; // 币种
-  let amountUnit = '' // 单位
   if(data && data[0]) {
-    currency = data[0].currency;
-    amountUnit = data[0].amountUnit;
+    currency.value = data[0].currency;
+    unit.value = data[0].amountUnit;
   }
- 
-  jine.value = currency + formatNumber(props.fapiao.allGoodMoneySum) + amountUnit
-  shuie.value = currency + formatNumber(props.fapiao.allGoodTaxSum) + amountUnit
 }
 
 // 商品信息
