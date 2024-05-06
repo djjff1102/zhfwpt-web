@@ -192,7 +192,6 @@
   </div>
   <div v-if="type == 'operate'" class="bottom flex-base-end">
     <w-button
-      v-loading.fullscreen.lock="loading"
       v-hasPerm="btnApprovalCode.save"
       style="margin-right: 20px"
       @click="handleSave(2, '更新')">更新</w-button>
@@ -222,6 +221,7 @@
       </span>
     </template>
   </el-dialog>
+  <div v-if="loading" class="mask"><w-spin dot :loading="true"></w-spin></div>
 </div>
 </template>
 <script lang="ts" setup>
@@ -683,6 +683,7 @@ function init() {
   queryPar.value = route.query;
   // 重置tab的状态
   approvalStore.resetTab(type.value); // 重置tab的状态
+  approvalStore.setFileInfo({}) // 重置上传文件
   let id = route.query.id // 申请人发票ID
   if(type.value === 'detail') {
     initPageParam.edit = false;
@@ -840,7 +841,18 @@ init()
     height: 148px;
   }
 }
-
+.mask {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.1);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 </style>
 
