@@ -1,9 +1,7 @@
 <template>
   <div class="content-one">
     <div class="risk-result">
-      <p class="three-row" :title="info?.result">
-          {{ info?.result || '暂无' }}
-      </p>
+      <threeRow :info="info.result"></threeRow>
     </div>
     <img src="./img/djpl.svg" class="pl-img">
     <m-table
@@ -22,6 +20,7 @@
 </template>
 
 <script setup>
+import threeRow from './threeRow.vue'
 const props = defineProps({
   info: { // 风险信息
     default: {}

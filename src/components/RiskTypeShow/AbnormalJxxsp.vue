@@ -1,6 +1,5 @@
 <template>
   <div class="content-one">
-    <!-- <div class="risk-result">{{ info.result }}</div> -->
     <div class="flex-base-around">
       <span class="bar-name">进项数量</span>
       <span class="bar-unit">单位：{{ unit }}</span>
@@ -8,15 +7,13 @@
     </div>
     <div class="risk-reason flex-base-center">
       <line-echart :echartData="echartData"></line-echart>
-      <!-- <line-chart-left :chartId="rightId"></line-chart-left>
-      <line-chart-right chartId="fkhhj"></line-chart-right> -->
     </div>
   </div>
 </template>
 
 <script setup>
 import { watch, ref } from 'vue'
-
+import threeRow from './threeRow.vue'
 const echartData = ref({
   left: [],
   right: [],

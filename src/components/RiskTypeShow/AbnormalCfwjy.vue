@@ -1,15 +1,11 @@
 <template>
   <div class="content-one">
-    <div class="risk-result" :title="info.result">
-      <p class="three-row" :title="info?.result">
-          {{ info?.result || '暂无' }}
-        </p>
+    <div class="risk-result">
+      <threeRow :info="info.result"></threeRow>
     </div>
     <el-descriptions class="margin-top" :column="2" border style="margin: 16px 0">
       <el-descriptions-item label="经营范围">
-        <p class="three-row" :title="info?.otherSource">
-          {{ info?.otherSource || '暂无' }}
-        </p>
+        <threeRow :info="info.otherSource"></threeRow>
       </el-descriptions-item>
     </el-descriptions>
     <m-table
@@ -28,6 +24,7 @@
 </template>
 
 <script setup>
+import threeRow from './threeRow.vue'
 const props = defineProps({
   info: { // 风险信息
     default: {}

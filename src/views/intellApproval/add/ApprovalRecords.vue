@@ -1,45 +1,38 @@
 <template>
   <div>
     <w-button style="margin-right: 8px;" @click="visible = true">审批记录</w-button>
-    <el-dialog v-model="visible" :before-close="handleBeforeClose" :width="1200">
-        <div class="dia-content">
-          <m-table
-            :data="tableData"
-            :columns="columns"
-            :pagination="pagination"
-            @page-change="changepage"
-            @page-size-change="changePagesize"
-            :bordered="false"
-          >
-            <template v-slot:index="{rowIndex}">
-                <div>{{ rowIndex + 1 }}</div>
-            </template> 
-            <template v-slot:approveName="{rowIndex}">
-              <div>{{ tableData[rowIndex].organizationName}}-{{ tableData[rowIndex].approveUserName }}</div>
-            </template>
-            <template v-slot:approveResultSlot="{rowIndex}">
-              <div>{{ approveStatus[tableData[rowIndex].approveResult] }}</div>
-            </template>
-            <template v-slot:fileName="{rowIndex}">
-              <el-button
-                :loading="curLoadIndex == i && curLoadRowIndex == rowIndex && loading"
-                v-for="(item, i) in tableData[rowIndex]?.fileNames"
-                :key="item"
-                type="text"
-                @click="load(tableData[rowIndex]?.fileUrls[i], item, i, rowIndex)"
-                >{{ getFileName(item) }}</el-button>
-            </template>
-        </m-table>
-        </div>
-        <template #header>
-          <div class="dia-header">审批记录</div>
-        </template>
-        <template #footer>
-          <span class="dialog-footer">
-            <w-button type="primary" @click="handleCancel">知道了</w-button>
-          </span>
-        </template>
-      </el-dialog>
+    <w-modal v-model:visible="visible" @ok="handleBeforeClose" ok-text="知道了" :hide-cancel="true" :width="1200">
+      <template #title>
+        审批记录
+      </template>
+      <m-table
+          :data="tableData"
+          :columns="columns"
+          :pagination="pagination"
+          @page-change="changepage"
+          @page-size-change="changePagesize"
+          :bordered="false"
+        >
+          <template v-slot:index="{rowIndex}">
+              <div>{{ rowIndex + 1 }}</div>
+          </template> 
+          <template v-slot:approveName="{rowIndex}">
+            <div>{{ tableData[rowIndex].organizationName}}-{{ tableData[rowIndex].approveUserName }}</div>
+          </template>
+          <template v-slot:approveResultSlot="{rowIndex}">
+            <div>{{ approveStatus[tableData[rowIndex].approveResult] }}</div>
+          </template>
+          <template v-slot:fileName="{rowIndex}">
+            <el-button
+              :loading="curLoadIndex == i && curLoadRowIndex == rowIndex && loading"
+              v-for="(item, i) in tableData[rowIndex]?.fileNames"
+              :key="item"
+              type="text"
+              @click="load(tableData[rowIndex]?.fileUrls[i], item, i, rowIndex)"
+              >{{ getFileName(item) }}</el-button>
+          </template>
+      </m-table>
+    </w-modal>
   </div>
 </template>
 

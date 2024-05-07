@@ -1,14 +1,9 @@
 <template>
   <div class="content-one">
     <div class="risk-result">
-      <p class="three-row" :title="info?.result">
-          {{ info?.result || '暂无' }}
-      </p>
+      <threeRow :info="info.result"></threeRow>
     </div>
     <el-descriptions class="margin-top" :column="2" border style="margin: 16px 0">
-      <!-- <el-descriptions-item label="经营范围">
-        测试数据----
-      </el-descriptions-item> -->
     </el-descriptions>
     <m-table
       :columns="columns"
@@ -26,6 +21,7 @@
 </template>
 
 <script setup>
+import threeRow from './threeRow.vue'
 const props = defineProps({
   info: { // 风险信息
     default: {}

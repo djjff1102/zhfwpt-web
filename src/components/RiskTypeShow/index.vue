@@ -3,17 +3,13 @@
     <div class="risk-result" @click="handleResult">
       {{ info?.result }}
     </div>
-    <el-dialog v-model="dialogTableVisible" :width="getWidth" :append-to-body="true">
-      <template #header>
+
+    <w-modal v-model:visible="dialogTableVisible" @ok="handleBeforeClose" ok-text="知道了" :hide-cancel="true" :width="1200">
+      <template #title>
         <div class="flex-base-start">
           <img src="@/assets/base/waring.svg">
           <div class="risk-title">{{ info?.name }}异常</div>
         </div>
-      </template>
-      <template #footer>
-        <span class="dialog-footer">
-          <w-button type="primary" @click="dialogTableVisible = false">知道了</w-button>
-        </span>
       </template>
       <abnormal-ty v-if="riskType == abnormalStatus.TY" :info="info" :columns="columns"></abnormal-ty>
       <abnormal-djpl v-else-if="riskType == abnormalStatus.DJPL" :info="info" :columns="columns"></abnormal-djpl>
@@ -22,14 +18,12 @@
       <abnormal-glyc v-else-if="riskType == abnormalStatus.GLYC" :info="info" :columns="columns"></abnormal-glyc>
       <abnormal-htzt v-else-if="riskType == abnormalStatus.HTZT" :info="info" :columns="columns"></abnormal-htzt>
       <abnormal-jygm v-else-if="riskType == abnormalStatus.JYGM" :info="info" :columns="columns"></abnormal-jygm>
-    </el-dialog>
+    </w-modal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, computed } from 'vue'
-import { fxjkFieldMapping } from '@/api/archives'
-import { JYriskCode, TSriskCode } from '@/utils/baseType'
+import { ref, computed } from 'vue'
 import { abnormalStatus } from './type'
 
 const props = defineProps({

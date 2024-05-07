@@ -1,9 +1,7 @@
 <template>
   <div class="content-one">
     <div class="risk-result">
-      <p class="three-row" :title="info?.result">
-          {{ info?.result || '暂无' }}
-      </p>
+      <threeRow :info="info.result"></threeRow>
     </div>
     <m-table
       :columns="columnsData"
@@ -21,6 +19,7 @@
 
 <script setup>
 import { watch, ref } from 'vue'
+import threeRow from './threeRow.vue'
 
 const table = ref([])
 const columnsData = ref([])
