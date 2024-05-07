@@ -276,6 +276,7 @@ const tabData = computed(() => {
 let userId = userStore.user.id;
 let username = userStore.user.name;
 let companyName = userStore?.user?.organization?.name;
+let phone = userStore.user.phone;
 
 const route = useRoute();
 const router = useRouter();
@@ -326,7 +327,8 @@ const form = ref({
   otherMaterialsRequestList: [], // 其他资料
   preStrMoney: '',// 需求预测
   businessDataMaterialList: [],
-  transportationRequestList: []
+  transportationRequestList: [],
+  applyContactPhone: phone
 })
 const defaultKey = ref('1'); // 默认打开的tab
 const curTab = ref('1') // 当前打开的tab
