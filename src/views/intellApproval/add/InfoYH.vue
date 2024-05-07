@@ -21,7 +21,7 @@
           {{ tableData[rowIndex].currency }}{{ formatNumber(Number(tableData[rowIndex].collectionAmount)) }}{{tableData[rowIndex].amountUnit}}
         </template>
         <template v-slot:materialslot="{rowIndex}">
-          <attachFile :row="tableData[rowIndex]"></attachFile>
+          <attachFile :row="tableData[rowIndex]" :type="pro.YH" v-bind="$attrs"></attachFile>
             <!-- <div>{{ tableData[rowIndex].material ? '已上传' : '未上传'  }}</div> -->
         </template>
         <template v-slot:materialErrorslot="{rowIndex}">

@@ -19,7 +19,7 @@
             <div>{{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].totalMoney) }}{{ tableData[rowIndex].amountUnit }}</div>
         </template>
         <template v-slot:materialslot="{rowIndex}">
-          <attachFile :row="tableData[rowIndex]"></attachFile>
+          <attachFile :row="tableData[rowIndex]" :type="pro.DD" v-bind="$attrs"></attachFile>
         </template>
         <template v-slot:materialErrorslot="{rowIndex}">
             <span v-for="(item, i) in tableData[rowIndex]?.material?.judgeResult" :key="i">

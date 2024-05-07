@@ -14,7 +14,7 @@
           {{ rowIndex + 1 }}
         </template>
         <template v-slot:materialslot="{rowIndex}">
-          <attachFile :row="tableData[rowIndex]"></attachFile>
+          <attachFile :row="tableData[rowIndex]" :type="pro.FP" v-bind="$attrs"></attachFile>
             <!-- <div>{{ tableData[rowIndex].material ? '已上传' : '未上传'  }}</div> -->
         </template>
         <template v-slot:materialErrorslot="{rowIndex}">

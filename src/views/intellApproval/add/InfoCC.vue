@@ -28,7 +28,7 @@
           <div>{{ formatNumber(tableData[rowIndex].distributionWeight) }}{{tableData[rowIndex].warehousingUnit}}</div>
         </template>
         <template v-slot:materialslot="{rowIndex}">
-          <attachFile :row="tableData[rowIndex]"></attachFile>
+          <attachFile :row="tableData[rowIndex]" :type="pro.CC" v-bind="$attrs"></attachFile>
         </template>
         <template v-slot:operations="{rowIndex}">
           <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.CC" :row="tableData[rowIndex]" v-bind="$attrs"></reportOperation>

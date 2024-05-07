@@ -74,7 +74,7 @@ const columns = reactive([
   },
   {
     title: "发布方企业纳税人识别号",
-    dataIndex: "signAddress",
+    dataIndex: "publisherTaxCode",
     width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
