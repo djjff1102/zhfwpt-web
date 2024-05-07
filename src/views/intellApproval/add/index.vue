@@ -833,7 +833,7 @@ init()
   left: 16px;
   right: 16px;
   bottom: 0;
-  z-index: 9;
+  z-index: 99;
   padding: 12px 24px;
   background: #fff;
   border-top: solid 1px rgba(237, 241, 252, 1);
