@@ -88,7 +88,7 @@ const columns = reactive([
   {
     title: "库存单注册时间",
     width: 180,
-    dataIndex: "inventoryListRegistrationDate	",
+    dataIndex: "inventoryListRegistrationDate",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
