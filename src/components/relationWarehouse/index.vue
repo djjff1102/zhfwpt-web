@@ -31,6 +31,9 @@
         <template v-slot:taxAmountSlot="{ rowIndex }">
           {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].taxAmount) }}{{ tableData[rowIndex].amountUnit }}
         </template>
+        <template v-slot:operations="{ rowIndex }">
+          <fileDownLoad btn="原件" :fileName="tableData[rowIndex].material.fileName" :fileUrl="tableData[rowIndex].material.fileUrl"></fileDownLoad>
+        </template>
       </m-table>
     </div>
   </div>
@@ -153,13 +156,13 @@ const columns = reactive([
     ellipsis: true,
     tooltip: {position: 'left'},
   },
-  // {
-  //   title: "操作",
-  //   width: 100,
-  //   dataIndex: "operations",
-  //   slotName: "operations",
-  //   fixed: "right",
-  // },
+  {
+    title: "操作",
+    width: 100,
+    dataIndex: "operations",
+    slotName: "operations",
+    fixed: "right",
+  },
 ]);
 const pagination = ref({
   total: 0,

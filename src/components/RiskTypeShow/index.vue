@@ -3,7 +3,7 @@
     <div class="risk-result" @click="handleResult">
       {{ info?.result }}
     </div>
-    <el-dialog v-model="dialogTableVisible" :width="getWidth">
+    <el-dialog v-model="dialogTableVisible" :width="getWidth" :append-to-body="true">
       <template #header>
         <div class="flex-base-start">
           <img src="@/assets/base/waring.svg">
@@ -77,7 +77,7 @@ function formateWord(d) {
 function handleResult() {
   dialogTableVisible.value = true;
   riskType.value = props.info.handleMethod
-  console.log('mapding--------------:', props.info.fieldMapping)
+  // console.log('mapding--------------:', props.info.fieldMapping)
   formateWord(JSON.parse(props.info.fieldMapping)); // 字段对应关系
 }
 
@@ -87,6 +87,9 @@ function handleResult() {
 .risk-result {
   color:#3470FF;
   cursor: pointer;
+  overflow:hidden;
+  text-overflow:ellipsis;//文本溢出显示省略号
+  white-space:nowrap;//文本不会换行
 }
 .risk-title {
   font-family: PingFangSC, PingFang SC;

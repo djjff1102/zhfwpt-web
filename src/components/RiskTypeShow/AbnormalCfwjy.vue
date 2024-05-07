@@ -1,6 +1,10 @@
 <template>
   <div class="content-one">
-    <div class="risk-result">{{ info.result }}</div>
+    <div class="risk-result" :title="info.result">
+      <p class="three-row" :title="info?.result">
+          {{ info?.result || '暂无' }}
+        </p>
+    </div>
     <el-descriptions class="margin-top" :column="2" border style="margin: 16px 0">
       <el-descriptions-item label="经营范围">
         <p class="three-row" :title="info?.otherSource">
@@ -12,6 +16,7 @@
       :columns="columns"
       :data="JSON.parse(info.source)"
       style="height: 100%"
+      :scroll="scroll"
       :pagination="false"
       :bordered="false"
     >
@@ -31,6 +36,10 @@ const props = defineProps({
     default: []
   }
 })
+
+const scroll = ref({
+  y: 300,
+});
 </script>
 
 <style lang="scss" scoped>

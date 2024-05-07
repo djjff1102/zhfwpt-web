@@ -215,8 +215,11 @@ const columns = reactive([
   },
   {
     title: "扫描结果",
+    width: 300,
     dataIndex: "result",
-    slotName: 'resultSlot'
+    slotName: 'resultSlot',
+    // ellipsis: true,
+    // tooltip: {position: 'left'},
   },
   {
     title: "风险建议",

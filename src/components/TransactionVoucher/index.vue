@@ -48,13 +48,7 @@
           {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].amount) }}{{ tableData[rowIndex].amountUnit }}
         </template>
         <template v-slot:operations="{ rowIndex }">
-          <el-button
-            v-if="orderCode && tableData[rowIndex]?.material?.fileUrl"
-            :loading="curRow == rowIndex && loading"
-            type="text"
-            @click="load(tableData[rowIndex].material)">原件
-            <!-- {{ splitFiltName(tableData[rowIndex].material.fileUrl) }} -->
-          </el-button>
+          <fileDownLoad btn="原件" :fileName="tableData[rowIndex].material.fileName" :fileUrl="tableData[rowIndex].material.fileUrl"></fileDownLoad>
           <el-button v-if="companyName" type="text"  @click="toDetail(tableData[rowIndex])">详情</el-button>
         </template>
       </m-table>

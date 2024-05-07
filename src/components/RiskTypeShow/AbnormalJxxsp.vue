@@ -30,6 +30,10 @@ const props = defineProps({
   }
 })
 
+const scroll = ref({
+  y: 300,
+});
+
 watch(() => props.info, (v) => {
   if(v) {
     nextTick(() => {
@@ -58,6 +62,14 @@ function handleData(d) {
 </script>
 
 <style lang="scss" scoped>
+.three-row {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;/*省略几行写几*/
+    -webkit-box-orient: vertical;
+    cursor: pointer;
+}
 .content-one {
   padding: 16px 24px;
   font-family: PingFangSC, PingFang SC;

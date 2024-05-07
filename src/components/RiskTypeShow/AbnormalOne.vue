@@ -17,6 +17,10 @@ const props = defineProps({
     default: []
   }
 })
+
+const scroll = ref({
+  y: 300,
+});
 </script>
 
 <style lang="scss" scoped>

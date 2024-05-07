@@ -1,6 +1,10 @@
 <template>
   <div class="content-one">
-    <div class="risk-result">{{ info.result }}</div>
+    <div class="risk-result">
+      <p class="three-row" :title="info?.result">
+          {{ info?.result || '暂无' }}
+      </p>
+    </div>
     <img src="./img/djpl.svg" class="pl-img">
     <m-table
       :columns="columns"
@@ -8,6 +12,7 @@
       style="height: 100%"
       :pagination="false"
       :bordered="false"
+      :scroll="scroll"
     >
     <template v-slot:index="{ rowIndex }">
       {{ rowIndex + 1 }}
@@ -25,9 +30,20 @@ const props = defineProps({
     default: []
   }
 })
+const scroll = ref({
+  y: 300,
+});
 </script>
 
 <style lang="scss" scoped>
+.three-row {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;/*省略几行写几*/
+    -webkit-box-orient: vertical;
+    cursor: pointer;
+}
 .content-one {
   padding: 16px 0;
   font-family: PingFangSC, PingFang SC;

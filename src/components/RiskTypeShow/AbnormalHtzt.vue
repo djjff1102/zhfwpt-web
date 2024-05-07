@@ -1,11 +1,16 @@
 <template>
   <div class="content-one">
-    <div class="risk-result">{{ info.result }}</div>
+    <div class="risk-result">
+      <p class="three-row" :title="info?.result">
+          {{ info?.result || '暂无' }}
+      </p>
+    </div>
     <m-table
       :columns="columnsData"
       :data="table"
       style="height: 100%"
       :pagination="false"
+      :scroll="scroll"
     >
     <template v-slot:index="{ rowIndex }">
       {{ rowIndex + 1 }}
@@ -25,6 +30,10 @@ const props = defineProps({
     default: {}
   },
 })
+
+const scroll = ref({
+  y: 300,
+});
 
 watch(() => props.info, (v) => {
   if(v) {
@@ -76,6 +85,14 @@ function init(v) {
 </script>
 
 <style lang="scss" scoped>
+.three-row {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;/*省略几行写几*/
+    -webkit-box-orient: vertical;
+    cursor: pointer;
+}
 .content-one {
   padding: 16px 24px;
   font-family: PingFangSC, PingFang SC;

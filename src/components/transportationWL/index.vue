@@ -1,35 +1,6 @@
 <template>
-  <!-- 物流 -->
+  <!-- 订单关联物流 -->
   <div>
-    <!-- <div class="search_box">
-      <el-form :model="searchPar" :inline="true" class="demo-form-inline">
-        <el-form-item field="code" label="合同编号">
-          <el-input v-model="searchPar.code" placeholder="请输入合同编号" clearable/>
-        </el-form-item>
-        <el-form-item class="mr-16px" field="partyA" label="甲方">
-          <el-input v-model="searchPar.partyA" placeholder="请输入关键字" clearable/>
-        </el-form-item>
-        <el-form-item class="mr-16px" field="partyB" label="乙方">
-          <el-input v-model="searchPar.partyB" placeholder="请输入关键字" clearable/>
-        </el-form-item>
-        <el-form-item class="mr-16px" field="post" label="签订日期">
-          <el-date-picker
-              v-model="curDate"
-              type="daterange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              format="YYYY-MM-DD"
-              @change="onChange"
-            >
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item>
-          <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
-          <w-button @click="reset">重置</w-button>
-        </el-form-item>
-      </el-form>
-    </div> -->
     <div class="table-warp">
       <m-table
         style="height: 100%"
@@ -53,8 +24,8 @@
         <template v-slot:slottransportationFeeAmount="{ rowIndex }">
           {{ formatNumber(tableData[rowIndex].transportationFeeAmount) }}
         </template>
-        <template v-slot:operations>
-          <w-button type="text" disabled>2原件</w-button>
+        <template v-slot:operations="{ rowIndex }">
+          <fileDownLoad btn="原件" :fileName="tableData[rowIndex].material.fileName" :fileUrl="tableData[rowIndex].material.fileUrl"></fileDownLoad>
         </template>
       </m-table>
     </div>
@@ -202,13 +173,13 @@ const columns = reactive([
     ellipsis: true,
     tooltip: {position: 'left'},
   },
-  // {
-  //   title: "操作",
-  //   width:100,
-  //   dataIndex: "operations",
-  //   slotName: "operations",
-  //   fixed: "right",
-  // },
+  {
+    title: "操作",
+    width:100,
+    dataIndex: "operations",
+    slotName: "operations",
+    fixed: "right",
+  },
 ]);
 
 const pagination = ref({
@@ -236,22 +207,12 @@ const changePagesize = (v) => {
   searchPar.value.page = 1;
   gettransportationWL();
 };
+
 const changepage = (v) => {
   searchPar.value.page = v;
   pagination.value.current = v
   gettransportationWL();
 };
-
-// 时间选择
-// function onChange(dateString, date) {
-//   if(dateString && dateString.length > 0) {
-//     searchPar.value.signDateStart = formateDate(dateString[0]);
-//     searchPar.value.signDateEnd = formateDate(dateString[1]);
-//   } else {
-//     searchPar.value.signDateStart = '';
-//     searchPar.value.signDateEnd = '';
-//   }
-// }
 
 function search() {
   searchPar.value.page = 1;

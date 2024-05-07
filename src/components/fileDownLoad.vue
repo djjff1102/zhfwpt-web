@@ -1,5 +1,5 @@
 <template>
-    <el-button :loading="loading" type="text" @click="load(fileUrl, fileName)"> {{ fileName }}</el-button>
+    <el-button :loading="loading" type="text" @click="load(fileUrl, fileName)"> {{ btn || fileName }}</el-button>
 </template>
 
 <script setup>
@@ -14,6 +14,9 @@ const props = defineProps({
     default: ''
   },
   fileName: {
+    default: ''
+  },
+  btn: {
     default: ''
   }
 })
