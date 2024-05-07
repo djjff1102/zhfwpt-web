@@ -25,7 +25,7 @@
           {{ formatNumber(tableData[rowIndex].transportationFeeAmount) }}
         </template>
         <template v-slot:operations="{ rowIndex }">
-          <fileDownLoad btn="原件" :fileName="tableData[rowIndex].material.fileName" :fileUrl="tableData[rowIndex].material.fileUrl"></fileDownLoad>
+          <fileDownLoad v-if="orderCode && tableData[rowIndex].material" btn="原件" :fileName="tableData[rowIndex]?.material?.fileName" :fileUrl="tableData[rowIndex]?.material?.fileUrl"></fileDownLoad>
         </template>
       </m-table>
     </div>
@@ -36,7 +36,6 @@ import { ref, reactive } from "vue";
 import { transportationWL } from '@/api/archives'
 import { formatNumber, formateDate } from '@/utils/common' 
 const props = defineProps({
-  companyName: String,
   orderCode: String
 })
 
