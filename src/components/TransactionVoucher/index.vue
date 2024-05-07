@@ -48,7 +48,7 @@
           {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].amount) }}{{ tableData[rowIndex].amountUnit }}
         </template>
         <template v-slot:operations="{ rowIndex }">
-          <fileDownLoad btn="原件" :fileName="tableData[rowIndex].material.fileName" :fileUrl="tableData[rowIndex].material.fileUrl"></fileDownLoad>
+          <fileDownLoad v-if="orderCode" btn="原件" :fileName="tableData[rowIndex].material.fileName" :fileUrl="tableData[rowIndex].material.fileUrl"></fileDownLoad>
           <el-button v-if="companyName" type="text"  @click="toDetail(tableData[rowIndex])">详情</el-button>
         </template>
       </m-table>
