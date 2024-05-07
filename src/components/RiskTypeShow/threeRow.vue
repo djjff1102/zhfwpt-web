@@ -26,7 +26,7 @@ const props = defineProps({
     cursor: pointer;
 }
 .tip-content {
-  height: 400px;
+  max-height: 400px;
   overflow-y: scroll;
   font-size: 12px;
   line-height: 18px;
