@@ -31,6 +31,11 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     page: 1,
     dataType: "",
   });
+  const totalMoney = ref({
+    count: 0,
+    totalMoneySum: 0,
+  });
+  const curTab = ref(1);
   const fileInfo = ref(); // 记录上传的附件
   const tabData = ref({
     DD: {
@@ -66,11 +71,48 @@ export const useApprovalStore = defineStore("approvalstore", () => {
   });
   const pageType = ref(""); // 当前页面类型 add operate detail
 
-  function getListLength(type: any) {
-    if (type == "CC") {
-      return CCList.value.length;
-    } else if (type == "WL") {
-      return WLList.value.length;
+  function getMoneyAndLen(type: any, flag?: any) {
+    curTab.value = type;
+    if (flag == 1) return;
+    if (type == pro.DD) {
+      let sum = 0;
+      DDList.value.forEach((item) => (sum += item.totalMoney));
+      console.log("2222222222222222222:", DDList.value);
+      totalMoney.value = {
+        count: DDList.value.length,
+        totalMoneySum: sum,
+      };
+    } else if (type == pro.HT) {
+      let sum = 0;
+      HTList.value.forEach((item) => (sum += item.amount));
+      totalMoney.value = {
+        count: HTList.value.length,
+        totalMoneySum: sum,
+      };
+    } else if (type == pro.FP) {
+      let sum = 0;
+      FPList.value.forEach((item) => (sum += item.allGoodMoneySum));
+      totalMoney.value = {
+        count: FPList.value.length,
+        totalMoneySum: sum,
+      };
+    } else if (type == pro.YH) {
+      let sum = 0;
+      YHList.value.forEach((item) => (sum += item.paymentAmount));
+      totalMoney.value = {
+        count: YHList.value.length,
+        totalMoneySum: sum,
+      };
+    } else if (type == pro.CC) {
+      totalMoney.value = {
+        count: CCList.value.length,
+        totalMoneySum: 0,
+      };
+    } else if (type == pro.WL) {
+      totalMoney.value = {
+        count: WLList.value.length,
+        totalMoneySum: 0,
+      };
     }
   }
   function clearTable() {
@@ -88,14 +130,20 @@ export const useApprovalStore = defineStore("approvalstore", () => {
   }
 
   // 获取订单、合同、 发票、 银行流水
-  function getTableData(reportId: any) {
+  function getTableData(reportId: any, type?: any, callback?: any) {
     searchPar.value.dataType = reportId;
-    getqyzxOrder();
-    getqyzxTransactionCertificate();
-    getqyzxInvoic();
-    getqyzxBankStatement();
-    getCC();
-    getWL();
+    Promise.all([
+      getqyzxOrder(),
+      getqyzxTransactionCertificate(),
+      getqyzxInvoic(),
+      getqyzxBankStatement(),
+      getCC(),
+      getWL(),
+    ]).then((res) => {
+      setTimeout(() => {
+        getMoneyAndLen(curTab.value);
+      }, 1000);
+    });
   }
 
   // 重置tab状态
@@ -329,12 +377,13 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     CCList,
     WLList,
     tabData,
+    totalMoney,
     setListData,
     updateData,
     getTableData,
     setFileInfo,
     clearTable,
     resetTab,
-    getListLength,
+    getMoneyAndLen,
   };
 });

@@ -273,6 +273,10 @@ const tabData = computed(() => {
   return approvalStore.tabData
 })
 
+const totalMoney = computed(() => {
+  return approvalStore.totalMoney
+})
+
 let userId = userStore.user.id;
 let username = userStore.user.name;
 let companyName = userStore?.user?.organization?.name;
@@ -335,9 +339,7 @@ const curTab = ref('1') // 当前打开的tab
 const showAdd = ref(false); // 新增资料弹窗
 const showRecord = ref(false); // 审批记录
 const showApproval = ref(false) // 审批窗口
-const totalMoney = ref({
-  count: 0
-});
+
 const fileList = ref([]) // 已经提交的文件
 const queryPar = ref({}) // 路由查询参数
 const uploadFlag = ref(-1) // -1未上传文件 0 上传文件失败 1上传成功
@@ -409,87 +411,11 @@ function updateUpload(file: any) {
   form.value.otherMaterialsRequestList = file;
 }
 
-// 添加资料
-// function handleAdd() {
-//   showAdd.value = true;
-// }
-
-// function getSum(key: string) {
-//   let sum = 0;
-//   dataList.value.forEach((item: any) => {
-//     sum += item[key]
-//   })
-//   totalMoney.value = sum;
-// }
-
+// 切换tab计算总金额和数量
 function handleTab(v: any) {
   curTab.value = v;
-  if(![pro.CC as any, pro.WL as any].includes(curTab.value)) {
-    getCurSumMoney(v) // 仓储和物流需要调该接口
-  } else if(curTab.value == pro.CC){
-    totalMoney.value.count = approvalStore.getListLength('CC') as any
-  } else if(curTab.value == pro.WL) {
-    totalMoney.value.count = approvalStore.getListLength('WL') as any
-  }
+  approvalStore.getMoneyAndLen(curTab.value)
 }
-
-function getCurSumMoney(v: any) {
-  getTotalMoney({
-    reportId: reportId.value,
-    fileType: v
-  }).then(res => {
-    totalMoney.value = res.data;
-  }).catch(err => {})
-}
-
-// function updateTable(HT:any, DD:any, FP:any, CC:any, YH:any,) {
-//     switch(curTab.value) {
-//     case pro.HT:
-//       dataList.value = HT;
-//       columns.value = columnsHT as any;
-//       getSum('amount');
-//       break;
-//     case pro.DD:
-//       columns.value = columnsDD as any;
-//       dataList.value = DD;
-//       getSum('totalMoney')
-//       break;
-//      case pro.FP:
-//       columns.value = columnsFP as any;
-//       dataList.value = FP;
-//       getSum('amountTotal')
-//       break;
-//     case pro.CC:
-//       columns.value = columnsCC as any;
-//       dataList.value = CC;
-//       totalMoney.value = 0;
-//       break;
-//      case pro.YH:
-//       columns.value = columnsYH as any;
-//       dataList.value = YH;
-//       getSum('paymentAmount')
-//       break;
-//   }
-// }
-
-// function updateData(HT:any, DD:any, FP:any, CC:any, YH:any,) {
-//   dataHT.value = HT
-//   dataDD.value = DD
-//   dataFP.value = FP
-//   dataCC.value = CC
-//   dataYH.value = YH
-//   updateTable(HT, DD, FP, CC, YH);
-// }
-
-
-// function updateAdd(codeHT:any, codeDD: any, codeFP: any, codeCC: any, codeYH: any) {
-//   showAdd.value = false;
-//   form.value.transactionCertificateMapRequestList = codeHT  // 合同
-//   form.value.orderMapRequestList = codeDD   // 订单
-//   form.value.bankStatementMapRequestList = codeYH // 银行流水
-//   form.value.invoiceMapRequestList = codeFP   // 发票
-//   form.value.warehouseMapRequestList = codeCC    // 仓储
-// }
 
 // 新增暂存、新增提交
 
@@ -559,13 +485,6 @@ async function checkSave(type: any, msg: string) {
         handleAddNewSubmit(msg)
       }
   } 
-  // else { // 更新
-  //   approvalStore.updateData(form.value, errdata.value)
-  //   if(errdata.value.flag) return;
-  //   form.value.dataStatus = 2
-  //   form.value.id = initPageParam.id as any;
-  //   handleUpdate(msg);
-  // }
 }
 
 function handleUpdateSubmit(msg: any) {
@@ -603,19 +522,7 @@ function checkSubmitError(res: any, msg: any) {
       suafaErr.value.flag = true;
       suafaErr.value.data = ['附件上传有误, 请核实'] as any
       approvalStore.getTableData(reportId.value);
-      // ElMessage.error(res?.message || '算法校验失败');
     } 
-    // else if(res.result == 1 && res.message) {
-    //   suafaErr.value.flag = true;
-    //   suafaErr.value.data = res.data || []
-    //   approvalStore.getTableData(reportId.value);
-    //   // 处理异常
-    // } else {
-    //   suafaErr.value.flag = true;
-    //   suafaErr.value.data = res.data || []
-    //   approvalStore.getTableData(reportId.value);
-    //   // ElMessage.error(res?.message || '算法校验失败');
-    // }
 }
 
 // 编辑新增成功，返回列表页
@@ -681,7 +588,7 @@ function getDetail(d: any) {
       curDate.value = [res.data.validDateStart, res.data.validDateEnd] as any
       reportId.value = res.data.id
       approvalStore.getTableData(reportId.value); // 获取订单、合同、发票等信息
-      getCurSumMoney(curTab.value)
+      // getCurSumMoney(curTab.value)
     } else {
       approvalStore.clearTable(); // 获取订单、合同、发票等信息
       getgetOneByCompanyName() // 当前返回数据为空，新增，且无暂存，则查询企业基本信息
@@ -733,6 +640,7 @@ function init() {
 }
 
 init()
+approvalStore.getMoneyAndLen(curTab.value, 1)
 
 </script>
 
