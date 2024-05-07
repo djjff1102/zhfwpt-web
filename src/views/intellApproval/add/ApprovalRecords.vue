@@ -60,6 +60,12 @@ const props = defineProps({
   }
 })
 
+watch( () => props.reportId, (v) => {
+  if(v && v!= '-1') {
+    getfpspApproveDetail()
+  }
+})
+
 const loading = ref(false)
 const curLoadIndex = ref(-1) // 当前正在下载的index
 const curLoadRowIndex = ref(-1) // 当前正在下载的行index
@@ -204,8 +210,6 @@ function getfpspApproveDetail() {
     loading.value = false
   })
 }
-
-getfpspApproveDetail()
 </script>
 
 <style lang="scss" scoped>

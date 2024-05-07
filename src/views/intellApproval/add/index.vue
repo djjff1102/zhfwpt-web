@@ -12,6 +12,7 @@
     <div v-if="initPageParam.title == '详情'" class="section-sub flex-base-end">
       <approval-record
         v-hasPerm="btnApprovalCode.approvallist"
+        :reportId="reportId"
       ></approval-record>
       <!-- <w-button v-hasPerm="btnApprovalCode.approvallist" style="margin-right: 8px;" @click="showRecord = true">审批记录</w-button> -->
       <w-button

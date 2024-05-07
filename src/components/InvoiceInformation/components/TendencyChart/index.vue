@@ -22,7 +22,8 @@ const props = defineProps({
 const echartData = ref({
     // color: ['#5ECF69', '#3470FF'],
     title: {
-      text: "近12个月开票总额度",
+      text: "开票总金额",
+      subtext: '单位：元',
       left: "left",
       textStyle: {
         fontSize: 14,
