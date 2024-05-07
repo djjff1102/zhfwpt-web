@@ -147,15 +147,18 @@
       <InfoDD
         v-show="curTab == pro.DD" 
         :reportId="reportId"
+        :approveStatus="form.approveStatus"
       ></InfoDD>
       <InfoHT
         v-show="curTab == pro.HT"
         :reportId="reportId"
+        :approveStatus="form.approveStatus"
       ></InfoHT>
       <!-- 发票不区分进项和销项 -->
       <InfoFP
         :reportId="reportId"
         v-show="curTab == pro.FP"
+        :approveStatus="form.approveStatus"
       ></InfoFP>
       <InfoYH
         v-if="curTab == pro.YH"

@@ -44,10 +44,10 @@ import { useApprovalStore } from '@/store/modules/approval'
 import { fileSave } from '@/api/intellApproval/special'
 import { splitFiltName } from '@/utils/common'
 import { pro, urlMap } from '../type'
+import { status } from '../type' 
 
 const router = useRouter();
 const route = useRoute();
-
 const approvalStore = useApprovalStore();
 
 const props = defineProps({
@@ -64,6 +64,9 @@ const props = defineProps({
     default: {}
   },
   reportId: {
+    default: ''
+  },
+  approveStatus: {  // 审批状态 1 待审批 2通过 3 reject
     default: ''
   }
 })
@@ -125,19 +128,31 @@ function toFile() {
 
 // 跳转订单详情
 function toDetail(d) {
+  let query = {}
   // 标记从订单调走，针对back时，做模块定位
   switch(props.type) {
     case pro.DD:
-      formateURL( urlMap[pro.DD], {orderCode: d.code})
+      query.orderCode = d.code
+      if(props.approveStatus != status.pass) {
+        query.reportId = props.reportId;
+      }
+      formateURL( urlMap[pro.DD], query)
       break;
     case pro.HT:
-      formateURL( urlMap[pro.HT], {parentCode: d.code})
+      query.parentCode = d.code
+      if(props.approveStatus != status.pass) {
+        query.reportId = props.reportId;
+      }
+      formateURL( urlMap[pro.HT], query)
       break;
     case pro.FP:
-      const query = {
+      query = {
         name:'发票详情',
         number: d.number, // 发票号码
         code: d.code // 发票代码
+      }
+      if(props.approveStatus != status.pass) {
+        query.reportId = props.reportId;
       }
       formateURL( urlMap[pro.FP], query)
       break;

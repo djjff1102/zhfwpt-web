@@ -68,12 +68,9 @@ export enum pro {
 }
 
 export const urlMap = {
-  [pro.HT]: "/archives/transactDetail",
-  [pro.DD]: "/archives/orderDetail",
-  [pro.FP]: "/archives/fpdetail",
-  [pro.CC]: "",
-  [pro.YH]: "",
-  [pro.WL]: "",
+  [pro.HT]: "/intellApproval/detailHT",
+  [pro.DD]: "/intellApproval/intellApprovalOrderDetail",
+  [pro.FP]: "/intellApproval/detailFP",
 };
 
 export const nameMap = {
