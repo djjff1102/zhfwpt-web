@@ -34,7 +34,7 @@
               content="Caps lock is On"
               placement="right"
             >
-              <el-form-item prop="password">
+              <el-form-item prop="password" :style="{width: '360px', height: '48px'}">
                 <span class="p-2">
                   <svg-icon icon-class="password" />
                 </span>
