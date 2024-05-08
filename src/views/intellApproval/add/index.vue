@@ -3,7 +3,7 @@
   <div class="title">企业用户申报{{ initPageParam.title }}</div>
   <div class="section section-detail-header">
     <div v-if="queryPar.reportCode" class="section-sub">
-      <span style="color: rgba(153, 153, 153, 1); padding-right: 30px;">申请编号：{{ queryPar?.reportCode }}</span>
+      <span style="color: rgba(153, 153, 153, 1); padding-right: 30px;">申报编号：{{ queryPar?.reportCode }}</span>
       <span>
         <span style="color: rgba(51, 51, 51, 1)">审批状态：</span>
           <span :style="{color: approveStatusColor[form?.approveStatus]}">{{ approveStatus[form?.approveStatus] }}</span>
@@ -64,7 +64,7 @@
       <div class="title-sub">申报额度信息</div>
       <el-form v-if="initPageParam.edit" ref="basefrom2" :model="form" layout="vertical" :rules="rules">
          <el-form-item prop="money" label="申请额度" required>
-          <w-input-number v-if="initPageParam.edit" v-model="form.money" placeholder="请输入额度" style="height: 32px">
+          <w-input-number v-if="initPageParam.edit" v-model="form.money" :min="1" placeholder="请输入额度" style="height: 32px">
           </w-input-number>
            <div v-else>{{ form.money }}</div>
         </el-form-item>
@@ -313,7 +313,7 @@ const curDate = ref('')
 const form = ref({
   companyId: '', // 企业ID
   applyUserId: '', // 申请人ID :TODO
-  money: 0,
+  money: 1,
   taxAuthority: '', // 主管税务机关
   limitType: '', // 申请额度调整类型
   companyName: '', // 申请单位
@@ -464,6 +464,7 @@ async function checkSave(type: any, msg: string) {
     WL: {}} // 重新校验附件错误/空之前，清空之前的校验
 
   if(type == 1) { // 暂存
+    approvalStore.updateDataSave(form.value) // 暂存仅遍历附件，不做附件必传校验
     form.value.dataStatus = 1;
     if(reportId.value != -1) {
         form.value.id = reportId.value

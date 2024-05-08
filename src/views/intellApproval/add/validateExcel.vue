@@ -266,14 +266,6 @@ async function handleDel() {
 function handleClose() {
   dialogVisible.value = false
 }
-
-// onMounted(() => {
-//   var scrollPosition = sessionStorage.getItem('scrollPosition');
-//   if (scrollPosition !== null) {
-//     document.getElementsByClassName('operate-wrap')[0].scrollTo(0, parseInt(scrollPosition, 10));
-//     sessionStorage.setItem('scrollPosition', null)
-//   }
-// })
 </script>
 
 <style scoped lang="scss">

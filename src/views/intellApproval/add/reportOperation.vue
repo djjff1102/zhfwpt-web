@@ -14,25 +14,22 @@
       <el-button :disabled="[pro.YH, pro.CC, pro.WL].includes(type)" type="text" @click="toDetail(row)">详情</el-button>
       <!-- <el-button type="text" disabled>取消</el-button> -->
     </div>
+
     <el-dialog
         title="错误信息"
         v-model="dialogVisible"
         width="600"
         :before-close="handleClose"
+        :append-to-body="true"
       >
       <div style="padding: 24px 30px">
         <div v-for="(item, i) in row?.material.judgeResult" :key="item" class="common-click-txt">{{ i+ 1}}、{{ item }}</div>
         <div class="common-click-txt" style="margin-top: 16px">可前往该附件中进行修改</div>
-        <!-- <div>可前往 <span class="click-txt" @click="toFile"> 该[附件] </span> 中进行修改</div> -->
         <div class="common-click-txt center-content">可 <span class="click-txt" @click="abortMsg">忽略</span>
-          <w-popover
-            placement="bottom">
-            <template #content>
-            <span class="err-msg">若选择忽略，提交时不会再进行错误提示</span>
-            </template>
-            <img style="width: 20px" src="@/assets/tip.png">
-          </w-popover> 
-            改错误信息</div>
+          <el-tooltip content="若选择忽略，提交时不会再进行错误提示" placement="bottom">
+           <img style="width: 20px" src="@/assets/tip.png">
+          </el-tooltip>改错误信息
+        </div>
       </div>
     </el-dialog>
   </div>
@@ -99,7 +96,7 @@ function updateUpload(file) {
     fileName: splitFiltName(file),
     judgeId: props.rowId,
     fileType: props.type, // 文件对应的数据类型，0为其他材料，1为订单，2为合同，3为发票，4为银行流水，5为仓储，6为物流
-    judgeCode: material.judgeCode || 0
+    judgeCode: 0 // judgeCode 0为未处理的，1为校验通过的，2为校验异常的，3为用户选择忽略,重新上传默认为未处理
   }
   fileSave( data ).then(res => {
     approvalStore.setListData( props.type)

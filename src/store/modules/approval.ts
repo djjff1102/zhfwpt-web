@@ -262,6 +262,72 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     return data;
   }
 
+  // 表单暂存前，整合数据（不做附件必传校验）
+  function updateDataSave(form: any) {
+    const businessDataMaterialList: any = [];
+    if (fileInfo.value && JSON.stringify(fileInfo.value) != "{}") {
+      businessDataMaterialList.push(fileInfo.value);
+    }
+    // let HTEmptyflag = false; // 合同有待上传的附件
+    // let YHEmptyflag = false; // 银行有待上传的附件
+    const DDcode: any = [];
+    const HTcode: any = [];
+    const FPcode: any = [];
+    const YHcode: any = [];
+    const CCcode: any = [];
+    const WLcode: any = [];
+    DDList.value.forEach((item: any) => {
+      DDcode.push(item.code);
+      if (item.material) {
+        const d = formateMaterial(item.material, pro.DD);
+        businessDataMaterialList.push(d);
+      }
+    });
+    HTList.value.forEach((item: any) => {
+      HTcode.push(item.code);
+      if (item.material) {
+        const d = formateMaterial(item.material, pro.HT);
+        businessDataMaterialList.push(d);
+      }
+    });
+    FPList.value.forEach((item: any) => {
+      FPcode.push(item.id);
+      if (item.material) {
+        const d = formateMaterial(item.material, pro.FP);
+        businessDataMaterialList.push(d);
+      }
+    });
+    YHList.value.forEach((item: any) => {
+      YHcode.push(item.id);
+      if (item.material) {
+        const d = formateMaterial(item.material, pro.YH);
+        businessDataMaterialList.push(d);
+      }
+    });
+    CCList.value.forEach((item: any) => {
+      CCcode.push(item.id);
+      if (item.material) {
+        const d = formateMaterial(item.material, pro.CC);
+        businessDataMaterialList.push(d);
+      }
+    });
+
+    WLList.value.forEach((item: any) => {
+      WLcode.push(item.id);
+      if (item.material) {
+        const d = formateMaterial(item.material, pro.WL);
+        businessDataMaterialList.push(d);
+      }
+    });
+    form.businessDataMaterialList = businessDataMaterialList;
+    form.orderMapRequestList = DDcode;
+    form.transactionCertificateMapRequestList = HTcode;
+    form.invoiceMapRequestList = FPcode;
+    form.bankStatementMapRequestList = YHcode;
+    form.warehouseMapRequestList = CCcode; // 仓储
+    form.transportationRequestList = WLcode; // 物流
+  }
+
   // 表单提交前，整合数据
   function updateData(form: any, errdata: any) {
     const businessDataMaterialList: any = [];
@@ -380,6 +446,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     totalMoney,
     setListData,
     updateData,
+    updateDataSave,
     getTableData,
     setFileInfo,
     clearTable,
