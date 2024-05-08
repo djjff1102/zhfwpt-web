@@ -132,11 +132,15 @@ const columns = ref([
     title: "申报编号",
     dataIndex: "reportCode",
     width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: '创建日期',
     dataIndex: 'createDate',
     width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
     // sortable: {
     //   sortDirections: ['ascend', 'descend']
     // }
@@ -144,33 +148,45 @@ const columns = ref([
   {
     title: "申报单位",
     dataIndex: "companyName",
-    width: 220
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: '申报额度',
     dataIndex: 'money',
     slotName: 'moneySlot',
     width: 200,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "申报人",
     dataIndex: "applyUserName",
     width: 200,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: '联系方式',
     dataIndex: 'applyContactPhone',
     width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "审批人",
     dataIndex: "approveUserName",
     width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: '审批时间',
     dataIndex: 'approveDate',
     width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "审批状态",
