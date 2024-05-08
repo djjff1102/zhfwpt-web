@@ -108,7 +108,7 @@ import { useUserStoreHook } from "@/store/modules/user";
 import { formatNumber, formateDate } from '@/utils/common'
 
 const userStore = useUserStoreHook();
-const router = useRouter();
+const router = useRouter();  
 
 // 监听权限吗
 watch(() => userStore.user.dataPermissionCode,  (v) => {

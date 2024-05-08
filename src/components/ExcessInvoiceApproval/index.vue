@@ -85,7 +85,7 @@ const columns = reactive([
   },
   {
     title: '申报日期',
-    dataIndex: 'createDate',
+    dataIndex: 'applyTime',
     width: 180,
   },
   {
