@@ -14,7 +14,7 @@ export const approveStatusColor = {
   [status.pass]: "#5ECF69",
   [status.reject]: "#F76161 ",
 };
-enum tasks {
+export enum tasks {
   stop = 1,
   doing = 2,
   did = 3,

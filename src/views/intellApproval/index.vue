@@ -66,7 +66,12 @@
             <div :style="{color: approveStatusColor[tableData[rowIndex].approveStatus]}">{{ approveStatus[tableData[rowIndex].approveStatus] }}</div>
         </template>
         <template v-slot:taskStatus="{rowIndex}">
-            <div :style="{color: taskStatusColor[tableData[rowIndex].taskStatus]}">{{ taskStatus[tableData[rowIndex].taskStatus] }}</div>
+          <div
+            v-if="tableData[rowIndex].taskStatus == tasks.stop || tableData[rowIndex].taskStatus == tasks.did"
+            :style="{color: taskStatusColor[tableData[rowIndex].taskStatus]}">
+            {{ taskStatus[tableData[rowIndex].taskStatus] }}
+          </div>
+          <w-progress v-else status='success' :percent="tableData[rowIndex].finishNum / 100"/>
         </template>
         <template v-slot:operations="{rowIndex}">
           <el-button
@@ -96,7 +101,7 @@ import {  ref, reactive, watch } from "vue";
 import ApprovalDo from './add/ApprovalDo.vue';
 import { useRouter } from 'vue-router';
 import { fpspReport, approvalExport, delReport } from '@/api/intellApproval'
-import { status, approveStatus,approveStatusColor, statusList, taskStatus, taskStatusColor } from './type.ts'
+import { status, approveStatus,approveStatusColor, statusList, taskStatus, taskStatusColor, tasks } from './type.ts'
 import dayjs from "dayjs";
 import { btnApprovalCode, approvalMapping } from '@/router/permissionCode'
 import { useUserStoreHook } from "@/store/modules/user";
