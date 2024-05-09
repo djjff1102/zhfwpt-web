@@ -258,6 +258,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       fileUrl: material.fileUrl || "",
       judgeId: material.judgeId || "",
       judgeCode: material.judgeCode || 0,
+      judgeResult: material.judgeResult || [],
     };
     return data;
   }
