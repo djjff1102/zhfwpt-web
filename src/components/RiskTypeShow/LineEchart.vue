@@ -14,34 +14,37 @@ const props = defineProps({
     default: {
       left: [],
       right: [],
-      yValue: []
-    }
+      yValue: [],
+    },
   },
   chartId: {
-    default: 'tendencyChart'
-  }
-})
+    default: "tendencyChartLine",
+  },
+});
 
-watch(() => props.echartData, (v) => {
-  if(v) {
-    
-    barNum.value = v.left.length;
-    echartData.value.series[0].name = '1'
-    echartData.value.series[1].name = '2'
-    echartData.value.series[0].data = v.left
-    echartData.value.series[1].data = v.right
-    echartData.value.yAxis[1].data = v.yValue
-    console.log('echartData--------------:', echartData.value)
-    init()
+watch(
+  () => props.echartData,
+  (v) => {
+    if (v) {
+      barNum.value = v.left.length;
+      echartData.value.series[0].name = "1";
+      echartData.value.series[1].name = "2";
+      echartData.value.series[0].data = v.left;
+      echartData.value.series[1].data = v.right;
+      echartData.value.yAxis[1].data = v.yValue;
+      console.log("echartData--------------:", echartData.value);
+      init();
+    }
+  },
+  {
+    deep: true,
   }
-}, {
-  deep: true
-})
+);
 
-const barNum = ref(1) // 柱子的个数
+const barNum = ref(1); // 柱子的个数
 const echartData = ref({
   tooltip: {
-    show: false
+    show: false,
   },
   legend: {
     show: false,
@@ -79,7 +82,7 @@ const echartData = ref({
     {
       type: "value",
       inverse: true,
-      show: false
+      show: false,
     },
     {
       gridIndex: 1,
@@ -88,7 +91,7 @@ const echartData = ref({
     {
       gridIndex: 2,
       type: "value",
-      show: false
+      show: false,
     },
   ],
   yAxis: [
@@ -121,15 +124,15 @@ const echartData = ref({
           var valLength = value.length; // X轴类目项的文字个数
           var rowN = Math.ceil(valLength / maxLength); // 类目项需要换行的行数
           if (valLength > maxLength) {
-            let ret = value.substring(0, maxLength) + '...'
+            let ret = value.substring(0, maxLength) + "...";
             return ret;
           } else {
             return value;
           }
-        }
+        },
       },
       nameTextStyle: {
-        verticalAlign: 'center',
+        verticalAlign: "center",
       },
       gridIndex: 1,
       position: "center",
@@ -142,7 +145,7 @@ const echartData = ref({
         //y轴刻度线
         show: false,
       },
-      data: [1,2,2,2]
+      data: [1, 2, 2, 2],
     },
     {
       gridIndex: 2,
@@ -177,8 +180,8 @@ const echartData = ref({
       data: [],
       label: {
         show: true,
-        color: '#fff'
-      }
+        color: "#fff",
+      },
     },
     {
       type: "bar",
@@ -192,37 +195,37 @@ const echartData = ref({
       data: [],
       label: {
         show: true,
-        color: '#fff'
-      }
+        color: "#fff",
+      },
     },
-  ]
-})
+  ],
+});
 
 onMounted(() => {
   init();
-})
+});
 
 function init() {
   const tendencyDom = document.getElementById(props.chartId);
   const tendencyChart = echarts.init(tendencyDom, null, {
     width: "800",
-    height: 48 , // 每根柱子宽24，间距24  计算画布的高
+    height: 48, // 每根柱子宽24，间距24  计算画布的高
   });
   tendencyChart.setOption(echartData.value);
-  handleResize()
-  window.addEventListener('resize', handleResize);
+  handleResize();
+  window.addEventListener("resize", handleResize);
 }
 
 function handleResize() {
-  const chart = echarts.getInstanceByDom(document.getElementById(props.chartId));
+  const chart = echarts.getInstanceByDom(
+    document.getElementById(props.chartId)
+  );
   if (chart) {
     chart.resize();
   }
 }
 onUnmounted(() => {
-  window.removeEventListener('resize', handleResize);
-})
-
+  window.removeEventListener("resize", handleResize);
+});
 </script>
-<style lang="scss">
-</style>
+<style lang="scss"></style>
