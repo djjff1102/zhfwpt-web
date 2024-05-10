@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <div v-show="!exportFlag" class="danger-point-container" :class="{'open-divder': isOpen}" style="margin-top: 40px">
+    <div v-show="!exportFlag" class="danger-point-container" :class="{'open-divder': isOpen}" style="margin-top: 38px">
       <div class="title">风险点</div>
       <div class="search_box">
         <el-form :model="searchPar" :inline="true" class="demo-form-inline">
