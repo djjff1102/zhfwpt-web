@@ -18,18 +18,21 @@ export enum tasks {
   stop = 1,
   doing = 2,
   did = 3,
+  fail = 4,
 }
 
 export const taskStatus = {
   [tasks.stop]: "已暂停",
   [tasks.doing]: "评估中",
   [tasks.did]: "已完成",
+  [tasks.fail]: "已失败",
 };
 
 export const taskStatusColor = {
   [tasks.stop]: "#FF9100",
   [tasks.doing]: "#0594EB",
   [tasks.did]: "#5ECF69",
+  [tasks.fail]: "#FF9100",
 };
 
 export const statusList = [

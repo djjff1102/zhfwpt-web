@@ -66,8 +66,9 @@
             <div :style="{color: approveStatusColor[tableData[rowIndex].approveStatus]}">{{ approveStatus[tableData[rowIndex].approveStatus] }}</div>
         </template>
         <template v-slot:taskStatus="{rowIndex}">
+          <w-progress v-if="tableData[rowIndex].taskStatus == tasks.doing" status='success' :percent="tableData[rowIndex].finishNum / 100"/>
           <div
-            v-if="tableData[rowIndex].taskStatus == tasks.stop || tableData[rowIndex].taskStatus == tasks.did"
+            v-else
             :style="{color: taskStatusColor[tableData[rowIndex].taskStatus]}">
             {{ taskStatus[tableData[rowIndex].taskStatus] }}
           </div>
