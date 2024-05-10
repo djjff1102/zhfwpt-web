@@ -13,7 +13,6 @@
 
 <script setup>
 import { watch, ref } from 'vue'
-import threeRow from './threeRow.vue'
 const echartData = ref({
   left: [],
   right: [],
@@ -42,11 +41,12 @@ watch(() => props.info, (v) => {
 })
 
 function handleData(d) {
+  console.log('进销项异常传入----------：', d)
   const left = []
   const right = []
   const yValue = []
-  const otherSource = JSON.parse(d.otherSource);
-  JSON.parse(d.source).forEach((e, i) => {
+  const otherSource = d.other_source;
+  d.source.forEach((e, i) => {
     yValue.push(e.goodName);
     left.push(e.quantity);
     right.push(otherSource[i].quantity)

@@ -28,12 +28,12 @@
         </el-tab-pane>
       </el-tabs>
       <div v-else>
-        <abnormal-ty v-if="riskType == abnormalStatus.TY" :info="info" :columns="columns"></abnormal-ty>
+        <abnormal-ty v-if="riskType == abnormalStatus.TY" :info="sourceList[0] || []" :columns="columns"></abnormal-ty>
         <abnormal-djpl v-else-if="riskType == abnormalStatus.DJPL" :info="info" :columns="columns"></abnormal-djpl>
-        <abnormal-cfwjy v-else-if="riskType == abnormalStatus.CFWJY" :info="info" :columns="columns"></abnormal-cfwjy>
-        <abnormal-jxxsp v-else-if="riskType == abnormalStatus.JXXSP" :info="info"></abnormal-jxxsp>
+        <abnormal-cfwjy v-else-if="riskType == abnormalStatus.CFWJY" :info="sourceList[0] || []" :columns="columns"></abnormal-cfwjy>
+        <abnormal-jxxsp v-else-if="riskType == abnormalStatus.JXXSP" :info="sourceList[0] || []"></abnormal-jxxsp>
         <abnormal-glyc v-else-if="riskType == abnormalStatus.GLYC" :info="info" :columns="columns"></abnormal-glyc>
-        <abnormal-htzt v-else-if="riskType == abnormalStatus.HTZT" :info="info" :columns="columns"></abnormal-htzt>
+        <abnormal-htzt v-else-if="riskType == abnormalStatus.HTZT" :info="sourceList[0] || []" :fieldMapping="info.fieldMapping"></abnormal-htzt>
         <abnormal-jygm v-else-if="riskType == abnormalStatus.JYGM" :info="info" :columns="columns"></abnormal-jygm>
       </div>
     </w-modal>
@@ -41,6 +41,16 @@
 </template>
 
 <script setup lang="ts">
+
+// 已联调：
+// htzt 6 合同主体一致性
+// ty 1 通用
+// JXXSP 4  
+// cfwjy 3 超范围经营
+// TODO: 待联调
+// 2 单价偏理性异常
+// 5 关联交易检测
+
 import { ref, computed } from 'vue'
 import { abnormalStatus } from './type'
 
@@ -98,11 +108,10 @@ function handleResult() {
   riskType.value = props.info.handleMethod
   if(props.info.source) {
     sourceList.value = JSON.parse(props.info.source)
-    sourceList.value[0].source[0].includedDate = '222222'
   }
-  console.log('source--------------:', JSON.parse(props.info.source))
   props.info.fieldMapping && formateWord(JSON.parse(props.info.fieldMapping)); // 字段对应关系
-
+  console.log('source--------------:', JSON.parse(props.info.source))
+  console.log('map--------------:', columns.value)
 }
 
 </script>

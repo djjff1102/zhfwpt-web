@@ -1,7 +1,7 @@
 <template>
   <div class="content-one">
     <div class="risk-result">
-      <threeRow :info="info.result"></threeRow>
+      <threeRow :info="info.error"></threeRow>
     </div>
     <m-table
       :columns="columnsData"
@@ -28,6 +28,9 @@ const props = defineProps({
   info: { // 风险信息
     default: {}
   },
+  fieldMapping: {
+    default: ''
+  }
 })
 
 const scroll = ref({
@@ -44,8 +47,8 @@ watch(() => props.info, (v) => {
 })
 
 function init(v) {
-  let fieldMapping = JSON.parse(v.fieldMapping)
-  let source = JSON.parse(v.source)[0]
+  let fieldMapping = JSON.parse(props.fieldMapping)
+  let source = v.source[0]
   let tableData = []
   let columns = []
   Object.keys(fieldMapping).forEach((item ,i) => {
@@ -75,10 +78,6 @@ function init(v) {
   })
   table.value = tableData;
   columnsData.value = columns;
-  // let source = JSON.parse(v.source)
-  // console.log('source:', v.source)
-  console.log('tableData:', tableData)
-  console.log('columns:', columns)
 }
 
 </script>

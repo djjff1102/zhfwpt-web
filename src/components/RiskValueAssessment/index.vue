@@ -72,7 +72,17 @@
           <template v-slot:nameSlot="{ rowIndex }">
             <div class="risk-name-level">
               <img :src="getRiskIcon(tableData[rowIndex].level)" style="width: 16px">
-              <span>{{ tableData[rowIndex].name }}</span>
+              <span v-if="tableData[rowIndex].name.length < 8">
+                {{ tableData[rowIndex].name }}
+              </span>
+              <w-tooltip v-else>
+                <span >
+                  {{ tableData[rowIndex].name.substring(0, 7) }}...
+                </span>
+                <template #content>{{ tableData[rowIndex].name }}</template>
+              </w-tooltip>
+
+
             </div>
           </template>
           <template v-slot:resultSlot="{ rowIndex }">

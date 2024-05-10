@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="max-height: 500px; overflow-y: scroll;">
     <div :id="chartId">
       <no-data></no-data>
     </div>
@@ -32,7 +32,6 @@ watch(
       echartData.value.series[0].data = v.left;
       echartData.value.series[1].data = v.right;
       echartData.value.yAxis[1].data = v.yValue;
-      console.log("echartData--------------:", echartData.value);
       init();
     }
   },
@@ -208,8 +207,8 @@ onMounted(() => {
 function init() {
   const tendencyDom = document.getElementById(props.chartId);
   const tendencyChart = echarts.init(tendencyDom, null, {
-    width: "800",
-    height: 48, // 每根柱子宽24，间距24  计算画布的高
+    width: "1070",
+    height: 80 * barNum.value, // 每根柱子宽24，间距24  计算画布的高
   });
   tendencyChart.setOption(echartData.value);
   handleResize();
