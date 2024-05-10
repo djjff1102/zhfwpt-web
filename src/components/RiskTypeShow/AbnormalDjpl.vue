@@ -44,7 +44,7 @@ const scroll = ref({
     cursor: pointer;
 }
 .content-one {
-  padding: 16px 0;
+  // padding: 16px 0;
   font-family: PingFangSC, PingFang SC;
   font-weight: 400;
   font-size: 14px;
