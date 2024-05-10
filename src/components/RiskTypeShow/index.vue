@@ -19,22 +19,22 @@
       <el-tabs type="card" v-if="sourceList.length > 1">
         <el-tab-pane :label="item.key" v-for="(item, i) in sourceList" :key="i">
           <abnormal-ty v-if="riskType == abnormalStatus.TY" :info="item" :columns="columns"></abnormal-ty>
-          <abnormal-djpl v-else-if="riskType == abnormalStatus.DJPL" :info="info" :columns="columns"></abnormal-djpl>
-          <abnormal-cfwjy v-else-if="riskType == abnormalStatus.CFWJY" :info="info" :columns="columns"></abnormal-cfwjy>
-          <abnormal-jxxsp v-else-if="riskType == abnormalStatus.JXXSP" :info="info"></abnormal-jxxsp>
-          <abnormal-glyc v-else-if="riskType == abnormalStatus.GLYC" :info="info" :columns="columns"></abnormal-glyc>
-          <abnormal-htzt v-else-if="riskType == abnormalStatus.HTZT" :info="info" :columns="columns"></abnormal-htzt>
-          <abnormal-jygm v-else-if="riskType == abnormalStatus.JYGM" :info="info" :columns="columns"></abnormal-jygm>
+          <abnormal-djpl v-else-if="riskType == abnormalStatus.DJPL" :info="item" :columns="columns"></abnormal-djpl>
+          <abnormal-cfwjy v-else-if="riskType == abnormalStatus.CFWJY" :info="item" :columns="columns"></abnormal-cfwjy>
+          <abnormal-jxxsp v-else-if="riskType == abnormalStatus.JXXSP" :info="item"></abnormal-jxxsp>
+          <abnormal-glyc v-else-if="riskType == abnormalStatus.GLYC" :info="item" :columns="columns"></abnormal-glyc>
+          <abnormal-htzt v-else-if="riskType == abnormalStatus.HTZT" :info="item" :columns="columns"></abnormal-htzt>
+          <abnormal-jygm v-else-if="riskType == abnormalStatus.JYGM" :info="item" :columns="columns"></abnormal-jygm>
         </el-tab-pane>
       </el-tabs>
       <div v-else>
         <abnormal-ty v-if="riskType == abnormalStatus.TY" :info="sourceList[0] || []" :columns="columns"></abnormal-ty>
-        <abnormal-djpl v-else-if="riskType == abnormalStatus.DJPL" :info="info" :columns="columns"></abnormal-djpl>
+        <abnormal-djpl v-else-if="riskType == abnormalStatus.DJPL" :info="sourceList[0] || []" :columns="columns"></abnormal-djpl>
         <abnormal-cfwjy v-else-if="riskType == abnormalStatus.CFWJY" :info="sourceList[0] || []" :columns="columns"></abnormal-cfwjy>
         <abnormal-jxxsp v-else-if="riskType == abnormalStatus.JXXSP" :info="sourceList[0] || []"></abnormal-jxxsp>
-        <abnormal-glyc v-else-if="riskType == abnormalStatus.GLYC" :info="info" :columns="columns"></abnormal-glyc>
+        <abnormal-glyc v-else-if="riskType == abnormalStatus.GLYC" :info="sourceList[0] || []" :columns="columns"></abnormal-glyc>
         <abnormal-htzt v-else-if="riskType == abnormalStatus.HTZT" :info="sourceList[0] || []" :fieldMapping="info.fieldMapping"></abnormal-htzt>
-        <abnormal-jygm v-else-if="riskType == abnormalStatus.JYGM" :info="info" :columns="columns"></abnormal-jygm>
+        <abnormal-jygm v-else-if="riskType == abnormalStatus.JYGM" :info="sourceList[0] || []" :columns="columns"></abnormal-jygm>
       </div>
     </w-modal>
   </div>
