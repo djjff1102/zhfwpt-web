@@ -1,13 +1,13 @@
 <template>
   <div class="content-one">
     <div class="risk-result">
-      <threeRow :info="info.result"></threeRow>
+      <threeRow :info="info.error"></threeRow>
     </div>
     <el-descriptions class="margin-top" :column="2" border style="margin: 16px 0">
     </el-descriptions>
     <m-table
       :columns="columns"
-      :data="JSON.parse(info.source)"
+      :data="info.source"
       style="height: 100%"
       :pagination="false"
       :bordered="false"
@@ -46,7 +46,7 @@ const scroll = ref({
     cursor: pointer;
 }
 .content-one {
-  padding: 16px 24px;
+  // padding: 16px 24px;
   font-family: PingFangSC, PingFang SC;
   font-weight: 400;
   font-size: 14px;

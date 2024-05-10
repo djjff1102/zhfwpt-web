@@ -1,16 +1,16 @@
 <template>
   <div class="content-one">
     <div class="risk-result">
-      <threeRow :info="info.result"></threeRow>
+      <threeRow :info="info.error"></threeRow>
     </div>
     <el-descriptions class="margin-top" :column="2" border style="margin: 16px 0">
       <el-descriptions-item label="经营范围">
-        <threeRow :info="info.otherSource"></threeRow>
+        <threeRow :info="info.other_source[0]"></threeRow>
       </el-descriptions-item>
     </el-descriptions>
     <m-table
       :columns="columns"
-      :data="JSON.parse(info.source)"
+      :data="info.source"
       style="height: 100%"
       :scroll="scroll"
       :pagination="false"
