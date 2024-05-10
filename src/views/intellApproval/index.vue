@@ -72,7 +72,6 @@
             :style="{color: taskStatusColor[tableData[rowIndex].taskStatus]}">
             {{ taskStatus[tableData[rowIndex].taskStatus] }}
           </div>
-          <w-progress v-else status='success' :percent="tableData[rowIndex].finishNum / 100"/>
         </template>
         <template v-slot:operations="{rowIndex}">
           <el-button
