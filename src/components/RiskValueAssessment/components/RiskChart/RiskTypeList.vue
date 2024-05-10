@@ -1,6 +1,6 @@
 <template>
-  <div class="riskChart" id="riskTypeChart">
-    <!-- <img src="@/assets/base/empty.png" class="empty-img"> -->
+  <div class="riskChart" id="riskTypeChart" style="height: 240px">
+    <NoData></NoData>
   </div>
 </template>
 <script setup>

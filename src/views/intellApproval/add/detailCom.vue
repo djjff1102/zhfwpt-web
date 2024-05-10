@@ -6,7 +6,7 @@
       <RiskValueAssessment :companyId="data.id" :companyName="data.name" :reportId="data.reportId"></RiskValueAssessment>
     </div>
     <!-- 企业用票需求预测 -->
-    <div v-hasPerm="approvalMapping.approvalPredict">
+    <div v-hasPerm="approvalMapping.approvalPredict" style="margin-top: 64px;">
       <div class="title base-title">企业进销项发票趋势</div>
       <PredictCom :data="preStrMoney"></PredictCom>
       <div class="date-month">
