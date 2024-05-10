@@ -118,7 +118,7 @@ function handleResult() {
 
 <style scoped lang="scss">
 :deep(.w-modal-body) {
-  padding: 16px 30px;
+  padding: 16px 24px;
 }
 .modal-header {
   width: 100%;

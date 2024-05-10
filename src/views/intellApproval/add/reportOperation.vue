@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex-base-around">
+    <div class="flex-base-between">
       <SingleUpload
         v-if="pageType != 'detail'"
         @updateUpload="updateUpload">
