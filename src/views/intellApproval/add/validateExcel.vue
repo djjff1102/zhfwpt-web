@@ -313,7 +313,8 @@ function handleClose() {
   flex:1;
   img {
     display: block;
-    margin-right: 8px;
+    margin-right: 4px;
+    width: 18px;
   }
 }
 .file-wrap {
