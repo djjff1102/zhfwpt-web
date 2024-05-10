@@ -80,7 +80,7 @@
           </template>
         </m-table>
       </div>
-      <m-divder :isOpen="isOpen" @handleShow="handleShow"></m-divder>
+      <m-divder v-if="tableDataCom && tableDataCom.length > 0" :isOpen="isOpen" @handleShow="handleShow"></m-divder>
     </div>
 
     <!-- 用作导出 -->

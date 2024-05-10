@@ -8,6 +8,12 @@
   font-family: myFontALHT;
   src: url('@/assets/iconfont/aliht.ttf')
 }
+
+@font-face {
+  font-family: myNumberBold;
+  src: url('@/assets/iconfont/DINAlternateBold.tff')
+}
+
 ::-webkit-scrollbar-thumb {
   width: 0px;
 }

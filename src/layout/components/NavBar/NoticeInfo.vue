@@ -4,8 +4,8 @@
     class="notice-popover-content">
     <div ref='innerDom' style="height: auto">
       <div class="notice-item" v-for="item in tableData" :key="item" @click="handleDetail(item)">
-        <span>（{{ roleLevel == 1 ? '待审批' : '驳回' }}）</span> -
-        <span>{{ item.companyName }}</span>
+        <span :class="[roleLevel == 1 ? 'wait-status' : 'reject-status']">({{ roleLevel == 1 ? '待审批' : '驳回' }})</span> -
+        <span class="notice-company">{{ item.companyName }}</span>
       </div>
       <div v-if="tableData.length == 0" class="no-more">暂无通知</div>
     </div>
@@ -42,6 +42,9 @@ onMounted(() => {
 })
 </script>
 <style lang="scss" scoped>
+.notice-company:hover {
+  color: #1454EC;
+}
 .notice-popover-content {
   padding: 24px 16px;
   max-height: 300px;
@@ -61,8 +64,11 @@ onMounted(() => {
       background: linear-gradient( 270deg, #EBF3FF 0%, #EBF3FF 100%);
     }
   }
-  .notice-item span:first-child { 
+  .wait-status {
     color: #0594EB;
+  } 
+  .reject-status {
+    color: #F76161;
   }
   .notice-item:first-child {
     margin-top: 0;
