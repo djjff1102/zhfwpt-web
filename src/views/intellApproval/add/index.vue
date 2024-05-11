@@ -277,6 +277,10 @@ const totalMoney = computed(() => {
   return approvalStore.totalMoney
 })
 
+const submitFlag = computed(() => {
+   return approvalStore.submitFlag
+})
+
 let userId = userStore.user.id;
 let username = userStore.user.name;
 let companyName = userStore?.user?.organization?.name;
@@ -474,6 +478,10 @@ async function checkSave(type: any, msg: string) {
         handleAddNew(msg)
       }
   } else if(type == 2) {
+    if(!submitFlag.value) { // 数据加载完成之前，禁止点击提交
+      ElMessage.warning('数据加载中');
+      return;
+    }
     approvalStore.updateData(form.value, errdata.value)
     if(errdata.value.flag) return;
     form.value.dataStatus = 2;

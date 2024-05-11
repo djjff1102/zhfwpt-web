@@ -70,6 +70,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     },
   });
   const pageType = ref(""); // 当前页面类型 add operate detail
+  const submitFlag = ref(false); // 默认为提交加锁 几个tab的数据加载完，置为true，可提交
 
   function getMoneyAndLen(type: any, flag?: any) {
     curTab.value = type;
@@ -77,7 +78,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     if (type == pro.DD) {
       let sum = 0;
       DDList.value.forEach((item) => (sum += item.totalMoney));
-      console.log("2222222222222222222:", DDList.value);
       totalMoney.value = {
         count: DDList.value.length,
         totalMoneySum: sum,
@@ -131,18 +131,28 @@ export const useApprovalStore = defineStore("approvalstore", () => {
 
   // 获取订单、合同、 发票、 银行流水
   function getTableData(reportId: any, type?: any, callback?: any) {
+    submitFlag.value = false; // 重新加载时，为提交加锁
     searchPar.value.dataType = reportId;
-    Promise.all([
-      getqyzxOrder(),
-      getqyzxTransactionCertificate(),
-      getqyzxInvoic(),
-      getqyzxBankStatement(),
-      getCC(),
-      getWL(),
-    ]).then((res) => {
-      setTimeout(() => {
-        getMoneyAndLen(curTab.value);
-      }, 1000);
+    return new Promise((resolve, reject) => {
+      Promise.all([
+        getqyzxOrder(),
+        getqyzxTransactionCertificate(),
+        getqyzxInvoic(),
+        getqyzxBankStatement(),
+        getCC(),
+        getWL(),
+      ])
+        .then((res) => {
+          submitFlag.value = true; // 加载完成后，为提交加锁
+          console.log("全都执行完了-------------------------：", res);
+          setTimeout(() => {
+            getMoneyAndLen(curTab.value);
+          }, 0);
+          resolve(1);
+        })
+        .catch((err) => {
+          reject(0);
+        });
     });
   }
 
@@ -159,74 +169,110 @@ export const useApprovalStore = defineStore("approvalstore", () => {
 
   // 订单1
   function getqyzxOrder() {
-    forReportDD(searchPar.value)
-      .then((res) => {
-        DDList.value = res.data;
-        if (pageType.value != "detail") {
-          tabData.value.DD.status = validateType(res.data);
-        }
-      })
-      .catch((err) => {});
+    return new Promise((resole, reject) => {
+      forReportDD(searchPar.value)
+        .then((res) => {
+          DDList.value = res.data;
+          if (pageType.value != "detail") {
+            tabData.value.DD.status = validateType(res.data);
+          }
+          console.log("订单执行完了-------------------------：");
+          resole(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 
   // 合同2
   function getqyzxTransactionCertificate() {
-    qyzxTransactionCertificate(searchPar.value)
-      .then((res) => {
-        HTList.value = res.data;
-        if (pageType.value != "detail") {
-          tabData.value.HT.status = validateType(res.data);
-        }
-      })
-      .catch((err) => {});
+    return new Promise((resolve, reject) => {
+      qyzxTransactionCertificate(searchPar.value)
+        .then((res) => {
+          HTList.value = res.data;
+          if (pageType.value != "detail") {
+            tabData.value.HT.status = validateType(res.data);
+          }
+          console.log("合同执行完了-------------------------：");
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 
   // 发票列表3
   function getqyzxInvoic() {
-    qyzxInvoic(searchPar.value)
-      .then((res) => {
-        FPList.value = res.data;
-        if (pageType.value != "detail") {
-          tabData.value.FP.status = validateType(res.data);
-        }
-      })
-      .catch((err) => {});
+    return new Promise((resolve, reject) => {
+      qyzxInvoic(searchPar.value)
+        .then((res) => {
+          FPList.value = res.data;
+          if (pageType.value != "detail") {
+            tabData.value.FP.status = validateType(res.data);
+          }
+          console.log("发票执行完了-------------------------：");
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 
   // 银行流水4
   function getqyzxBankStatement() {
-    qyzxBankStatement(searchPar.value)
-      .then((res) => {
-        YHList.value = res.data;
-        if (pageType.value != "detail") {
-          tabData.value.YH.status = validateType(res.data);
-        }
-      })
-      .catch((err) => {});
+    return new Promise((resolve, reject) => {
+      qyzxBankStatement(searchPar.value)
+        .then((res) => {
+          YHList.value = res.data;
+          if (pageType.value != "detail") {
+            tabData.value.YH.status = validateType(res.data);
+          }
+          console.log("银行流水执行完了-------------------------：");
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 
   // 仓储5
   function getCC() {
-    forReportCC(searchPar.value)
-      .then((res) => {
-        CCList.value = res.data;
-        if (pageType.value != "detail") {
-          tabData.value.CC.status = validateType(res.data);
-        }
-      })
-      .catch((err) => {});
+    return new Promise((resolve, reject) => {
+      forReportCC(searchPar.value)
+        .then((res) => {
+          CCList.value = res.data;
+          if (pageType.value != "detail") {
+            tabData.value.CC.status = validateType(res.data);
+          }
+          console.log("仓储执行完了-------------------------：");
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 
   // 物流6
   function getWL() {
-    forReportWL(searchPar.value)
-      .then((res) => {
-        WLList.value = res.data;
-        if (pageType.value != "detail") {
-          tabData.value.WL.status = validateType(res.data);
-        }
-      })
-      .catch((err) => {});
+    return new Promise((resolve, reject) => {
+      forReportWL(searchPar.value)
+        .then((res) => {
+          WLList.value = res.data;
+          if (pageType.value != "detail") {
+            tabData.value.WL.status = validateType(res.data);
+          }
+          console.log("物流执行完了-------------------------：");
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 
   // 附件上传完，刷新接口
@@ -445,6 +491,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     WLList,
     tabData,
     totalMoney,
+    submitFlag,
     setListData,
     updateData,
     updateDataSave,
