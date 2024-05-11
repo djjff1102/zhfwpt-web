@@ -11,6 +11,7 @@ export const btnApprovalCode = {
   // approvalexcute: "1009", // 审批执行侧
   save: "1010", // 暂存
   submit: "1011", // 提交
+  companyDetail: "1012", // 从发票智能审批跳转企业详情
 };
 
 export const approvalMapping = {

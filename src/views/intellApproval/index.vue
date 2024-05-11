@@ -47,6 +47,15 @@
         <template v-slot:index="{rowIndex}">
           {{ rowIndex + 1 }}
         </template>
+        <template v-slot:companyNameSlot="{rowIndex}">
+          <el-button
+            v-if="userStore.user.authorityCode?.includes(btnApprovalCode.companyDetail)"
+            type="text" 
+            @click="toCompanyDetail(tableData[rowIndex])">
+            {{ tableData[rowIndex].companyName }}
+          </el-button>
+          <span v-else>{{ tableData[rowIndex].companyName }}</span>
+        </template>
         <template v-slot:moneySlot="{rowIndex}">
           {{ formatNumber(tableData[rowIndex].money) }}
         </template>
@@ -142,6 +151,7 @@ const columns = ref([
     title: "申报单位",
     dataIndex: "companyName",
     width: 220,
+    slotName: 'companyNameSlot',
     ellipsis: true,
     tooltip: {position: 'left'},
   },
@@ -287,6 +297,18 @@ function exportBlob(b: any) {
   a.click();
   URL.revokeObjectURL(a.href);
   document.body.removeChild(a);
+}
+
+// 从发票智能审批-跳转公司详情
+function toCompanyDetail(d: any) {
+  // 跳转企业详情
+  router.push({ 
+    path: '/archives/companyDetail', 
+    query: {
+      companyId: d.companyId,
+      companyName: d.companyName
+    }
+  });
 }
 
 function operate(type: string, data: any) {
