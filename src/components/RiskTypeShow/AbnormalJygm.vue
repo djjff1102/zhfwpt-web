@@ -1,7 +1,7 @@
 <template>
   <div class="content-one">
     <div class="risk-result">
-      <threeRow :info="info.result"></threeRow>
+      <threeRow :info="info.error"></threeRow>
       <!-- <p class="three-row" :title="info?.result">
           {{ info?.result || '暂无' }}
       </p> -->
@@ -9,7 +9,7 @@
     <img src="./img/jygm.svg" class="pl-img">
     <m-table
       :columns="columns"
-      :data="JSON.parse(info.source)"
+      :data="info.source"
       style="height: 100%"
       :pagination="false"
       :bordered="false"

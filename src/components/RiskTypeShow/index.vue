@@ -48,8 +48,9 @@
 // JXXSP 4  
 // cfwjy 3 超范围经营
 // TODO: 待联调
-// 2 单价偏理性异常
-// 5 关联交易检测
+// DJPL 2 单价偏理性异常
+// GLYC 5 关联交易检测
+// JYGM 7 交易规模合理性
 
 import { ref, computed } from 'vue'
 import { abnormalStatus } from './type'
@@ -110,8 +111,8 @@ function handleResult() {
     sourceList.value = JSON.parse(props.info.source)
   }
   props.info.fieldMapping && formateWord(JSON.parse(props.info.fieldMapping)); // 字段对应关系
-  console.log('source--------------:', JSON.parse(props.info.source))
-  console.log('map--------------:', columns.value)
+  // console.log('source--------------:', JSON.parse(props.info.source))
+  // console.log('map--------------:', columns.value)
 }
 
 </script>
