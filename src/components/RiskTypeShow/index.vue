@@ -47,10 +47,10 @@
 // ty 1 通用
 // JXXSP 4  
 // cfwjy 3 超范围经营
+// JYGM 7 交易规模合理性
 // TODO: 待联调
 // DJPL 2 单价偏理性异常
 // GLYC 5 关联交易检测
-// JYGM 7 交易规模合理性
 
 import { ref, computed } from 'vue'
 import { abnormalStatus } from './type'
