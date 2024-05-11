@@ -95,10 +95,10 @@
   border: solid 1px #3470ff;
   font-weight: normal !important;
  }
-.el-tree-node__content {
-  margin-bottom: 16px;
-}
 .el-card.table-container .el-table th.el-table__cell {
     color: #000;
     background-color: #EEF6FF;
+}
+.el-tree-node__content {
+  height: 34px
 }
