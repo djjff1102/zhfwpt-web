@@ -179,3 +179,50 @@ export const registerMoney = [
     key: "2000",
   },
 ];
+
+export const registerMoneyType = [
+  {
+    value: "人民币",
+    key: "人民币",
+  },
+  {
+    value: "美元",
+    key: "美元",
+  },
+  {
+    value: "欧元",
+    key: "欧元",
+  },
+  {
+    value: "日元",
+    key: "日元",
+  },
+  {
+    value: "英镑",
+    key: "英镑",
+  },
+  {
+    value: "澳大利亚元",
+    key: "澳大利亚元",
+  },
+  {
+    value: "加拿大元",
+    key: "加拿大元",
+  },
+  {
+    value: "新加坡元",
+    key: "新加坡元",
+  },
+  {
+    value: "挪威克朗",
+    key: "挪威克朗",
+  },
+  {
+    value: "瑞典克朗",
+    key: "瑞典克朗",
+  },
+  {
+    value: "港币",
+    key: "港币",
+  },
+];
