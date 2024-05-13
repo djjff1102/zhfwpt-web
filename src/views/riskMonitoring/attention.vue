@@ -2,7 +2,7 @@
   <div class="risk-attention-container">
     <RiskCard />
     <div class="card">
-      <div class="title">风险值排行</div>
+      <div class="title">信用值排行</div>
       <Rank />
     </div>
   </div>

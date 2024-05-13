@@ -22,7 +22,7 @@ const routes: RouteRecordRaw[] = [
         name: "RiskMonitoring",
         meta: {
           title: "整体概况",
-          icon: "tree",
+          icon: "icon-zhengtigaikuang",
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
@@ -37,7 +37,7 @@ const routes: RouteRecordRaw[] = [
         name: "RiskMonitoringAttention",
         meta: {
           title: "重点关注企业",
-          icon: "tree",
+          icon: "icon-zhongdianguanzhuqiye",
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
