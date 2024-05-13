@@ -1,8 +1,9 @@
 <template>
   <div class="order-detail-container">
-    <div class="title">基本信息</div>
+    <div class="title">基本信息
+      <span v-if="fileUrl"> <fileDownLoad :fileUrl="fileUrl" :fileName="fileName"></fileDownLoad></span>
+    </div>
     <BaseInfo :order="order"></BaseInfo>
-    <!-- <div class="title">子订单信息</div> -->
     <div class="title">商品详情</div>
     <goodinfo :parentCode="code"></goodinfo>
     <div>
@@ -10,16 +11,13 @@
       <TransactionVoucher :orderCode="code"></TransactionVoucher>
     </div>
     <div>
-      <div class="title">关联仓储--待联调</div>
+      <div class="title">关联仓储</div>
       <relationWarehouse :orderCode="code"></relationWarehouse>
     </div>
     <div>
       <div class="title">关联物流</div>
       <transportationWL :orderCode="code"></transportationWL>
     </div>
-    <!-- <div>
-      <div class="title">关联发票列表</div>
-      <InvoiceInformation :parentCode="order.code"></InvoiceInformation></div> -->
     </div>
 </template>
 <script setup>
@@ -33,7 +31,8 @@ const route = useRoute();
 
 const order = ref({}) // 订单信息
 const code = ref(); // 订单编号
-
+const fileUrl = ref();
+const fileName = ref()
 // 获取主订单列表及详情
 function getqyzxOrder() {
   qyzxOrder({
@@ -42,6 +41,8 @@ function getqyzxOrder() {
     code: code.value
   }).then(res => {
     order.value = res.data[0] || {}
+    fileName.value = order.value?.material?.fileName || ''
+    fileUrl.value = order.value?.material?.fileUrl || ''
   }).catch(err => {
   })
 }

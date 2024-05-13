@@ -1,17 +1,17 @@
 <template>
   <div class="content-one">
-    <div class="risk-result">{{ info.result }}</div>
+    <div class="risk-result">
+      <threeRow :info="info.error"></threeRow>
+    </div>
     <el-descriptions class="margin-top" :column="2" border style="margin: 16px 0">
-      <!-- <el-descriptions-item label="经营范围">
-        测试数据----
-      </el-descriptions-item> -->
     </el-descriptions>
     <m-table
       :columns="columns"
-      :data="JSON.parse(info.source)"
+      :data="info.source"
       style="height: 100%"
       :pagination="false"
       :bordered="false"
+      :scroll="scroll"
     >
     <template v-slot:index="{ rowIndex }">
       {{ rowIndex + 1 }}
@@ -21,6 +21,7 @@
 </template>
 
 <script setup>
+import threeRow from './threeRow.vue'
 const props = defineProps({
   info: { // 风险信息
     default: {}
@@ -29,11 +30,23 @@ const props = defineProps({
     default: []
   }
 })
+
+const scroll = ref({
+  y: 300,
+});
 </script>
 
 <style lang="scss" scoped>
+.three-row {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;/*省略几行写几*/
+    -webkit-box-orient: vertical;
+    cursor: pointer;
+}
 .content-one {
-  padding: 16px 24px;
+  // padding: 16px 24px;
   font-family: PingFangSC, PingFang SC;
   font-weight: 400;
   font-size: 14px;

@@ -19,7 +19,7 @@
             <div>{{ formatNumber(tableData[rowIndex].totalMoney) }}</div>
         </template>
         <template v-slot:materialslot="{rowIndex}">
-          <attachFile :row="tableData[rowIndex]"></attachFile>
+          <attachFile :row="tableData[rowIndex]" :type="pro.WL" v-bind="$attrs"></attachFile>
         </template>
         <template v-slot:materialErrorslot="{rowIndex}">
           <span v-for="(item, i) in tableData[rowIndex]?.material?.judgeResult" :key="i">
@@ -80,8 +80,8 @@ const columns = reactive([
     tooltip: {position: 'left'},
   },
   {
-    title: "发布方企业纳税人识别号-暂无",
-    dataIndex: "signAddress",
+    title: "发布方企业纳税人识别号",
+    dataIndex: "publisherTaxCode",
     width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},

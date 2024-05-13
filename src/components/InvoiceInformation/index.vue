@@ -21,6 +21,17 @@
           value-format="YYYY-MM-DD"
           :clearable="false"
           :shortcuts="shortcuts"
+          :popper-options="{
+              modifiers: [
+                  {
+                      name: 'flip',
+                      options: {
+                          fallbackPlacements: ['bottom'],
+                          allowedAutoPlacements: ['bottom'],
+                      }
+                  }
+              ]
+          }"
           @change="changeMonth"
         />
       </div>

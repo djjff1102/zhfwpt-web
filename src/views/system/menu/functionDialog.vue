@@ -16,8 +16,8 @@
                 id: curMenuId,
               })
             "
-            type="success"
-            ><i-ep-plus />新增</w-button
+            type="primary"
+            >新增</w-button
           >
         </div>
       </template>

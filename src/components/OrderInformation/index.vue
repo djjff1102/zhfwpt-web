@@ -26,8 +26,10 @@
         <el-form-item field="code" label="订单编号">
           <w-input v-model="orderPar.code" placeholder="请输入订单编号" clearable/>
         </el-form-item>
-        <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
-        <w-button @click="reset">重置</w-button>
+         <el-form-item label="">
+          <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+          <w-button @click="reset">重置</w-button>
+         </el-form-item>
       </el-form>
     </div>
     <div class="table-warp">

@@ -14,22 +14,25 @@ export const approveStatusColor = {
   [status.pass]: "#5ECF69",
   [status.reject]: "#F76161 ",
 };
-enum tasks {
+export enum tasks {
   stop = 1,
   doing = 2,
   did = 3,
+  fail = 4,
 }
 
 export const taskStatus = {
   [tasks.stop]: "已暂停",
   [tasks.doing]: "评估中",
   [tasks.did]: "已完成",
+  [tasks.fail]: "已失败",
 };
 
 export const taskStatusColor = {
   [tasks.stop]: "#FF9100",
   [tasks.doing]: "#0594EB",
   [tasks.did]: "#5ECF69",
+  [tasks.fail]: "#FF9100",
 };
 
 export const statusList = [
@@ -68,12 +71,9 @@ export enum pro {
 }
 
 export const urlMap = {
-  [pro.HT]: "/archives/transactDetail",
-  [pro.DD]: "/archives/orderDetail",
-  [pro.FP]: "/archives/fpdetail",
-  [pro.CC]: "",
-  [pro.YH]: "",
-  [pro.WL]: "",
+  [pro.HT]: "/intellApproval/detailHT",
+  [pro.DD]: "/intellApproval/intellApprovalOrderDetail",
+  [pro.FP]: "/intellApproval/detailFP",
 };
 
 export const nameMap = {

@@ -2,8 +2,8 @@
   <!-- 订单信息 -->
   <div class="second-warehousing-container">
     <div class="mount-sum">
-      <span class="mount-sum-item">金额总计：{{ jine }} </span>
-      <span> 税额总计：{{ shuie }}</span>
+      <span class="mount-sum-item">金额总计：{{ currency}}{{ fapiao.allGoodMoneySum }}{{unit}} </span>
+      <span> 税额总计：{{ currency }}{{ fapiao.allGoodTaxSum }}{{unit}}</span>
     </div>
     <div class="table-warp">
       <m-table
@@ -26,8 +26,8 @@
         <template v-slot:unitPriceSlot="{ rowIndex }">
          {{ formatNumber(tableData[rowIndex].unitPrice) }}{{ tableData[rowIndex].amountUnit }}/{{ tableData[rowIndex].measureUnit}}
         </template>
-        <template v-slot:amountIncludeTaxSlot="{ rowIndex }">
-          {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].amountIncludeTax) || 0 }}{{ tableData[rowIndex].amountUnit }}
+        <template v-slot:amountTotal="{ rowIndex }">
+          {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].amountTotal) || 0 }}{{ tableData[rowIndex].amountUnit }}
         </template>
         <template v-slot:slottaxRate="{ rowIndex }">
           {{ formatNumber(tableData[rowIndex].taxRate) }}%
@@ -57,6 +57,12 @@ const props = defineProps({
     type: String,
     default: ''
   },
+  fapiao: {
+    default: {
+      allGoodTaxSum: 0,
+      allGoodMoneySum: 0
+    }
+  }
 })
 
 const loading = ref(false);
@@ -94,8 +100,8 @@ const columns = reactive([
   },
   {
     title: "金额",
-    dataIndex: "amountIncludeTax",
-    slotName: 'amountIncludeTaxSlot'
+    dataIndex: "amountTotal",
+    slotName: 'amountTotal'
   },
   {
     title: "税率",
@@ -133,8 +139,8 @@ const scroll = ref({
   x: 1080,
 });
 
-const jine = ref(0) // 金额总计
-const shuie = ref(0) // 税额
+const currency = ref(0) // 币种
+const unit = ref(0) // 单位
 const changePagesize = (v) => {
   pagination.value.pageSize = v;
   pagination.value.current = 1;
@@ -149,22 +155,10 @@ const changepage = (v) => {
 };
 
 function getSum(data) {
-  let sum = 0;
-  let n = 0;
-  let currency = ''; // 币种
-  let amountUnit = '' // 单位
-  data.forEach((e, i) => {
-    if(i == 0) {
-      currency = e.currency;
-      amountUnit = e.amountUnit;
-    }
-    let total = e.amountIncludeTax || 0
-    let taxAmount = e.taxAmount || 0
-    sum += total;
-    n += taxAmount
-  });
-  jine.value = currency + formatNumber(sum) + amountUnit
-  shuie.value = currency + formatNumber(n) + amountUnit
+  if(data && data[0]) {
+    currency.value = data[0].currency;
+    unit.value = data[0].amountUnit;
+  }
 }
 
 // 商品信息

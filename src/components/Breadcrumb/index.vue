@@ -1,5 +1,5 @@
 <template>
-  <el-breadcrumb class="h-[50px] flex items-center">
+  <el-breadcrumb class="h-[48px] flex items-center">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="item.path">
         <div class="flex">

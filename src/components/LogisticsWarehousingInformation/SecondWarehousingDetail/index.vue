@@ -19,7 +19,7 @@ const info = ref({})
 function init() {
   const query = route.query
   const data = {
-    company_name: query.companyName, //企业名称（非仓储企业）
+    companyName: query.companyName, //企业名称（非仓储企业）
     shortName: query.shortName,  //仓储名称
     locationAddress: query.locationAddress // 仓储地址
   }

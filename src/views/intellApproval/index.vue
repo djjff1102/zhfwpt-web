@@ -3,19 +3,6 @@
     <div class="search_box">
       <el-form :model="searchPar" :inline="true" class="demo-form-inline">
         <el-form-item field="post" label="创建日期">
-         <!-- <w-range-picker
-            v-model="curDate"
-            class="w-250px"
-            :time-picker-props="{
-              defaultValue: [
-                dayjs('00:00:00', 'HH:mm:ss'),
-                dayjs('09:09:06', 'HH:mm:ss'),
-              ],
-            }"
-            clearable
-            format="YYYY-MM-DD"
-            @change="onChange"
-          /> -->
           <el-date-picker
               v-model="curDate"
               type="daterange"
@@ -23,6 +10,7 @@
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               format="YYYY-MM-DD"
+              style="width: 300px"
               @change="onChange"
             >
             </el-date-picker>
@@ -66,7 +54,12 @@
             <div :style="{color: approveStatusColor[tableData[rowIndex].approveStatus]}">{{ approveStatus[tableData[rowIndex].approveStatus] }}</div>
         </template>
         <template v-slot:taskStatus="{rowIndex}">
-            <div :style="{color: taskStatusColor[tableData[rowIndex].taskStatus]}">{{ taskStatus[tableData[rowIndex].taskStatus] }}</div>
+          <w-progress v-if="tableData[rowIndex].taskStatus == tasks.doing" status='success' :percent="tableData[rowIndex].finishNum / 100"/>
+          <div
+            v-else
+            :style="{color: taskStatusColor[tableData[rowIndex].taskStatus]}">
+            {{ taskStatus[tableData[rowIndex].taskStatus] }}
+          </div>
         </template>
         <template v-slot:operations="{rowIndex}">
           <el-button
@@ -96,14 +89,14 @@ import {  ref, reactive, watch } from "vue";
 import ApprovalDo from './add/ApprovalDo.vue';
 import { useRouter } from 'vue-router';
 import { fpspReport, approvalExport, delReport } from '@/api/intellApproval'
-import { status, approveStatus,approveStatusColor, statusList, taskStatus, taskStatusColor } from './type.ts'
+import { status, approveStatus,approveStatusColor, statusList, taskStatus, taskStatusColor, tasks } from './type.ts'
 import dayjs from "dayjs";
 import { btnApprovalCode, approvalMapping } from '@/router/permissionCode'
 import { useUserStoreHook } from "@/store/modules/user";
 import { formatNumber, formateDate } from '@/utils/common'
 
 const userStore = useUserStoreHook();
-const router = useRouter();
+const router = useRouter();  
 
 // 监听权限吗
 watch(() => userStore.user.dataPermissionCode,  (v) => {
@@ -132,11 +125,15 @@ const columns = ref([
     title: "申报编号",
     dataIndex: "reportCode",
     width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: '创建日期',
     dataIndex: 'createDate',
     width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
     // sortable: {
     //   sortDirections: ['ascend', 'descend']
     // }
@@ -144,33 +141,45 @@ const columns = ref([
   {
     title: "申报单位",
     dataIndex: "companyName",
-    width: 220
+    width: 220,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: '申报额度',
     dataIndex: 'money',
     slotName: 'moneySlot',
     width: 200,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "申报人",
     dataIndex: "applyUserName",
     width: 200,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: '联系方式',
     dataIndex: 'applyContactPhone',
     width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "审批人",
     dataIndex: "approveUserName",
     width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: '审批时间',
     dataIndex: 'approveDate',
     width: 180,
+    ellipsis: true,
+    tooltip: {position: 'left'},
   },
   {
     title: "审批状态",

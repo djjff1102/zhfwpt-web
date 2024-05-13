@@ -87,7 +87,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
         name: "User",
         meta: {
           title: "用户管理",
-          icon: "user",
+          icon: "icon-yonghuguanli",
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
@@ -102,7 +102,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
         name: "Role",
         meta: {
           title: "角色管理",
-          icon: "role",
+          icon: "icon-xitongguanli",
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
@@ -117,7 +117,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
         name: "Menu",
         meta: {
           title: "菜单管理",
-          icon: "menu",
+          icon: "icon-shenbaoliebiao",
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
@@ -132,7 +132,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
         name: "Dept",
         meta: {
           title: "组织管理",
-          icon: "tree",
+          icon: "icon-zuzhiguanli",
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
@@ -147,7 +147,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
         name: "Operator",
         meta: {
           title: "日志管理",
-          icon: "tree",
+          icon: "icon-rizhiguanli",
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,

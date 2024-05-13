@@ -10,7 +10,7 @@
       </div>
       <div class="top-right">
         <div>{{ userStore.user.name }}</div>
-        <div>{{ userStore?.user?.organization?.name }} | {{ userStore?.user?.roleName[0] }}</div>
+        <div style="padding-right: 8px;">{{ userStore?.user?.organization?.name }}<span class="split-line">|</span> {{ userStore?.user?.roleName[0] }}</div>
       </div>
     </div>
     <div class="user-bottom">
@@ -70,6 +70,12 @@ getIP()
 
 </script>
 <style lang="scss" scoped>
+.split-line {
+  color: #BFC4CD;
+  font-size: 12px;
+  display: inline-block;
+  padding: 0 4px;
+}
 .user-popover-content {
   width: 373px;
 }

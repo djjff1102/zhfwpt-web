@@ -232,3 +232,8 @@ defineExpose({
   updateUserByForm,
 });
 </script>
+<style lang="scss" scoped>
+:deep(.el-input.is-disabled .el-input__wrapper) {
+  border: solid 1px rgba(90, 90, 90,0.2);
+}
+</style>

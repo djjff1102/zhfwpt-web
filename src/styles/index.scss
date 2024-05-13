@@ -8,15 +8,21 @@
   font-family: myFontALHT;
   src: url('@/assets/iconfont/aliht.ttf')
 }
+
+@font-face {
+  font-family: myNumberBold;
+  src: url('@/assets/iconfont/DINAlternateBold.ttf')
+}
+
 ::-webkit-scrollbar-thumb {
   width: 0px;
 }
 ::-webkit-scrollbar {
   width: 0px;
 }
-.app-container {
-  padding: 10px;
-}
+// .app-container {
+//   padding: 10px;
+// }
 
 .search-container {
   padding: 18px 0 0 24px;
@@ -245,4 +251,7 @@
 }
 .w-scrollbar-track {
   z-index: 9;
+}
+.w-modal-body {
+  padding: 16px 24px;
 }

@@ -1,11 +1,13 @@
 <template>
   <div class="order-detail-container">
-    <div class="title">{{ name }}基本信息</div>
+    <div class="title">{{ name }}基本信息
+      <span v-if="fileUrl"> <fileDownLoad :fileUrl="fileUrl" :fileName="fileName"></fileDownLoad></span>
+    </div>
     <BaseInfoBoth v-if="name == '发票详情'" :order="fapiao"></BaseInfoBoth>
     <BaseInfo v-if="name == '销项发票'" :order="fapiao"></BaseInfo>
     <BaseInfoIN v-if="name == '进项发票'" :order="fapiao"></BaseInfoIN>
     <div class="title">商品信息</div>
-    <goodinfo :id="fapiao.id" :code="route.query.code" :number="route.query.number"></goodinfo>
+    <goodinfo :id="fapiao.id" :code="route.query.code" :number="route.query.number" :fapiao="fapiao"></goodinfo>
   </div>
 </template>
 <script setup>
@@ -19,7 +21,9 @@ import { qyzxInvoice } from '@/api/archives'
 const route = useRoute();
 
 const fapiao = ref({}) // 发票信息
-const name = ref(); // 
+const name = ref(); 
+const fileUrl = ref('') // 文件下载路径
+const fileName = ref('')
 
 // 发票详情
 function getqyzxInvoice() {
@@ -30,6 +34,8 @@ function getqyzxInvoice() {
     page_size: 10
   }).then(res => {
     fapiao.value = res.data[0] || {};
+    fileName.value = res.data[0].material?.fileName || ''
+    fileUrl.value = res.data[0].material?.fileUrl || ''
   }).catch(err => {
   })
 }

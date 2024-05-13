@@ -19,7 +19,10 @@
           {{ formatNumber(tableData[rowIndex].amount) }}{{ tableData[rowIndex].currency }}
         </template>
         <template v-slot:quantitySlot="{ rowIndex }">
-          {{ formatNumber(tableData[rowIndex].quantity) }}
+          {{ formatNumber(tableData[rowIndex].quantity) }}{{ tableData[rowIndex].unit }}
+        </template>
+        <template v-slot:taxRateSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].taxRate) }}%
         </template>
         <template v-slot:index="{ rowIndex }">
           {{ rowIndex + 1 }}
@@ -96,6 +99,7 @@ const columns = reactive([
     title: "税率",
     dataIndex: "taxRate",
     width: 100,
+    slotName: 'taxRateSlot'
   },
 ]);
 
@@ -110,7 +114,7 @@ const pagination = ref({
 const searchPar = ref({
   page_size: 10,
   page: 1,
-  parent_code: '' // 父合同编号
+  orderCode: '' // 父合同编号
 })
 const scroll = ref({
   y: 800,
@@ -145,7 +149,7 @@ function getGoods() {
 
 
 const init = async () => {
-  searchPar.value.parent_code = props.certificateCode;
+  searchPar.value.orderCode = props.certificateCode;
   getGoods();
 };
 

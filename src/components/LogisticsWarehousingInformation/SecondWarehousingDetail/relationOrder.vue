@@ -198,25 +198,13 @@ function reset() {
     orderCreateDateStart: '',
     orderCreateDateEnd: '',
     buyerCompanyName: '', // 买方名称
-    companyName: props.companyName, // 上个页面带过来的公司名称
+    companyName: route.query.companyName, // 上个页面带过来的公司名称
     code: '', // 订单编号
-    shortName: props.shortName, // 仓库名称
-    locationAddress: props.locationAddress // 仓库地址
+    shortName: route.query.shortName, // 仓库名称
+    locationAddress: route.query.locationAddress // 仓库地址
   }
   getqyzxOrder();
 }
-
-// 跳转订单详情
-// function toOrderDetail(d) {
-//   // 标记从订单调走，针对back时，做模块定位
-//   sessionStorage.setItem('detailId', 'OrderInformation')
-//   router.push({
-//     path: '/archives/orderDetail',
-//     query: {
-//       orderCode: d.code,
-//     }
-//   })
-// }
 
 // 获取主订单列表及详情
 function getqyzxOrder() {

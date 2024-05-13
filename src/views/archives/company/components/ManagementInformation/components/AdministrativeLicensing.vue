@@ -15,7 +15,7 @@
             <el-option v-for="(item, i) in listdata" :key="i" :value="item.department_no" :label="item.department"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item>
+        <el-form-item style="margin-top: 8px;">
           <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
           <w-button @click="reset">重置</w-button>
         </el-form-item>
@@ -201,8 +201,8 @@ init();
   margin-bottom: 12px;
   .tab-item {
     width: 176px;
-    height: 48px;
-    line-height: 48px;
+    height: 36px;
+    line-height: 36px;
     background: #F8F8F8;
     border-radius: 4px;
     margin-right: 4px;

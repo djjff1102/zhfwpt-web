@@ -58,7 +58,7 @@ async function handleBeforeClose(done: any) {
 }
 .err-item {
   margin-bottom: 8px;
-  color: #3470FF;
+  // color: #3470FF;
 }
 .proval-content {
   padding: 12px 24px;

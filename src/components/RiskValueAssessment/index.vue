@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <div v-show="!exportFlag" class="danger-point-container" :class="{'open-divder': isOpen}">
+    <div v-show="!exportFlag" class="danger-point-container" :class="{'open-divder': isOpen}" style="margin-top: 38px">
       <div class="title">风险点</div>
       <div class="search_box">
         <el-form :model="searchPar" :inline="true" class="demo-form-inline">
@@ -72,7 +72,17 @@
           <template v-slot:nameSlot="{ rowIndex }">
             <div class="risk-name-level">
               <img :src="getRiskIcon(tableData[rowIndex].level)" style="width: 16px">
-              <span>{{ tableData[rowIndex].name }}</span>
+              <span v-if="tableData[rowIndex].name.length < 8">
+                {{ tableData[rowIndex].name }}
+              </span>
+              <w-tooltip v-else>
+                <span >
+                  {{ tableData[rowIndex].name.substring(0, 7) }}...
+                </span>
+                <template #content>{{ tableData[rowIndex].name }}</template>
+              </w-tooltip>
+
+
             </div>
           </template>
           <template v-slot:resultSlot="{ rowIndex }">
@@ -80,7 +90,7 @@
           </template>
         </m-table>
       </div>
-      <m-divder :isOpen="isOpen" @handleShow="handleShow"></m-divder>
+      <m-divder v-if="tableDataCom && tableDataCom.length > 0" :isOpen="isOpen" @handleShow="handleShow"></m-divder>
     </div>
 
     <!-- 用作导出 -->
@@ -215,8 +225,11 @@ const columns = reactive([
   },
   {
     title: "扫描结果",
+    width: 300,
     dataIndex: "result",
-    slotName: 'resultSlot'
+    slotName: 'resultSlot',
+    // ellipsis: true,
+    // tooltip: {position: 'left'},
   },
   {
     title: "风险建议",

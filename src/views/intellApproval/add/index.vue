@@ -3,7 +3,7 @@
   <div class="title">企业用户申报{{ initPageParam.title }}</div>
   <div class="section section-detail-header">
     <div v-if="queryPar.reportCode" class="section-sub">
-      <span style="color: rgba(153, 153, 153, 1); padding-right: 30px;">申请编号：{{ queryPar?.reportCode }}</span>
+      <span style="color: rgba(153, 153, 153, 1); padding-right: 30px;">申报编号：{{ queryPar?.reportCode }}</span>
       <span>
         <span style="color: rgba(51, 51, 51, 1)">审批状态：</span>
           <span :style="{color: approveStatusColor[form?.approveStatus]}">{{ approveStatus[form?.approveStatus] }}</span>
@@ -12,9 +12,14 @@
     <div v-if="initPageParam.title == '详情'" class="section-sub flex-base-end">
       <approval-record
         v-hasPerm="btnApprovalCode.approvallist"
+        :reportId="reportId"
       ></approval-record>
       <!-- <w-button v-hasPerm="btnApprovalCode.approvallist" style="margin-right: 8px;" @click="showRecord = true">审批记录</w-button> -->
-      <w-button v-hasPerm="btnApprovalCode.approval" type="primary" @click="updateApprval">审批</w-button>
+      <w-button
+        v-hasPerm="btnApprovalCode.approval" 
+        type="primary"
+        :disabled="form?.approveStatus != status.wait" 
+        @click="updateApprval">审批</w-button>
     </div>
   </div>
   <!-- 企业用户申报详情 -->
@@ -22,7 +27,7 @@
     <div class="section">
     <div class="section-sub">
       <div class="title-sub">申报人信息</div>
-      <el-form ref="basefrom1" :model="form" layout="vertical" :rules="rules">
+      <el-form v-if="initPageParam.edit" ref="basefrom1" :model="form" layout="vertical" :rules="rules">
         <el-form-item prop="taxAuthority"  label="主管税务机关" required>
           <w-input v-if="initPageParam.edit" style="height: 32px" disabled  v-model="form.taxAuthority" placeholder="请输入主管税务机关" />
           <div v-else>{{ form?.taxAuthority }}</div>
@@ -53,12 +58,13 @@
            <span v-if="initPageParam.edit" class="date-msg">请填写在税务申报系统提交申报时的日期</span>
         </el-form-item>
       </el-form>
+      <personInfo v-else :data="form"></personInfo>
     </div>
     <div class="section-sub">
       <div class="title-sub">申报额度信息</div>
-      <el-form ref="basefrom2" :model="form" layout="vertical" :rules="rules">
+      <el-form v-if="initPageParam.edit" ref="basefrom2" :model="form" layout="vertical" :rules="rules">
          <el-form-item prop="money" label="申请额度" required>
-          <w-input-number v-if="initPageParam.edit" v-model="form.money" placeholder="请输入额度" style="height: 32px">
+          <w-input-number v-if="initPageParam.edit" v-model="form.money" :min="1" placeholder="请输入额度" style="height: 32px">
           </w-input-number>
            <div v-else>{{ form.money }}</div>
         </el-form-item>
@@ -107,6 +113,7 @@
           <div v-else>{{ form.reason }}</div>
         </el-form-item>
       </el-form>
+      <moneyInfo v-else :data="form"></moneyInfo>
     </div>
     </div>
     
@@ -141,15 +148,18 @@
       <InfoDD
         v-show="curTab == pro.DD" 
         :reportId="reportId"
+        :approveStatus="form.approveStatus"
       ></InfoDD>
       <InfoHT
         v-show="curTab == pro.HT"
         :reportId="reportId"
+        :approveStatus="form.approveStatus"
       ></InfoHT>
       <!-- 发票不区分进项和销项 -->
       <InfoFP
         :reportId="reportId"
         v-show="curTab == pro.FP"
+        :approveStatus="form.approveStatus"
       ></InfoFP>
       <InfoYH
         v-if="curTab == pro.YH"
@@ -237,7 +247,7 @@ import FileList from './FileList.vue';
 import ApprovalDo from './ApprovalDo.vue';
 import dayjs from "dayjs";
 import { btnApprovalCode, approvalMapping } from '@/router/permissionCode'
-import { approveStatus,approveStatusColor } from '../type'
+import { approveStatus,approveStatusColor, status } from '../type'
 import validateExcel from './validateExcel.vue'
 import InfoDD from './InfoDD.vue'
 import InfoHT from './InfoHT.vue'
@@ -250,6 +260,8 @@ import { useApprovalStore } from '@/store/modules/approval'
 import { getTotalMoney } from '@/api/intellApproval/special'
 import { useNoticeApprovalStore } from '@/store/modules/notice'
 import { formatNumber } from '@/utils/common'
+import moneyInfo from './moneyInfo.vue'
+import personInfo from './personInfo.vue';
 
 const noticeStore = useNoticeApprovalStore()
 
@@ -261,9 +273,14 @@ const tabData = computed(() => {
   return approvalStore.tabData
 })
 
+const totalMoney = computed(() => {
+  return approvalStore.totalMoney
+})
+
 let userId = userStore.user.id;
 let username = userStore.user.name;
 let companyName = userStore?.user?.organization?.name;
+let phone = userStore.user.phone;
 
 const route = useRoute();
 const router = useRouter();
@@ -296,7 +313,7 @@ const curDate = ref('')
 const form = ref({
   companyId: '', // 企业ID
   applyUserId: '', // 申请人ID :TODO
-  money: 0,
+  money: 1,
   taxAuthority: '', // 主管税务机关
   limitType: '', // 申请额度调整类型
   companyName: '', // 申请单位
@@ -314,14 +331,15 @@ const form = ref({
   otherMaterialsRequestList: [], // 其他资料
   preStrMoney: '',// 需求预测
   businessDataMaterialList: [],
-  transportationRequestList: []
+  transportationRequestList: [],
+  applyContactPhone: phone
 })
 const defaultKey = ref('1'); // 默认打开的tab
 const curTab = ref('1') // 当前打开的tab
 const showAdd = ref(false); // 新增资料弹窗
 const showRecord = ref(false); // 审批记录
 const showApproval = ref(false) // 审批窗口
-const totalMoney = ref(0);
+
 const fileList = ref([]) // 已经提交的文件
 const queryPar = ref({}) // 路由查询参数
 const uploadFlag = ref(-1) // -1未上传文件 0 上传文件失败 1上传成功
@@ -393,84 +411,11 @@ function updateUpload(file: any) {
   form.value.otherMaterialsRequestList = file;
 }
 
-// 添加资料
-// function handleAdd() {
-//   showAdd.value = true;
-// }
-
-// function getSum(key: string) {
-//   let sum = 0;
-//   dataList.value.forEach((item: any) => {
-//     sum += item[key]
-//   })
-//   totalMoney.value = sum;
-// }
-
+// 切换tab计算总金额和数量
 function handleTab(v: any) {
   curTab.value = v;
-  if(![pro.CC as any, pro.WL as any].includes(curTab.value)) {
-    getCurSumMoney(v) // 仓储和物流需要调该接口
-  }
-  // updateTable(dataHT.value, dataDD.value, dataFP.value, dataCC.value, dataYH.value);
+  approvalStore.getMoneyAndLen(curTab.value)
 }
-
-function getCurSumMoney(v: any) {
-  getTotalMoney({
-    reportId: reportId.value,
-    fileType: v
-  }).then(res => {
-    totalMoney.value = res.data;
-  }).catch(err => {})
-}
-
-// function updateTable(HT:any, DD:any, FP:any, CC:any, YH:any,) {
-//     switch(curTab.value) {
-//     case pro.HT:
-//       dataList.value = HT;
-//       columns.value = columnsHT as any;
-//       getSum('amount');
-//       break;
-//     case pro.DD:
-//       columns.value = columnsDD as any;
-//       dataList.value = DD;
-//       getSum('totalMoney')
-//       break;
-//      case pro.FP:
-//       columns.value = columnsFP as any;
-//       dataList.value = FP;
-//       getSum('amountTotal')
-//       break;
-//     case pro.CC:
-//       columns.value = columnsCC as any;
-//       dataList.value = CC;
-//       totalMoney.value = 0;
-//       break;
-//      case pro.YH:
-//       columns.value = columnsYH as any;
-//       dataList.value = YH;
-//       getSum('paymentAmount')
-//       break;
-//   }
-// }
-
-// function updateData(HT:any, DD:any, FP:any, CC:any, YH:any,) {
-//   dataHT.value = HT
-//   dataDD.value = DD
-//   dataFP.value = FP
-//   dataCC.value = CC
-//   dataYH.value = YH
-//   updateTable(HT, DD, FP, CC, YH);
-// }
-
-
-// function updateAdd(codeHT:any, codeDD: any, codeFP: any, codeCC: any, codeYH: any) {
-//   showAdd.value = false;
-//   form.value.transactionCertificateMapRequestList = codeHT  // 合同
-//   form.value.orderMapRequestList = codeDD   // 订单
-//   form.value.bankStatementMapRequestList = codeYH // 银行流水
-//   form.value.invoiceMapRequestList = codeFP   // 发票
-//   form.value.warehouseMapRequestList = codeCC    // 仓储
-// }
 
 // 新增暂存、新增提交
 
@@ -519,6 +464,7 @@ async function checkSave(type: any, msg: string) {
     WL: {}} // 重新校验附件错误/空之前，清空之前的校验
 
   if(type == 1) { // 暂存
+    approvalStore.updateDataSave(form.value) // 暂存仅遍历附件，不做附件必传校验
     form.value.dataStatus = 1;
     if(reportId.value != -1) {
         form.value.id = reportId.value
@@ -540,13 +486,6 @@ async function checkSave(type: any, msg: string) {
         handleAddNewSubmit(msg)
       }
   } 
-  // else { // 更新
-  //   approvalStore.updateData(form.value, errdata.value)
-  //   if(errdata.value.flag) return;
-  //   form.value.dataStatus = 2
-  //   form.value.id = initPageParam.id as any;
-  //   handleUpdate(msg);
-  // }
 }
 
 function handleUpdateSubmit(msg: any) {
@@ -580,18 +519,11 @@ function checkSubmitError(res: any, msg: any) {
         backToList()
       },500)
       noticeStore.refreshNotice()
-    }  else if(res.result == 1 && res.message) {
-      suafaErr.value.flag = true;
-      suafaErr.value.data = res.data || []
-      approvalStore.getTableData(reportId.value);
-      // ElMessage.error(res.message);
-      // 处理异常
     } else {
       suafaErr.value.flag = true;
-      suafaErr.value.data = res.data || []
+      suafaErr.value.data = ['附件上传有误, 请核实'] as any
       approvalStore.getTableData(reportId.value);
-      // ElMessage.error(res?.message || '算法校验失败');
-    }
+    } 
 }
 
 // 编辑新增成功，返回列表页
@@ -657,6 +589,7 @@ function getDetail(d: any) {
       curDate.value = [res.data.validDateStart, res.data.validDateEnd] as any
       reportId.value = res.data.id
       approvalStore.getTableData(reportId.value); // 获取订单、合同、发票等信息
+      // getCurSumMoney(curTab.value)
     } else {
       approvalStore.clearTable(); // 获取订单、合同、发票等信息
       getgetOneByCompanyName() // 当前返回数据为空，新增，且无暂存，则查询企业基本信息
@@ -708,6 +641,7 @@ function init() {
 }
 
 init()
+approvalStore.getMoneyAndLen(curTab.value, 1)
 
 </script>
 
@@ -810,7 +744,7 @@ init()
   left: 16px;
   right: 16px;
   bottom: 0;
-  z-index: 9;
+  z-index: 99;
   padding: 12px 24px;
   background: #fff;
   border-top: solid 1px rgba(237, 241, 252, 1);

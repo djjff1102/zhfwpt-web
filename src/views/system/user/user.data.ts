@@ -58,7 +58,7 @@ export const getUserColumns = (
     {
       prop: "create_date",
       label: "添加时间",
-      width: 180,
+      // width: 180,
       align: "center",
     },
     {

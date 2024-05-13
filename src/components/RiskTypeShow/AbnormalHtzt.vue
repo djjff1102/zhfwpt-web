@@ -1,11 +1,14 @@
 <template>
   <div class="content-one">
-    <div class="risk-result">{{ info.result }}</div>
+    <div class="risk-result">
+      <threeRow :info="info.error"></threeRow>
+    </div>
     <m-table
       :columns="columnsData"
       :data="table"
       style="height: 100%"
       :pagination="false"
+      :scroll="scroll"
     >
     <template v-slot:index="{ rowIndex }">
       {{ rowIndex + 1 }}
@@ -16,6 +19,7 @@
 
 <script setup>
 import { watch, ref } from 'vue'
+import threeRow from './threeRow.vue'
 
 const table = ref([])
 const columnsData = ref([])
@@ -24,7 +28,14 @@ const props = defineProps({
   info: { // 风险信息
     default: {}
   },
+  fieldMapping: {
+    default: ''
+  }
 })
+
+const scroll = ref({
+  y: 300,
+});
 
 watch(() => props.info, (v) => {
   if(v) {
@@ -36,8 +47,8 @@ watch(() => props.info, (v) => {
 })
 
 function init(v) {
-  let fieldMapping = JSON.parse(v.fieldMapping)
-  let source = JSON.parse(v.source)[0]
+  let fieldMapping = JSON.parse(props.fieldMapping)
+  let source = v.source[0]
   let tableData = []
   let columns = []
   Object.keys(fieldMapping).forEach((item ,i) => {
@@ -67,17 +78,21 @@ function init(v) {
   })
   table.value = tableData;
   columnsData.value = columns;
-  // let source = JSON.parse(v.source)
-  // console.log('source:', v.source)
-  console.log('tableData:', tableData)
-  console.log('columns:', columns)
 }
 
 </script>
 
 <style lang="scss" scoped>
+.three-row {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;/*省略几行写几*/
+    -webkit-box-orient: vertical;
+    cursor: pointer;
+}
 .content-one {
-  padding: 16px 24px;
+  // padding: 16px 24px;
   font-family: PingFangSC, PingFang SC;
   font-weight: 400;
   font-size: 14px;

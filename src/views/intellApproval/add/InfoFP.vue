@@ -14,13 +14,19 @@
           {{ rowIndex + 1 }}
         </template>
         <template v-slot:materialslot="{rowIndex}">
-          <attachFile :row="tableData[rowIndex]"></attachFile>
+          <attachFile :row="tableData[rowIndex]" :type="pro.FP" v-bind="$attrs"></attachFile>
             <!-- <div>{{ tableData[rowIndex].material ? '已上传' : '未上传'  }}</div> -->
         </template>
         <template v-slot:materialErrorslot="{rowIndex}">
           <span v-for="(item, i) in tableData[rowIndex]?.material?.judgeResult" :key="i">
             {{ item }} {{ (tableData[rowIndex]?.material?.judgeResult.length - 1) == i ? '': '、' }}
           </span>
+        </template>
+        <template v-slot:amountIncludeTaxSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].allGoodMoneySum) }}
+        </template>
+        <template v-slot:taxAmountSlot="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].allGoodTaxSum) }}
         </template>
         <template v-slot:operations="{rowIndex}">
           <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.FP" :row="tableData[rowIndex]" v-bind="$attrs"></reportOperation>
@@ -37,6 +43,7 @@ import { pro } from '../type'
 import { useApprovalStore } from '@/store/modules/approval'
 import attachFile from './attachFile.vue'
 import { useRoute } from "vue-router";
+import { formatNumber, formatData } from '@/utils/common'
 const route = useRoute()
 
 const approvalStore = useApprovalStore();
@@ -53,10 +60,14 @@ const columns = reactive([
     // fixed: "left",
   },
   {
-    title: "发票号码",
+    title: "发票代码",
     dataIndex: "code",
     width: 180,
-    // fixed: "left",
+  },
+  {
+    title: "发票号码",
+    dataIndex: "number",
+    width: 180,
   },
   {
     title: "开票日期",
@@ -96,6 +107,20 @@ const columns = reactive([
     dataIndex: "receivingCreditNo",
     ellipsis: true,
     tooltip: {position: 'left'},
+  },
+  {
+    title: "金额总计(元)",
+    dataIndex: "allGoodMoneySum",
+    width: 180,
+    slotName: 'amountIncludeTaxSlot',
+    ellipsis: true,
+    tooltip: {position: 'left'},
+  },
+  {
+    title: "税额总计(元)",
+    dataIndex: "allGoodTaxSum",
+    width: 180,
+    slotName: 'taxAmountSlot'
   },
   {
     title: "附件",

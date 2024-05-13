@@ -31,7 +31,7 @@ const props = defineProps({
     padding-right: 16px;
   }
   .amount {
-    font-family: DINAlternate, DINAlternate;
+    font-family: myNumberBold;
     font-weight: bold;
     font-size: 35px;
     color: #F76161;

@@ -25,13 +25,10 @@
           <div>{{ formatNumber(tableData[rowIndex].registrationWeight) }}</div>
         </template>
         <template v-slot:distributionWeightSlot="{rowIndex}">
-          <div>{{ formatNumber(tableData[rowIndex].distributionWeight) }}</div>
-        </template>
-        <template v-slot:warehousingUnitSlot="{rowIndex}">
-          <div>{{ formatNumber(tableData[rowIndex].warehousingUnit) }}</div>
+          <div>{{ formatNumber(tableData[rowIndex].distributionWeight) }}{{tableData[rowIndex].warehousingUnit}}</div>
         </template>
         <template v-slot:materialslot="{rowIndex}">
-          <attachFile :row="tableData[rowIndex]"></attachFile>
+          <attachFile :row="tableData[rowIndex]" :type="pro.CC" v-bind="$attrs"></attachFile>
         </template>
         <template v-slot:operations="{rowIndex}">
           <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.CC" :row="tableData[rowIndex]" v-bind="$attrs"></reportOperation>
@@ -91,7 +88,7 @@ const columns = reactive([
   {
     title: "库存单注册时间",
     width: 180,
-    dataIndex: "inventoryListRegistrationDate	",
+    dataIndex: "inventoryListRegistrationDate",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
@@ -158,7 +155,6 @@ const columns = reactive([
     title: "重量单位",
     width: 180,
     dataIndex: "warehousingUnit",
-    slotName: 'warehousingUnitSlot',
     ellipsis: true,
     tooltip: {position: 'left'},
   },

@@ -1,6 +1,5 @@
 <template>
   <div class="content-one">
-    <!-- <div class="risk-result">{{ info.result }}</div> -->
     <div class="flex-base-around">
       <span class="bar-name">进项数量</span>
       <span class="bar-unit">单位：{{ unit }}</span>
@@ -8,15 +7,12 @@
     </div>
     <div class="risk-reason flex-base-center">
       <line-echart :echartData="echartData"></line-echart>
-      <!-- <line-chart-left :chartId="rightId"></line-chart-left>
-      <line-chart-right chartId="fkhhj"></line-chart-right> -->
     </div>
   </div>
 </template>
 
 <script setup>
 import { watch, ref } from 'vue'
-
 const echartData = ref({
   left: [],
   right: [],
@@ -30,6 +26,10 @@ const props = defineProps({
   }
 })
 
+const scroll = ref({
+  y: 300,
+});
+
 watch(() => props.info, (v) => {
   if(v) {
     nextTick(() => {
@@ -41,11 +41,12 @@ watch(() => props.info, (v) => {
 })
 
 function handleData(d) {
+  console.log('进销项异常传入----------：', d)
   const left = []
   const right = []
   const yValue = []
-  const otherSource = JSON.parse(d.otherSource);
-  JSON.parse(d.source).forEach((e, i) => {
+  const otherSource = d.other_source;
+  d.source.forEach((e, i) => {
     yValue.push(e.goodName);
     left.push(e.quantity);
     right.push(otherSource[i].quantity)
@@ -58,8 +59,16 @@ function handleData(d) {
 </script>
 
 <style lang="scss" scoped>
+.three-row {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;/*省略几行写几*/
+    -webkit-box-orient: vertical;
+    cursor: pointer;
+}
 .content-one {
-  padding: 16px 24px;
+  // padding: 16px 24px;
   font-family: PingFangSC, PingFang SC;
   font-weight: 400;
   font-size: 14px;

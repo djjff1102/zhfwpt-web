@@ -19,7 +19,7 @@
             <div>{{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].totalMoney) }}{{ tableData[rowIndex].amountUnit }}</div>
         </template>
         <template v-slot:materialslot="{rowIndex}">
-          <attachFile :row="tableData[rowIndex]"></attachFile>
+          <attachFile :row="tableData[rowIndex]" :type="pro.DD" v-bind="$attrs"></attachFile>
         </template>
         <template v-slot:materialErrorslot="{rowIndex}">
             <span v-for="(item, i) in tableData[rowIndex]?.material?.judgeResult" :key="i">
@@ -84,49 +84,49 @@ const columns = reactive([
   {
     title: "买方名称",
     dataIndex: "buyerCompanyName",
-    width: 280,
+    width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "买方信用代码",
     dataIndex: "buyerCreditNo",
-    width: 180,
+    width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "卖方名称",
     dataIndex: "sellerCompanyName",
-    width: 280,
+    width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "卖方信用代码",
     dataIndex: "sellerCreditNo",
-    width: 180,
+    width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "商品所在地址",
     dataIndex: "goodAddress",
-    width: 280,
+    width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "仓库名称",
     dataIndex: "warehouseName",
-    width: 180,
+    width: 220,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "总金额",
     dataIndex: "totalMoney",
-    width: 180,
+    width: 220,
     ellipsis: true,
     slotName: "moneySlot",
     tooltip: {position: 'left'},
