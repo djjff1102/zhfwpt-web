@@ -53,6 +53,7 @@
 import dayjs from "dayjs";
 import { ref, reactive} from "vue";
 import { useRouter } from "vue-router";
+import { attentionCreditCompanyList } from '@/api/riskmonitor'
 
 const router = useRouter()
 
@@ -132,14 +133,15 @@ const form = ref({
 });
 
 // 跳转详情
-function handleDetail(row) {
-  // router.push({ 
-  //   path: '/archives/companyDetail', 
-  //   query: {
-  //     companyId: d.companyId,
-  //     companyName: d.companyName
-  //   }
-  // });
+function handleDetail(d) {
+  router.push({ 
+    path: '/riskMonitoring/detail', 
+    query: {
+      companyId: '1',
+      companyName: '1',
+      type: 'risk'
+    }
+  });
 }
 
 const changePagesize = (v) => {
@@ -162,7 +164,13 @@ function onChange(dateString, date) {
 function onOk(dateString, date) {
   console.log("onOk: ", dateString, date);
 }
-const init = async () => {};
+const init = async () => {
+  attentionCreditCompanyList({}).then(res => {
+    
+  }).catch(err => {
+    console.log('重点关注企业，信用值排行异常：', err);
+  })
+};
 </script>
 
 <style lang="scss" scoped>

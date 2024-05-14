@@ -40,6 +40,17 @@
 </template>
 <script setup>
 import qysq from "@/assets/images/企业授权.png";
+import { attentionCreditInfo } from '@/api/riskmonitor'
+
+function init() {
+  attentionCreditInfo({}).then(res => {
+    
+  }).catch(err => {
+    console.log('重点关注企业信用值异常：', err)
+  })
+}
+
+init()
 </script>
 <style lang="scss" scoped>
 .risk-card {
