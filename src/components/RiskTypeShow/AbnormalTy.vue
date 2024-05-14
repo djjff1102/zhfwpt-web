@@ -3,8 +3,6 @@
     <div class="risk-result">
       <threeRow :info="info.error"></threeRow>
     </div>
-    <el-descriptions class="margin-top" :column="2" border style="margin: 16px 0">
-    </el-descriptions>
     <m-table
       :columns="columns"
       :data="info.source"
@@ -59,6 +57,7 @@ const scroll = ref({
     border-radius: 8px;
     border: 1px solid #FF9100;
     padding: 14px;
+    margin-bottom: 16px;
   }
   .risk-reason {
     margin-top: 16px;

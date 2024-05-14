@@ -14,7 +14,6 @@
         v-hasPerm="btnApprovalCode.approvallist"
         :reportId="reportId"
       ></approval-record>
-      <!-- <w-button v-hasPerm="btnApprovalCode.approvallist" style="margin-right: 8px;" @click="showRecord = true">审批记录</w-button> -->
       <w-button
         v-hasPerm="btnApprovalCode.approval" 
         type="primary"
@@ -118,7 +117,7 @@
     </div>
     
     <div class="com-section" >
-      <div class="title-sub">申报资料</div>
+      <div class="title-sub validate-title-sub">申报资料</div>
       <validateExcel
         v-if="initPageParam.edit"
         :form="form"
@@ -173,15 +172,6 @@
         v-if="curTab == pro.WL"
         :reportId="reportId"
       ></InfoWL>
-      <!-- <m-table
-        :data="dataList"
-        :columns="columns"
-        :virtual-list-props="{height: 'auto'}"
-        :pagination="false">
-        <template v-slot:index="{rowIndex}">
-          <div>{{ rowIndex +1 }}</div>
-        </template>
-      </m-table> -->
       <div class="flex-base-start sum-line">
         <div style="margin-right: 16px">{{ nameMap[curTab] }}已选：<span class="num-light">{{ formatNumber(totalMoney?.count) || 0 }}</span></div>
         <div v-if="![pro.CC, pro.WL].includes(curTab)">金额合计：<span class="num-light">{{ formatNumber(totalMoney?.totalMoneySum) || 0 }}</span></div>
@@ -275,6 +265,20 @@ const tabData = computed(() => {
 
 const totalMoney = computed(() => {
   return approvalStore.totalMoney
+})
+
+// 校验文件是否已上传
+const fileUploadValidate = computed(() => {
+  if(
+    approvalStore.DDList.length == 0 &&
+    approvalStore.HTList.length == 0 &&
+    approvalStore.FPList.length == 0 &&
+    approvalStore.YHList.length == 0 &&
+    approvalStore.CCList.length == 0 &&
+    approvalStore.WLList.length == 0 ) {
+      return true
+  }
+  return false;
 })
 
 let userId = userStore.user.id;
@@ -421,24 +425,29 @@ function handleTab(v: any) {
 
 function handleSave(type: any, msg: string) {
   if(loading.value) return;
-  if(uploadFlag.value == 0) {
-    ElMessage.warning("申报资料有误");
-    errorFlag.value = true
-    return;
-  }
-  basefrom1.value.validate((v: any) => {
-    if(v) {
-      basefrom2.value.validate((k: any) => {
-        if(k) {
-          checkSave(type, msg)
-        } else {
-          ElMessage.warning("请核实必填信息");
-        }
-      })
-    } else {
-      ElMessage.warning("请核实必填信息");
+  // 暂存不做校验
+  if(type == 1) {
+    checkSave(type, msg)
+  } else { // 提交需要校验
+    if(uploadFlag.value == 0) {
+      ElMessage.warning("申报资料有误");
+      errorFlag.value = true
+      return;
     }
-  })
+    basefrom1.value.validate((v: any) => {
+      if(v) {
+        basefrom2.value.validate((k: any) => {
+          if(k) {
+            checkSave(type, msg)
+          } else {
+            ElMessage.warning("请核实必填信息");
+          }
+        })
+      } else {
+        ElMessage.warning("请核实必填信息");
+      }
+    })
+  }
 }
 
 const errdata = ref({
@@ -474,6 +483,10 @@ async function checkSave(type: any, msg: string) {
         handleAddNew(msg)
       }
   } else if(type == 2) {
+    if(fileUploadValidate.value) {
+      ElMessage.warning('请核实必填信息');
+      return;
+    }
     approvalStore.updateData(form.value, errdata.value)
     if(errdata.value.flag) return;
     form.value.dataStatus = 2;
@@ -646,147 +659,6 @@ approvalStore.getMoneyAndLen(curTab.value, 1)
 </script>
 
 <style lang="scss" scoped>
-.date-msg {
-  display: block;
-  margin-top: 12px;
-  padding-left: 17px;
-  height: 22px;
-  font-family: PingFangSC, PingFang SC;
-  font-weight: 400;
-  font-size: 14px;
-  color: #999999;
-  line-height: 22px;
-  text-align: right;
-  font-style: normal;
-}
-.section-detail-header {
-  padding-bottom: 18px;
-  margin-bottom: 24px;
-  border-bottom: 1px solid #EDF1FC;;
-}
-.grid-demo {
-  margin-top: 24px;
-  margin-bottom: 16px;
-}
-.operate-wrap {
-  padding: 30px 90px;
-  padding-bottom: 90px;
-  height: calc(100vh - 120px);
-  background: #fff;
-  overflow-y: scroll;
-  .title-sub {
-    width: 90px;
-    height: 25px;
-    font-family: PingFangSC, PingFang SC;
-    font-weight: 500;
-    font-size: 18px;
-    color: #000000;
-    line-height: 25px;
-    text-align: left;
-    font-style: normal;
-    margin-bottom: 16px;
-  }
-  .title-sub-sub {
-    font-size: 16px;
-    margin-top: 22px;
-  }
-  .section {
-    display: flex;
-    .title-sub {
-      width: 100%;
-    }
-    .section-sub:nth-child(2) {
-      margin-left: 25px;
-    }
-    .section-sub {
-     flex: 1;
-    }
-
-  }
-  .title {
-    position: relative;
-    margin-bottom: 24px;
-    padding-left: 11px;
-    font-family: PingFangSC, PingFang SC;
-    font-weight: 500;
-    font-size: 18px;
-    color: #333333;
-    line-height: 22px;
-    &::before {
-      content: "";
-      position: absolute;
-      left: 0px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 3px;
-      height: 18px;
-      background-color: #1890ff;
-    }
-  }
-}
-.num-light {
-  color: rgba(52, 112, 255, 1);
-  line-height: 22px;
-}
-.sum-line {
-  margin-top: 24px;
-}
-.upload-msg {
-  font-family: PingFangSC, PingFang SC;
-  font-weight: 400;
-  font-size: 14px;
-  color: #BFC4CD;
-  line-height: 20px;
-  text-align: left;
-}
-.bottom {
-  position: fixed;
-  left: 16px;
-  right: 16px;
-  bottom: 0;
-  z-index: 99;
-  padding: 12px 24px;
-  background: #fff;
-  border-top: solid 1px rgba(237, 241, 252, 1);
-}
-.section {
-  :deep(.w-textarea) {
-    height: 120px;
-  }
-  :deep(.w-tabs-content) {
-    display: none;
-  }
-  :deep(.el-form-item) {
-    flex-direction: column;
-    // align-items: flex-start;
-  }
-  :deep(.el-form-item__label ) {
-    justify-content: flex-start;
-  }
-  :deep(.el-form-item__label) {
-    color: rgba(39, 42, 49, 1);
-    font-weight: 500;
-    font-size: 14px;;
-  }
-  :deep(.el-form-item--default) {
-    margin-bottom: 24px;;
-  }
-  :deep(.el-textarea__inner) {
-    height: 148px;
-  }
-}
-.mask {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0,0,0,0.1);
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
+@import "../style/index.scss";
 </style>
 

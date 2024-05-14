@@ -62,6 +62,7 @@ const scroll = ref({
     border-radius: 8px;
     border: 1px solid #FF9100;
     padding: 14px;
+    margin-bottom: 16px;
   }
   .risk-reason {
     margin-top: 16px;
@@ -74,7 +75,7 @@ const scroll = ref({
 }
 .pl-img {
   display: block;
-  margin: 18px 0;
+  margin-bottom: 16px;
   width: 100%;
 }
 :deep(.el-descriptions__cell) {

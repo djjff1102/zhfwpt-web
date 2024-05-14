@@ -162,3 +162,8 @@ onMounted(() => {
     </el-card>
   </div>
 </template>
+<style lang="scss" scoped>
+:deep(.el-form-item--default) {
+  margin-bottom: 0 !important;
+}
+</style>
