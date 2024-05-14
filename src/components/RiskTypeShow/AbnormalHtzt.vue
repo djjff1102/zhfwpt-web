@@ -105,7 +105,7 @@ function init(v) {
     border-radius: 8px;
     border: 1px solid #FF9100;
     padding: 14px;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
   .risk-reason {
     margin-top: 16px;

@@ -77,20 +77,20 @@ onMounted(() => {
             v-model.trim="queryParams.name"
             placeholder="部门名称"
             maxlength="20"
+            clearable
             @keyup.enter="handleQuery"
           />
         </el-form-item>
 
         <el-form-item>
           <w-button
-            v-has-perm="['105']"
             class="filter-item"
             type="primary"
             @click="handleQuery"
           >
             搜索
           </w-button>
-          <w-button v-has-perm="['106']" @click="resetQuery">重置</w-button>
+          <w-button @click="resetQuery">重置</w-button>
         </el-form-item>
       </el-form>
     </div>
@@ -118,3 +118,9 @@ onMounted(() => {
     <deptFormDialog ref="deptFormDialogRef" @success="handleQuery" />
   </div>
 </template>
+
+<style lang="scss" scoped>
+:deep(.el-form-item--default) {
+  margin-bottom: 0 !important;
+}
+</style>

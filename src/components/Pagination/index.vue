@@ -1,6 +1,15 @@
 <template>
   <div :class="{ hidden: hidden }" class="pagination">
-    <el-pagination
+    <w-pagination
+      v-model:current="currentPage"
+      :total="total"
+      v-model:page-size="pageSize"
+      show-page-size
+      show-jumper
+      show-total
+      @change="handleCurrentChange"
+      @page-size-change="handleSizeChange"/>
+    <!-- <el-pagination
       v-model:current-page="currentPage"
       v-model:page-size="pageSize"
       :background="background"
@@ -9,7 +18,7 @@
       :total="total"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-    />
+    /> -->
   </div>
 </template>
 
@@ -62,6 +71,7 @@ const currentPage = useVModel(props, "page", emit);
 const pageSize = useVModel(props, "limit", emit);
 
 function handleSizeChange(val: number) {
+  emit('update:limit', val)
   emit("pagination", { page: currentPage, limit: val });
   if (props.autoScroll) {
     scrollTo(0, 800);
@@ -70,6 +80,7 @@ function handleSizeChange(val: number) {
 
 function handleCurrentChange(val: number) {
   currentPage.value = val;
+  emit('update:page', val)
   emit("pagination", { page: val, limit: props.limit });
   if (props.autoScroll) {
     scrollTo(0, 800);
@@ -79,8 +90,9 @@ function handleCurrentChange(val: number) {
 
 <style lang="scss" scoped>
 .pagination {
-  padding: 12px;
-
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
   &.hidden {
     display: none;
   }

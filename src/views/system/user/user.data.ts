@@ -14,35 +14,34 @@ export const getUserColumns = (
     {
       prop: "name",
       label: "用户名",
-      width: 120,
+      width: 140,
       showOverflowTooltip: true,
-      align: "center",
       fixed: "left",
     },
     {
       prop: "real_name",
       label: "真实姓名",
-      width: 120,
-      align: "center",
+      width: 140,
+      // align: "center",
     },
     {
       prop: "organization_name",
       label: "部门",
-      width: 200,
-      align: "center",
+      width: 160,
+      // align: "center",
       showOverflowTooltip: true,
     },
     {
       prop: "role_name",
       width: 120,
       label: "角色",
-      align: "center",
+      // align: "center",
     },
     {
       prop: "enable_flag",
       label: "状态",
       width: 120,
-      align: "center",
+      // align: "center",
       render: (scope) => {
         const { row, column } = scope;
         return h(ElSwitch, {
@@ -58,8 +57,8 @@ export const getUserColumns = (
     {
       prop: "create_date",
       label: "添加时间",
-      // width: 180,
-      align: "center",
+      width: 180,
+      // align: "center",
     },
     {
       label: "操作",
