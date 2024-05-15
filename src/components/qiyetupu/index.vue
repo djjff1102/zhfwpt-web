@@ -1,5 +1,13 @@
 <template>
-  <div :id="id"></div>
+  <div class="g-bg" ref="fullRef" >
+    <div :id="id"></div>
+    <w-button class="full-window" @click="toggleFullscreen">
+      <div class="full-btn">
+        <img src="@/assets/fullwindow.svg">
+      {{ fullFlag ? '退出': '全屏' }}
+      </div>
+    </w-button>
+  </div>
 </template>
 
 <script setup>
@@ -8,7 +16,6 @@ import G6 from "@antv/g6";
 import {
   COLLAPSE_ICON,
   EXPAND_ICON,
-  data,
   defaultStateStyles,
   defaultNodeStyle,
   defaultEdgeStyle,
@@ -24,6 +31,7 @@ const colorObj = {
   股东信息: "#00E1E1",
   分支机构: "#2691E8",
 };
+const fullRef = ref()
 
 const props = defineProps({
   id: {
@@ -53,38 +61,81 @@ watch(
 );
 
 const windowWidth = ref(0);
+const windowHeight = ref(0)
+const gr = ref()
+const fullFlag = ref(false)
 
 window.addEventListener("resize", getWindow());
 getWindow();
+
+// 点击esc按钮或者浏览器退出的时候，↩↩️恢复侧边栏
+document.addEventListener('fullscreenchange', event => {
+  if (!document.fullscreenElement) {
+    fullFlag.value = false
+    gr.value.changeSize( windowWidth.value * (2/3), 200 )
+    gr.value.removeBehaviors(['collapse-expand','drag-canvas', 'zoom-canvas'], 'default');
+    gr.value.fitView();
+  } else {
+    fullFlag.value = true
+    gr.value.changeSize( windowWidth.value - 60, windowHeight.value - 60 )
+    gr.value.addBehaviors([{
+      type: "collapse-expand",
+      onChange: function onChange(item, collapsed) {
+        var data = item.get("model");
+        var icon = item.get("group").findByClassName("collapse-icon");
+        if (collapsed) {
+          icon.attr("symbol", EXPAND_ICON);
+        } else {
+          icon.attr("symbol", COLLAPSE_ICON);
+        }
+        data.collapsed = collapsed;
+        return true;
+      },
+    },'drag-canvas', 'zoom-canvas'], 'default');
+    gr.value.fitView()
+  }
+})
+
+// 全屏
+function toggleFullscreen() {
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  } else {
+    fullRef.value.requestFullscreen().catch(err => {
+      console.error('进入全屏失败:', err);
+    });
+  }
+}
+
 function getWindow() {
-  windowWidth.value =
-    document.documentElement.clientWidth || document.body.clientWidth;
+  windowWidth.value = document.documentElement.clientWidth || document.body.clientWidth;
+  windowHeight.value = document.documentElement.clientHeight || document.body.clientHeight;
 }
 
 function init(d) {
   const graph = new G6.TreeGraph({
     container: props.id,
-    width: windowWidth.value - 200, // 因为右侧导航栏，调整一下图的居中位置
-    height: 500,
+    width: windowWidth.value * (2/3), // 因为右侧导航栏，调整一下图的居中位置
+    height: 200,
     linkCenter: true,
     modes: {
       default: [
-        {
-          type: "collapse-expand",
-          onChange: function onChange(item, collapsed) {
-            var data = item.get("model");
-            var icon = item.get("group").findByClassName("collapse-icon");
-            if (collapsed) {
-              icon.attr("symbol", EXPAND_ICON);
-            } else {
-              icon.attr("symbol", COLLAPSE_ICON);
-            }
-            data.collapsed = collapsed;
-            return true;
-          },
-        },
-        "drag-canvas",
-        "zoom-canvas",
+        // {
+        //   type: "collapse-expand",
+        //   onChange: function onChange(item, collapsed) {
+        //     var data = item.get("model");
+        //     var icon = item.get("group").findByClassName("collapse-icon");
+        //     if (collapsed) {
+        //       icon.attr("symbol", EXPAND_ICON);
+        //     } else {
+        //       icon.attr("symbol", COLLAPSE_ICON);
+        //     }
+        //     data.collapsed = collapsed;
+        //     return true;
+        //   },
+        // },
+        // "drag-canvas",
+        // "zoom-canvas",
       ],
     },
     defaultNode: {
@@ -110,69 +161,9 @@ function init(d) {
   graph.data(d);
   graph.render();
   graph.fitView();
-
-  // graph.on('node:mouseenter', (evt) => {
-  //   const { item } = evt;
-  //   graph.setItemState(item, 'hover', true);
-  // });
-
-  // graph.on('node:mouseleave', (evt) => {
-  //   const { item } = evt;
-  //   graph.setItemState(item, 'hover', false);
-  // });
-
-  // graph.on('node:click', (evt) => {
-  //   const { item, target } = evt;
-  //   const targetType = target.get('type');
-  //   const name = target.get('name');
-
-  //   // 增加元素
-  //   if (targetType === 'marker') {
-  //     const model = item.getModel();
-  //     if (name === 'add-item') {
-  //       if (!model.children) {
-  //         model.children = [];
-  //       }
-  //       const id = `n-${Math.random()}`;
-  //       model.children.push({
-  //         id,
-  //         label: id.substr(0, 8),
-  //         leftIcon: {
-  //           style: {
-  //             fill: '#e6fffb',
-  //             stroke: '#e6fffb',
-  //           },
-  //           img:
-  //             'https://gw.alipayobjects.com/mdn/rms_f8c6a0/afts/img/A*Q_FQT6nwEC8AAAAAAAAAAABkARQnAQ',
-  //         },
-  //       });
-  //       graph.updateChild(model, model.id);
-  //     } else if (name === 'remove-item') {
-  //       graph.removeChild(model.id);
-  //     }
-  //   }
-  // });
-
-  // if (typeof window !== 'undefined') {
-  //   window.onresize = () => {
-  //     if (!graph || graph.get('destroyed')) return;
-  //     if (!container || !container.scrollWidth || !container.scrollHeight) return;
-  //     graph.changeSize(container.scrollWidth, container.scrollHeight);
-  //   };
-  // }
+  // graph.fitCenter()
+  gr.value = graph;
 }
-
-// 注册节点左侧icon
-// G6.Util.traverseTree(data, (d) => {
-//   d.leftIcon = {
-//     style: {
-//       fill: '#e6fffb',
-//       stroke: '#e6fffb',
-//     },
-//     img: 'https://gw.alipayobjects.com/mdn/rms_f8c6a0/afts/img/A*Q_FQT6nwEC8AAAAAAAAAAABkARQnAQ',
-//   };
-//   return true;
-// });
 
 G6.registerNode(
   "icon-node-en",
@@ -188,10 +179,11 @@ G6.registerNode(
         styles.fill = "#3470FF";
       }
       if (cfg.point_type == 2) {
-        styles.stroke = "#fff";
+        styles.stroke = "rgba(252, 252, 252, 1)"
+        styles.fill = "rgba(252, 252, 252, 1)"
       }
       if(cfg.point_name.length > 12 ) {
-        styles.width = cfg.point_name.length * 14;
+        styles.width = cfg.point_name.length * 20;
       }
       const keyShape = group.addShape("rect", {
         attrs: {
@@ -208,6 +200,7 @@ G6.registerNode(
             fill: "#fff",
             // width: getName(cfg.point_message).length * 14,
           },
+          className: "collapse-icon",
         });
       } else if (cfg.point_type == 2) {
         const textObj = group.addShape("text", {
@@ -282,3 +275,34 @@ G6.registerEdge("flow-line-en", {
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.full-btn {
+  display: flex;
+  align-items: center;
+  img {
+    display: block;
+    margin-top: 2px;
+  }
+}
+.g-bg {
+  padding: 24px;
+  background: rgba(252, 252, 252, 1);
+}
+.full-window {
+  position: absolute;
+  top: 25px;
+  right: 10%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  cursor: pointer;
+}
+.full-bg {
+  position: fixed;
+  top:0;
+  width: 100%;
+  bottom: 0;
+  z-index: 99999;
+}
+</style>

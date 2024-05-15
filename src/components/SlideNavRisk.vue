@@ -74,14 +74,14 @@ let navList = ref([
     name: "主营商品信息",
     scoll: 0,
     show: true,
-    src: 'zyspxx'
+    src: zyspxx
   },
     {
     id: "TransactionVoucher",
     name: "合同信息",
     scoll: 0,
     show: true,
-    src: 'jjpz'
+    src: jjpz
   },
   {
     id: "AccountStatement",
@@ -98,7 +98,7 @@ let navList = ref([
 .risk-slide {
   padding: 0px 30px;
   width: 146px;
-  background: #dddfe7;
+  background: rgba(221, 223, 231, 0.11);
   .slide-item {
     cursor: pointer;
     padding: 16px 0;

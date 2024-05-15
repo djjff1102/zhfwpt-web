@@ -1,20 +1,14 @@
-// 一般处理（经营状态、信用状态、行政处罚、严重违法）
-export const JYriskCode = [
-  "QYFX_XFQY_JYZT", // 天津技嘉信息技术咨询有限公司存在经营异常情况-经营
-  "QYFX_XFQY_XZCF", // 艳明凤香（天津）商贸有限公司存在行政处罚行为-行政处罚
-  "QYFX_XFQY_XYZT", // 天津永义国际贸易有限公司信用状态异常-信用
-  "QYFX_GFQY_YZWF", // 天津裕敏科技有限公司-严重违法
-  "QYFX_XFQY_YZWF", //  天津裕敏科技有限公司-严重违法
-  "QYFX_XGFQY_YZWF", // 天津裕敏科技有限公司-严重违法
-  "QYFX_XFQY_GQCZ", // 天津胜利一号租赁有限公司 - 股权出质
-];
+export enum riskstatus {
+  high = 1,
+  middle = 2,
+  low = 3,
+}
 
-// 特殊处理 - 工商状态
-export const TSriskCode = [
-  "QYFX_GFQY_GSZT", // 天津孟茹电子商务有限公司
-  "QYFX_XFQY_GSZT", // 天津孟茹电子商务有限公司
-  "QYFX_XGFQY_GSZT", // 天津孟茹电子商务有限公司
-];
+export const riskLeval = {
+  [riskstatus.high]: "高信用",
+  [riskstatus.middle]: "中信用",
+  [riskstatus.low]: "低信用",
+};
 
 // 登记状态
 export const signStatus = [

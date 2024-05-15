@@ -19,30 +19,6 @@ export const EXPAND_ICON = function EXPAND_ICON(x, y, r) {
     ["L", x, y - 2],
   ];
 };
-export const data = {
-  id: "公司id",
-  label: "莱佛公司",
-  children: [
-    {
-      id: "c1",
-      label: "c1",
-      children: [
-        {
-          id: "c1-1",
-          label: "c1-1",
-        },
-        {
-          id: "c1-2",
-          label: "c1-2",
-        },
-      ],
-    },
-    {
-      id: "c2",
-      label: "c2",
-    },
-  ],
-};
 
 export const defaultStateStyles = {
   hover: {
@@ -89,7 +65,7 @@ export const defaultLayout = {
 export const defaultLabelCfg = {
   style: {
     fill: "#000",
-    fontSize: 12,
+    fontSize: 18,
     textAlign: "center",
     textBaseline: "middle", // 设置文本垂直居中
   },

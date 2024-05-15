@@ -8,8 +8,9 @@
         <template #default>{{ companyMsg?.attention ? '已关注' : '关注' }}</template>
     </w-button>
     <div class="company-name">{{ companyMsg?.companyName }}</div>
-    <div class="company-content">
+    <div class="company-content" :class="{'risk-content': route.query.type == 'risk' }">
       <m-backtop target=".company-content"></m-backtop>
+      <SlideNavRisk v-if="route.query.type == 'risk'"></SlideNavRisk>
       <div v-hasPerm="approvalMapping.BusinessInformation" id="BusinessInformation">
         <div class="title"><img :src="qygsxx">企业工商信息</div>
         <BusinessInformation :data="companyMsg"></BusinessInformation>
@@ -51,7 +52,8 @@
         <GoodsInformation :companyName="companyName"></GoodsInformation>
       </div> -->
     </div>
-    <SlideNav></SlideNav>
+  
+    <SlideNav v-if="route.query.type != 'risk'"></SlideNav>
   </div>
 </template>
 <script setup>
@@ -81,6 +83,7 @@ import zyspxx from "@/assets/images/moduleIcon/主营商品信息.png";
 import jjpz from "@/assets/images/moduleIcon/交易凭证.png";
 import yhls from "@/assets/images/moduleIcon/银行流水.png";
 import { approvalMapping } from '@/router/permissionCode'
+import SlideNavRisk from '@/components/SlideNavRisk.vue'
 
 const userStore = useUserStoreHook();
 // const router = useRouter();
@@ -177,6 +180,9 @@ init()
   overflow-y: scroll;
   padding: 16px 90px;
 }
+.risk-content {
+  padding-right: 188px;
+}
 :deep(.w-input-wrapper) {
   width: 188px;
   height: 32px;
@@ -193,5 +199,11 @@ init()
   height: 32px;
   color: #000;
   font-weight: 500;
+}
+.risk-slide {
+  position: absolute;
+  top: 34px;
+  right: 20px;
+  z-index: 9;
 }
 </style>

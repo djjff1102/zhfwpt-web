@@ -32,3 +32,15 @@ export function fxjkIndexFxzph(data: any) {
     data,
   });
 }
+
+/**
+ * 风显列表-导出
+ */
+export function riskExport(data: SearchInvoice): CustomAxiosPromise<DetailResult> {
+  return request({
+    responseType: "blob",
+    url: "/base/fpsp_report/export",
+    method: "post",
+    data,
+  });
+}
