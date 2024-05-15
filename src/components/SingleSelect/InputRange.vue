@@ -2,7 +2,7 @@
   <div>
     <div class="flex-base-start">
       <span class="input-label">从</span>
-      <el-input v-model="form.start" @change="validateStart" style="width: 97px; height: 24px"/>
+      <el-input v-model="form.start" @change="validateStart" style="width: 97px; height: 24px" />
       <span class="input-label">-</span>
       <el-input v-model="form.end" @change="validateEnd" style="width: 97px; height: 24px"/>
     </div>

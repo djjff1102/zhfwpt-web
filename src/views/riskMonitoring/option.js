@@ -7,10 +7,32 @@ export const pieOption = () => {
       bottom: "0%",
       left: "center",
     },
+    title: [
+      {
+        // 第一个圆环标题
+        text: "总计", // 主标题
+        textStyle: {
+          // 主标题样式
+          color: "rgba(0,0,0, 0.5)",
+          fontWeight: "bold",
+          fontSize: 14,
+        },
+        left: "49%",
+        top: "40%",
+        subtext: "1000+个", // 副标题
+        subtextStyle: {
+          // 副标题样式
+          color: "#FF9100",
+          fontSize: 14,
+          fontWeight: "bold",
+        },
+        textAlign: "center", // 主、副标题水平居中显示
+      },
+    ],
     series: [
       {
         type: "pie",
-        radius: ["30%", "60%"],
+        radius: ["35%", "60%"],
         avoidLabelOverlap: false,
         itemStyle: {
           borderColor: "#fff",
@@ -25,23 +47,23 @@ export const pieOption = () => {
         data: [
           {
             value: 1800,
-            name: "高风险",
+            name: "高信用",
             itemStyle: {
-              color: "#F76161",
+              color: "#5ECF69",
             },
           },
           {
             value: 484,
-            name: "中风险",
+            name: "中信用",
             itemStyle: {
               color: "#FF9100",
             },
           },
           {
             value: 300,
-            name: "低风险",
+            name: "低信用",
             itemStyle: {
-              color: "#0594EB",
+              color: "#F76161",
             },
           },
         ],
@@ -50,86 +72,103 @@ export const pieOption = () => {
   };
 };
 
+
+
 export const barOption = () => {
-  var series = [
-    {
-      data: [120, 200, 150, 80, 70, 110, 130],
-      type: "bar",
-      stack: "a",
-      name: "a",
-    },
-    {
-      data: [10, 46, 64, "-", 0, "-", 0],
-      type: "bar",
-      stack: "a",
-      name: "b",
-    },
-    {
-      data: [30, "-", 0, 20, 10, "-", 0],
-      type: "bar",
-      stack: "a",
-      name: "c",
-    },
-    {
-      data: [30, "-", 0, 20, 10, "-", 0],
-      type: "bar",
-      stack: "b",
-      name: "d",
-    },
-    {
-      data: [10, 20, 150, 0, "-", 50, 10],
-      type: "bar",
-      stack: "b",
-      name: "e",
-    },
-  ];
-  const stackInfo = {};
-  for (let i = 0; i < series[0].data.length; ++i) {
-    for (let j = 0; j < series.length; ++j) {
-      const stackName = series[j].stack;
-      if (!stackName) {
-        continue;
-      }
-      if (!stackInfo[stackName]) {
-        stackInfo[stackName] = {
-          stackStart: [],
-          stackEnd: [],
-        };
-      }
-      const info = stackInfo[stackName];
-      const data = series[j].data[i];
-      if (data && data !== "-") {
-        if (info.stackStart[i] == null) {
-          info.stackStart[i] = j;
-        }
-        info.stackEnd[i] = j;
-      }
-    }
-  }
-  for (let i = 0; i < series.length; ++i) {
-    const data = series[i].data;
-    const info = stackInfo[series[i].stack];
-    for (let j = 0; j < series[i].data.length; ++j) {
-      // const isStart = info.stackStart[j] === i;
-      const isEnd = info.stackEnd[j] === i;
-      const topBorder = isEnd ? 20 : 0;
-      const bottomBorder = 0;
-      data[j] = {
-        value: data[j],
-        itemStyle: {
-          // borderRadius: [topBorder, topBorder, bottomBorder, bottomBorder],
-        },
-      };
-    }
-  }
   return {
-    xAxis: {
-      type: "category",
-      data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "cross",
+        crossStyle: {
+          color: "#999",
+        },
+      },
     },
-    yAxis: {
-      type: "value",
+    legend: {
+      data: ["Evaporation", "Precipitation", "Temperature"],
     },
-    series: series,
+    xAxis: [
+      {
+        type: "category",
+        data: ["2023.1", "2032.4", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        axisPointer: {
+          type: "shadow",
+        },
+      },
+    ],
+    yAxis: [
+      {
+        type: "value",
+        name: "审批率",
+        min: 0,
+        max: 250,
+        interval: 50,
+        axisLabel: {
+          formatter: "{value} ml",
+        },
+      },
+      {
+        type: "value",
+        name: "审批金额",
+        min: 0,
+        max: 25,
+        interval: 5,
+        axisLabel: {
+          formatter: "{value} °C",
+        },
+      },
+    ],
+    series: [
+      {
+        name: "驳回",
+        type: "bar",
+        tooltip: {
+          valueFormatter: function (value) {
+            return value + " ml";
+          },
+        },
+        data: [
+          2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3,
+        ],
+      },
+      {
+        name: "未审批",
+        type: "bar",
+        tooltip: {
+          valueFormatter: function (value) {
+            return value + " ml";
+          },
+        },
+        data: [
+          2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3,
+        ],
+      },
+      {
+        name: "通过",
+        type: "bar",
+        tooltip: {
+          valueFormatter: function (value) {
+            return value + " ml";
+          },
+        },
+        data: [
+          2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3,
+        ],
+      },
+      {
+        name: "审批金额",
+        type: "line",
+        yAxisIndex: 1,
+        tooltip: {
+          valueFormatter: function (value) {
+            return value + " °C";
+          },
+        },
+        data: [
+          2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2,
+        ],
+      },
+    ],
   };
 };

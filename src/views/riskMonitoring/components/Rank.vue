@@ -19,9 +19,9 @@
           />
         </w-form-item>
         <w-form-item field="name" label="企业名称">
-          <w-input v-model="form.name" placeholder="请输入开票单位" />
+          <w-input v-model="form.name" placeholder="请输入企业名称" />
         </w-form-item>
-        <w-form-item class="mr-16px" field="post" label="风险等级">
+        <w-form-item class="mr-16px" field="post" label="企业信用等级">
           <w-select v-model="form.post" placeholder="全部" />
         </w-form-item>
         <w-button type="primary" class="mr-8px">搜索</w-button>
@@ -39,11 +39,11 @@
         @page-size-change="changePagesize"
         :bordered="false"
       >
-        <template v-slot:index="{ $index }">
-          {{ $index + 1 }}
+        <template v-slot:index="{ rowIndex }">
+          {{ rowIndex + 1 }}
         </template>
-        <template v-slot:operations>
-          <w-button type="text">详情</w-button>
+        <template v-slot:operations="rowIndex">
+          <el-button type="text" @click="handleDetail(tableData[rowIndex])">详情</el-button>
         </template>
       </m-table>
     </div>
@@ -51,12 +51,20 @@
 </template>
 <script setup>
 import dayjs from "dayjs";
-import { onMounted, ref, reactive, unref, computed, watch } from "vue";
+import { ref, reactive} from "vue";
+import { useRouter } from "vue-router";
+import { attentionCreditCompanyList } from '@/api/riskmonitor'
+
+const router = useRouter()
 
 const current = ref(1);
 const size = ref(10);
 const loading = ref(false);
-const tableData = ref([]);
+const tableData = ref([
+  {
+    name: '测试'
+  }
+]);
 const columns = reactive([
   {
     title: "序号",
@@ -104,7 +112,8 @@ const columns = reactive([
   {
     title: "操作",
     width: 180,
-    dataIndex: "email",
+    dataIndex: "operations",
+    slotName: 'operations'
   },
 ]);
 const pagination = ref({
@@ -122,6 +131,19 @@ const form = ref({
   name: "",
   post: "",
 });
+
+// 跳转详情
+function handleDetail(d) {
+  router.push({ 
+    path: '/riskMonitoring/detail', 
+    query: {
+      companyId: '1',
+      companyName: '1',
+      type: 'risk'
+    }
+  });
+}
+
 const changePagesize = (v) => {
   size.value = v;
   pagination.value.pageSize = v;
@@ -142,7 +164,13 @@ function onChange(dateString, date) {
 function onOk(dateString, date) {
   console.log("onOk: ", dateString, date);
 }
-const init = async () => {};
+const init = async () => {
+  attentionCreditCompanyList({}).then(res => {
+    
+  }).catch(err => {
+    console.log('重点关注企业，信用值排行异常：', err);
+  })
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,3 +1,9 @@
+<!-- 
+  暂时保留
+  如果企业资信和风险监控的公司详情差别较大
+  则不共用一个页面
+  风险监控单独使用该页面，做企业详情
+ -->
 <template>
   <div class="risk-detail">
     <div class="company-name">莱佛金属（天津）有限公司</div>
@@ -9,64 +15,14 @@
         <div class="title">风险分类项展示</div>
         <RiskPoint></RiskPoint>
       </div>
-      <div class="risk-slide">
-        <div class="slide-item">
-          <img :src="qygsxx" alt="" />
-          <span class="module-name">企业工商信息</span>
-        </div>
-        <div class="slide-item">
-          <img :src="fxzpg" alt="" />
-          <span class="module-name">风险值评估</span>
-        </div>
-        <div class="slide-item">
-          <img :src="fpcxlsp" alt="" />
-          <span class="module-name">发票审批信息</span>
-        </div>
-        <div class="slide-item">
-          <img :src="jyxx" alt="" />
-          <span class="module-name">经营信息</span>
-        </div>
-        <div class="slide-item">
-          <img :src="ddxx" alt="" />
-          <span class="module-name">订单信息</span>
-        </div>
-        <div class="slide-item">
-          <img :src="fpxx" alt="" />
-          <span class="module-name">发票信息</span>
-        </div>
-        <div class="slide-item">
-          <img :src="wlccxx" alt="" />
-          <span class="module-name">物流仓储信息</span>
-        </div>
-        <div class="slide-item">
-          <img :src="zyspxx" alt="" />
-          <span class="module-name">主营商品信息</span>
-        </div>
-        <div class="slide-item">
-          <img :src="jjpz" alt="" />
-          <span class="module-name">合同信息</span>
-        </div>
-        <div class="slide-item">
-          <img :src="yhls" alt="" />
-          <span class="module-name">银行流水</span>
-        </div>
-      </div>
+      <SliderNavRisk></SliderNavRisk>
     </div>
   </div>
 </template>
 <script setup>
 import RiskValueAssessment from "@/components/RiskValueAssessment/index.vue";
-import qygsxx from "@/assets/images/moduleIcon/企业工商信息.png";
-import fxzpg from "@/assets/images/moduleIcon/风险值评估.png";
-import fpcxlsp from "@/assets/images/moduleIcon/发票审批信息.png";
-import jyxx from "@/assets/images/moduleIcon/经营信息.png";
-import ddxx from "@/assets/images/moduleIcon/订单信息.png";
-import fpxx from "@/assets/images/moduleIcon/发票信息.png";
-import wlccxx from "@/assets/images/moduleIcon/物流仓储信息.png";
-import zyspxx from "@/assets/images/moduleIcon/主营商品信息.png";
-import jjpz from "@/assets/images/moduleIcon/交易凭证.png";
-import yhls from "@/assets/images/moduleIcon/银行流水.png";
 import RiskPoint from "./components/RiskPoint.vue";
+import SliderNavRisk from '@/components/SlideNavRisk.vue'
 </script>
 <style lang="scss" scoped>
 .risk-detail {

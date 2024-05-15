@@ -21,6 +21,11 @@
         <div v-if="uploadFlag == 0" class="success-text flex-base-start"><img src="@/assets/base/waring.svg">
           请查看<el-button type="text" @click="dialogVisible = true">错误信息</el-button>，修改后重新上传文件。
         </div>
+        <div v-if="uploadFlag == 2" class="success-text flex-base-start"><img src="@/assets/base/waring.svg">
+          请
+        <fileDownLoad :fileUrl="fpspOtherMaterials.fileUrl" :fileName="fpspOtherMaterials.fileName" btn="下载"></fileDownLoad>
+          文件，修改后重新上传文件。
+        </div>
       </div>
 
       <div class="file-wrap">
@@ -75,6 +80,7 @@ const approvalStore = useApprovalStore();
 const uploading = ref(false)
 const successText = '上传成功，上传信息已展示在下述列表中，可上传相关附件，其中合同和银行流水的附件必须要上传'
 const acceptType = '.xlsx,.xls'
+const fpspOtherMaterials = ref('') // 文件下载路径
 
 const props = defineProps({
   form: {
@@ -112,7 +118,7 @@ const emits = defineEmits(['updateReportId', 'updateFileData'])
 const scroll = ref({
   y: 500
 })
-const uploadFlag = ref(-1) // -1 未上传文件，0上传有误，1上传成功
+const uploadFlag = ref(-1) // -1 未上传文件，0上传有误，1上传成功, 2 上传文件有误，下载查看
 const loading = ref(false)
 const fileList = ref([])
 const dialogVisible = ref(false)
@@ -180,28 +186,15 @@ async function handleUpload(options) {
   const formData = new FormData();
   formData.append("file", options.file);
   formData.append("reportId", props.reportId);
-  // const res = await importData(formData);
   importData(formData).then(res=>{
     approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
-    if(res.data.fieldList && res.data.fieldList.length > 0) {
-        fileList.value = [];
-        relationList.value = []
-        originResult.value = ''
-        tableData.value = res.data.fieldList
-        uploadFlag.value = 0
+     if(res.data.fpspOtherMaterials) { // 字段校验错误 & 关系校验错误
+        fpspOtherMaterials.value = res.data.fpspOtherMaterials
+        uploadFlag.value = 2
         approvalStore.setFileInfo({})
         uploading.value = false
         ElMessage.warning(res.data.result);
-      } else if(res.data.relationList && res.data.relationList.length > 0) {
-        fileList.value = [];
-        tableData.value = []
-        originResult.value = ''
-        relationList.value = res.data.relationList
-        uploadFlag.value = 0
-        approvalStore.setFileInfo({})
-        uploading.value = false
-        ElMessage.warning(res.data.result);
-      } else if(res.data.originResult) {
+      } else if(res.data.originResult) { // 文件不符合要求，请重新上传
         fileList.value = [];
         tableData.value = []
         relationList.value = []
@@ -211,13 +204,48 @@ async function handleUpload(options) {
         ElMessage.warning(res.data.originResult);
         uploading.value = false
       } else { // 上传成功，调一下上传接口，上传文件
-        // approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
         fileList.value = [options.file]
         uploadFlag.value = 1
         UploadFile(options)
         uploading.value = false
         ElMessage.success("上传成功");
       }
+
+    // if(res.data.fieldList && res.data.fieldList.length > 0) { // 字段校验错误
+    //     fileList.value = [];
+    //     relationList.value = []
+    //     originResult.value = ''
+    //     tableData.value = res.data.fieldList
+    //     uploadFlag.value = 0
+    //     approvalStore.setFileInfo({})
+    //     uploading.value = false
+    //     ElMessage.warning(res.data.result);
+    //   } else if(res.data.relationList && res.data.relationList.length > 0) { // 关系校验错误
+    //     fileList.value = [];
+    //     tableData.value = []
+    //     originResult.value = ''
+    //     relationList.value = res.data.relationList
+    //     uploadFlag.value = 0
+    //     approvalStore.setFileInfo({})
+    //     uploading.value = false
+    //     ElMessage.warning(res.data.result);
+    //   } else if(res.data.originResult) {
+    //     fileList.value = [];
+    //     tableData.value = []
+    //     relationList.value = []
+    //     uploadFlag.value = 0
+    //     originResult.value = res.data.result+ ':' + res.data.originResult
+    //     approvalStore.setFileInfo({})
+    //     ElMessage.warning(res.data.originResult);
+    //     uploading.value = false
+    //   } else { // 上传成功，调一下上传接口，上传文件
+    //     // approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
+    //     fileList.value = [options.file]
+    //     uploadFlag.value = 1
+    //     UploadFile(options)
+    //     uploading.value = false
+    //     ElMessage.success("上传成功");
+    //   }
   }).catch(err => {
     approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
     uploading.value = false

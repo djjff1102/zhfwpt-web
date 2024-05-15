@@ -1,81 +1,89 @@
 <template>
   <div class="risk-monitoring-container">
     <RiskCard />
-    <div class="ratio card">
-      <div class="title">企业风险占比</div>
-      <el-row :gutter="16">
-        <el-col :span="8">
-          <div class="chart" id="ratioChart"></div>
-        </el-col>
-        <el-col :span="16">
-          <div class="table">
-            <DangerPoint />
-            <el-tabs type="card">
-              <!-- <el-tab-pane label="高风险">
-                
-              </el-tab-pane>
-              <el-tab-pane label="中风险">
-                <DangerPoint />
-              </el-tab-pane>
-              <el-tab-pane label="低风险">
-                <DangerPoint />
-              </el-tab-pane> -->
-            </el-tabs>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
-    <el-row :gutter="16">
-      <el-col :span="8">
-        <div class="risk card h-340px">
-          <div class="title">风险指标概述</div>
-          <div id="riskChart"></div>
-        </div>
-      </el-col>
-      <el-col :span="16">
-        <div class="statistics card h-340px">
-          <div class="title">风险分类统计</div>
-          <div id="statisticsChart"></div>
-        </div>
-      </el-col>
-    </el-row>
-    <div class="rank card">
+    <RiskRatio></RiskRatio>
+    <InvoiceInterapproval></InvoiceInterapproval>
+    <!-- <div class="rank card">
       <div class="title">风险值排行</div>
       <Rank />
-    </div>
+    </div> -->
   </div>
 </template>
 <script setup>
 import * as echarts from "echarts";
-import DangerPoint from "@/components/RiskValueAssessment/components/DangerPoint.vue";
+import RiskRatio from './components/RiskRatio.vue'
+import InvoiceInterapproval from './components/InvoiceInterapproval.vue'
 
 import RiskCard from "./components/RiskCard.vue";
-import Rank from "./components/Rank.vue";
+// import Rank from "./components/Rank.vue";
 import { pieOption, barOption } from "./option";
 onMounted(() => {
   nextTick(() => {
-    // 初始化图表
-    const ratioDom = document.getElementById("ratioChart");
-    const riskDom = document.getElementById("riskChart");
-    const statisticsDom = document.getElementById("statisticsChart");
-    const ratioChart = echarts.init(riskDom, null, {
-      width: "auto",
-    });
-    const riskChart = echarts.init(ratioDom, null, {
-      width: "auto",
-    });
-    const statisticsChart = echarts.init(statisticsDom, null, {
-      width: "auto",
-    });
-    ratioChart.setOption(pieOption());
-    riskChart.setOption(pieOption());
-    statisticsChart.setOption(barOption());
+    init();
   });
 });
+
+function init() {
+  // 初始化图表
+  const ratioDom = document.getElementById("ratioChart"); // 风险占比
+  const ratioChart = echarts.init(ratioDom, null, {
+    width: "auto",
+  });
+  ratioChart.setOption(pieOption());
+
+
+  const approvalDom = document.getElementById("approvalChart"); // 审批占比
+  const approvalChart = echarts.init(approvalDom, null, {
+    width: "auto",
+  });
+  approvalChart.setOption(renderOption(pieOption(), 'approval'));
+
+  const statisticsDom = document.getElementById("statisticsChart");
+  const statisticsChart = echarts.init(statisticsDom, null, {
+    width: "auto",
+  });
+  statisticsChart.setOption(barOption());
+}
+
+// 根据不同的图表，配置不同的option
+function renderOption(option, type) {
+  if(type === 'risk') {
+    return option;
+  } else if(type === 'approval') {
+    option.series[0].data = [
+      {
+        value: 1800,
+        name: "驳回",
+        itemStyle: {
+          color: "#F76161",
+        },
+      },
+      {
+        value: 484,
+        name: "未审批",
+        itemStyle: {
+          color: "#FF9100",
+        },
+      },
+      {
+        value: 300,
+        name: "通过",
+        itemStyle: {
+          color: "#5ECF69",
+        },
+      },
+    ]
+    delete option.series[0].radius
+    delete option.title
+    return option
+  } else  {
+    return option;
+  }
+}
 </script>
 <style lang="scss" scoped>
 #ratioChart,
-#riskChart {
+#approvalChart {
   height: 260px;
 }
 #statisticsChart {
@@ -93,13 +101,13 @@ onMounted(() => {
 }
 .card {
   margin-top: 16px;
-  padding: 8px 24px;
+  padding: 0px 24px 18px;
   border-radius: 8px;
   background: rgba($color: #dddfe7, $alpha: 0.1);
 }
 .title {
   position: relative;
-  margin: 16px 0;
+  padding: 16px 0;
   padding-left: 11px;
   font-family: PingFangSC, PingFang SC;
   font-weight: 500;
@@ -121,5 +129,8 @@ onMounted(() => {
   .ratio-content {
     display: flex;
   }
+}
+:deep(.el-tabs__item) {
+  padding: 0 100px !important;
 }
 </style>

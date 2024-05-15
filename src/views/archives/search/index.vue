@@ -48,13 +48,18 @@
             :extraContent="true"
             @updateSeach="handleSearchProvince"
             ></SingleSelect>
-            <!-- <SingleSelect
-              title="注册资本(￥)"
+            <SingleSelect
+              title="注册资本"
               :list="registerMoney"
               :customFun="true"
               customFunType="number"
               @updateSeach="handleSearchMoney"
-            ></SingleSelect> -->
+            ></SingleSelect>
+            <SingleSelect
+              title="资本类型"
+              :list="registerMoneyType"
+              @updateSeach="handleSearchMoney"
+            ></SingleSelect>
             <SingleSelect
               title="成立时间"
               :list="establishDate"
@@ -100,7 +105,7 @@ import NoMatch from "./components/NoMatch.vue";
 import { companyList, attentionTotal, groupByProvince } from '@/api/archives/index'
 import { useUserStoreHook } from "@/store/modules/user";
 import { formatNumber } from '@/utils/common'
-import { establishDate, registerMoney, companyTypeObj } from '@/utils/baseType'
+import { establishDate, registerMoney, companyTypeObj, registerMoneyType } from '@/utils/baseType'
 
 const userStore = useUserStoreHook();
 

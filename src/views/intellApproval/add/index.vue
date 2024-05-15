@@ -281,6 +281,11 @@ const fileUploadValidate = computed(() => {
   return false;
 })
 
+// 校验数据是否已经加载完
+const submitFlag = computed(() => {
+   return approvalStore.submitFlag
+})
+
 let userId = userStore.user.id;
 let username = userStore.user.name;
 let companyName = userStore?.user?.organization?.name;
@@ -483,6 +488,10 @@ async function checkSave(type: any, msg: string) {
         handleAddNew(msg)
       }
   } else if(type == 2) {
+    if(!submitFlag.value) { // 数据加载完成之前，禁止点击提交
+      ElMessage.warning('数据加载中');
+      return;
+    }
     if(fileUploadValidate.value) {
       ElMessage.warning('请核实必填信息');
       return;
