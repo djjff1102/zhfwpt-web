@@ -109,7 +109,6 @@ onMounted(() => {
         :data="deptList"
         :columns="deptColumns"
         row-key="id"
-        default-expand-all
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       />
     </el-card>
