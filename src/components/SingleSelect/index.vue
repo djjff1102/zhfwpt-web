@@ -132,7 +132,6 @@ function handleDateSelect() {
 
 // 点击自定义-弹出日期框
 function handleShowDate() {
-  console.log('11111111111111')
   cur.value ='customdate'
   nextTick(() => {
     datePickRef.value.focus()
@@ -147,6 +146,12 @@ function update(data) {
   if(!data.start && !data.end) {
     cur.value = ''
   }
+  console.log('2222222222222222:', data)
+  const item = {
+    max: data.end,
+    min: data.start
+  }
+  emits('updateSeach', item) // 第二个参数，针对成立时间，0是创建时间段  1是时间范围
 }
 
 // 数据规范化

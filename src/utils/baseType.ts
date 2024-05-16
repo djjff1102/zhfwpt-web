@@ -154,23 +154,32 @@ export const establishDate = [
 export const registerMoney = [
   {
     value: "0-100万",
+    min: 0,
+    max: 100,
     key: "100",
   },
   {
     value: "100-200万",
+    min: 100,
+    max: 200,
     key: "200",
   },
   {
     value: "200-500万",
+    min: 200,
+    max: 500,
     key: "300",
   },
   {
     value: "500-1000万",
+    min: 500,
+    max: 1000,
     key: "1000",
   },
   {
     value: "1000万以上",
-    key: "2000",
+    min: 1000,
+    key: "1000",
   },
 ];
 

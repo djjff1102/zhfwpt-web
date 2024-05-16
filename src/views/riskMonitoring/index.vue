@@ -1,86 +1,44 @@
 <template>
   <div class="risk-monitoring-container">
-    <RiskCard />
-    <RiskRatio></RiskRatio>
+    <RiskCard :riskData="riskData"/>
+    <RiskRatio :riskData="riskData"></RiskRatio>
     <InvoiceInterapproval></InvoiceInterapproval>
-    <!-- <div class="rank card">
-      <div class="title">风险值排行</div>
-      <Rank />
-    </div> -->
   </div>
 </template>
 <script setup>
-import * as echarts from "echarts";
 import RiskRatio from './components/RiskRatio.vue'
 import InvoiceInterapproval from './components/InvoiceInterapproval.vue'
-
 import RiskCard from "./components/RiskCard.vue";
-// import Rank from "./components/Rank.vue";
-import { pieOption, barOption } from "./option";
-onMounted(() => {
-  nextTick(() => {
-    init();
-  });
-});
+import { groupByRisk } from '@/api/riskmonitor'
+import { ref } from 'vue'
 
-function init() {
-  // 初始化图表
-  const ratioDom = document.getElementById("ratioChart"); // 风险占比
-  const ratioChart = echarts.init(ratioDom, null, {
-    width: "auto",
-  });
-  ratioChart.setOption(pieOption());
+const riskData = ref({
+  sumary: 0, // 授权企业总数
+  low: {},
+  middle: {},
+  high: {}
+})
 
-
-  const approvalDom = document.getElementById("approvalChart"); // 审批占比
-  const approvalChart = echarts.init(approvalDom, null, {
-    width: "auto",
-  });
-  approvalChart.setOption(renderOption(pieOption(), 'approval'));
-
-  const statisticsDom = document.getElementById("statisticsChart");
-  const statisticsChart = echarts.init(statisticsDom, null, {
-    width: "auto",
-  });
-  statisticsChart.setOption(barOption());
+function groupByRiskData() {
+  groupByRisk({}).then(res => {
+    riskData.value.sumary = res.data.authCompanyNum;
+    res?.data?.riskOverviewVoList.forEach(item => {
+      if(item.riskOrCreditLevel === '1') {
+        riskData.value.high = item
+      } else if(item.riskOrCreditLevel === '2') {
+        riskData.value.middle = item
+      } else if(item.riskOrCreditLevel === '3') {
+        riskData.value.low = item
+      }
+    })
+  }).catch(err => {
+    console.log('整体概况异常：', err)
+  })
 }
 
-// 根据不同的图表，配置不同的option
-function renderOption(option, type) {
-  if(type === 'risk') {
-    return option;
-  } else if(type === 'approval') {
-    option.series[0].data = [
-      {
-        value: 1800,
-        name: "驳回",
-        itemStyle: {
-          color: "#F76161",
-        },
-      },
-      {
-        value: 484,
-        name: "未审批",
-        itemStyle: {
-          color: "#FF9100",
-        },
-      },
-      {
-        value: 300,
-        name: "通过",
-        itemStyle: {
-          color: "#5ECF69",
-        },
-      },
-    ]
-    delete option.series[0].radius
-    delete option.title
-    return option
-  } else  {
-    return option;
-  }
-}
+groupByRiskData()
 </script>
+
 <style lang="scss" scoped>
 #ratioChart,
 #approvalChart {
@@ -129,8 +87,5 @@ function renderOption(option, type) {
   .ratio-content {
     display: flex;
   }
-}
-:deep(.el-tabs__item) {
-  padding: 0 100px !important;
 }
 </style>

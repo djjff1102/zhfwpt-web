@@ -2,7 +2,7 @@
   <div class="risk-card">
     <div class="risk-card-item">
       <div class="content">
-        <div class="num">3,512</div>
+        <div class="num">{{ formatNumber(riskData.sumary) }}</div>
         <div class="title">授权企业</div>
       </div>
       <div class="icon">
@@ -11,46 +11,46 @@
     </div>
     <div class="risk-card-item">
       <div class="content">
-        <div class="num">3,512</div>
-        <div class="title">高信用企业(81-100)</div>
+        <div class="num">{{ formatNumber(riskData.high.count) }}</div>
+        <div class="title">高信用企业({{ riskData.high.scoreMin }}-{{ riskData.high.scoreMax }})</div>
       </div>
       <div class="icon">
-        <svg-icon size="92px" iconClass="high" />
+        <img style="width: 52px" src="@/assets/low-risk.svg">
+        <!-- <svg-icon size="92px" iconClass="high" /> -->
       </div>
     </div>
     <div class="risk-card-item">
       <div class="content">
-        <div class="num">3,512</div>
-        <div class="title">中信用企业(46-80)</div>
+        <div class="num">{{ formatNumber(riskData.middle.count) }}</div>
+        <div class="title">中信用企业({{ riskData.middle.scoreMin }}-{{ riskData.middle.scoreMax }})</div>
       </div>
       <div class="icon">
-        <svg-icon size="92px" iconClass="middle" />
+        <svg-icon size="52px" iconClass="middle" />
       </div>
     </div>
     <div class="risk-card-item">
       <div class="content">
-        <div class="num">3,512</div>
-        <div class="title">低信用企业(0-45)</div>
+        <div class="num">{{ formatNumber(riskData.low.count) }}</div>
+        <div class="title">低信用企业({{ riskData.low.scoreMin }}-{{ riskData.low.scoreMax }})</div>
       </div>
       <div class="icon">
-        <svg-icon size="92px" iconClass="low" />
+        <svg-icon size="52px" iconClass="high" />
       </div>
     </div>
   </div>
 </template>
 <script setup>
 import qysq from "@/assets/images/企业授权.png";
-import { attentionCreditInfo } from '@/api/riskmonitor'
+import { formatNumber } from '@/utils/common'
 
-function init() {
-  attentionCreditInfo({}).then(res => {
-    
-  }).catch(err => {
-    console.log('重点关注企业信用值异常：', err)
-  })
-}
-
-init()
+const props = defineProps({
+  riskData: {
+    sumary: 0, // 授权企业总数
+    low: {},
+    middle: {},
+    high: {}
+  }
+})
 </script>
 <style lang="scss" scoped>
 .risk-card {
@@ -75,16 +75,16 @@ init()
 .risk-card-item {
   color: #fff;
   &:nth-child(2) {
-    color: #f76161;
-    background: #feefef;
+    color: #5ECF69;
+    background: #EAFDE6;
   }
   &:nth-child(3) {
     color: #ff9100;
-    background: #feefef;
+    background: #FFFAF2;
   }
   &:nth-child(4) {
-    color: #0594eb;
-    background: #e6f4fd;
+    color: #f76161;
+    background: #feefef;
   }
 
   .num {
@@ -98,7 +98,11 @@ init()
     line-height: 20px;
   }
   .icon {
-    width: 96px;
+    // width: 96px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .content {
     padding-top: 12px;

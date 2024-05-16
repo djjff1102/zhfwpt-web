@@ -1,6 +1,6 @@
 <template>
   <div class="risk-attention-container">
-    <RiskCard />
+    <RiskCard :riskData="riskData"/>
     <div class="card">
       <div class="title">信用值排行</div>
       <Rank />
@@ -10,6 +10,13 @@
 <script setup>
 import RiskCard from "./components/RiskCard.vue";
 import Rank from "./components/Rank.vue";
+
+const riskData = ref({
+  sumary: 0, // 授权企业总数
+  low: {},
+  middle: {},
+  high: {}
+})
 </script>
 <style lang="scss" scoped>
 .risk-attention-container {

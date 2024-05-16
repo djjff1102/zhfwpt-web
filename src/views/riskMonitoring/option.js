@@ -105,7 +105,7 @@ export const barOption = () => {
         max: 250,
         interval: 50,
         axisLabel: {
-          formatter: "{value} ml",
+          // formatter: "{value} ml",
         },
       },
       {
@@ -115,7 +115,7 @@ export const barOption = () => {
         max: 25,
         interval: 5,
         axisLabel: {
-          formatter: "{value} °C",
+          // formatter: "{value} °C",
         },
       },
     ],
@@ -125,7 +125,8 @@ export const barOption = () => {
         type: "bar",
         tooltip: {
           valueFormatter: function (value) {
-            return value + " ml";
+            return value;
+            // return value + " ml";
           },
         },
         data: [
@@ -137,7 +138,7 @@ export const barOption = () => {
         type: "bar",
         tooltip: {
           valueFormatter: function (value) {
-            return value + " ml";
+            return value;
           },
         },
         data: [
@@ -149,7 +150,7 @@ export const barOption = () => {
         type: "bar",
         tooltip: {
           valueFormatter: function (value) {
-            return value + " ml";
+            return value;
           },
         },
         data: [
@@ -162,7 +163,7 @@ export const barOption = () => {
         yAxisIndex: 1,
         tooltip: {
           valueFormatter: function (value) {
-            return value + " °C";
+            return value;
           },
         },
         data: [

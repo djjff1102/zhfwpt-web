@@ -58,7 +58,7 @@
             <SingleSelect
               title="资本类型"
               :list="registerMoneyType"
-              @updateSeach="handleSearchMoney"
+              @updateSeach="handleSearchMoneyType"
             ></SingleSelect>
             <SingleSelect
               title="成立时间"
@@ -70,7 +70,7 @@
             <SingleSelect
               title="企业类型"
               :list="companyTypeObj"
-              @updateSeach="handleSearchMoney"
+              @updateSeach="handleSearchCompanyType"
             ></SingleSelect>
           </div>
           <el-divider style=" position: absolute; bottom: 15px; left: 0px;">
@@ -121,13 +121,15 @@ const searchPar = ref({
   minimumEstablish: '', // 创建时间查询字段（下限）
   maximumEstablish: '', // 创建时间查询字段（上限）
   randomMinimumEstablish: '', //创建时间日期范围 下限
-  randomMaximumEstablish: '' //创建时间日期范围 上限
+  randomMaximumEstablish: '', //创建时间日期范围 上限
+  // maximumCapital: 10000000, // 资本上限
+  // minimumCapital: 0, // 资本下限
+  // currency: '' // 币种
 })
 const total = ref(0) // 查询结果总数量
 const loading = ref(false); // 加载
 const attentResult = ref({}) // 企业关注统计
 const provinceResult = ref() // 省份分布
-// const curProvince = ref('')
 
 const scrollDisabled = computed(() => {
   return tableData.value.length >= total.value;
@@ -137,9 +139,6 @@ const isEmpty = computed(() => {
   return tableData.value.length === 0;
 });
 
-// let toggleOpen = () => {
-//   isOpen.value = !isOpen.value;
-// };
 
 let computeHeight = () => {
   const areaListDom = document.querySelector(".area-list");
@@ -149,6 +148,33 @@ let computeHeight = () => {
 // 关注/取消关注后，本地刷新关注状态
 function refresh(i) {
   tableData.value[i].attention = !tableData.value[i].attention;
+}
+
+// 注册资本金额
+function handleSearchMoney(v) {
+  if(v.max) {
+    searchPar.value.maximumCapital = v.max
+  } else {
+    delete searchPar.value.maximumCapital
+  }
+  if(v.min) {
+    searchPar.value.minimumCapital = v.min;
+  } else {
+    delete searchPar.value.minimumCapital;
+  }
+  searchPar.value.page = 1;
+  loading.value = true;
+  tableData.value = [];
+  loadPage();
+}
+
+// 注册资本币种
+function handleSearchMoneyType(v) {
+  searchPar.value.currency = v.key
+  searchPar.value.page = 1;
+  loading.value = true;
+  tableData.value = [];
+  loadPage();
 }
 
 function handleSearchProvince(item) {
@@ -183,7 +209,7 @@ function handleSearchTime(item, type) {
 }
 
 // 注册资本
-function handleSearchMoney(item) {
+function handleSearchCompanyType(item) {
   searchPar.value.companyType = item.key
   searchPar.value.page = 1;
   loading.value = true;

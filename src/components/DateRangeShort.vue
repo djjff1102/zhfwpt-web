@@ -25,7 +25,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, } from 'vue';
+import dayjs from "dayjs"
 
 const emits = defineEmits(['hanleMonth'])
 
@@ -61,4 +62,8 @@ const monthRange = ref('') // 时间月份
 function changeMonth(v) {
   emits('hanleMonth', v)
 }
+
+const now = dayjs();
+const twelveMonthsAgo = now.subtract(11, 'month');
+monthRange.value = [ twelveMonthsAgo.format('YYYY-MM-DD'), now.format('YYYY-MM-DD') ]
 </script>
