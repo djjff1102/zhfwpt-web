@@ -32,7 +32,7 @@ export const operatorColumns: BaseColumn[] = [
   },
   {
     prop: "updateDate",
-    label: "操作",
+    label: "操作时间",
     width: 180,
     // align: "center",
   },

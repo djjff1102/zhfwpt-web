@@ -111,7 +111,6 @@ onMounted(() => {
         :data="menuList"
         highlight-current-row
         row-key="id"
-        default-expand-all
         :expand-row-keys="['1']"
         :tree-props="{
           children: 'children',
