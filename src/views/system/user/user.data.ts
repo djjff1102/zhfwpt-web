@@ -27,7 +27,7 @@ export const getUserColumns = (
     {
       prop: "organization_name",
       label: "部门",
-      width: 160,
+      minWidth: 160,
       // align: "center",
       showOverflowTooltip: true,
     },
