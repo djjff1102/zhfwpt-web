@@ -1,6 +1,6 @@
 <template>
   <div class="risk-monitoring-container">
-    <RiskCard :riskData="riskData"/>
+    <RiskCard :riskData="riskData" :linkFlag="true"/>
     <RiskRatio :riskData="riskData"></RiskRatio>
     <InvoiceInterapproval></InvoiceInterapproval>
   </div>

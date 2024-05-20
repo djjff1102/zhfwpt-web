@@ -1,6 +1,6 @@
 <template>
   <div class="risk-card">
-    <div class="risk-card-item" @click="toCompanyList('')">
+    <div class="risk-card-item" :class="{'link-item': linkFlag}" @click="toCompanyList('')">
       <div class="content">
         <div class="num">{{ formatNumber(riskData.sumary) }}</div>
         <div class="title">授权企业</div>
@@ -9,7 +9,7 @@
         <img :src="qysq" style="width: 92px; height: 92px" />
       </div>
     </div>
-    <div class="risk-card-item" @click="toCompanyList('1')">
+    <div class="risk-card-item" :class="{'link-item': linkFlag}" @click="toCompanyList('1')">
       <div class="content">
         <div class="num">{{ formatNumber(riskData.high.count) }}</div>
         <div class="title">高信用企业({{ riskData.high.scoreMin }}-{{ riskData.high.scoreMax }})</div>
@@ -19,7 +19,7 @@
         <!-- <svg-icon size="92px" iconClass="high" /> -->
       </div>
     </div>
-    <div class="risk-card-item" @click="toCompanyList('2')">
+    <div class="risk-card-item" :class="{'link-item': linkFlag}" @click="toCompanyList('2')">
       <div class="content">
         <div class="num">{{ formatNumber(riskData.middle.count) }}</div>
         <div class="title">中信用企业({{ riskData.middle.scoreMin }}-{{ riskData.middle.scoreMax }})</div>
@@ -28,7 +28,7 @@
         <svg-icon size="52px" iconClass="middle" />
       </div>
     </div>
-    <div class="risk-card-item" @click="toCompanyList('3')">
+    <div class="risk-card-item" :class="{'link-item': linkFlag}" @click="toCompanyList('3')">
       <div class="content">
         <div class="num">{{ formatNumber(riskData.low.count) }}</div>
         <div class="title">低信用企业({{ riskData.low.scoreMin }}-{{ riskData.low.scoreMax }})</div>
@@ -52,11 +52,16 @@ const props = defineProps({
     low: {},
     middle: {},
     high: {}
+  },
+  linkFlag: { // 跳转信用值排行
+    type: Boolean,
+    default: false
   }
 })
 
 // 跳转公司列表
 function toCompanyList(type) {
+  if(!props.linkFlag) return;
   router.push({ 
     path: '/riskMonitoring/companylist', 
     query: {
@@ -86,6 +91,9 @@ function toCompanyList(type) {
       box-shadow: 0px 10px 20px 0px rgba(0, 107, 231, 0.19);
     }
     border-radius: 8px;
+  }
+  .link-item {
+    cursor: pointer;
   }
 }
 .risk-card-item {

@@ -16,7 +16,7 @@ export function attentionCreditInfo(data: any) {
  */
 export function attentionCreditCompanyList(data: any) {
   return request({
-    url: "/base/fxjk_index_fxzph/attentionCreditCompanyList",
+    url: "/base/fxjk_index_fxzph//=fxjk_index_fxzph/attentionCreditInfo",
     method: "post",
     data,
   });
@@ -34,12 +34,12 @@ export function fxjkIndexFxzph(data: any) {
 }
 
 /**
- * 风显列表-导出 TODO:
+ * 风显列表-导出
  */
 export function riskExport(data: any) {
   return request({
     responseType: "blob",
-    url: "/base/fpsp_report/export",
+    url: "/base/fxjk_index_fxzph/export",
     method: "post",
     data,
   });
@@ -72,8 +72,9 @@ export function riskIndicator(data: any) {
  */
 export function invoiceCheckByDate(data: any) {
   return request({
-    url: "/base//fxjk_index_fxzph/invoiceCheckByDate",
+    url: "/base/fxjk_index_fxzph/invoiceCheckByDate",
     method: "post",
     data,
   });
 }
+
