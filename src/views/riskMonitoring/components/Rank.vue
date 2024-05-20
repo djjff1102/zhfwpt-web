@@ -176,6 +176,7 @@ function reset() {
     startDate: '',
     endDate: ''
   }
+  curDate.value = ''
   getRiskiList()
 }
 
@@ -185,7 +186,6 @@ function search() {
 
 // 跳转详情
 function handleDetail(d) {
-  console.log('222222222222222222:', d)
   router.push({ 
     path: '/riskMonitoring/detail', 
     query: {

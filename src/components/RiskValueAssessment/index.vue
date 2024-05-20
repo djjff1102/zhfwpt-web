@@ -11,7 +11,7 @@
                <img :src="suggest" alt="" style="width: 64px"/>
               评估建议
             </span>
-            <Exportpdf v-show="!exportFlag" domId="suggestdom" pointId="allPoint" :title="companyName+`风险值评估`" @handleExport="handleExport"></Exportpdf>
+            <Exportpdf v-show="!exportFlag" domId="suggestdom" pointId="allPoint" :title="companyName+`信用值评估`" @handleExport="handleExport"></Exportpdf>
           </div>
           <div class="info">
             <p>
@@ -138,15 +138,15 @@ import lowIcon from '@/assets/riskleval/low.png'
 const fxtype =[
   {
     value: 1,
-    label:'高风险'
+    label:'高信用'
   },
   {
     value: 2,
-    label:'中风险'
+    label:'中信用'
   },
   {
     value: 3,
-    label:'低风险'
+    label:'低信用'
   }
 ]
 

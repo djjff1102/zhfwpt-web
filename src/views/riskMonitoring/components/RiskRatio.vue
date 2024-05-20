@@ -39,17 +39,23 @@
                 :class="'column'+j"
                 :style="{'width': (item.width || autoWidth ) +'px'}">
                   <span v-if="j === 0">{{ i+1 }}</span>
-                  <el-button type="text" v-else-if="j === columns.length - 1" @click="toDetail(row)">详情</el-button>
+                  <!-- <el-button type="text" v-else-if="j === columns.length - 1" @click="toDetail(row)">详情</el-button> -->
                   <span v-else>
                     <span v-if="row[item.dataIndex] && (checkWith(item.width) < row[item.dataIndex].length)">
-                      <w-tooltip >
-                        <div class="risk-result">
-                          {{ row[item.dataIndex].substring(0, checkWith(item.width)) }}...
-                        </div>
+                      <w-tooltip>
+                        <span v-if="item.slotName && item.slotName == 'riskCompanyName'">
+                          <el-button type="text" @click="toDetail(row)">{{ row[item.dataIndex].substring(0, checkWith(item.width)) }}...</el-button>
+                        </span>
+                        <span v-else>{{ row[item.dataIndex].substring(0, checkWith(item.width)) }}...</span>
                         <template #content>{{ row[item.dataIndex] }}</template>
                       </w-tooltip>
                     </span>
-                    <span v-else>{{ row[item.dataIndex] }}</span>
+                    <span v-else>
+                      <span v-if="item.slotName && item.slotName == 'riskCompanyName'">
+                        <el-button type="text" @click="toDetail(row)">{{ row[item.dataIndex] }}</el-button>
+                      </span>
+                      <span v-else>{{ row[item.dataIndex] }}</span>
+                    </span>
                   </span>
               </div>
             </div>
@@ -110,23 +116,12 @@ const columns = reactive([
   {
     title: "风险细则名称",
     dataIndex: "name",
-    width: '200',
   },
   {
-    title: "描述",
-    dataIndex: "description",
-    // width: '20%',
+    title: "涉风险企业",
+    dataIndex: "riskCompanyName",
+    slotName: 'riskCompanyName'
   },
-  {
-    title: "扫描结果",
-    dataIndex: "result",
-    // width: '25%',
-  },
-  {
-    title: "操作",
-    dataIndex: "operations",
-    width: '80',
-  }
 ]);
 const searchPar = ref({
   page_size: 10,
@@ -194,7 +189,7 @@ function getriskIndicator() {
 }
 
 function getTableWidth() {
-  autoWidth.value = (listwrap.value.clientWidth - 460) /2
+  autoWidth.value = (listwrap.value.clientWidth - 220) / 2
 }
 
 onMounted(() => {

@@ -17,12 +17,12 @@ export const btnApprovalCode = {
 export const approvalMapping = {
   approvalTask: "10011", // 风险评估任务
   appravalDetail: "10012", // 企业用户申报详情
-  approvalEvaluate: "10013", // 风险值评估
+  approvalEvaluate: "10013", // 信用值评估
   approvalPredict: "10014", // 企业用票需求预测
   approvalHistory: "10015", // 历史审批情况
 
   BusinessInformation: "10018", // 企业工商信息
-  RiskValueAssessment: "10019", // 风险值评估
+  RiskValueAssessment: "10019", // 信用值评估
   ExcessInvoiceApproval: "10020", // 发票审批信息
   ManagementInformation: "10021", // 经营信息
   archiveInOut: "10022", // 进出口信用

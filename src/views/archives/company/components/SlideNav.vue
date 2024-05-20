@@ -50,7 +50,7 @@ let navList = ref([
   },
   {
     id: "RiskValueAssessment",
-    name: "风险值评估",
+    name: "信用值评估",
     scoll: 0,
     show: true,
   },

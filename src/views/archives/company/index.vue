@@ -17,7 +17,7 @@
         <BusinessInformation :data="companyMsg"></BusinessInformation>
       </div>
       <div v-hasPerm="approvalMapping.RiskValueAssessment" id="RiskValueAssessment">
-        <div class="title"><img :src="fxzpg">风险值评估</div>
+        <div class="title"><img :src="fxzpg">信用值评估</div>
         <RiskValueAssessment :companyName="companyName" :companyId="id"></RiskValueAssessment>
       </div>
       <div v-hasPerm="approvalMapping.ExcessInvoiceApproval" id="ExcessInvoiceApproval">

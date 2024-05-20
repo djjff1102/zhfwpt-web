@@ -97,7 +97,7 @@ const columns = reactive([
     tooltip: {position: 'left'},
   },
   {
-    title: "风险值评估",
+    title: "信用值评估",
     width: 180,
     dataIndex: "riskValue",
   },
