@@ -54,7 +54,7 @@
           <abnormal-htzt
             v-else-if="riskType == abnormalStatus.HTZT"
             :info="item"
-            :columns="columns"
+            :fieldMapping="info.fieldMapping"
           ></abnormal-htzt>
           <abnormal-jygm
             v-else-if="riskType == abnormalStatus.JYGM"
