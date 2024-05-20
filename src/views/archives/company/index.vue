@@ -8,9 +8,10 @@
         <template #default>{{ companyMsg?.attention ? '已关注' : '关注' }}</template>
     </w-button>
     <div class="company-name">{{ companyMsg?.companyName }}</div>
-    <div class="company-content" :class="{'risk-content': route.query.type == 'risk' }">
+    <!-- <div class="company-content" :class="{'risk-content': route.query.type == 'risk' }"></div> -->
+    <div class="company-content">
       <m-backtop target=".company-content"></m-backtop>
-      <SlideNavRisk v-if="route.query.type == 'risk'"></SlideNavRisk>
+      <!-- <SlideNavRisk v-if="route.query.type == 'risk'"></SlideNavRisk> -->
       <div v-hasPerm="approvalMapping.BusinessInformation" id="BusinessInformation">
         <div class="title"><img :src="qygsxx">企业工商信息</div>
         <BusinessInformation :data="companyMsg"></BusinessInformation>
@@ -52,8 +53,8 @@
         <GoodsInformation :companyName="companyName"></GoodsInformation>
       </div> -->
     </div>
-  
-    <SlideNav v-if="route.query.type != 'risk'"></SlideNav>
+    <!-- <SlideNav v-if="route.query.type != 'risk'"></SlideNav> -->
+    <SlideNav></SlideNav>
   </div>
 </template>
 <script setup>
