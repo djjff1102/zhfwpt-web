@@ -120,6 +120,7 @@ const userColumns = getUserColumns(
 onMounted(() => {
   // 角色options
   getRoleOptions();
+  handleQuery()
 });
 </script>
 
