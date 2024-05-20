@@ -229,3 +229,23 @@ export const registerMoneyType = [
     key: "港币",
   },
 ];
+
+// 企业信用等级
+export const companyCreditType = [
+  {
+    name: "全部",
+    value: "",
+  },
+  {
+    name: "高信用",
+    value: "1",
+  },
+  {
+    name: "中信用",
+    value: "2",
+  },
+  {
+    name: "低信用",
+    value: "3",
+  }
+];

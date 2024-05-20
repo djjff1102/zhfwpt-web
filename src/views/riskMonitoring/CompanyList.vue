@@ -20,7 +20,7 @@
         </el-form-item>
         <el-form-item class="mr-16px" field="approveStatus" label="企业信用等级">
           <el-select v-model="searchPar.approveStatus" placeholder="全部" style="width: 160px" clearable>
-            <el-option v-for="(item, i) in statusList" :key="i" :value="item.value" :label="item.label"></el-option>
+            <el-option v-for="(item, i) in companyCreditType" :key="i" :value="item.value" :label="item.name"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -64,16 +64,18 @@
 
 <script lang="ts" setup>
 import {  ref, reactive } from "vue";
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { fxjkIndexFxzph, riskExport } from '@/api/riskmonitor'
 import dayjs from "dayjs";
 import { btnApprovalCode, approvalMapping } from '@/router/permissionCode'
 import { useUserStoreHook } from "@/store/modules/user";
 import { formatNumber, formateDate } from '@/utils/common'
 import { riskLeval } from '@/utils/baseType'
+import { companyCreditType } from '@/utils/baseType'
 
 const userStore = useUserStoreHook();
-const router = useRouter();  
+const router = useRouter(); 
+const route = useRoute();
 
 const curDate = ref('')
 const loading = ref(false);
@@ -155,7 +157,7 @@ const searchPar = ref({
   page_size: 10,
   page: 1,
   companyName: '', // 申报单位
-  approveStatus: '', // 审批状态
+  approveStatus: route.query.type, // 审批状态
   startTime: '',
   endTime: ''
 })

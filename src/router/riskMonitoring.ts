@@ -67,12 +67,13 @@ const routes: RouteRecordRaw[] = [
         name: "CompanyList",
         meta: {
           title: "风险企业列表",
+          activeMenu: "/riskMonitoring",
           icon: "icon-shenbaoliebiao",
-          hidden: false,
+          hidden: true,
           roles: ["ADMIN"],
           keepAlive: true,
           code: [203],
-          showMenu: true,
+          showMenu: false,
         },
       },
       // {

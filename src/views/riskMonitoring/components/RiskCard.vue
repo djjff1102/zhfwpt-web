@@ -1,6 +1,6 @@
 <template>
   <div class="risk-card">
-    <div class="risk-card-item">
+    <div class="risk-card-item" @click="toCompanyList('')">
       <div class="content">
         <div class="num">{{ formatNumber(riskData.sumary) }}</div>
         <div class="title">授权企业</div>
@@ -9,7 +9,7 @@
         <img :src="qysq" style="width: 92px; height: 92px" />
       </div>
     </div>
-    <div class="risk-card-item">
+    <div class="risk-card-item" @click="toCompanyList('1')">
       <div class="content">
         <div class="num">{{ formatNumber(riskData.high.count) }}</div>
         <div class="title">高信用企业({{ riskData.high.scoreMin }}-{{ riskData.high.scoreMax }})</div>
@@ -19,7 +19,7 @@
         <!-- <svg-icon size="92px" iconClass="high" /> -->
       </div>
     </div>
-    <div class="risk-card-item">
+    <div class="risk-card-item" @click="toCompanyList('2')">
       <div class="content">
         <div class="num">{{ formatNumber(riskData.middle.count) }}</div>
         <div class="title">中信用企业({{ riskData.middle.scoreMin }}-{{ riskData.middle.scoreMax }})</div>
@@ -28,7 +28,7 @@
         <svg-icon size="52px" iconClass="middle" />
       </div>
     </div>
-    <div class="risk-card-item">
+    <div class="risk-card-item" @click="toCompanyList('3')">
       <div class="content">
         <div class="num">{{ formatNumber(riskData.low.count) }}</div>
         <div class="title">低信用企业({{ riskData.low.scoreMin }}-{{ riskData.low.scoreMax }})</div>
@@ -42,6 +42,9 @@
 <script setup>
 import qysq from "@/assets/images/企业授权.png";
 import { formatNumber } from '@/utils/common'
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const props = defineProps({
   riskData: {
@@ -51,6 +54,19 @@ const props = defineProps({
     high: {}
   }
 })
+
+// 跳转公司列表
+function toCompanyList(type) {
+  router.push({ 
+    path: '/riskMonitoring/companylist', 
+    query: {
+      type
+      // companyId: d.riskCompanyId,
+      // companyName: d.riskCompanyName,
+      // type: 'risk'
+    }
+  });
+}
 </script>
 <style lang="scss" scoped>
 .risk-card {
