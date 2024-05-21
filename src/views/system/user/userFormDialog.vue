@@ -19,7 +19,7 @@
           clearable
           :disabled="props.modelValue != '0'"
           v-model="formData.organization_id"
-          :options="organizationData"
+          :options="organizationData()"
           :props="addUserOrgProps"
           :show-all-levels="false"
         />
@@ -162,7 +162,11 @@ const rules = reactive({
 });
 
 const roleOptions = JSON.parse(localStorage.getItem("roleList") || "[]");
-const organizationData = JSON.parse(localStorage.getItem("deptList") || "[]");
+// const organizationData = JSON.parse(localStorage.getItem("deptList") || "[]");
+
+function organizationData() {
+  return JSON.parse(localStorage.getItem("deptList") || "[]");
+}
 
 function handleSubmit() {
   userFormRef.value.validate((valid: any) => {
