@@ -40,8 +40,8 @@ export const defaultEdgeStyle = {
 };
 
 export const defaultLayout = {
-  type: "compactBox",
-  direction: "V", // V
+  type: "mindmap",
+  direction: "H", // V
   getId: function getId(d) {
     // d是一个node
     return d.id;

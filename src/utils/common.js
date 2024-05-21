@@ -149,3 +149,11 @@ export function arrayToTree(nodes, edges) {
   tree = map[nodeID[0]];
   return tree;
 }
+
+// 将字符转换为字节
+
+export function countCharacters(str) {
+  const regex = /[\u4e00-\u9fa5]/g;
+  let CHlen =  (str.match(regex) || []).length;
+  return str.length - CHlen + CHlen * 2
+}

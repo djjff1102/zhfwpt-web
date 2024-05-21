@@ -12,6 +12,7 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
+import { countCharacters } from '@/utils/common'
 import G6 from "@antv/g6";
 import {
   COLLAPSE_ICON,
@@ -117,7 +118,7 @@ function init(d) {
     container: props.id,
     width: windowWidth.value * (2/3), // 因为右侧导航栏，调整一下图的居中位置
     height: 200,
-    linkCenter: true,
+    // linkCenter: true,
     modes: {
       default: [
         // {
@@ -141,8 +142,8 @@ function init(d) {
     defaultNode: {
       type: "icon-node-en",
       anchorPoints: [
-        [0.5, 0],
-        [0.5, 1],
+        [0, 0.5], 
+        [1, 0.5],
       ],
       size: [200, 40],
       textAlign: "center", // 设置文本居中
@@ -171,8 +172,8 @@ G6.registerNode(
     draw(cfg, group) {
       const styles = this.getShapeStyle(cfg);
       const { labelCfg = {} } = cfg;
-      // console.log("cfg=", cfg);
-      // console.log("styles=", styles);
+      // console.log("node---cfg=====", cfg);
+      // console.log("node----styles=======", styles);
       const w = styles.width;
       const h = styles.height;
       if (cfg.point_type == 1) {
@@ -182,13 +183,11 @@ G6.registerNode(
         styles.stroke = "rgba(252, 252, 252, 1)"
         styles.fill = "rgba(252, 252, 252, 1)"
       }
-      if(cfg.point_name.length > 12 ) {
-        styles.width = cfg.point_name.length * 20;
-      }
+      styles.width = Math.max(countCharacters(cfg.point_name) * 10 + 10, 200) 
       const keyShape = group.addShape("rect", {
         attrs: {
           ...styles,
-          x: -styles.width / 2,
+          x: -((styles.width - 200) + styles.width) / 2,
           y: -h / 2,
         },
       });
@@ -207,6 +206,8 @@ G6.registerNode(
           attrs: {
             ...labelCfg.style,
             text: cfg.point_name,
+            // x: -((styles.width - 200) + styles.width) / 2,
+            // y: -h / 2,
           },
         });
         let textX = Math.floor(textObj.getBBox().maxX);
@@ -241,6 +242,7 @@ G6.registerNode(
           attrs: {
             ...labelCfg.style,
             text: cfg.point_name,
+            x: -((styles.width - 200)) / 2,
           },
         });
       }
@@ -265,8 +267,8 @@ G6.registerEdge("flow-line-en", {
         // endArrow: false,
         path: [
           ["M", startPoint.x, startPoint.y],
-          ["L", startPoint.x, (startPoint.y + endPoint.y) / 2],
-          ["L", endPoint.x, (startPoint.y + endPoint.y) / 2],
+          ["L", (startPoint.x + endPoint.x) / 2, ( startPoint.y)],
+          ["L", (startPoint.x + endPoint.x) / 2, ( endPoint.y)],
           ["L", endPoint.x, endPoint.y],
         ],
       },
