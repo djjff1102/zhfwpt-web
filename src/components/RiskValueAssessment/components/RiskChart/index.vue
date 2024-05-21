@@ -14,10 +14,13 @@ const props = defineProps({
   },
   leval: { // 1高风险 2 中风险 3低风险
     default: 3
+  },
+  colorStyle: {
+    default: []
   }
 })
 
-const colorArr = reactive(['#F76161', '#FF9100', '#5ECF69']) // leval-1分别取颜色值 1高风险 2 中风险 3低风险
+// const colorArr = reactive(['#F76161', '#FF9100', '#5ECF69']) // leval-1分别取颜色值 1高风险 2 中风险 3低风险
 
 onMounted(() => {
   handleColor()
@@ -39,13 +42,13 @@ watch(
 function handleColor() {
   switch (props.leval) {
     case 1:
-      setColor('#F76161')
+      setColor(props.colorStyle[0])
       break;
     case 2:
-      setColor('#FF9100')
+      setColor(props.colorStyle[1])
       break;
     case 3: 
-      setColor('#5ECF69')
+      setColor(props.colorStyle[2])
       break;
   }
 }

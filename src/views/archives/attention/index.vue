@@ -99,7 +99,7 @@ const columns = reactive([
   {
     title: "信用值评估",
     width: 180,
-    dataIndex: "riskValue",
+    dataIndex: "creditValue",
   },
   {
     title: "登记状态",

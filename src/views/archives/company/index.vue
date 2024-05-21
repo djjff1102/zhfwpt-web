@@ -74,7 +74,7 @@ import AccountStatement from "@/components/AccountStatement/index.vue";
 import LogisticsWarehousingInformation from "@/components/LogisticsWarehousingInformation/index.vue";
 import ManagementInformation from "./components/ManagementInformation/index.vue";
 // import InvoiceInformation from "./components/InvoiceInformation/index.vue";
-import GoodsInformation from "./components/GoodsInformation.vue";
+// import GoodsInformation from "./components/GoodsInformation.vue";
 import SlideNav from "./components/SlideNav.vue";
 import { payAttention, getCompany } from '@/api/archives'
 import { useRouter, useRoute } from 'vue-router';

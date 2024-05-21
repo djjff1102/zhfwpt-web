@@ -2,7 +2,7 @@
   <div id="suggestdom">
     <div class="container-risk-wrap">
       <div class="chart">
-        <RiskChart :riskData="riskData" :leval="suggestData.creditLevel"/>
+        <RiskChart :riskData="riskData" :leval="riskOrCreditLevel" :colorStyle="colorStyle"/>
       </div>
       <div class="information">
         <div class="suggest">
@@ -15,8 +15,8 @@
           </div>
           <div class="info">
             <p>
-              本次评估分值为 <span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ suggestData.creditScore || '--' }}</span>
-              分，该分值处于<span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ suggestData?.riskLevel && fxtype[Number(suggestData?.creditLevel) - 1].label || '--' }}</span>，以下为风险点，请根据实际情况研判额度申报。
+              本次评估分值为 <span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ riskData || '--' }}</span>
+              分，该分值处于<span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ riskOrCreditLevel && fxtype[Number(riskOrCreditLevel) - 1].label || '--' }}</span>，以下为风险点，请根据实际情况研判额度申报。
             </p>
             <!-- <p>
               本次评估分值为 <span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ suggestData.riskScore || '--' }}</span>
@@ -138,22 +138,6 @@ import highIcon from '@/assets/riskleval/high.png'
 import middleIcon from '@/assets/riskleval/middle.png'
 import lowIcon from '@/assets/riskleval/low.png'
 
-
-const fxtype =[
-  {
-    value: 1,
-    label:'高信用'
-  },
-  {
-    value: 2,
-    label:'中信用'
-  },
-  {
-    value: 3,
-    label:'低信用'
-  }
-]
-
 const props = defineProps({
   companyName: {
     type: String,
@@ -179,10 +163,28 @@ watch(() => props.companyId, (v) => {
   immediate: true
 })
 
+const fxtype = ref([ // 
+  {
+    value: 1,
+    label:'高信用'
+  },
+  {
+    value: 2,
+    label:'中信用'
+  },
+  {
+    value: 3,
+    label:'低信用'
+  }
+])
+
+const colorStyle = ref(['#5ECF69', '#FF9100', '#F76161']) // 默认值按信用定义
+const riskOrCreditLevel = ref(0) // 风险或者信用等级
+const riskData = ref(0) //  风险或者信用分
+
 const showRiskNum = ref(3) // 默认展示两条数据
 const isOpen = ref(false)
 const allTableData = ref([])
-const riskData = ref(0)
 const pagination = ref({
   total: 0,
   pageSize: 10,
@@ -346,8 +348,34 @@ function getsuggestion() {
     companyName: props.companyName,
     reportId: props.reportId,
   }).then(res => {
+    console.log('风险----------------------：', res.data)
     suggestData.value = res.data;
-    riskData.value = res.data.creditScore
+    // 有reportID的显示风险
+    // 否则显示信用值
+    if(props.reportId) {
+      riskData.value = res.data.riskScore
+      fxtype.value = [
+        {
+          value: 1,
+          label:'高风险'
+        },
+        {
+          value: 2,
+          label:'中风险'
+        },
+        {
+          value: 3,
+          label:'低风险'
+        }
+      ]
+      colorStyle.value = ['#F76161', '#FF9100', '#5ECF69']
+      riskOrCreditLevel.value = res.data.riskLevel
+    } else {
+      riskData.value = res.data.creditScore
+      riskOrCreditLevel.value = res.data.creditLevel
+    }
+    
+    
   }).catch(err => {})
 }
 
