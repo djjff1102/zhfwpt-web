@@ -6,6 +6,16 @@
       :loading="loading"
       @updateTable="updateTable"
     ></TabCom>
+    <div class="search_box">
+      <el-form :model="searchPar" :inline="true" class="demo-form-inline">
+      <el-form-item label="案号" >
+        <el-input v-model="searchPar.companyName" placeholder="请输入案号" clearable/>
+      </el-form-item>
+      <el-form-item label="执行法院">
+        <el-input v-model="searchPar.companyName" placeholder="请输入执行法院" clearable/>
+      </el-form-item>
+      </el-form>
+    </div>
     <m-table
         style="height: 100%"
         :data="tableData"
@@ -84,5 +94,8 @@ const changepage = (v) => {
 <style lang="scss" scoped>
 :deep(.el-tabs__header) {
   margin-bottom: 8px !important;
+}
+.search_box {
+  margin: 16px 0;
 }
 </style>

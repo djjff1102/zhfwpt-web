@@ -1,6 +1,6 @@
 
 <template>
-  <!-- 企业工商信息 -->
+  <!-- 企业基本信息 -->
   <div
     :style="{
       height: isOpen ? 'auto' : '94px',

@@ -44,7 +44,13 @@ import { approvalMapping } from '@/router/permissionCode'
 let navList = ref([
   {
     id: "BusinessInformation",
-    name: "企业工商信息",
+    name: "企业基本信息",
+    scoll: 0,
+    show: true,
+  },
+  {
+    id: "RiskValueAssessment",
+    name: "信用值评估",
     scoll: 0,
     show: true,
   },
@@ -55,8 +61,8 @@ let navList = ref([
     show: true,
   },
   {
-    id: "RiskValueAssessment",
-    name: "信用值评估",
+    id: "legalCase",
+    name: "法律诉讼",
     scoll: 0,
     show: true,
   },

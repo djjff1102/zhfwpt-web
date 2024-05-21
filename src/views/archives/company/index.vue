@@ -13,17 +13,25 @@
       <m-backtop target=".company-content"></m-backtop>
       <!-- <SlideNavRisk v-if="route.query.type == 'risk'"></SlideNavRisk> -->
       <div v-hasPerm="approvalMapping.BusinessInformation" id="BusinessInformation">
-        <div class="title"><img :src="qygsxx">企业工商信息</div>
-        <BusinessInformation :data="companyMsg"></BusinessInformation>
+        <div class="title"><img :src="qygsxx">企业基本信息</div>
+        <div style="margin-bottom: 60px">
+          <BusinessInformation :data="companyMsg"></BusinessInformation>
+        </div>
+        <CompanyInfo :companyName="companyName" :companyId="id"></CompanyInfo>
+      </div>
+      <div v-hasPerm="approvalMapping.RiskValueAssessment" id="RiskValueAssessment">
+        <div class="title"><img :src="fxzpg">信用值评估</div>
+        <RiskValueAssessment :companyName="companyName" :companyId="id"></RiskValueAssessment>
       </div>
       <!-- <div v-hasPerm="approvalMapping.manageRisk" id="manageRisk"> -->
       <div id="manageRisk">
         <div class="title"><img :src="qygsxx">经营风险</div>
         <ManageRisk></ManageRisk>
       </div>
-      <div v-hasPerm="approvalMapping.RiskValueAssessment" id="RiskValueAssessment">
-        <div class="title"><img :src="fxzpg">信用值评估</div>
-        <RiskValueAssessment :companyName="companyName" :companyId="id"></RiskValueAssessment>
+      <!-- <div v-hasPerm="approvalMapping.legalCase" id="legalCase"> -->
+      <div id="legalCase">
+        <div class="title"><img :src="qygsxx">法律诉讼</div>
+        <LegalCom></LegalCom>
       </div>
       <div v-hasPerm="approvalMapping.ExcessInvoiceApproval" id="ExcessInvoiceApproval">
         <div class="title"><img :src="fpcxlsp">发票审批信息</div>
@@ -64,7 +72,9 @@
 </template>
 <script setup>
 import { ref } from 'vue';
+import LegalCom from './components/LegalCom/index.vue'
 import ManageRisk from './components/ManageRisk/index.vue'
+import CompanyInfo from './components/CompanyInfo/index.vue'
 import BusinessInformation from "./components/BusinessInformation.vue";
 import ExcessInvoiceApproval from "@/components/ExcessInvoiceApproval/index.vue";
 import RiskValueAssessment from "@/components/RiskValueAssessment/index.vue";
@@ -86,11 +96,11 @@ import jyxx from "@/assets/images/moduleIcon/经营信息.png";
 import ddxx from "@/assets/images/moduleIcon/订单信息.png";
 import fpxx from "@/assets/images/moduleIcon/发票信息.png";
 import wlccxx from "@/assets/images/moduleIcon/物流仓储信息.png";
-import zyspxx from "@/assets/images/moduleIcon/主营商品信息.png";
+// import zyspxx from "@/assets/images/moduleIcon/主营商品信息.png";
 import jjpz from "@/assets/images/moduleIcon/交易凭证.png";
 import yhls from "@/assets/images/moduleIcon/银行流水.png";
 import { approvalMapping } from '@/router/permissionCode'
-import SlideNavRisk from '@/components/SlideNavRisk.vue'
+// import SlideNavRisk from '@/components/SlideNavRisk.vue'
 
 const userStore = useUserStoreHook();
 // const router = useRouter();

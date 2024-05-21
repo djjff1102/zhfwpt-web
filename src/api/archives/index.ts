@@ -474,3 +474,12 @@ export function getqyzxcertificategood(data: any) {
     data,
   });
 }
+
+// 变更信息
+export function changeInfo(data: any) {
+  return request({
+    url: ``,
+    method: "post",
+    data,
+  });
+}

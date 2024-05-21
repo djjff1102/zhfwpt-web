@@ -15,6 +15,7 @@ export const btnApprovalCode = {
 };
 
 export const approvalMapping = {
+  legalCase: "10037", // 法律诉讼
   manageRisk: "10036", // 经营风险
   approvalTask: "10011", // 风险评估任务
   appravalDetail: "10012", // 企业用户申报详情

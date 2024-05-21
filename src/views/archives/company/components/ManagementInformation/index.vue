@@ -10,12 +10,12 @@
     <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveTaxes)" label="纳税人资质">
       <TaxpayerQualification v-bind="$attrs"></TaxpayerQualification>
     </el-tab-pane>
-    <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveCompany)" label="企业图谱">
+    <!-- <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveCompany)" label="企业图谱">
       <CompanyGraph v-bind="$attrs"></CompanyGraph>
-    </el-tab-pane>
-    <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveStockRight)" label="股权穿透">
+    </el-tab-pane> -->
+    <!-- <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveStockRight)" label="股权穿透">
       <EquityPenetration v-bind="$attrs"></EquityPenetration>
-    </el-tab-pane>
+    </el-tab-pane> -->
     <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveSupply)" label="供应链分析">
       <SupplyChainAnalysis></SupplyChainAnalysis>
     </el-tab-pane>
