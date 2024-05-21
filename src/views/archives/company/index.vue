@@ -19,7 +19,7 @@
       <!-- <div v-hasPerm="approvalMapping.manageRisk" id="manageRisk"> -->
       <div id="manageRisk">
         <div class="title"><img :src="qygsxx">经营风险</div>
-        <!-- <BusinessInformation :data="companyMsg"></BusinessInformation> -->
+        <ManageRisk></ManageRisk>
       </div>
       <div v-hasPerm="approvalMapping.RiskValueAssessment" id="RiskValueAssessment">
         <div class="title"><img :src="fxzpg">信用值评估</div>
@@ -64,7 +64,7 @@
 </template>
 <script setup>
 import { ref } from 'vue';
-// import 
+import ManageRisk from './components/ManageRisk/index.vue'
 import BusinessInformation from "./components/BusinessInformation.vue";
 import ExcessInvoiceApproval from "@/components/ExcessInvoiceApproval/index.vue";
 import RiskValueAssessment from "@/components/RiskValueAssessment/index.vue";

@@ -2,7 +2,7 @@
   <div id="suggestdom">
     <div class="container-risk-wrap">
       <div class="chart">
-        <RiskChart :riskData="riskData" :leval="suggestData.riskLevel"/>
+        <RiskChart :riskData="riskData" :leval="suggestData.creditLevel"/>
       </div>
       <div class="information">
         <div class="suggest">
@@ -15,9 +15,13 @@
           </div>
           <div class="info">
             <p>
+              本次评估分值为 <span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ suggestData.creditScore || '--' }}</span>
+              分，该分值处于<span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ suggestData?.riskLevel && fxtype[Number(suggestData?.creditLevel) - 1].label || '--' }}</span>，以下为风险点，请根据实际情况研判额度申报。
+            </p>
+            <!-- <p>
               本次评估分值为 <span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ suggestData.riskScore || '--' }}</span>
               分，该分值处于<span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ suggestData?.riskLevel && fxtype[Number(suggestData?.riskLevel) - 1].label || '--' }}</span>，以下为风险点，请根据实际情况研判额度申报。
-            </p>
+            </p> -->
             <p>
               风险点总结：本次评估检测到 {{ getTotal() }} 个风险点，高风险
               <span class="leval-1"> {{ suggestData.highRiskNum }} </span> 个，中风险 <span class="leval-2">{{ suggestData.mediumRiskNum }}</span>
@@ -343,7 +347,7 @@ function getsuggestion() {
     reportId: props.reportId,
   }).then(res => {
     suggestData.value = res.data;
-    riskData.value = res.data.riskScore
+    riskData.value = res.data.creditScore
   }).catch(err => {})
 }
 
