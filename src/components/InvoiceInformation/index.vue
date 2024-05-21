@@ -102,6 +102,9 @@ const echartData = ref({
 
 // 切换月份查询
 function changeMonth() {
+  if(monthRange.value && monthRange.value[1]) {
+    monthRange.value[1] = dayjs(monthRange.value[1]).endOf('month').format('YYYY-MM-DD');
+  }
   init()
 }
 
