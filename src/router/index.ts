@@ -3,6 +3,7 @@ import archives from "./archives";
 import warehousing from "./warehousing";
 import riskMonitoring from "./riskMonitoring";
 import intellApproval from "./intellApproval";
+import { encryptData } from "@/utils/encryptAndDecrypt";
 
 export const Layout = () => import("@/layout/index.vue");
 
@@ -168,6 +169,21 @@ const router = createRouter({
   // 刷新时，滚动条位置还原
   scrollBehavior: () => ({ left: 0, top: 0 }),
 });
+
+// 重写push方法
+const originalPush = router.push;
+router.push = function push(location: any) {
+  // 在这里可以添加自定义逻辑
+  if(location.query) {
+    const keys = Object.keys(location.query)
+    let newQuery: any = {}
+    keys.forEach(item => {
+      newQuery[item] = encryptData(location.query[item]);
+    })
+    location.query = newQuery;
+  }
+  return originalPush.call(this, location);
+};
 
 /**
  * 重置路由

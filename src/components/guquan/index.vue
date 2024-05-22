@@ -56,6 +56,7 @@ const initH = ref(0) // 初始页面，即非全屏下的画布高度
 const gr = ref()
 const fullFlag = ref(false)
 const fullRefGQ = ref()
+let flag = false
 
 window.addEventListener("resize", getWindow());
 getWindow();
@@ -208,7 +209,7 @@ G6.registerEdge("flow-line", {
     const endPoint = cfg.endPoint;
     const { style } = cfg;
     // console.log("股权穿透-边msg-----------:", cfg.targetNode._cfg.model);
-    console.log("边-style----------:", style);
+    // console.log("边-style----------:", style);
     const shape = group.addShape("path", {
       attrs: {
         stroke: style.stroke,

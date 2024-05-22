@@ -1,9 +1,9 @@
 import router from "@/router";
 import { useUserStoreHook } from "@/store/modules/user";
 import { usePermissionStoreHook } from "@/store/modules/permission";
-// import CryptoJS from "crypto-js";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import { decryptData } from "@/utils/encryptAndDecrypt";
 
 NProgress.configure({ showSpinner: false }); // 进度条
 
@@ -68,6 +68,14 @@ router.beforeEach(async (to, from, next) => {
   }
 });
 
-router.afterEach(() => {
+router.afterEach((to) => {
+  if (to.query) {
+    const keys = Object.keys(to.query);
+    let newQuery: any = {};
+    keys.forEach((item) => {
+      newQuery[item] = decryptData(to.query[item] as any);
+    });
+    to.query = newQuery;
+  }
   NProgress.done();
 });

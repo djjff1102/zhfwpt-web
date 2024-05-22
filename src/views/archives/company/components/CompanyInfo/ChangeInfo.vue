@@ -99,7 +99,7 @@ function getpage() {
   })
 }
 
-getpage();
+// getpage();
 </script>
 
 <style lang="scss" scoped>
