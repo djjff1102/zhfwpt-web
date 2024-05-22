@@ -50,7 +50,7 @@ export const defaultLayout = {
     return 16;
   },
   getWidth: function getWidth() {
-    return 240;
+    return 200;
   },
   getVGap: function getVGap() {
     // 节点的水平间隙
@@ -65,7 +65,7 @@ export const defaultLayout = {
 export const defaultLabelCfg = {
   style: {
     fill: "#000",
-    fontSize: 18,
+    fontSize: 12,
     textAlign: "center",
     textBaseline: "middle", // 设置文本垂直居中
   },

@@ -20,46 +20,6 @@ export const EXPAND_ICON = function EXPAND_ICON(x, y, r) {
   ];
 };
 
-const result = [
-  {
-    name: "莱佛公司",
-    type: 1,
-    id: "公司id",
-    label: "莱佛公司",
-    children: [
-      {
-        name: "李某某",
-        id: "用户id",
-        label: "法定代表人", // 角色
-      },
-    ],
-  },
-];
-
-export const data = {
-  id: "公司id",
-  label: "莱佛公司",
-  children: [
-    {
-      id: "c1",
-      label: "c1",
-      children: [
-        {
-          id: "c1-1",
-          label: "c1-1",
-        },
-        {
-          id: "c1-2",
-          label: "c1-2",
-        },
-      ],
-    },
-    {
-      id: "c2",
-      label: "c2",
-    },
-  ],
-};
 
 export const defaultStateStyles = {
   hover: {
@@ -74,20 +34,15 @@ export const defaultNodeStyle = {
   radius: 5,
 };
 
-// export const defaultEdgeStyle = {
-//   type: "polyline",
-//   stroke: "rgba(191, 196, 205, 0.5)",
-//   endArrow: false,
-// };
 export const defaultEdgeStyle = {
   stroke: "rgba(191, 196, 205, 0.5)",
-  endArrow: {
-    path: "M 0,0 L 12, 6 L 9,0 L 12, -6 Z",
-    // path: "M30,0 L0,30 L60,30 Z",
-    fill: "rgba(52, 112, 255, 1)",
-    stroke: "rgba(52, 112, 255, 1)",
-    d: -20,
-  },
+  // endArrow: {
+  //   // path: "M 0,0 L 12, 6 L 9,0 L 12, -6 Z",
+  //   path: "M30,0 L0,30 L60,30 Z",
+  //   fill: "rgba(52, 112, 255, 1)",
+  //   stroke: "rgba(52, 112, 255, 1)",
+  //   d: -20,
+  // },
 };
 
 export const defaultLayout = {

@@ -16,7 +16,6 @@ import G6 from "@antv/g6";
 import {
   COLLAPSE_ICON,
   EXPAND_ICON,
-  data,
   defaultStateStyles,
   defaultNodeStyle,
   defaultEdgeStyle,
@@ -53,6 +52,7 @@ watch(
 
 const windowWidth = ref(0);
 const windowHeight = ref(0)
+const initH = ref(0) // 初始页面，即非全屏下的画布高度
 const gr = ref()
 const fullFlag = ref(false)
 const fullRefGQ = ref()
@@ -60,21 +60,23 @@ const fullRefGQ = ref()
 window.addEventListener("resize", getWindow());
 getWindow();
 function getWindow() {
-  windowWidth.value =
-    document.documentElement.clientWidth || document.body.clientWidth;
-    windowHeight.value = document.documentElement.clientHeight || document.body.clientHeight;
+  windowWidth.value = document.documentElement.clientWidth || document.body.clientWidth;
+  windowHeight.value = document.documentElement.clientHeight || document.body.clientHeight;
+  initH.value = windowHeight.value / 4 // 可以视情况随机指定一个值
 }
 
 // 点击esc按钮或者浏览器退出的时候，↩↩️恢复侧边栏
 document.addEventListener('fullscreenchange', event => {
   if (!document.fullscreenElement) {
     fullFlag.value = false
-    gr.value.changeSize( windowWidth.value * (2/3), 200 )
+    gr.value.changeSize( windowWidth.value * (3/4), initH.value )
     gr.value.removeBehaviors(['collapse-expand','drag-canvas', 'zoom-canvas'], 'default');
+    gr.value.changeData(JSON.parse(JSON.stringify(props.data))) // 重新将数据渲染（全屏模式节点全部收起时，退出全屏）
+    gr.value.render();
     gr.value.fitView();
   } else {
     fullFlag.value = true
-    gr.value.changeSize( windowWidth.value - 60, windowHeight.value - 60 )
+    gr.value.changeSize( windowWidth.value - 60, windowHeight.value + 100 )
     gr.value.addBehaviors(['collapse-expand', 'drag-canvas', 'zoom-canvas'], 'default');
     gr.value.fitView()
   }
@@ -94,8 +96,8 @@ function toggleFullscreen() {
 function init(d) {
   const graph = new G6.TreeGraph({
     container: props.id,
-    width: windowWidth.value - 200, // 因为右侧导航栏，调整一下图的居中位置
-    height: 300,
+    width: windowWidth.value * ( 3 / 4 ), // 因为右侧导航栏，调整一下图的居中位置
+    height: initH.value,
     linkCenter: true,
     modes: {
       default: [],
@@ -106,7 +108,7 @@ function init(d) {
         [0.5, 0],
         [0.5, 1],
       ],
-      size: [200, 40],
+      size: [100, 30],
       textAlign: "center", // 设置文本居中
       style: defaultNodeStyle,
       labelCfg: defaultLabelCfg,
@@ -122,9 +124,16 @@ function init(d) {
 
   graph.data(d);
   graph.render();
-  // graph.fitView();
-  graph.fitCenter()
+  graph.fitView();
   gr.value = graph
+  let zoom = graph.getZoom()
+  if((zoom < 1) && !flag) {
+    flag = true
+    graph.changeSize(windowWidth.value * (3/4), Math.floor(initH.value / zoom))
+    graph.changeData(d) // 画布大小调整，重新渲染
+    graph.fitView(); // 中心位置调整
+    initH.value = Math.floor(initH.value / zoom)
+  }
 }
 
 G6.registerNode(
@@ -199,7 +208,7 @@ G6.registerEdge("flow-line", {
     const endPoint = cfg.endPoint;
     const { style } = cfg;
     // console.log("股权穿透-边msg-----------:", cfg.targetNode._cfg.model);
-    // console.log("边-----------:", cfg);
+    console.log("边-style----------:", style);
     const shape = group.addShape("path", {
       attrs: {
         stroke: style.stroke,
@@ -232,6 +241,10 @@ G6.registerEdge("flow-line", {
 </script>
 
 <style lang="scss" scoped>
+
+canvas {
+  transform: translateZ(0);
+}
 .full-btn {
   display: flex;
   align-items: center;
@@ -247,7 +260,7 @@ G6.registerEdge("flow-line", {
 .full-window {
   position: absolute;
   top: 25px;
-  right: 10%;
+  right: 40px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
