@@ -54,7 +54,7 @@ export const defaultLayout = {
   },
   getVGap: function getVGap() {
     // 节点的水平间隙
-    return 30;
+    return 16;
   },
   getHGap: function getHGap() {
     // 节点的垂直间隙
