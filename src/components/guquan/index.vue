@@ -13,6 +13,7 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import G6 from "@antv/g6";
+import { countCharacters } from '@/utils/common'
 import {
   COLLAPSE_ICON,
   EXPAND_ICON,
@@ -63,7 +64,7 @@ getWindow();
 function getWindow() {
   windowWidth.value = document.documentElement.clientWidth || document.body.clientWidth;
   windowHeight.value = document.documentElement.clientHeight || document.body.clientHeight;
-  initH.value = windowHeight.value / 4 // 可以视情况随机指定一个值
+  initH.value = windowHeight.value / 8 // 可以视情况随机指定一个值
 }
 
 // 点击esc按钮或者浏览器退出的时候，↩↩️恢复侧边栏
@@ -151,27 +152,23 @@ G6.registerNode(
 
       const w = styles.width;
       const h = styles.height;
-
+      let nodeMsg = ''
       if (cfg.point_id == "1") {
         styles.fill = "#3470FF";
-        if(cfg.point_type.length > 12) {
-          styles.width = cfg.point_type.length * 14;
+        styles.width = Math.max(countCharacters(cfg.point_type) * 7 + 10, 100)
+      } else {
+        if(cfg.point_type == '法定代表人') {
+          nodeMsg = cfg.point_message['法定代表人']
+        } else if(cfg.point_type == '控股企业') {
+          nodeMsg = cfg.point_message['公司名称']
         }
-      }
-      let nodeMsg = ''
-      if(cfg.point_type == '法定代表人') {
-        nodeMsg = cfg.point_message['法定代表人']
-      } else if(cfg.point_type == '控股企业') {
-        nodeMsg = cfg.point_message['公司名称']
-      }
-      if(nodeMsg.length > 12 ) {
-        styles.width = nodeMsg.length * 14;
+        styles.width = Math.max(countCharacters(nodeMsg) * 7 + 10, 100)
       }
     
       const keyShape = group.addShape("rect", {
         attrs: {
           ...styles,
-          x: -styles.width / 2,
+          x:  -(styles.width) / 2,
           y: -h / 2,
         },
       });

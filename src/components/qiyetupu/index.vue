@@ -70,7 +70,7 @@ let flag = false
 
 window.addEventListener("resize", getWindow());
 getWindow();
-initH.value = windowHeight.value / 4
+initH.value = windowHeight.value / 8
 
 // 点击esc按钮或者浏览器退出的时候，↩↩️恢复侧边栏
 document.addEventListener('fullscreenchange', event => {
@@ -229,7 +229,6 @@ G6.registerNode(
         let color = colorObj[cfg.point_name] || "#379C0D";
         group.addShape("circle", {
           attrs: {
-            // x: -(w - textX) / 2 + 34,
             x: -(textX + 14),
             y: 0,
             r: 6, // 圆的半径
