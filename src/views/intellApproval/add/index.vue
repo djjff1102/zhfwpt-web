@@ -602,7 +602,7 @@ function getDetail(d: any) {
       curDate.value = [res.data.validDateStart, res.data.validDateEnd] as any
       reportId.value = res.data.id
       approvalStore.getTableData(reportId.value); // 获取订单、合同、发票等信息
-      form.value.otherMaterialsRequestList = res.data.otherMaterialsResponseList
+      form.value.otherMaterialsRequestList = res.data.otherMaterialsResponseList.map((item: any) => item.fileUrl)
       // getCurSumMoney(curTab.value)
     } else {
       approvalStore.clearTable(); // 获取订单、合同、发票等信息
