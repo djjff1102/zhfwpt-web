@@ -26,7 +26,7 @@
       <!-- <div v-hasPerm="approvalMapping.manageRisk" id="manageRisk"> -->
       <div id="manageRisk">
         <div class="title"><img :src="qygsxx">经营风险</div>
-        <ManageRisk></ManageRisk>
+        <ManageRisk :companyId="id"></ManageRisk>
       </div>
       <!-- <div v-hasPerm="approvalMapping.legalCase" id="legalCase"> -->
       <div id="legalCase">

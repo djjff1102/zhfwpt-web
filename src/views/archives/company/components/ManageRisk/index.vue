@@ -26,10 +26,15 @@
 import { ref } from 'vue'
 import { useUserStoreHook } from "@/store/modules/user";
 import { approvalMapping } from '@/router/permissionCode'
+import { companyItemSetting } from '@/api/archives'
 import TabCom from '../TabCom.vue'
 
 const userStore = useUserStoreHook();
 const dataPermissionCode = userStore.user.dataPermissionCode || []
+
+const props = defineProps({
+  companyId: ''
+})
 
 const curTab = ref(1) // 当前选中的tab标签
 const TabData = ref([{
@@ -80,6 +85,17 @@ const changepage = (v) => {
 };
 
 
+function getcompanyItemSetting() {
+  companyItemSetting({
+    company_id: props.companyId
+  }).then(res => {
+    console
+  }).catch(err => {
+    console.log('获取公司风险tab失败：', err)
+  })
+}
+
+getcompanyItemSetting()
 </script>
 <style lang="scss" scoped>
 :deep(.el-tabs__header) {

@@ -475,11 +475,20 @@ export function getqyzxcertificategood(data: any) {
   });
 }
 
-// 变更信息
+// 通用接口（变更信息、经营风险、法律诉讼）
 export function changeInfo(data: any) {
   return request({
     url: ``,
     method: "post",
     data,
+  });
+}
+
+// 公司风险命中tab
+export function companyItemSetting(params: any) {
+  return request({
+    url: `base/company_base/companyItemSetting/${params.company_id}`,
+    method: "get",
+    params,
   });
 }
