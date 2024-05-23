@@ -3,7 +3,6 @@
   "version": "2.7.0",
   "private": true,
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "dev": "vite serve --mode development",
     "build:prod": "vite build --mode production",
     "prepare": "husky install",
