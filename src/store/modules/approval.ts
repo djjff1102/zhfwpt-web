@@ -136,9 +136,9 @@ export const useApprovalStore = defineStore("approvalstore", () => {
   }
 
   // 获取订单、合同、 发票、 银行流水
-  function getTableData(reportId: any) {
+  function getTableData(reportId?: any) {
     submitFlag.value = false; // 重新加载时，为提交加锁
-    searchPar.value.dataType = reportId;
+    searchPar.value.dataType = reportId || searchPar.value.dataType;
     return new Promise((resolve, reject) => {
       Promise.all([
         getqyzxOrder(),

@@ -15,6 +15,19 @@
             >
             </el-date-picker>
         </el-form-item>
+        <el-form-item field="post" label="申报日期">
+          <el-date-picker
+              v-model="curDateApplication"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              format="YYYY-MM-DD"
+              style="width: 300px"
+              @change="onChangeApplication"
+            >
+            </el-date-picker>
+        </el-form-item>
         <el-form-item field="companyName" label="申报单位">
           <el-input v-model="searchPar.companyName" placeholder="请输入申报单位" clearable/>
         </el-form-item>
@@ -124,6 +137,7 @@ watch(() => userStore.user.dataPermissionCode,  (v) => {
   immediate: true
 })
 
+const curDateApplication = ref('') // 申报日期
 const rowSelection = ref({
   type: 'checkbox',
   showCheckedAll: true
@@ -394,6 +408,15 @@ function onChange(dateString: any, date: any) {
     searchPar.value.startTime = '';
     searchPar.value.endTime = '';
   }
+}
+function onChangeApplication(dateString: any, date: any) {
+  // if(dateString && dateString.length > 0) {
+  //   searchPar.value.startTime = formateDate(curDate.value[0])
+  //   searchPar.value.endTime = formateDate(curDate.value[1])
+  // } else {
+  //   searchPar.value.startTime = '';
+  //   searchPar.value.endTime = '';
+  // }
 }
 
 // 申报列表

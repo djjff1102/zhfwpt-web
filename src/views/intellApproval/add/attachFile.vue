@@ -31,22 +31,35 @@ const props = defineProps({
   },
   reportId: {
     deafault: ''
-  }
+  },
+  modelValue: {
+    type: Object,
+    default: {}
+  },
 })
+
+const emits = defineEmits(["update:modelValue"]);
 
 // 删除附件
 async function del() {
-  const data = {
-    reportId: approvalStore.rediusReportId,
-    judgeId: props.row.id,
-    isDelete: 1,
-    fileType: props.type, // 文件对应的数据类型，0为其他材料，1为订单，2为合同，3为发票，4为银行流水，5为仓储，6为物流
+  // 有缓存id，后端删
+  if(approvalStore.rediusReportId) {
+    const data = {
+      reportId: approvalStore.rediusReportId,
+      judgeId: props.row.id,
+      isDelete: 1,
+      fileType: props.type, // 文件对应的数据类型，0为其他材料，1为订单，2为合同，3为发票，4为银行流水，5为仓储，6为物流
+    }
+    fileSave( data ).then(res => {
+      approvalStore.setListData( props.type)
+    }).catch(err => {
+      ElMessage.success("附件删除失败");
+    })
+  } else { // 无缓存id，前端删
+    const row = props.modelValue
+    delete row.material
+    emits("update:modelValue", row);
   }
-  fileSave( data ).then(res => {
-    approvalStore.setListData( props.type)
-  }).catch(err => {
-    ElMessage.success("附件删除失败");
-  })
 }
 
 async function load(item) {

@@ -65,13 +65,17 @@ const props = defineProps({
   },
   approveStatus: {  // 审批状态 1 待审批 2通过 3 reject
     default: ''
-  }
+  },
+  modelValue: {
+    type: Object,
+    default: {}
+  },
 })
 
 const dialogVisible = ref(false)
 const pageType = ref(route.query.type)
 
-const emits = defineEmits(['updateUploadRow'])
+const emits = defineEmits(["update:modelValue"]);
 
 // 忽略错误信息
 function abortMsg() {
@@ -89,19 +93,26 @@ function abortMsg() {
 }
 
 function updateUpload(file) {
-  const data = {
-    reportId: approvalStore.rediusReportId,
-    fileUrl: file,
-    fileName: splitFiltName(file),
-    judgeId: props.rowId,
-    fileType: props.type, // 文件对应的数据类型，0为其他材料，1为订单，2为合同，3为发票，4为银行流水，5为仓储，6为物流
-    judgeCode: 0 // judgeCode 0为未处理的，1为校验通过的，2为校验异常的，3为用户选择忽略,重新上传默认为未处理
+    const data = {
+      fileUrl: file,
+      fileName: splitFiltName(file),
+      judgeId: props.rowId,
+      fileType: props.type, // 文件对应的数据类型，0为其他材料，1为订单，2为合同，3为发票，4为银行流水，5为仓储，6为物流
+      judgeCode: 0 // judgeCode 0为未处理的，1为校验通过的，2为校验异常的，3为用户选择忽略,重新上传默认为未处理
+    }
+  if(approvalStore.rediusReportId) {
+    data.reportId = approvalStore.rediusReportId
+    fileSave( data ).then(res => {
+      approvalStore.setListData( props.type)
+    }).catch(err => {
+      ElMessage.success("附件更新失败：" + JSON.stringify(err));
+    })
+  } else {
+    let row = props.row
+    row.material = data
+    emits("update:modelValue", row);
   }
-  fileSave( data ).then(res => {
-    approvalStore.setListData( props.type)
-  }).catch(err => {
-    ElMessage.success("附件更新失败：" + JSON.stringify(err));
-  })
+
 }
 
 // 检验错误信息的状态

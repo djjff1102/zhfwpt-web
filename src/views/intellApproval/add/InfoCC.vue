@@ -28,10 +28,10 @@
           <div>{{ formatNumber(tableData[rowIndex].distributionWeight) }}{{tableData[rowIndex].warehousingUnit}}</div>
         </template>
         <template v-slot:materialslot="{rowIndex}">
-          <attachFile :row="tableData[rowIndex]" :type="pro.CC" v-bind="$attrs"></attachFile>
+          <attachFile v-model="tableData[rowIndex]" :row="tableData[rowIndex]" :type="pro.CC" v-bind="$attrs"></attachFile>
         </template>
         <template v-slot:operations="{rowIndex}">
-          <reportOperation :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.CC" :row="tableData[rowIndex]" v-bind="$attrs"></reportOperation>
+          <reportOperation v-model="tableData[rowIndex]" :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.CC" :row="tableData[rowIndex]" v-bind="$attrs"></reportOperation>
         </template>
         <template v-slot:materialErrorslot="{rowIndex}">
           <span v-for="(item, i) in tableData[rowIndex]?.material?.judgeResult" :key="i">
