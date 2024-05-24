@@ -79,16 +79,19 @@ const emits = defineEmits(["update:modelValue"]);
 
 // 忽略错误信息
 function abortMsg() {
-  const data = {
-    reportId: props.reportId,
-    judgeId: props.rowId,
-    judgeCode: 3
-  }
-  fileSave( data).then(res => {
-    approvalStore.setListData( props.type) // 忽略成功刷新接口
-  }).catch(err => {
-    ElMessage.success("忽略附件错误失败：" + JSON.stringify(err));
-  })
+  // const data = {
+  //   reportId: props.reportId,
+  //   judgeId: props.rowId,
+  //   judgeCode: 3
+  // }
+  // fileSave( data).then(res => {
+  //   approvalStore.setListData( props.type) // 忽略成功刷新接口
+  // }).catch(err => {
+  //   ElMessage.success("忽略附件错误失败：" + JSON.stringify(err));
+  // })
+  let row = props.row
+  row.material.judgeCode = 3
+  emits("update:modelValue", row);
   dialogVisible.value = false
 }
 
