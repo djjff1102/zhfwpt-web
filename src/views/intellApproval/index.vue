@@ -31,6 +31,8 @@
     </div>
     <div class="oper">
       <w-button v-hasPerm="btnApprovalCode.add" type="primary" class="mr-8px" @click="operate('add')">新增</w-button>
+      <!-- TODO:还没有加权限 -->
+      <w-button :loading="loadZip" type="primary" class="mr-8px" @click="handleLoadZip">下载资料</w-button>
       <w-button v-hasPerm="btnApprovalCode.export" :loading="loadingExport" type="primary" class="mr-8px" @click="handleExport">导出</w-button>
     </div>
       <div class="table-warp">
@@ -40,8 +42,11 @@
         :columns="columns"
         :scroll="scroll"
         :pagination="pagination"
+        :row-selection="rowSelection"
+        row-key="id"
         @page-change="changepage"
         @page-size-change="changePagesize"
+        @select="handlSelectRow"
         :bordered="false"
       >
         <template v-slot:index="{rowIndex}">
@@ -94,10 +99,10 @@
 </template>
 
 <script lang="ts" setup>
-import {  ref, reactive, watch } from "vue";
+import {  ref, watch } from "vue";
 import ApprovalDo from './add/ApprovalDo.vue';
 import { useRouter } from 'vue-router';
-import { fpspReport, approvalExport, delReport } from '@/api/intellApproval'
+import { fpspReport, approvalExport, delReport, exportApproveMaterialsZipByReportId } from '@/api/intellApproval'
 import { status, approveStatus,approveStatusColor, statusList, taskStatus, taskStatusColor, tasks } from './type.ts'
 import dayjs from "dayjs";
 import { btnApprovalCode, approvalMapping } from '@/router/permissionCode'
@@ -119,6 +124,10 @@ watch(() => userStore.user.dataPermissionCode,  (v) => {
   immediate: true
 })
 
+const rowSelection = ref({
+  type: 'checkbox',
+  showCheckedAll: true
+})
 const showApproval = ref(false)
 const curDate = ref('')
 const loading = ref(false);
@@ -232,6 +241,28 @@ const scroll = ref({
 });
 
 const reportId = ref('') // 报告id
+const rowId = ref([]);
+const loadZip = ref(false)
+
+function handlSelectRow(row: any) {
+  rowId.value = row;
+}
+
+function handleLoadZip() {
+  if(loadZip.value) return;
+  if(rowId.value.length == 0){
+    ElMessage.warning("请选择需要下载的材料");
+    return;
+  }
+  loadZip.value = true;
+  exportApproveMaterialsZipByReportId(rowId.value).then(res => {
+    console.log('下载zip包结果：', res)
+     loadZip.value = false;
+  }).catch(err => {
+    loadZip.value = false;
+    console.log('下载zip包失败：', err)
+  })
+}
 
 function updateApprval() {
   showApproval.value = false;

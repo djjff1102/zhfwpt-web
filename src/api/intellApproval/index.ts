@@ -186,11 +186,22 @@ export function businessUpdate(data: any) {
 } 
 
 /**
- * 忽略附件错误
+ * 忽略附件错误 exportApproveMaterialszipByReportId
 */
 export function updateJudgeCode(data: any) {
   return request({
     url: `/base/fpsp_other_materials/updateJudgeCode`,
+    method: "post",
+    data,
+  });
+} 
+
+/**
+ * 导出申报资料详情压缩包
+*/
+export function exportApproveMaterialsZipByReportId(data: any) {
+  return request({
+    url: `/base/fpsp_report/exportApproveMaterialsZipByReportId`,
     method: "post",
     data,
   });
