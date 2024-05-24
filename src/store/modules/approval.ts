@@ -379,13 +379,8 @@ export const useApprovalStore = defineStore("approvalstore", () => {
   // 表单提交前，整合数据
   function updateData(form: any, errdata: any) {
     const businessDataMaterialList: any = [];
-    console.log("rediusReportId.value----------:", rediusReportId.value);
     if (rediusReportId.value) {
       form.id = rediusReportId.value;
-      console.log(
-        "rediusReportId.value22222222222----------:",
-        rediusReportId.value
-      );
     }
     if (fileInfo.value && JSON.stringify(fileInfo.value) != "{}") {
       businessDataMaterialList.push(fileInfo.value);

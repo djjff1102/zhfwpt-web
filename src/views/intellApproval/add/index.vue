@@ -640,6 +640,7 @@ function init() {
   // 重置tab的状态
   approvalStore.resetTab(type.value); // 重置tab的状态
   approvalStore.setFileInfo({}) // 重置上传文件
+  approvalStore.setRediusReportId('') // 重置缓存id
   let id = route.query.id // 申请人发票ID
   if(type.value === 'detail') {
     initPageParam.edit = false;
