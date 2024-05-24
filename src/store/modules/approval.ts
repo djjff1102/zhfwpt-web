@@ -71,6 +71,12 @@ export const useApprovalStore = defineStore("approvalstore", () => {
   });
   const pageType = ref(""); // 当前页面类型 add operate detail
   const submitFlag = ref(false); // 默认为提交加锁 几个tab的数据加载完，置为true，可提交
+  const rediusReportId = ref(""); // 后端缓存id 申报资料上传时后端生成
+
+  // 更新缓存id
+  function setRediusReportId(id: any) {
+    rediusReportId.value = id;
+  }
 
   function getMoneyAndLen(type: any, flag?: any) {
     curTab.value = type;
@@ -130,7 +136,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
   }
 
   // 获取订单、合同、 发票、 银行流水
-  function getTableData(reportId: any, type?: any, callback?: any) {
+  function getTableData(reportId: any) {
     submitFlag.value = false; // 重新加载时，为提交加锁
     searchPar.value.dataType = reportId;
     return new Promise((resolve, reject) => {
@@ -144,7 +150,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
       ])
         .then((res) => {
           submitFlag.value = true; // 加载完成后，为提交加锁
-          console.log("全都执行完了-------------------------：", res);
           setTimeout(() => {
             getMoneyAndLen(curTab.value);
           }, 0);
@@ -177,7 +182,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
           if (pageType.value != "detail") {
             tabData.value.DD.status = validateType(res.data);
           }
-          console.log("订单执行完了-------------------------：");
           resole(res.data);
         })
         .catch((err) => {
@@ -195,7 +199,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
           if (pageType.value != "detail") {
             tabData.value.HT.status = validateType(res.data);
           }
-          console.log("合同执行完了-------------------------：");
           resolve(res.data);
         })
         .catch((err) => {
@@ -213,7 +216,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
           if (pageType.value != "detail") {
             tabData.value.FP.status = validateType(res.data);
           }
-          console.log("发票执行完了-------------------------：");
           resolve(res.data);
         })
         .catch((err) => {
@@ -231,7 +233,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
           if (pageType.value != "detail") {
             tabData.value.YH.status = validateType(res.data);
           }
-          console.log("银行流水执行完了-------------------------：");
           resolve(res.data);
         })
         .catch((err) => {
@@ -249,7 +250,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
           if (pageType.value != "detail") {
             tabData.value.CC.status = validateType(res.data);
           }
-          console.log("仓储执行完了-------------------------：");
           resolve(res.data);
         })
         .catch((err) => {
@@ -267,7 +267,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
           if (pageType.value != "detail") {
             tabData.value.WL.status = validateType(res.data);
           }
-          console.log("物流执行完了-------------------------：");
           resolve(res.data);
         })
         .catch((err) => {
@@ -324,6 +323,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     const YHcode: any = [];
     const CCcode: any = [];
     const WLcode: any = [];
+    console.log(" DDList.value-----------:", DDList.value);
     DDList.value.forEach((item: any) => {
       DDcode.push(item.code);
       if (item.material) {
@@ -379,6 +379,14 @@ export const useApprovalStore = defineStore("approvalstore", () => {
   // 表单提交前，整合数据
   function updateData(form: any, errdata: any) {
     const businessDataMaterialList: any = [];
+    console.log("rediusReportId.value----------:", rediusReportId.value);
+    if (rediusReportId.value) {
+      form.id = rediusReportId.value;
+      console.log(
+        "rediusReportId.value22222222222----------:",
+        rediusReportId.value
+      );
+    }
     if (fileInfo.value && JSON.stringify(fileInfo.value) != "{}") {
       businessDataMaterialList.push(fileInfo.value);
     }
@@ -493,6 +501,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     tabData,
     totalMoney,
     submitFlag,
+    rediusReportId,
     setListData,
     updateData,
     updateDataSave,
@@ -501,5 +510,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     clearTable,
     resetTab,
     getMoneyAndLen,
+    setRediusReportId,
   };
 });

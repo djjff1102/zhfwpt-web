@@ -501,7 +501,7 @@ async function checkSave(type: any, msg: string) {
     form.value.dataStatus = 2;
     form.value.approveStatus = 1; // 提交将状态改为待审批
     if(reportId.value != -1) {
-        form.value.id = reportId.value
+        // form.value.id = reportId.value
         handleUpdateSubmit(msg);
       } else {
         // 新增

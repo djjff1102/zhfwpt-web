@@ -187,7 +187,10 @@ async function handleUpload(options) {
   formData.append("file", options.file);
   formData.append("reportId", props.reportId);
   importData(formData).then(res=>{
-    approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
+    let rediusReportId = res.data.reportId // 上传成功，后端缓存，返回缓存ID，接下来获取table数据通过后端缓存获取
+    approvalStore.setRediusReportId(rediusReportId)
+    approvalStore.getTableData(rediusReportId); // 获取订单、合同、发票等信息
+    // approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
      if(res.data.fpspOtherMaterials) { // 字段校验错误 & 关系校验错误
         fpspOtherMaterials.value = res.data.fpspOtherMaterials
         uploadFlag.value = 2
@@ -210,85 +213,53 @@ async function handleUpload(options) {
         uploading.value = false
         ElMessage.success("上传成功");
       }
-
-    // if(res.data.fieldList && res.data.fieldList.length > 0) { // 字段校验错误
-    //     fileList.value = [];
-    //     relationList.value = []
-    //     originResult.value = ''
-    //     tableData.value = res.data.fieldList
-    //     uploadFlag.value = 0
-    //     approvalStore.setFileInfo({})
-    //     uploading.value = false
-    //     ElMessage.warning(res.data.result);
-    //   } else if(res.data.relationList && res.data.relationList.length > 0) { // 关系校验错误
-    //     fileList.value = [];
-    //     tableData.value = []
-    //     originResult.value = ''
-    //     relationList.value = res.data.relationList
-    //     uploadFlag.value = 0
-    //     approvalStore.setFileInfo({})
-    //     uploading.value = false
-    //     ElMessage.warning(res.data.result);
-    //   } else if(res.data.originResult) {
-    //     fileList.value = [];
-    //     tableData.value = []
-    //     relationList.value = []
-    //     uploadFlag.value = 0
-    //     originResult.value = res.data.result+ ':' + res.data.originResult
-    //     approvalStore.setFileInfo({})
-    //     ElMessage.warning(res.data.originResult);
-    //     uploading.value = false
-    //   } else { // 上传成功，调一下上传接口，上传文件
-    //     // approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
-    //     fileList.value = [options.file]
-    //     uploadFlag.value = 1
-    //     UploadFile(options)
-    //     uploading.value = false
-    //     ElMessage.success("上传成功");
-    //   }
   }).catch(err => {
     approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
     uploading.value = false
   })
 }
 
+// 将申报资料的附件上传至miniio
 async function UploadFile(options) {
-  const data = JSON.parse(JSON.stringify(props.form))
-  data.dataStatus = 1 // 暂存
-  // TODO:等待后端接口开发，目前直接调save接口，会清空数据
-  // const result = await update(data) // 上传成功后，将资料文件和发票绑定关系
-  
   // 上传API调用
   const res = await singleuploadFileApi(options.file);
+  // 上传miniio成功后，存储生成的fileUrl，后面提交或暂存时的传参
   const businessDataMaterialList = {
     fileType: 7,  // 附件
     fileUrl: res.data,
     judgeId: props.reportId
   }
   approvalStore.setFileInfo(businessDataMaterialList)
-  if(res.result == 1) {
-    fileSave({
-      reportId: props.reportId, //'申报ID,审批ID'
-      fileUrl: res.data, //上传附件路径
-      fileName: splitFiltName(res.data),  //附件文件名称
-      fileType: "7",      // 文件对应的数据类型 7为excel本身的附件
-      // judgeCode: 0 
-    }).then(res => {})
-  }
+  // if(res.result == 1) {
+  //   fileSave({
+  //     reportId: props.reportId, //'申报ID,审批ID'
+  //     fileUrl: res.data, //上传附件路径
+  //     fileName: splitFiltName(res.data),  //附件文件名称
+  //     fileType: "7",      // 文件对应的数据类型 7为excel本身的附件
+  //     // judgeCode: 0 
+  //   }).then(res => {})
+  // }
 }
-
-
+// REPORT_dd3d69a2b5be4746aa8a4ee97f2bc2d7_1793818234518593538
+// 删除上传的附件
+// 直接将缓存id置为空，将table清空
 async function handleDel() {
-  let reportId = props.reportId;
-  await deleteDataAfterDeleteExcel({ reportId }).then(res => {
-    fileList.value = []
-    uploadFlag.value = -1
-    approvalStore.setFileInfo({})
-    approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
-    emits('updateFileData')
-  }).catch(err => {
-    console.log('err------------:', err)
-  })
+  fileList.value = []
+  uploadFlag.value = -1
+  approvalStore.setRediusReportId('')
+  approvalStore.clearTable()
+  approvalStore.setFileInfo({})
+
+  // let reportId = props.reportId;
+  // await deleteDataAfterDeleteExcel({ reportId }).then(res => {
+  //   fileList.value = []
+  //   uploadFlag.value = -1
+  //   approvalStore.setFileInfo({})
+  //   approvalStore.getTableData(props.reportId); // 获取订单、合同、发票等信息
+  //   emits('updateFileData')
+  // }).catch(err => {
+  //   console.log('err------------:', err)
+  // })
 }
 
 function handleClose() {

@@ -37,7 +37,7 @@ const props = defineProps({
 // 删除附件
 async function del() {
   const data = {
-    reportId: props.reportId,
+    reportId: approvalStore.rediusReportId,
     judgeId: props.row.id,
     isDelete: 1,
     fileType: props.type, // 文件对应的数据类型，0为其他材料，1为订单，2为合同，3为发票，4为银行流水，5为仓储，6为物流

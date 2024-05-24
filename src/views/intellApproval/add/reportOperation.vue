@@ -89,9 +89,8 @@ function abortMsg() {
 }
 
 function updateUpload(file) {
-  const material = props.row.material || {}
   const data = {
-    reportId: props.reportId,
+    reportId: approvalStore.rediusReportId,
     fileUrl: file,
     fileName: splitFiltName(file),
     judgeId: props.rowId,
