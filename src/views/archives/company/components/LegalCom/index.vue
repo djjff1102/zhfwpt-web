@@ -131,10 +131,14 @@ function reset() {
 // 切换tab标签，加载数据，重置分页
 function updateTable(item ,i) {
   pagination.value.current = 1
-  searchPar.value.page = 1
+  searchPar.value = {
+    page: 1,
+    itemCode: item.itemCode,
+    companyId: props.companyId
+  }
   const mapping = item.fieldMappingTwo || item.fieldMappingOne
   columns.value = formateWord(JSON.parse(mapping))
-  searchPar.value.itemCode = item.itemCode
+  
   getcompanyItemData()
 }
 
