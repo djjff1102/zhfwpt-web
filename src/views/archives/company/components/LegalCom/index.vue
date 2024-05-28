@@ -29,22 +29,22 @@
       限制出境和询价评估无查询条件 -->
       <el-form :model="searchPar" :inline="true" class="demo-form-inline">
         <el-form-item v-if="CASECODE.includes(searchPar.itemCode)" label="案号" >
-          <el-input v-model="searchPar.case_code" placeholder="请输入案号" clearable/>
+          <el-input v-model="searchPar.caseNo" placeholder="请输入案号" clearable/>
         </el-form-item>
         <el-form-item v-if="COURTNAME.includes(searchPar.itemCode)" label="执行法院">
-          <el-input v-model="searchPar.court_name" placeholder="请输入执行法院" clearable/>
+          <el-input v-model="searchPar.enforcementCourt" placeholder="请输入执行法院" clearable/>
         </el-form-item>
         <el-form-item v-if="LITIGANT.includes(searchPar.itemCode)" label="当事人">
-          <el-input v-model="searchPar.litigant" placeholder="请输入当事人" clearable/>
+          <el-input v-model="searchPar.parties" placeholder="请输入当事人" clearable/>
         </el-form-item>
         <el-form-item v-if="CASEREASON.includes(searchPar.itemCode)" label="案由">
-          <el-input v-model="searchPar.case_cause" placeholder="请输入案由" clearable/>
+          <el-input v-model="searchPar.caseReason" placeholder="请输入案由" clearable/>
         </el-form-item>
         <el-form-item v-if="TITLE.includes(searchPar.itemCode)" label="标题">
           <el-input v-model="searchPar.title" placeholder="请输入标题" clearable/>
         </el-form-item>
         <el-form-item v-if="COURT.includes(searchPar.itemCode)" label="处置单位">
-          <el-input v-model="searchPar.court" placeholder="请输入处置单位" clearable/>
+          <el-input v-model="searchPar.dispositionUnit" placeholder="请输入处置单位" clearable/>
         </el-form-item>
         <el-form-item>
           <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
