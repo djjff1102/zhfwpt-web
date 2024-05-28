@@ -20,7 +20,7 @@ const setWatermark = (str, container) => {
   can.height = 260; // 高度
   const cans = can.getContext("2d"); // 获取canvas画布
   cans.rotate((-20 * Math.PI) / 180); // 逆时针旋转π/9
-  cans.font = "14px Vedana"; // 设置字体
+  cans.font = "18px Vedana"; // 设置字体
   cans.fillStyle = "rgba(0, 0, 0, 0.1)"; // 设置字体的颜色
   cans.textAlign = "left"; // 文本对齐方式
   cans.textBaseline = "Middle"; // 文本基线

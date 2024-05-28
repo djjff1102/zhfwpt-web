@@ -3,7 +3,7 @@
     <!-- 企业基本信息 -->
     <el-tabs type="card" >
       <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveAdmin)" label="变更信息">
-        <ChangeInfo></ChangeInfo>
+        <ChangeInfo v-bind="$attrs"></ChangeInfo>
       </el-tab-pane>
       <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveCompany)" label="企业图谱">
         <CompanyGraph v-bind="$attrs"></CompanyGraph>
@@ -28,9 +28,6 @@ import ChangeInfo from './ChangeInfo.vue'
 
 const userStore = useUserStoreHook();
 const dataPermissionCode = userStore.user.dataPermissionCode || []
-
-
-
 </script>
 <style lang="scss" scoped>
 :deep(.el-tabs__header) {

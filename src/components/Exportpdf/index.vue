@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-button v-loading.fullscreen.lock="loading" type="text" @click="exportPDF">导出PDF</el-button>
-   
   </div>
 </template>
  
@@ -9,6 +8,11 @@
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import html2pdf from 'html2pdf.js';
+import watermark from '@/utils/warterMark'
+import { useUserStore } from '@/store/modules/user'
+import {ref} from 'vue'
+
+const userStore = useUserStore();
 
 const props = defineProps({
   domId: {
@@ -29,9 +33,11 @@ const loading = ref(false)
 async function exportPDF() {
   if(loading.value) return;
   loading.value = true;
+  let msg =  userStore?.user?.realName + userStore?.user?.organization?.name + userStore.user.phone
   emits('handleExport', true)
   nextTick(async() => {
     const element = document.getElementById(props.domId);
+    watermark.set(msg, element);
     const canvas = await html2canvas(element, { scale: 2 });
     const imgData = canvas.toDataURL('image/png');
     const pdf = new jsPDF({

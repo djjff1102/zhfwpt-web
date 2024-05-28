@@ -31,7 +31,7 @@
       <!-- <div v-hasPerm="approvalMapping.legalCase" id="legalCase"> -->
       <div id="legalCase">
         <div class="title"><img :src="qygsxx">法律诉讼</div>
-        <LegalCom></LegalCom>
+        <LegalCom :companyId="id"></LegalCom>
       </div>
       <div v-hasPerm="approvalMapping.ExcessInvoiceApproval" id="ExcessInvoiceApproval">
         <div class="title"><img :src="fpcxlsp">发票审批信息</div>

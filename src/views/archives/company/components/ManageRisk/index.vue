@@ -7,6 +7,7 @@
       @updateTable="updateTable"
     ></TabCom>
     <m-table
+        v-if="(curTab != CLMSGCODE) && (curTab != DEREGISTRATIONCODE)"
         style="height: 100%"
         :data="tableData"
         :columns="columns"
@@ -19,6 +20,8 @@
           {{ rowIndex + 1 }}
         </template>
       </m-table>
+      <clearMessage v-if="curTab == CLMSGCODE" :data="tableData[0]"></clearMessage>
+      <degegistration v-if="curTab == DEREGISTRATIONCODE" :data="tableData[0]"></degegistration>
   </div>
 
 </template>
@@ -29,9 +32,14 @@ import { approvalMapping } from '@/router/permissionCode'
 import { companyItemSetting, companyItemData } from '@/api/archives'
 import TabCom from '../TabCom.vue'
 import { formateWord } from '@/utils/common'
+import clearMessage from './clearMessage.vue'
+import degegistration from './degegistration.vue'
 
 const userStore = useUserStoreHook();
 const dataPermissionCode = userStore.user.dataPermissionCode || []
+// 企业资信档案库，需要特殊处理的风险类型
+const CLMSGCODE = 'JYFX_QSXX' // 清算信息
+const DEREGISTRATIONCODE = 'JYFX_ZXBA' // 注销备案
 
 const props = defineProps({
   companyId: ''
@@ -88,7 +96,7 @@ function getcompanyItemSetting() {
     TabData.value = res.data[1]?.itemDetailList || []
     res.data[1].itemDetailList.forEach((item, i) => {
       if(item.hasValue && curTab.value == -1) {
-        curTab.value = i
+        curTab.value = item.itemCode
         columns.value = formateWord(JSON.parse(item.fieldMappingOne))
         searchPar.value.companyId = props.companyId
         searchPar.value.itemCode = item.itemCode

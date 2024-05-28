@@ -7,13 +7,49 @@
       @updateTable="updateTable"
     ></TabCom>
     <div class="search_box">
+      <!--  搜索条件
+      案号：失信被执行人、被执行人、限制高消费、终本案件、裁判文书、立案信息、开庭公告、法院公告、送达公告
+      ['FLSS-SDGG', 'FLSS-LAXX', 'FLSS-CPWS', 'FLSS-ZBAJ', 'FLSS-XZGXF', 'FLSS-BZXR']
+
+      执行法院：失信被执行人、被执行人、终本案件
+      ['FLSS-ZBAJ', 'FLSS-BZXR', 'FLSS-SXBZXR']
+
+      当事人：裁判文书、立案信息、开庭公告、法院公告、送达公告
+      ['FLSS-SDGG', 'FLSS-FYGG', 'FLSS-KTGG', 'FLSS-LAXX', 'FLSS-CPWS']
+
+      案由：立案信息、开庭公告、法院公告、送达公告
+      ['FLSS-SDGG', 'FLSS-FYGG', 'FLSS-KTGG', 'FLSS-LAXX']
+
+      标题：司法拍卖（调整）
+      ['FLSS-SFPM']
+
+      处置单位：司法拍卖（调整）
+      ['FLSS-SFPM']
+
+      限制出境和询价评估无查询条件 -->
       <el-form :model="searchPar" :inline="true" class="demo-form-inline">
-      <el-form-item label="案号" >
-        <el-input v-model="searchPar.companyName" placeholder="请输入案号" clearable/>
-      </el-form-item>
-      <el-form-item label="执行法院">
-        <el-input v-model="searchPar.companyName" placeholder="请输入执行法院" clearable/>
-      </el-form-item>
+        <el-form-item v-if="CASECODE.includes(searchPar.itemCode)" label="案号" >
+          <el-input v-model="searchPar.case_code" placeholder="请输入案号" clearable/>
+        </el-form-item>
+        <el-form-item v-if="COURTNAME.includes(searchPar.itemCode)" label="执行法院">
+          <el-input v-model="searchPar.court_name" placeholder="请输入执行法院" clearable/>
+        </el-form-item>
+        <el-form-item v-if="LITIGANT.includes(searchPar.itemCode)" label="当事人">
+          <el-input v-model="searchPar.litigant" placeholder="请输入当事人" clearable/>
+        </el-form-item>
+        <el-form-item v-if="CASEREASON.includes(searchPar.itemCode)" label="案由">
+          <el-input v-model="searchPar.case_cause" placeholder="请输入案由" clearable/>
+        </el-form-item>
+        <el-form-item v-if="TITLE.includes(searchPar.itemCode)" label="标题">
+          <el-input v-model="searchPar.title" placeholder="请输入标题" clearable/>
+        </el-form-item>
+        <el-form-item v-if="COURT.includes(searchPar.itemCode)" label="处置单位">
+          <el-input v-model="searchPar.court" placeholder="请输入处置单位" clearable/>
+        </el-form-item>
+        <el-form-item>
+          <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
+          <w-button @click="reset">重置</w-button>
+        </el-form-item>
       </el-form>
     </div>
     <m-table
@@ -43,6 +79,13 @@ import { formateWord } from '@/utils/common'
 const userStore = useUserStoreHook();
 const dataPermissionCode = userStore.user.dataPermissionCode || []
 
+const CASECODE = ['FLSS-SDGG', 'FLSS-LAXX', 'FLSS-CPWS', 'FLSS-ZBAJ', 'FLSS-XZGXF', 'FLSS-BZXR'] // 案号
+const COURTNAME = ['FLSS-ZBAJ', 'FLSS-BZXR', 'FLSS-SXBZXR'] // 执行法院
+const LITIGANT = ['FLSS-SDGG', 'FLSS-FYGG', 'FLSS-KTGG', 'FLSS-LAXX', 'FLSS-CPWS'] // 当事人
+const CASEREASON =  ['FLSS-SDGG', 'FLSS-FYGG', 'FLSS-KTGG', 'FLSS-LAXX'] // 案由
+const TITLE = ['FLSS-SFPM'] // 标题
+const COURT = ['FLSS-SFPM'] // 处置单位
+
 const props = defineProps({
   companyId: ''
 })
@@ -67,11 +110,30 @@ const searchPar = ref({
 })
 const loading = ref(false)
 
+// 搜索
+function search() {
+  searchPar.value.page = 1;
+  pagination.value.current = 1;
+  getcompanyItemData()
+}
+
+// 重置
+function reset() {
+  searchPar.value = {
+    page: 1,
+    itemCode: curTab.value,
+    companyId: props.companyId
+  }
+  pagination.value.current = 1;
+  getcompanyItemData()
+}
+
 // 切换tab标签，加载数据，重置分页
 function updateTable(item ,i) {
   pagination.value.current = 1
   searchPar.value.page = 1
-  columns.value = formateWord(JSON.parse(item.fieldMappingOne))
+  const mapping = item.fieldMappingTwo || item.fieldMappingOne
+  columns.value = formateWord(JSON.parse(mapping))
   searchPar.value.itemCode = item.itemCode
   getcompanyItemData()
 }
@@ -97,8 +159,9 @@ function getcompanyItemSetting() {
     TabData.value = res.data[2]?.itemDetailList || []
     res.data[2].itemDetailList.forEach((item, i) => {
       if(item.hasValue && curTab.value == -1) {
-        curTab.value = i
-        columns.value = formateWord(JSON.parse(item.fieldMappingOne))
+        curTab.value = item.itemCode
+        let mapping = item.fieldMappingTwo || item.fieldMappingOne
+        columns.value = formateWord(JSON.parse(mapping))
         searchPar.value.companyId = props.companyId
         searchPar.value.itemCode = item.itemCode
         getcompanyItemData()

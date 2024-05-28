@@ -22,7 +22,13 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { useRouter } from 'vue-router';
-import { changeInfo } from '@/api/archives'
+import { companyItemData } from '@/api/archives'
+
+const props = defineProps({
+  companyId: {
+    default: ''
+  }
+})
 
 const loading = ref(false);
 const tableData = ref([{
@@ -38,25 +44,25 @@ const columns = reactive([
   },
   {
     title: "变更日期",
-    dataIndex: "date",
+    dataIndex: "change_date",
     width: 220,
   },
   {
     title: "变更项目",
-    dataIndex: "",
+    dataIndex: "change_field",
     width: 240,
     tooltip: {position: 'left'},
     ellipsis: true,
   },
   {
     title: "变更前",
-    dataIndex: "",
+    dataIndex: "content_before",
     tooltip: {position: 'left'},
     ellipsis: true,
   },
   {
     title: "变更后",
-    dataIndex: "",
+    dataIndex: "content_after",
     tooltip: {position: 'left'},
     ellipsis: true,
   }
@@ -71,7 +77,9 @@ const pagination = ref({
 });
 const searchPar = ref({
   page_size: 10,
-  page: 1
+  page: 1,
+  companyId: props.companyId,
+  itemCode: 'QYJBXX-BGXX' // 变更信息code
 })
 
 const changePagesize = (v) => {
@@ -90,7 +98,7 @@ const changepage = (v) => {
 function getpage() {
   if(loading.value) return;
   loading.value = true;
-  changeInfo(searchPar.value).then(res => {
+  companyItemData(searchPar.value).then(res => {
     tableData.value = res.data
     pagination.value.total = res.total
     loading.value = false;
@@ -99,7 +107,7 @@ function getpage() {
   })
 }
 
-// getpage();
+getpage();
 </script>
 
 <style lang="scss" scoped>

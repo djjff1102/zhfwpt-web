@@ -2,7 +2,7 @@
   <div class="tab-wrap">
     <div
       class="tab-item" 
-      :class="[!item.hasValue ? 'disable-tab' : 'enable-tab', modelValue == i ? 'active-tab' : '']"
+      :class="[!item.hasValue ? 'disable-tab' : 'enable-tab', modelValue == item.itemCode ? 'active-tab' : '']"
       v-for="(item, i) in TabData"
       :key="item.itemCode"
       @click="handleTab(item, i)"
@@ -26,8 +26,8 @@ const props = defineProps({
 const emits = defineEmits(["update:modelValue", 'updateTable'])
 
 function handleTab(item , i) {
-  if(props.loading) return // 加载中禁止切换
-  emits("update:modelValue", i);
+  if(props.loading || !item.hasValue) return // 加载中禁止切换
+  emits("update:modelValue", item.itemCode);
   emits('updateTable', item ,i)
 }
 </script>
@@ -41,9 +41,11 @@ function handleTab(item , i) {
 }
 
 .tab-item {
-  padding: 8px 24px;
+  // padding: 8px 24px;
+  // font-size: 16px;
+  padding: 6px 16px;
+  font-size: 14px;
   font-weight: 400;
-  font-size: 16px;
   color: #6A6A6A;
   line-height: 22px;
   text-align: center;

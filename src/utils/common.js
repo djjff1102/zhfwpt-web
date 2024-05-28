@@ -172,7 +172,7 @@ export function formateWord(d) {
     let cur = {
       title: d[item],
       dataIndex: item,
-      width: d[item].length * 30,
+      width: Math.max(d[item].length * 30, 200),
       ellipsis: true,
       tooltip: { position: "left" },
     };
