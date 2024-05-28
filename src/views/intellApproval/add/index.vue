@@ -544,7 +544,7 @@ function checkSubmitError(res: any, msg: any) {
     } else {
       suafaErr.value.flag = true;
       suafaErr.value.data = ['附件上传有误, 请核实'] as any
-      approvalStore.getTableData();
+      approvalStore.getTableData(res.data.reportId);
     } 
 }
 
