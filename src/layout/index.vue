@@ -1,20 +1,24 @@
 <script setup lang="ts">
 import Main from "./main.vue";
-import { computed, watchEffect } from "vue";
+import { computed, watchEffect,ref } from "vue";
 import { useWindowSize } from "@vueuse/core";
 import Sidebar from "./components/Sidebar/index.vue";
 import LeftMenu from "./components/Sidebar/LeftMenu.vue";
+import { useUserStore } from '@/store/modules/user'
 
 import { useAppStore } from "@/store/modules/app";
 import { useSettingsStore } from "@/store/modules/settings";
 import { usePermissionStore } from "@/store/modules/permission";
 import { useRoute, useRouter } from 'vue-router'
+import watermark from '@/utils/warterMark'
 
 const currentRoute = useRoute();
-const router = useRouter();
+const userStore = useUserStore();
+
 const permissionStore = usePermissionStore();
 
 const { width } = useWindowSize();
+const appDom = ref()
 /**
  * 响应式布局容器固定宽度
  *
@@ -54,6 +58,11 @@ watch(
   () => currentRoute,
   (path) => {
     showMenu.value = path.meta.showMenu as any;
+    nextTick(() => {
+      let msg =  userStore?.user?.realName as any + userStore?.user?.organization?.name + userStore.user.phone
+      watermark.set(msg, appDom.value);
+    })
+    
   },{
     immediate: true,
     deep: true // 确保深度监听路由对象的每一个属性
@@ -95,7 +104,7 @@ function toggleSideBar() {
 </script>
 
 <template>
-  <div :class="classObj" class="app-wrapper">
+  <div :class="classObj" class="app-wrapper" ref="appDom">
     <Sidebar class="sidebar-container" />
     <div class="mix-wrapper" style="overflow: hidden;">
       <div v-if="showMenu" class="mix-wrapper__left">

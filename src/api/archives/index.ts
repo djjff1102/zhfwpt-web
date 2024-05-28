@@ -484,11 +484,20 @@ export function changeInfo(data: any) {
   });
 }
 
-// 公司风险命中tab
+// 获取ta标签
 export function companyItemSetting(params: any) {
   return request({
     url: `base/company_base/companyItemSetting/${params.company_id}`,
     method: "get",
     params,
+  });
+}
+
+// 命中tab标签下的数据
+export function companyItemData(data: any) {
+  return request({
+    url: `base/company_base/companyItemData`,
+    method: "post",
+    data,
   });
 }

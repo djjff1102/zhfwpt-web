@@ -157,3 +157,26 @@ export function countCharacters(str) {
   let CHlen =  (str.match(regex) || []).length;
   return str.length - CHlen + CHlen * 2
 }
+
+// 处理数据，生成columns
+export function formateWord(d) {
+  const arr = [
+    {
+      title: "序号",
+      dataIndex: "index",
+      slotName: "index",
+      width: 80,
+    },
+  ];
+  Object.keys(d).forEach((item) => {
+    let cur = {
+      title: d[item],
+      dataIndex: item,
+      width: d[item].length * 30,
+      ellipsis: true,
+      tooltip: { position: "left" },
+    };
+    arr.push(cur);
+  });
+  return arr;
+}

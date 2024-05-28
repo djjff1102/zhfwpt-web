@@ -100,7 +100,7 @@ export const barOption = () => {
     yAxis: [
       {
         type: "value",
-        name: "审批率",
+        name: "审批量",
         min: 0,
         max: 250,
         interval: 50,

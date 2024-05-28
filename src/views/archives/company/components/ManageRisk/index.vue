@@ -26,8 +26,9 @@
 import { ref } from 'vue'
 import { useUserStoreHook } from "@/store/modules/user";
 import { approvalMapping } from '@/router/permissionCode'
-import { companyItemSetting } from '@/api/archives'
+import { companyItemSetting, companyItemData } from '@/api/archives'
 import TabCom from '../TabCom.vue'
+import { formateWord } from '@/utils/common'
 
 const userStore = useUserStoreHook();
 const dataPermissionCode = userStore.user.dataPermissionCode || []
@@ -36,21 +37,8 @@ const props = defineProps({
   companyId: ''
 })
 
-const curTab = ref(1) // 当前选中的tab标签
-const TabData = ref([{
-  name: '行政处罚',
-  disable: true,
-},
-{
-  name: '经营异常',
-  disable: false,
-},
-{
-  name: '严重违法',
-  disable: false,
-}
-])
-
+const curTab = ref(-1) // 当前选中的tab标签
+const TabData = ref([])
 const pagination = ref({
   total: 0,
   pageSize: 10,
@@ -64,6 +52,8 @@ const columns = ref([])
 const searchPar = ref({
   page_size: 10,
   page: 1,
+  itemCode: '',
+  companyId: ''
 })
 const loading = ref(false)
 
@@ -71,27 +61,52 @@ const loading = ref(false)
 function updateTable(item ,i) {
   pagination.value.current = 1
   searchPar.value.page = 1
+  columns.value = formateWord(JSON.parse(item.fieldMappingOne))
+  searchPar.value.itemCode = item.itemCode
+  getcompanyItemData()
 }
 
 const changePagesize = (v) => {
   pagination.value.pageSize = v;
   searchPar.value.page_size = v;
-  getpage();
+  pagination.value.current = 1
+  searchPar.value.page = 1
+  getcompanyItemData()
 };
 
 const changepage = (v) => {
   searchPar.value.page = v;
-  getpage();
 };
 
 
+// 获取tab标签和列表columns
+// TODO:清算信息、注销备案
 function getcompanyItemSetting() {
   companyItemSetting({
     company_id: props.companyId
   }).then(res => {
-    console
+    TabData.value = res.data[1]?.itemDetailList || []
+    res.data[1].itemDetailList.forEach((item, i) => {
+      if(item.hasValue && curTab.value == -1) {
+        curTab.value = i
+        columns.value = formateWord(JSON.parse(item.fieldMappingOne))
+        searchPar.value.companyId = props.companyId
+        searchPar.value.itemCode = item.itemCode
+        getcompanyItemData()
+      }
+    })
   }).catch(err => {
     console.log('获取公司风险tab失败：', err)
+  })
+}
+
+// 查询企业资信库中每个项目数据
+function getcompanyItemData() {
+  companyItemData(searchPar.value).then(res => {
+    tableData.value = res.data
+    pagination.value.total = res.total
+  }).catch(err => {
+    console.log('查询企业资信库中每个项目数据异常：', err)
   })
 }
 

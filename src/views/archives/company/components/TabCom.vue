@@ -2,11 +2,11 @@
   <div class="tab-wrap">
     <div
       class="tab-item" 
-      :class="[item.disable ? 'disable-tab' : 'enable-tab', modelValue == i ? 'active-tab' : '']"
+      :class="[!item.hasValue ? 'disable-tab' : 'enable-tab', modelValue == i ? 'active-tab' : '']"
       v-for="(item, i) in TabData"
-      :key="item.name"
+      :key="item.itemCode"
       @click="handleTab(item, i)"
-    >{{ item.name }}</div>
+    >{{ item.itemName }}</div>
   </div>
 </template>
 
@@ -37,6 +37,7 @@ function handleTab(item , i) {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  flex-wrap: wrap;
 }
 
 .tab-item {
@@ -52,6 +53,7 @@ function handleTab(item , i) {
   border-radius: 4px;
   margin-right: 12px;
   line-height: 22px;
+  margin-bottom: 8px;
 }
 
 .enable-tab {

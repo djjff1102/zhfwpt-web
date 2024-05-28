@@ -20,6 +20,7 @@ export const useUserStore = defineStore("user", () => {
     id: "", // 用户id
     organization: {},
     realName: "",
+    companyName: "",
   };
 
   const token = useStorage("accessToken", "");
