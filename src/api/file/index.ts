@@ -46,7 +46,8 @@ export function singleuploadFileApi(file: File): AxiosPromise<FileInfo> {
 export function download(file: any): AxiosPromise<FileInfo> {
   return request({
     responseType: "blob",
-    url: "/base/minio/download",
+    // url: "/base/minio/download",
+    url: "/base/fpsp_report/download",
     method: "get",
     params: file,
   });
