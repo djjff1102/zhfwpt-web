@@ -11,7 +11,7 @@
         @click="handleError(row)"
         :disabled="checkError(row)"
       >错误情况</el-button>
-      <el-button :disabled="[pro.YH, pro.CC, pro.WL].includes(type)" type="text" @click="toDetail(row)">详情</el-button>
+      <el-button v-if="![pro.YH, pro.CC, pro.WL].includes(type)"  type="text" @click="toDetail(row)">详情</el-button>
       <!-- <el-button type="text" disabled>取消</el-button> -->
     </div>
 

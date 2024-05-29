@@ -177,7 +177,7 @@ const columns = reactive([
     title: "操作",
     dataIndex: "operations",
     slotName: "operations",
-    width: 220,
+    width: 160,
     fixed: "right",
   },
 ]);

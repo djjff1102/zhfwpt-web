@@ -140,7 +140,7 @@ const columns = reactive([
   },
   {
     title: "操作",
-    width: 220,
+    width: 160,
     dataIndex: "operations",
     slotName: "operations",
     fixed: "right",
