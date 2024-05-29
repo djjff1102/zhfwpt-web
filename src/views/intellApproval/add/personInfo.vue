@@ -7,8 +7,8 @@
         {{ data?.taxAuthority || '--' }}
       </el-descriptions-item>
       <el-descriptions-item label="申报单位" label-class-name="my-label">
-        <el-button v-if="data?.companyName" type="text" @click="toCompanyDetail">{{ data?.companyName }}</el-button>
-        <span v-else>--</span>
+        <el-button v-if="userStore.user.authorityCode?.includes(btnApprovalCode.companyDetail)" type="text" @click="toCompanyDetail">{{ data?.companyName }}</el-button>
+        <span v-else>{{ data?.companyName || '--' }}</span>
       </el-descriptions-item>
       <el-descriptions-item label="注册地址" label-class-name="my-label"> {{ data?.registerAddress || '--' }} </el-descriptions-item>
       <el-descriptions-item label="操作人" label-class-name="my-label"> {{ data?.applyUserName || '--' }} </el-descriptions-item>
@@ -18,7 +18,11 @@
 </template>
 <script setup>
 import { useRouter } from 'vue-router';
+import { useUserStoreHook } from "@/store/modules/user";
+import { btnApprovalCode } from '@/router/permissionCode'
+
 const router = useRouter()
+const userStore = useUserStoreHook();
 
 const props = defineProps({
   data: {
