@@ -13,7 +13,7 @@ import { groupByRisk } from '@/api/riskmonitor'
 import { ref } from 'vue'
 
 const riskData = ref({
-  sumary: 0, // 授权企业总数
+  sumary: 0, // 服务企业总数
   low: {},
   middle: {},
   high: {}

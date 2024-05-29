@@ -85,6 +85,7 @@ watch(() => props.riskData, (v) => {
   if(v) {
     nextTick(() => {
       const option = pieOption()
+      option.title[0].subtext = v.sumary + '个'
       option.series[0].data[0].value = v.high.count || 0
       option.series[0].data[1].value = v.middle.count || 0
       option.series[0].data[2].value = v.low.count || 0

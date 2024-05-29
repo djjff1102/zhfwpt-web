@@ -246,7 +246,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     return new Promise((resolve, reject) => {
       forReportCC(searchPar.value)
         .then((res) => {
-          CCList.value = res.data;
+          CCList.value = res.data || [];
           if (pageType.value != "detail") {
             tabData.value.CC.status = validateType(res.data);
           }
@@ -326,50 +326,55 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     const YHcode: any = [];
     const CCcode: any = [];
     const WLcode: any = [];
-    console.log(" DDList.value-----------:", DDList.value);
-    DDList.value.forEach((item: any) => {
-      DDcode.push(item.code);
-      if (item.material) {
-        const d = formateMaterial(item.material, pro.DD);
-        businessDataMaterialList.push(d);
-      }
-    });
-    HTList.value.forEach((item: any) => {
-      HTcode.push(item.code);
-      if (item.material) {
-        const d = formateMaterial(item.material, pro.HT);
-        businessDataMaterialList.push(d);
-      }
-    });
-    FPList.value.forEach((item: any) => {
-      FPcode.push(item.id);
-      if (item.material) {
-        const d = formateMaterial(item.material, pro.FP);
-        businessDataMaterialList.push(d);
-      }
-    });
-    YHList.value.forEach((item: any) => {
-      YHcode.push(item.id);
-      if (item.material) {
-        const d = formateMaterial(item.material, pro.YH);
-        businessDataMaterialList.push(d);
-      }
-    });
-    CCList.value.forEach((item: any) => {
-      CCcode.push(item.id);
-      if (item.material) {
-        const d = formateMaterial(item.material, pro.CC);
-        businessDataMaterialList.push(d);
-      }
-    });
+    DDList.value &&
+      DDList.value.forEach((item: any) => {
+        DDcode.push(item.code);
+        if (item.material) {
+          const d = formateMaterial(item.material, pro.DD);
+          businessDataMaterialList.push(d);
+        }
+      });
+    HTList.value &&
+      HTList.value.forEach((item: any) => {
+        HTcode.push(item.code);
+        if (item.material) {
+          const d = formateMaterial(item.material, pro.HT);
+          businessDataMaterialList.push(d);
+        }
+      });
+    FPList.value &&
+      FPList.value.forEach((item: any) => {
+        FPcode.push(item.id);
+        if (item.material) {
+          const d = formateMaterial(item.material, pro.FP);
+          businessDataMaterialList.push(d);
+        }
+      });
+    YHList.value &&
+      YHList.value.forEach((item: any) => {
+        YHcode.push(item.id);
+        if (item.material) {
+          const d = formateMaterial(item.material, pro.YH);
+          businessDataMaterialList.push(d);
+        }
+      });
+    CCList.value &&
+      CCList.value.forEach((item: any) => {
+        CCcode.push(item.id);
+        if (item.material) {
+          const d = formateMaterial(item.material, pro.CC);
+          businessDataMaterialList.push(d);
+        }
+      });
 
-    WLList.value.forEach((item: any) => {
-      WLcode.push(item.id);
-      if (item.material) {
-        const d = formateMaterial(item.material, pro.WL);
-        businessDataMaterialList.push(d);
-      }
-    });
+    WLList.value &&
+      WLList.value.forEach((item: any) => {
+        WLcode.push(item.id);
+        if (item.material) {
+          const d = formateMaterial(item.material, pro.WL);
+          businessDataMaterialList.push(d);
+        }
+      });
     form.businessDataMaterialList = businessDataMaterialList;
     form.orderMapRequestList = DDcode;
     form.transactionCertificateMapRequestList = HTcode;
@@ -396,85 +401,91 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     const YHcode: any = [];
     const CCcode: any = [];
     const WLcode: any = [];
-    DDList.value.forEach((item: any) => {
-      DDcode.push(item.code);
-      if (item.material) {
-        const d = formateMaterial(item.material, pro.DD);
-        businessDataMaterialList.push(d);
-        if (item.material.judgeCode == 2) {
-          errdata.flag = true;
-          errdata.DD.title = "订单附件异常，请核实";
-          errdata.DD.list.push(item);
+    DDList.value &&
+      DDList.value.forEach((item: any) => {
+        DDcode.push(item.code);
+        if (item.material) {
+          const d = formateMaterial(item.material, pro.DD);
+          businessDataMaterialList.push(d);
+          if (item.material.judgeCode == 2) {
+            errdata.flag = true;
+            errdata.DD.title = "订单附件异常，请核实";
+            errdata.DD.list.push(item);
+          }
         }
-      }
-    });
-    HTList.value.forEach((item: any) => {
-      HTcode.push(item.code);
-      if (item.material) {
-        const d = formateMaterial(item.material, pro.HT);
-        businessDataMaterialList.push(d);
-        if (item.material.judgeCode == 2) {
+      });
+    HTList.value &&
+      HTList.value.forEach((item: any) => {
+        HTcode.push(item.code);
+        if (item.material) {
+          const d = formateMaterial(item.material, pro.HT);
+          businessDataMaterialList.push(d);
+          if (item.material.judgeCode == 2) {
+            errdata.flag = true;
+            errdata.HT.title = "合同附件异常，请核实";
+          }
+        } else {
           errdata.flag = true;
-          errdata.HT.title = "合同附件异常，请核实";
+          HTEmptyflag = true;
+          errdata.HT.title = "合同附件待上传，请核实";
         }
-      } else {
-        errdata.flag = true;
-        HTEmptyflag = true;
-        errdata.HT.title = "合同附件待上传，请核实";
-      }
-    });
-    FPList.value.forEach((item: any) => {
-      FPcode.push(item.id);
-      if (item.material) {
-        const d = formateMaterial(item.material, pro.FP);
-        businessDataMaterialList.push(d);
-        if (item.material.judgeCode == 2) {
+      });
+    FPList.value &&
+      FPList.value.forEach((item: any) => {
+        FPcode.push(item.id);
+        if (item.material) {
+          const d = formateMaterial(item.material, pro.FP);
+          businessDataMaterialList.push(d);
+          if (item.material.judgeCode == 2) {
+            errdata.flag = true;
+            errdata.FP.title = "发票附件异常，请核实";
+          }
+        }
+      });
+    YHList.value &&
+      YHList.value.forEach((item: any) => {
+        YHcode.push(item.id);
+        if (item.material) {
+          const d = formateMaterial(item.material, pro.YH);
+          businessDataMaterialList.push(d);
+          if (item.material.judgeCode == 2) {
+            errdata.flag = true;
+            errdata.YH.title = "银行附件异常，请核实";
+          }
+        } else {
           errdata.flag = true;
-          errdata.FP.title = "发票附件异常，请核实";
+          YHEmptyflag = true;
+          errdata.YH.title = "银行流水附件待上传，请核实";
         }
-      }
-    });
-    YHList.value.forEach((item: any) => {
-      YHcode.push(item.id);
-      if (item.material) {
-        const d = formateMaterial(item.material, pro.YH);
-        businessDataMaterialList.push(d);
-        if (item.material.judgeCode == 2) {
-          errdata.flag = true;
-          errdata.YH.title = "银行附件异常，请核实";
-        }
-      } else {
-        errdata.flag = true;
-        YHEmptyflag = true;
-        errdata.YH.title = "银行流水附件待上传，请核实";
-      }
-    });
+      });
 
-    CCList.value.forEach((item: any) => {
-      CCcode.push(item.id);
-      if (item.material) {
-        const d = formateMaterial(item.material, pro.CC);
-        businessDataMaterialList.push(d);
-        if (item.material.judgeCode == 2) {
-          errdata.flag = true;
-          errdata.CC.title = "仓储附件异常，请核实";
-          errdata.CC.list.push(item);
+    CCList.value &&
+      CCList.value.forEach((item: any) => {
+        CCcode.push(item.id);
+        if (item.material) {
+          const d = formateMaterial(item.material, pro.CC);
+          businessDataMaterialList.push(d);
+          if (item.material.judgeCode == 2) {
+            errdata.flag = true;
+            errdata.CC.title = "仓储附件异常，请核实";
+            errdata.CC.list.push(item);
+          }
         }
-      }
-    });
+      });
 
-    WLList.value.forEach((item: any) => {
-      WLcode.push(item.id);
-      if (item.material) {
-        const d = formateMaterial(item.material, pro.WL);
-        businessDataMaterialList.push(d);
-        if (item.material.judgeCode == 2) {
-          errdata.flag = true;
-          errdata.WL.title = "仓储附件异常，请核实";
-          errdata.WL.list.push(item);
+    WLList.value &&
+      WLList.value.forEach((item: any) => {
+        WLcode.push(item.id);
+        if (item.material) {
+          const d = formateMaterial(item.material, pro.WL);
+          businessDataMaterialList.push(d);
+          if (item.material.judgeCode == 2) {
+            errdata.flag = true;
+            errdata.WL.title = "物流附件异常，请核实";
+            errdata.WL.list.push(item);
+          }
         }
-      }
-    });
+      });
     if (YHEmptyflag && HTEmptyflag) {
       // 合同和银行都有待上传的附件，显示成一条提示信息
       errdata.YH.title = "";

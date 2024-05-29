@@ -3,7 +3,7 @@
     <div class="risk-card-item" :class="{'link-item': linkFlag}" @click="toCompanyList('')">
       <div class="content">
         <div class="num">{{ formatNumber(riskData.sumary) }}</div>
-        <div class="title">授权企业</div>
+        <div class="title">服务企业</div>
       </div>
       <div class="icon">
         <img :src="qysq" style="width: 92px; height: 92px" />
@@ -48,7 +48,7 @@ const router = useRouter();
 
 const props = defineProps({
   riskData: {
-    sumary: 0, // 授权企业总数
+    sumary: 0, // 服务企业总数
     low: {},
     middle: {},
     high: {}

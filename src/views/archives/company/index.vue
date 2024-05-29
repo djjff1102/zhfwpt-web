@@ -24,12 +24,12 @@
         <RiskValueAssessment :companyName="companyName" :companyId="id"></RiskValueAssessment>
       </div>
       <!-- <div v-hasPerm="approvalMapping.manageRisk" id="manageRisk"> -->
-      <div id="manageRisk">
+      <div v-hasPerm="approvalMapping.manageRisk" id="manageRisk">
         <div class="title"><img :src="qygsxx">经营风险</div>
         <ManageRisk :companyId="id"></ManageRisk>
       </div>
       <!-- <div v-hasPerm="approvalMapping.legalCase" id="legalCase"> -->
-      <div id="legalCase">
+      <div v-hasPerm="approvalMapping.legalCase" id="legalCase">
         <div class="title"><img :src="qygsxx">法律诉讼</div>
         <LegalCom :companyId="id"></LegalCom>
       </div>

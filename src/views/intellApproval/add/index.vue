@@ -191,10 +191,10 @@
     <w-button v-hasPerm="btnApprovalCode.submit" type="primary" @click="handleSave(2, '提交')">提交</w-button>
   </div>
   <div v-if="type == 'operate'" class="bottom flex-base-end">
-    <w-button
+    <!-- <w-button
       v-hasPerm="btnApprovalCode.save"
       style="margin-right: 20px"
-      @click="handleSave(2, '更新')">更新</w-button>
+      @click="handleSave(2, '更新')">更新</w-button> -->
     <w-button v-hasPerm="btnApprovalCode.submit" type="primary" @click="handleSave(2, '提交')">提交</w-button>
   </div>
   <detail-com 

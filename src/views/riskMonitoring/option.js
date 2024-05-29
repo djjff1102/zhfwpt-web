@@ -19,7 +19,7 @@ export const pieOption = () => {
         },
         left: "49%",
         top: "40%",
-        subtext: "1000+个", // 副标题
+        subtext: "", // 副标题
         subtextStyle: {
           // 副标题样式
           color: "#FF9100",
@@ -46,21 +46,21 @@ export const pieOption = () => {
         },
         data: [
           {
-            value: 1800,
+            value: 0,
             name: "高信用",
             itemStyle: {
               color: "#5ECF69",
             },
           },
           {
-            value: 484,
+            value: 0,
             name: "中信用",
             itemStyle: {
               color: "#FF9100",
             },
           },
           {
-            value: 300,
+            value: 0,
             name: "低信用",
             itemStyle: {
               color: "#F76161",
@@ -71,8 +71,6 @@ export const pieOption = () => {
     ],
   };
 };
-
-
 
 export const barOption = () => {
   return {
@@ -86,7 +84,8 @@ export const barOption = () => {
       },
     },
     legend: {
-      data: ["Evaporation", "Precipitation", "Temperature"],
+      bottom: "0%",
+      left: "center",
     },
     xAxis: [
       {

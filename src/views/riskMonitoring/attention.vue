@@ -14,7 +14,7 @@ import Rank from "./components/Rank.vue";
 import { attentionCreditInfo } from '@/api/riskmonitor'
 
 const riskData = ref({
-  sumary: 0, // 授权企业总数
+  sumary: 0, // 服务企业总数
   low: {},
   middle: {},
   high: {}
