@@ -46,7 +46,7 @@
         <el-form-item v-if="COURT.includes(searchPar.itemCode)" label="处置单位">
           <el-input v-model="searchPar.dispositionUnit" placeholder="请输入处置单位" clearable/>
         </el-form-item>
-        <el-form-item>
+        <el-form-item v-if="searchPar.itemCode && (SEARCHCODEALL.includes(searchPar.itemCode))">
           <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
           <w-button @click="reset">重置</w-button>
         </el-form-item>
@@ -85,6 +85,7 @@ const LITIGANT = ['FLSS-SDGG', 'FLSS-FYGG', 'FLSS-KTGG', 'FLSS-LAXX', 'FLSS-CPWS
 const CASEREASON =  ['FLSS-SDGG', 'FLSS-FYGG', 'FLSS-KTGG', 'FLSS-LAXX'] // 案由
 const TITLE = ['FLSS-SFPM'] // 标题
 const COURT = ['FLSS-SFPM'] // 处置单位
+const SEARCHCODEALL = ['FLSS-SDGG', 'FLSS-LAXX', 'FLSS-CPWS', 'FLSS-ZBAJ', 'FLSS-XZGXF', 'FLSS-BZXR', 'FLSS-SFPM', 'FLSS-FYGG', 'FLSS-KTGG']
 
 const props = defineProps({
   companyId: ''
