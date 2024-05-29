@@ -481,7 +481,7 @@ async function checkSave(type: any, msg: string) {
     approvalStore.updateDataSave(form.value) // 暂存仅遍历附件，不做附件必传校验
     form.value.dataStatus = 1;
     if(reportId.value != -1) {
-        form.value.id = reportId.value
+        // form.value.id = reportId.value
         handleUpdate(msg);
       } else {
         // 新增

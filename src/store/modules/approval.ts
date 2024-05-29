@@ -312,6 +312,9 @@ export const useApprovalStore = defineStore("approvalstore", () => {
   // 表单暂存前，整合数据（不做附件必传校验）
   function updateDataSave(form: any) {
     const businessDataMaterialList: any = [];
+    if (rediusReportId.value) {
+      form.id = rediusReportId.value;
+    }
     if (fileInfo.value && JSON.stringify(fileInfo.value) != "{}") {
       businessDataMaterialList.push(fileInfo.value);
     }
