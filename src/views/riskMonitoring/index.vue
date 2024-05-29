@@ -48,7 +48,7 @@ groupByRiskData()
   height: 260px;
 }
 .risk-monitoring-container {
-  height: 100%;
+  height: calc(100vh - 140px);
   overflow: auto;
   padding: 24px;
   background-color: #fff;
