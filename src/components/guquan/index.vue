@@ -157,11 +157,7 @@ G6.registerNode(
         styles.fill = "#3470FF";
         styles.width = Math.max(countCharacters(cfg.point_type) * 7 + 10, 100)
       } else {
-        if(cfg.point_type == '法定代表人') {
-          nodeMsg = cfg.point_message['法定代表人']
-        } else if(cfg.point_type == '控股企业') {
-          nodeMsg = cfg.point_message['公司名称']
-        }
+        nodeMsg = cfg.point_message['公司名称']
         styles.width = Math.max(countCharacters(nodeMsg) * 7 + 10, 100)
       }
     
@@ -205,12 +201,11 @@ G6.registerEdge("flow-line", {
     const startPoint = cfg.startPoint;
     const endPoint = cfg.endPoint;
     const { style } = cfg;
-    console.log("股权穿透-边msg-----------:", endPoint);
+    // console.log("股权穿透-边msg-----------:", endPoint);
     // console.log("边-style----------:", style);
     const shape = group.addShape("path", {
       attrs: {
         stroke: style.stroke,
-        // endArrow: style.endArrow,
         path: [
           ["M", startPoint.x, startPoint.y],
           ["L", startPoint.x, (startPoint.y + endPoint.y) / 2],

@@ -39,7 +39,16 @@ const init = async () => {
     companyId: props.companyId,
   })
     .then((res) => {
-      const d = arrayToTree(res.data.point_list, res.data.line_list);
+      // 股权穿透，过滤掉法定代表人
+      let path = []
+      let point = res.data.point_list.filter(e => {
+        if(e.point_type !== '法定代表人') {
+          return e
+        } else {
+          path = res.data.line_list.filter(p => p.target_id != e.point_id )
+        }
+      })
+      const d = arrayToTree(point, path);
       data.value = d;
     })
     .catch((err) => {

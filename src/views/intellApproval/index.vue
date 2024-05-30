@@ -272,10 +272,21 @@ function handleLoadZip() {
   exportApproveMaterialsZipByReportId(rowId.value).then(res => {
     console.log('下载zip包结果：', res)
      loadZip.value = false;
+     fileHandleCompressed(res, '发票智能审批资料')
   }).catch(err => {
     loadZip.value = false;
     console.log('下载zip包失败：', err)
   })
+}
+
+function  fileHandleCompressed(data: any, fileName: any) {
+  let blob = new Blob([data], { type: 'application/zip,charset=utf-8'})//此处必须添加
+  let url = window.URL.createObjectURL(blob);
+  const link = window.document.createElement('a'); // 创建a标签
+  link.href = url;
+  link.download = fileName; // 重命名文件
+  link.click();
+  URL.revokeObjectURL(url); // 释放内存
 }
 
 function updateApprval() {

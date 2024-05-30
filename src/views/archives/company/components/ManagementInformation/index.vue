@@ -30,8 +30,8 @@ import { useUserStoreHook } from "@/store/modules/user";
 import ImportAndExport from "./components/ImportAndExport.vue";
 import AdministrativeLicensing from "./components/AdministrativeLicensing.vue";
 import TaxpayerQualification from "./components/TaxpayerQualification.vue";
-import CompanyGraph from "./components/CompanyGraph.vue";
-import EquityPenetration from "./components/EquityPenetration.vue";
+// import CompanyGraph from "./components/CompanyGraph.vue";
+// import EquityPenetration from "./components/EquityPenetration.vue";
 import SupplyChainAnalysis from "./components/SupplyChainAnalysis.vue";
 import GoodsInformation from "../GoodsInformation.vue";
 import { approvalMapping } from '@/router/permissionCode'

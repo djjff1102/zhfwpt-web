@@ -201,6 +201,7 @@ export function updateJudgeCode(data: any) {
 */
 export function exportApproveMaterialsZipByReportId(data: any) {
   return request({
+    responseType: "blob",
     url: `/base/fpsp_report/exportApproveMaterialsZipByReportId`,
     method: "post",
     data,
