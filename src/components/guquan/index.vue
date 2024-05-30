@@ -205,18 +205,42 @@ G6.registerEdge("flow-line", {
     const startPoint = cfg.startPoint;
     const endPoint = cfg.endPoint;
     const { style } = cfg;
-    // console.log("股权穿透-边msg-----------:", cfg.targetNode._cfg.model);
+    console.log("股权穿透-边msg-----------:", endPoint);
     // console.log("边-style----------:", style);
     const shape = group.addShape("path", {
       attrs: {
         stroke: style.stroke,
-        endArrow: style.endArrow,
+        // endArrow: style.endArrow,
         path: [
           ["M", startPoint.x, startPoint.y],
           ["L", startPoint.x, (startPoint.y + endPoint.y) / 2],
           ["L", endPoint.x, (startPoint.y + endPoint.y) / 2],
           ["L", endPoint.x, endPoint.y],
         ],
+      },
+    });
+    let tranglePath = []
+    // 箭头绘制
+    if(endPoint.y > 0) {
+      tranglePath = [
+        ["M", endPoint.x, endPoint.y-15 ],
+        ["L", endPoint.x - 3, endPoint.y - 25],
+        ["L", endPoint.x + 3, endPoint.y - 25],
+        ["L", endPoint.x, endPoint.y-15],
+      ]
+    } else {
+      tranglePath = [
+        ["M", endPoint.x, endPoint.y + 15 ],
+        ["L", endPoint.x - 3, endPoint.y + 25],
+        ["L", endPoint.x + 3, endPoint.y + 25],
+        ["L", endPoint.x, endPoint.y + 15],
+      ]
+    }
+    group.addShape("path", {
+      attrs: {
+        stroke: '#3470FF',
+        path: tranglePath,
+        fill: '#3470FF',
       },
     });
     if (cfg.targetNode._cfg.model.point_message["股份占比"]) {
