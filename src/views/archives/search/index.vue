@@ -4,7 +4,6 @@
     style="overflow: hidden">
     <div class="search">
       <h2 class="search-title">精准数据，助力商业决策每一步</h2>
-      <!-- <div class="search-input"> -->
       <w-input-search
         v-model="searchPar.allContentSearch"
         :style="{ width: '60%' }"
@@ -12,9 +11,7 @@
         @change="handleSearch"
         @search="handleSearch"
       />
-      <!-- </div> -->
     </div>
-    <!-- 外面这层解决top为负数，导致底部缺一块 -->
     <div class="bg-#fff mx-23px result-wrap" >
       <div class="search-result"
         v-infinite-scroll="handleInfiniteOnLoad"
@@ -177,6 +174,7 @@ function handleSearchMoneyType(v) {
   loadPage();
 }
 
+// 获取省份
 function handleSearchProvince(item) {
   if(!item) {
     searchPar.value.provinceShort = '';

@@ -38,12 +38,34 @@ const init = async () => {
     companyId: props.companyId,
   })
     .then((res) => {
-      data.value = res.data;
+      deep(res.data, 0)
+      data.value = res.data
     })
     .catch((err) => {
       console.log("err:", err);
     });
 };
+
+// 为企业图谱加上索引，梳理当数据很多时，根据索引控制显示隐藏
+function deep(data, i) {
+  data.index = i
+  data.children && data.children.forEach((item, j) => {
+    if(j < 10) {
+      deep(item, j)
+    } else if(j == 10 && data.children.length == 11 && !item.moreData) {
+      deep(item, j)
+    } else if(j == 10 && !item.moreData) {
+      let moreData = data.children.splice(10)
+      data.children.push({
+        id:'more-node',
+        name:'更多',
+        sum: moreData.length,
+        moreData
+      })
+    }
+    
+  })
+}
 </script>
 
 <style lang="scss" scoped>

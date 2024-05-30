@@ -1,6 +1,5 @@
 <template>
   <el-dialog
-    class="max-h-[500px] overflow-y-auto"
     v-model="dialog.visible"
     :title="dialog.title"
     width="500px"

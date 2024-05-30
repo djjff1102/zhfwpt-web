@@ -7,6 +7,19 @@
       {{ fullFlag ? '退出': '全屏' }}
       </div>
     </w-button>
+    <el-dialog v-model="showMore" :width="700" append-to-body>
+      <template #header>
+        <div class="dia-header">更多信息</div>
+      </template>
+      <div class="more-content">
+        <div v-for="(item, i) in moreData" :key="i" class="more-item">{{ i+1 }}、{{ item.point_name }}</div>
+      </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <w-button type="primary" style="margin-left: 16px;" @click="showMore = false">确定</w-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -50,9 +63,6 @@ watch(
     if (v) {
       nextTick(() => {
         const d = JSON.parse(JSON.stringify(v));
-        // d.children.forEach((e) => {
-        //   delete e.children;
-        // });
         init(d);
       });
     }
@@ -126,6 +136,9 @@ function getWindow() {
 * 自适应调整画布的高
 */
 
+const showMore = ref(false)
+const moreData = ref()
+
 function init(d) {
   const graph = new G6.TreeGraph({
     container: props.id,
@@ -166,6 +179,15 @@ function init(d) {
     graph.fitView(); // 中心位置调整
     initH.value = Math.floor(initH.value / zoom)
   }
+
+  // 绑定节点点击事件
+  graph.on('click', (e) => {
+    if(e.item._cfg.id == 'more-node') {
+      showMore.value = true
+      moreData.value = e.item._cfg.model.moreData || []
+      console.log('dainji ----:', e.item._cfg.model.moreData)
+    }
+  });
 }
 
 G6.registerNode(
@@ -185,8 +207,14 @@ G6.registerNode(
         styles.stroke = "rgba(252, 252, 252, 1)"
         styles.fill = "rgba(252, 252, 252, 1)"
       }
-      styles.width = Math.max(countCharacters(cfg.point_name) * 7 + 10, 100)
-      let positionX = cfg.point_type == 1 ? -(styles.width) / 2 : -((styles.width - 100) + styles.width) / 2
+      
+      styles.width = Math.max(countCharacters(cfg.point_name || cfg.name) * 7 + 10, 100)
+      let positionX = -(styles.width) / 2
+      if(cfg.x < 0 && (cfg.point_type == 3 || cfg.id =='more-node')) {
+        positionX = -((styles.width - 100) + styles.width) / 2
+      } else if(cfg.x > 0 && (cfg.point_type == 3 || cfg.id =='more-node')) {
+        positionX = w/2
+      }
       const keyShape = group.addShape("rect", {
         attrs: {
           ...styles,
@@ -236,8 +264,7 @@ G6.registerNode(
           },
           name: "circle-shape",
         });
-      } else {
-        // console.log("其他-------cfg", cfg);
+      } else if(cfg.point_type == 3 && cfg.x < 0){
         group.addShape("text", {
           attrs: {
             ...labelCfg.style,
@@ -245,8 +272,31 @@ G6.registerNode(
             x: -((styles.width - 100)) / 2,
           },
         });
+      } else if(cfg.point_type == 3 && cfg.x > 0){
+        group.addShape("text", {
+          attrs: {
+            ...labelCfg.style,
+            text: cfg.point_name,
+            x: ((styles.width + 100)) / 2,
+          },
+        });
+      } else if(cfg.id == 'more-node' && cfg.x > 0){
+        group.addShape("text", {
+          attrs: {
+            ...labelCfg.style,
+            text: cfg.name,
+            x: ((styles.width + 100)) / 2,
+          },
+        });
+      } else if(cfg.id == 'more-node' && cfg.x < 0) {
+        group.addShape("text", {
+          attrs: {
+            ...labelCfg.style,
+            text: cfg.name,
+            x: -((styles.width - 100)) / 2,
+          },
+        });
       }
-
       return keyShape;
     },
     update: undefined,
@@ -306,5 +356,24 @@ G6.registerEdge("flow-line-en", {
   width: 100%;
   bottom: 0;
   z-index: 99999;
+}
+.more-content {
+  height: 600px;
+  overflow: scroll;
+}
+.more-item {
+    width:500px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 4px;
+    margin-top: 12px;
+    padding: 0 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    &:hover {
+      background: linear-gradient( 270deg, #EBF3FF 0%, #EBF3FF 100%);
+    }
 }
 </style>
