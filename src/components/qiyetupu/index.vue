@@ -26,6 +26,7 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import { countCharacters } from '@/utils/common'
+import moreImg from '@/assets/more.png'
 import G6 from "@antv/g6";
 import {
   COLLAPSE_ICON,
@@ -288,6 +289,16 @@ G6.registerNode(
             x: ((styles.width + 100)) / 2,
           },
         });
+        // group.addShape('image', {
+        //   attrs: {
+        //     x: ((styles.width + 100)) / 2 + 26,
+        //     y:  -styles.height / 2 + 3,
+        //     width: 24,
+        //     height: 24,
+        //     img: moreImg
+        //   },
+        //   name: 'image-shape',
+        // });
       } else if(cfg.id == 'more-node' && cfg.x < 0) {
         group.addShape("text", {
           attrs: {
@@ -296,6 +307,16 @@ G6.registerNode(
             x: -((styles.width - 100)) / 2,
           },
         });
+        // group.addShape('image', {
+        //   attrs: {
+        //     x: 8 - w / 2,
+        //     y: 8 - h / 2,
+        //     width: 24,
+        //     height: 24,
+        //     img: moreImg
+        //   },
+        //   name: 'image-shape',
+        // });
       }
       return keyShape;
     },

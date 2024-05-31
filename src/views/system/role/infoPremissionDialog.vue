@@ -11,6 +11,7 @@
           {{ currentRole?.name }}
         </el-form-item>
         <el-form-item label="信息权限:">
+          
           <el-tree
             class="!w-full"
             ref="menuRef"
@@ -19,7 +20,7 @@
             :check-strictly="checkStrictly"
             :props="menuProps"
             :data="menuList"
-            :default-expand-all="true"
+            :default-expand-all="false"
           />
         </el-form-item>
       </el-form>
@@ -56,12 +57,13 @@ const currentRole = ref();
 const menuList = ref<MenuPremissionTreeProps[]>([]);
 const menuProps = {
   label: "name",
-  children: "children",
+  // children: "children",
 };
 const checkStrictly = ref(true);
 
 function getTreeData() {
   getInfoPremissionTree().then((res) => {
+    console.log('res---------------tree：', res.data)
     menuList.value = res.data;
   });
 }
@@ -121,3 +123,16 @@ defineExpose({
   showDialog,
 });
 </script>
+
+<style scoped>
+:deep(.is-leaf svg) {
+  display: none;
+}
+:deep(.el-tree-node__label) {
+  display: inline-block;
+  padding-left: 4px;
+}
+:deep(.el-checkbox) {
+  /* height: auto !important; */
+}
+</style>

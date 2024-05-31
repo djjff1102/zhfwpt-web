@@ -46,19 +46,20 @@ const init = async () => {
     });
 };
 
+let moreNumber = 10
 // 为企业图谱加上索引，梳理当数据很多时，根据索引控制显示隐藏
 function deep(data, i) {
   data.index = i
   data.children && data.children.forEach((item, j) => {
-    if(j < 10) {
+    if(j < moreNumber) {
       deep(item, j)
-    } else if(j == 10 && data.children.length == 11 && !item.moreData) {
+    } else if(j == moreNumber && data.children.length == moreNumber + 1 && !item.moreData) {
       deep(item, j)
-    } else if(j == 10 && !item.moreData) {
-      let moreData = data.children.splice(10)
+    } else if(j == moreNumber && !item.moreData) {
+      let moreData = data.children.splice(moreNumber)
       data.children.push({
         id:'more-node',
-        name:'更多',
+        name: `展开(${moreData.length})`,
         sum: moreData.length,
         moreData
       })

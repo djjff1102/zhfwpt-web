@@ -180,3 +180,32 @@ export function formateWord(d) {
   });
   return arr;
 }
+
+// 当柱状折线图，有左右两个y轴，需要分别计算左右的步数
+// sum 一侧（y轴）的最大值
+// splitNum 分隔线的条数
+export function computStep(sum, splitNum) {
+  console.log("传入--：", sum, splitNum);
+  let quotient = Math.floor(sum / splitNum); // 商
+  let remainder = sum % splitNum; // 余数
+  console.log("传入--：", sum, splitNum, quotient, remainder);
+
+  if (sum == 0) {
+    return {
+      sum: splitNum,
+      step: 1,
+    };
+  }
+  if (remainder != 0) {
+    sum = sum + (splitNum - remainder);
+    return {
+      sum,
+      step: sum / splitNum,
+    };
+  } else {
+    return {
+      sum,
+      step: sum / splitNum,
+    };
+  }
+}

@@ -25,7 +25,7 @@ import TitleCom from '@/components/TitleCom.vue';
 import { invoiceCheckByDate } from '@/api/riskmonitor'
 import { ref } from 'vue'
 import dayjs from "dayjs";
-import { InitializableXmlComponent } from "docx";
+import { computStep } from '@/utils/common'
 
 const searchPar = ref({
   startDate: '',
@@ -69,13 +69,28 @@ function initBar(data) {
   const wait = []
   const money = []
   const time = []
+  let maxApprovalNum = 0 // 最大审批量
+  let maxApprovalMoney = 0 // 最大审批金额
+  let splitNum = 5 // y轴分隔总数
   data.forEach(item => {
     pass.push(item.monthlyPassNum)
+    maxApprovalNum = Math.max(maxApprovalNum, item.monthlyPassNum)
     reject.push(item.monthlyRefuseNum)
+    maxApprovalNum = Math.max(maxApprovalNum, item.monthlyRefuseNum)
     wait.push(item.monthlyUnCheckNum)
+    maxApprovalNum = Math.max(maxApprovalNum, item.monthlyUnCheckNum)
     money.push(item.monthlyPassMoney)
+    maxApprovalMoney = Math.max(item.monthlyPassMoney, maxApprovalMoney)
     time.push(item.yearAndMonth)
   })
+  // 计算两个y轴的步数
+  let approvalNumStep = computStep(maxApprovalNum, splitNum)
+  let approvalMoneyStep = computStep(maxApprovalMoney, splitNum)
+  option. yAxis[0].interval = approvalNumStep.step;
+  option. yAxis[0].max = approvalNumStep.sum;
+  option. yAxis[1].interval = approvalMoneyStep.step;
+  option. yAxis[1].max = approvalMoneyStep.sum;
+  
   option.xAxis[0].data = time
   option.series[0].data = reject// 驳回
   option.series[1].data = wait // 待审批
@@ -99,21 +114,21 @@ function renderOption(option, data) {
         value: data.refuseNum || 0,
         name: "驳回",
         itemStyle: {
-          color: "#F76161",
+          color: "rgba(247, 97, 97, 1)",
         },
       },
       {
         value: data.unCheckNum || 0,
         name: "未审批",
         itemStyle: {
-          color: "#FF9100",
+          color: "rgba(5, 148, 235, 1)",
         },
       },
       {
         value: data.passNum || 0,
         name: "通过",
         itemStyle: {
-          color: "#5ECF69",
+          color: "rgba(94, 207, 105, 1)",
         },
       },
     ]

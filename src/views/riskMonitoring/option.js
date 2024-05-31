@@ -90,7 +90,7 @@ export const barOption = () => {
     xAxis: [
       {
         type: "category",
-        data: ["2023.1", "2032.4", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        data: [],
         axisPointer: {
           type: "shadow",
         },
@@ -128,9 +128,10 @@ export const barOption = () => {
             // return value + " ml";
           },
         },
-        data: [
-          2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3,
-        ],
+        data: [],
+        itemStyle: {
+          color: "rgba(247, 97, 97, 1)",
+        },
       },
       {
         name: "未审批",
@@ -140,9 +141,10 @@ export const barOption = () => {
             return value;
           },
         },
-        data: [
-          2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3,
-        ],
+        data: [],
+        itemStyle: {
+          color: "rgba(52, 112, 255, 1)",
+        },
       },
       {
         name: "通过",
@@ -152,9 +154,10 @@ export const barOption = () => {
             return value;
           },
         },
-        data: [
-          2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3,
-        ],
+        data: [],
+        itemStyle: {
+          color: "rgba(94, 207, 105, 1)",
+        },
       },
       {
         name: "审批金额",
@@ -165,9 +168,10 @@ export const barOption = () => {
             return value;
           },
         },
-        data: [
-          2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2,
-        ],
+        data: [],
+        itemStyle: {
+          color: "rgba(255, 123, 68, 1)",
+        },
       },
     ],
   };
