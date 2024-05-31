@@ -255,3 +255,9 @@
 .w-modal-body {
   padding: 16px 24px;
 }
+// 项目中两个table组件不一样，强制修改el-table hover时的样式
+.hover-row {
+  td {
+    background-color: rgba(0, 0, 0, 0.02)!important;
+  }
+}
