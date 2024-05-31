@@ -112,4 +112,7 @@ onMounted(() => {
 .dept-tree-container {
   border-right: 1px solid #edf1fc !important;
 }
+:deep(.is-leaf svg) {
+  display: none;
+}
 </style>
