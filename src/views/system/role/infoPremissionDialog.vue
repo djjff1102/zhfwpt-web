@@ -20,7 +20,7 @@
             :check-strictly="checkStrictly"
             :props="menuProps"
             :data="menuList"
-            :default-expand-all="false"
+            :default-expand-all="true"
           />
         </el-form-item>
       </el-form>

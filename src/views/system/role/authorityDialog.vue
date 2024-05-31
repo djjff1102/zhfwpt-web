@@ -111,3 +111,8 @@ defineExpose({
   showDialog,
 });
 </script>
+<style scoped>
+:deep(.is-leaf svg) {
+  display: none;
+}
+</style>
