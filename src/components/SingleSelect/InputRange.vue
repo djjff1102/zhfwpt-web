@@ -5,6 +5,7 @@
       <el-input v-model="form.start" @change="validateStart" style="width: 97px; height: 24px" />
       <span class="input-label">-</span>
       <el-input v-model="form.end" @change="validateEnd" style="width: 97px; height: 24px"/>
+      <span style="display: inline-block; padding-left: 4px">万</span>
     </div>
     <div class="operate-btn flex-base-end">
       <el-button style="width: 41px;height:22px" @click="reset">重置</el-button>

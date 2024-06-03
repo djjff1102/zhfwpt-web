@@ -30,9 +30,9 @@
         v-if="customFun && (selectForm.start || selectForm.end)"
         :class="{'active': cur === 'custom' }"
         @click="showPopover = true">
-        <span v-if="selectForm.start && selectForm.end">{{ selectForm?.start }} - {{ selectForm?.end }}</span>
-        <span v-if="!selectForm.start && selectForm.end">{{ selectForm?.end }}以内</span>
-        <span v-if="selectForm.start && !selectForm.end">{{ selectForm?.end }}以上</span>
+        <span v-if="selectForm.start && selectForm.end">{{ selectForm?.start }} - {{ selectForm?.end }}万</span>
+        <span v-if="!selectForm.start && selectForm.end">{{ selectForm?.end }}万以内</span>
+        <span v-if="selectForm.start && !selectForm.end">{{ selectForm?.start }}万以上</span>
       </span>
       <span
         v-if="customFun && customFunType == 'date' && cur != 'customdate' && !dateValue"
@@ -146,7 +146,6 @@ function update(data) {
   if(!data.start && !data.end) {
     cur.value = ''
   }
-  console.log('2222222222222222:', data)
   const item = {
     max: data.end,
     min: data.start

@@ -43,6 +43,7 @@ function handleTabClick(value) {
 
 <style lang="scss" scoped>
 .tab-item {
+  background: rgba(0,0,0,0) !important;
   position: relative;
 }
 .success-img {
