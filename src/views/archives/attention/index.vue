@@ -48,8 +48,11 @@
         :columns="columns"
         :scroll="scroll"
         :pagination="pagination"
+        :row-selection="rowSelection"
+        row-key="companyId"
         @page-change="changepage"
         @page-size-change="changePagesize"
+        @select="handlSelectRow"
         :bordered="false"
       >
         <template v-slot:index="{rowIndex}">
@@ -72,7 +75,10 @@ import dayjs from "dayjs";
 import { signStatus, companyType } from '@/utils/baseType'
 
 const router = useRouter();
-
+const rowSelection = ref({
+  type: 'checkbox',
+  showCheckedAll: true
+})
 const loading = ref(false);
 const tableData = ref([]);
 const columns = reactive([
@@ -170,6 +176,11 @@ const scroll = ref({
   y: 800,
   x: 1080,
 });
+const rowId = ref([])
+
+function handlSelectRow(row: any) {
+  rowId.value = row;
+}
 
 const changePagesize = (v: any) => {
   pagination.value.pageSize = v;
@@ -185,15 +196,19 @@ const changepage = (v: any) => {
 // 导出
  function handleExport() {
   if(loadingExport.value) return;
-  loadingExport.value = true
-  const data = {
-    companyName: searchPar.value.companyName,
-    provinceShort: searchPar.value.provinceShort,
-    legalPerson: searchPar.value.legalPerson,
-    creditNo: searchPar.value.creditNo,
-    companyAddress: searchPar.value.companyAddress
+  if(rowId.value.length == 0){
+    ElMessage.warning("请选择需要导出的企业");
+    return;
   }
-  attentionCompanyExport(data).then(res => {
+  loadingExport.value = true
+  // const data = {
+  //   companyName: searchPar.value.companyName,
+  //   provinceShort: searchPar.value.provinceShort,
+  //   legalPerson: searchPar.value.legalPerson,
+  //   creditNo: searchPar.value.creditNo,
+  //   companyAddress: searchPar.value.companyAddress
+  // }
+  attentionCompanyExport(rowId.value).then(res => {
     exportBlob(res);
   }).catch(err => {
     loadingExport.value = false

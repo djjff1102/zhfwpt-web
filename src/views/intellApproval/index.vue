@@ -323,14 +323,18 @@ const loadingExport = ref(false)
 // 导出
  function handleExport() {
   if(loadingExport.value) return
-  loadingExport.value = true
-  const data = {
-    companyName: searchPar.value.companyName,
-    approveStatus: searchPar.value.approveStatus,
-    startTime: searchPar.value.startTime,
-    endTime: searchPar.value.endTime
+  if(rowId.value.length == 0){
+    ElMessage.warning("请选择需要导出的材料");
+    return;
   }
-  approvalExport(data).then(res => {
+  loadingExport.value = true
+  // const data = {
+  //   companyName: searchPar.value.companyName,
+  //   approveStatus: searchPar.value.approveStatus,
+  //   startTime: searchPar.value.startTime,
+  //   endTime: searchPar.value.endTime
+  // }
+  approvalExport(rowId.value).then(res => {
     exportBlob(res);
     loadingExport.value = false
   }).catch(err => {

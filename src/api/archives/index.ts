@@ -252,10 +252,7 @@ export function attentionCompanyExport(
     responseType: "blob",
     url: "/base/company_base/attentionCompanyExport",
     method: "post",
-    data: {
-      userId: userId,
-      ...data,
-    },
+    data,
   });
 }
 /**

@@ -39,8 +39,11 @@
         :data="tableData"
         :columns="columns"
         :pagination="pagination"
+        :row-selection="rowSelection"
+        row-key="companyId"
         @page-change="changepage"
         @page-size-change="changePagesize"
+        @select="handlSelectRow"
         :bordered="false"
       >
         <template v-slot:index="{ rowIndex }">
@@ -165,6 +168,16 @@ const searchPar = ref({
   endDate: ''
 })
 const loadingExport = ref(false)
+const rowId = ref([])
+const rowSelection = ref({
+  type: 'checkbox',
+  showCheckedAll: true
+})
+
+function handlSelectRow(row) {
+  rowId.value = row;
+}
+
 
 // 重置
 function reset() {
@@ -242,14 +255,18 @@ function getRiskiList() {
 //导出
 function handleExport() {
   if(loadingExport.value) return
+  if(rowId.value.length == 0){
+    ElMessage.warning("请选择需要导出的公司");
+    return;
+  }
   loadingExport.value = true
-   if(props.isAttentionCompany) {
-    searchPar.value.isAttentionCompany = props.isAttentionCompany;
-  }
-  if(props.isAuthCompany) {
-    searchPar.value.isAuthCompany = props.isAuthCompany;
-  }
-  riskExport(searchPar.value).then(res => {
+  //  if(props.isAttentionCompany) {
+  //   searchPar.value.isAttentionCompany = props.isAttentionCompany;
+  // }
+  // if(props.isAuthCompany) {
+  //   searchPar.value.isAuthCompany = props.isAuthCompany;
+  // }
+  riskExport(rowId.value).then(res => {
     exportBlob(res);
     loadingExport.value = false
   }).catch(err => {
