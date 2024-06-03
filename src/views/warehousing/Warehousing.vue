@@ -1,13 +1,13 @@
 <template>
   <div class="warehouse-wrap">
-    <div class="search-wrap">
+    <div v-if="type == 'Warehousing'" class="search-wrap">
       <div class="city-select">
         <span class="city-select-label">城市：</span>
         <el-select v-model="currentcity" placeholder="请选择" clearable>
             <el-option v-for="(item, i) in ['天津市']" :key="i" :value="item"></el-option>
           </el-select>
       </div>
-      <div class="split"></div>
+      <!-- <div class="split"></div> -->
       <SingleSelect
         title="位置"
         :list="positionData"
@@ -48,58 +48,47 @@
         </div>
       </div>
     </div>
-    <div class="content-wrap">
-      <div class="card-item">
-        <div class="item-img"></div>
-        <div class="item-center">
-          <div class="item-top">
-            <div class="title">仓储出租</div>
-            <div style="display: flex; gap: 8px">
-              <el-tag round effect="light" type="primary">优选</el-tag>
-              <el-tag round effect="light" type="success">可免风险扫描</el-tag>
-              <el-tag round effect="light" type="info">价格面议</el-tag>
-              <el-tag round effect="light" type="info">可以分隔</el-tag>
-              <el-tag round effect="light" type="info">随时可看</el-tag>
-            </div>
-          </div>
-          <div class="item-top">
-            <div class="item-top-left">东丽区-新立街 | 天津市瑞和仓储有限公司 | 楼库</div>
-            <div class="item-top-right area-font">
-              2550m²
-            </div>
-            <div class="item-top-right">
-              <span class="price-new">0.6</span>
-              <span class="price-old">0.8</span>
-              <span class="price-unit">元/m²/天</span>
-            </div>
-          </div>
-          <div class="item-top">
-            <div class="item-top-left">
-              胡家河 | 天津市东丽区新立街新兴村中国纺织物资天津公司仓库
-            </div>
-            <div class="item-top-right">
-              建筑面积
-            </div>
-            <div class="item-top-right">
-              <span class="price-new">1.08</span>
-              <span class="price-old">1.1</span>
-              <span class="price-unit">万/月</span>
-            </div>
-          </div>
-        </div>
-        <div class="item-right">
-          <el-button type="primary">联系TA</el-button>
+    <div v-if="type == 'Logistics'" class="search-wrap">
+      <div class="city-select">
+        <span class="city-select-label">公司名称：</span>
+        <el-input placeholder="请输入" style="width: 200px;"></el-input>
+      </div>
+      <SingleSelect
+        title="发货地"
+        :list="cityType"
+      ></SingleSelect>
+      <SingleSelect
+        title="服务类型"
+        :list="serveType"
+      ></SingleSelect>
+      <SingleSelect
+        title="运输方式"
+        :list="transType"
+      ></SingleSelect>
+      <div class="city-select">
+        <span class="city-select-label">已筛选条件：</span>
+        <div class="choice-list">
+          <w-tag v-for="item in choiceList" :key="item" closable color="winboxblue" size="small" >{{ item }}</w-tag >
         </div>
       </div>
+      <div class="split"></div>
+    </div>
+    <div class="content-wrap">
+      <ItemCom v-bind="$attrs"></ItemCom>
     </div>
   </div>
 </template>
 
 <script setup>
-import { positionData, wareHouseType, areatype, rentType, leaseType, wareHouseCharact, sourceType } from './baseType'
+import { positionData, wareHouseType, areatype, rentType, leaseType, wareHouseCharact, sourceType, cityType,serveType, transType } from './baseType'
+import ItemCom from './ItemCom.vue'
 
 const currentcity = ref('天津市')
 const choiceList = ref(['天津市'])
+
+const props = defineProps({
+  type: ''
+})
 
 </script>
 
@@ -173,9 +162,6 @@ const choiceList = ref(['天津市'])
   color: #333;
 }
 
-:deep(.warehousing) {
-  padding: 24px 0;
-}
 .split {
   height: 1px;
   width: 100%;
@@ -185,6 +171,7 @@ const choiceList = ref(['天津市'])
 .city-select {
   display: flex;
   align-items: center;
+  padding-bottom: 12px;
   .city-select-label {
     width: 94px;
     text-align: right;

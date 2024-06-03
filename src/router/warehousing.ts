@@ -32,6 +32,21 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
+        path: "warehousingDetail",
+        component: () => import("@/views/warehousing/WarehousingDeatil.vue"),
+        name: "WarehousingDeatil",
+        meta: {
+          title: "仓储详情",
+          icon: "tree",
+          hidden: false,
+          roles: ["ADMIN"],
+          keepAlive: true,
+          code: [401],
+          showMenu: false,
+          activeMenu: "/warehousing",
+        },
+      },
+      {
         path: "Logistics",
         component: () => import("@/views/warehousing/index.vue"),
         name: "Logistics",

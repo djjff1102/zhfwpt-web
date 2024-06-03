@@ -245,3 +245,132 @@ export const sourceType = [
     value: "经纪人",
   },
 ];
+
+export const cityType = [
+  {
+    value: "北京",
+    label: "北京",
+  },
+  {
+    value: "上海",
+    label: "上海",
+  },
+  {
+    value: "天津",
+    label: "天津",
+  },
+  {
+    value: "广东",
+    label: "广东",
+  },
+  {
+    value: "山东",
+    label: "山东",
+  },
+  {
+    value: "江苏",
+    label: "江苏",
+  },
+  {
+    value: "浙江",
+    label: "浙江",
+  },
+  {
+    value: "湖南",
+    label: "湖南",
+  },
+  {
+    value: "石家庄",
+    label: "石家庄",
+  },
+  {
+    value: "大连",
+    label: "大连",
+  },
+  {
+    value: "苏州",
+    label: "苏州",
+  },
+  {
+    value: "长沙",
+    label: "长沙",
+  },
+  {
+    value: "成都",
+    label: "成都",
+  },
+  {
+    value: "重庆",
+    label: "重庆",
+  },
+  {
+    value: "武汉",
+    label: "武汉",
+  },
+  {
+    value: "三亚",
+    label: "三亚",
+  },
+  {
+    value: "南京",
+    label: "南京",
+  },
+  {
+    value: "厦门",
+    label: "厦门",
+  },
+  {
+    value: "柳州",
+    label: "柳州",
+  },
+  {
+    value: "西安",
+    label: "西安",
+  },
+];
+
+export const serveType = [
+  {
+    value: "冷链运输",
+    label: "冷链运输",
+  },
+  {
+    value: "大货件运输",
+    label: "大货件运输",
+  },
+  {
+    value: "危险品运输",
+    label: "危险品运输",
+  },
+  {
+    value: "高价值货物运输",
+    label: "高价值货物运输",
+  },
+  {
+    value: "国际运输",
+    label: "国际运输",
+  },
+];
+
+export const transType = [
+  {
+    value: "陆运",
+    label: "陆运",
+  },
+  {
+    value: "海运",
+    label: "海运",
+  },
+  {
+    value: "空运",
+    label: "空运",
+  },
+  {
+    value: "多式联运",
+    label: "多式联运",
+  },
+  {
+    value: "内河运输",
+    label: "内河运输",
+  },
+];
