@@ -1,7 +1,9 @@
 <template>
   <div class="g-bg" ref="fullRefGQ" >
-    <div :id="id"></div>
-    <w-button class="full-window" @click="toggleFullscreen">
+    <div :id="id">
+      <no-data v-if="emptyFlag"></no-data>
+    </div>
+    <w-button v-if="!emptyFlag" class="full-window" @click="toggleFullscreen">
       <div class="full-btn">
         <img src="@/assets/fullwindow.svg">
       {{ fullFlag ? '退出': '全屏' }}
@@ -38,11 +40,15 @@ watch(
   (v) => {
     if (v) {
       nextTick(() => {
-        const d = JSON.parse(JSON.stringify(v));
-        d.children.forEach((e) => {
-          delete e.children;
-        });
-        init(d);
+        console.log('股权穿透---------：', v)
+        if(v.children && v.children.length > 0) {
+          emptyFlag.value = false
+          const d = JSON.parse(JSON.stringify(v));
+          d.children.forEach((e) => {
+            delete e.children;
+          });
+          init(d);
+        }
       });
     }
   },
@@ -51,6 +57,7 @@ watch(
   }
 );
 
+const emptyFlag = ref(true)
 const windowWidth = ref(0);
 const windowHeight = ref(0)
 const initH = ref(0) // 初始页面，即非全屏下的画布高度
@@ -156,9 +163,14 @@ G6.registerNode(
       if (cfg.point_id == "1") {
         styles.fill = "#3470FF";
         styles.width = Math.max(countCharacters(cfg.point_type) * 7 + 10, 100)
-      } else {
+      } else if(cfg.point_message['公司名称']){
         nodeMsg = cfg.point_message['公司名称']
         styles.width = Math.max(countCharacters(nodeMsg) * 7 + 10, 100)
+      } else if(cfg.point_message['股东名称']){
+        nodeMsg = cfg.point_message['股东名称']
+        styles.width = Math.max(countCharacters(nodeMsg) * 7 + 10, 100)
+      } else {
+        nodeMsg = '暂无'
       }
     
       const keyShape = group.addShape("rect", {

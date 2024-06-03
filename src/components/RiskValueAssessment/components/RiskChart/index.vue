@@ -23,8 +23,8 @@ const props = defineProps({
 // const colorArr = reactive(['#F76161', '#FF9100', '#5ECF69']) // leval-1分别取颜色值 1高风险 2 中风险 3低风险
 
 onMounted(() => {
-  handleColor()
-  init();
+  // handleColor()
+  // init();
 })
 
 watch(

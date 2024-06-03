@@ -33,7 +33,7 @@
         {{ data?.inOutCompanyCode || '--' }}
       </el-descriptions-item>
       <el-descriptions-item label="联系电话"> {{ data?.companyPhone || '--' }} </el-descriptions-item>
-      <el-descriptions-item label="邮箱"> {{ data?.companyEmail || '--' }} </el-descriptions-item>
+      <el-descriptions-item label="邮箱"> {{ data?.companyEmail || '无' }} </el-descriptions-item>
       <el-descriptions-item label="官网"> {{ data?.websiteUrl || '--' }} </el-descriptions-item>
       <el-descriptions-item label="注册地址" :span="3">
         {{ data?.companyAddress || '--' }}

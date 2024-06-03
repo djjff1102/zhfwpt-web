@@ -174,7 +174,7 @@ export const registerMoney = [
     value: "500-1000万",
     min: 500,
     max: 1000,
-    key: "1000",
+    key: "500",
   },
   {
     value: "1000万以上",

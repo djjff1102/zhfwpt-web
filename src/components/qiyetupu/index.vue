@@ -1,7 +1,8 @@
 <template>
   <div class="g-bg" ref="fullRef" >
-    <div :id="id"></div>
-    <w-button class="full-window" @click="toggleFullscreen">
+    <div :id="id">
+    <no-data v-if="emptyFlag"></no-data></div>
+    <w-button v-if="!emptyFlag" class="full-window" @click="toggleFullscreen">
       <div class="full-btn">
         <img src="@/assets/fullwindow.svg">
       {{ fullFlag ? '退出': '全屏' }}
@@ -48,6 +49,7 @@ const colorObj = {
 };
 const fullRef = ref()
 const initH = ref(0)
+const emptyFlag = ref(true)
 
 const props = defineProps({
   id: {
@@ -63,8 +65,11 @@ watch(
   (v) => {
     if (v) {
       nextTick(() => {
-        const d = JSON.parse(JSON.stringify(v));
-        init(d);
+        if(v.children && v.children.length > 0) {
+          const d = JSON.parse(JSON.stringify(v));
+          init(d);
+          emptyFlag.value = false
+        }
       });
     }
   },

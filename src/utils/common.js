@@ -153,9 +153,10 @@ export function arrayToTree(nodes, edges) {
 // 将字符转换为字节
 
 export function countCharacters(str) {
+  if (!str) return 1;
   const regex = /[\u4e00-\u9fa5]/g;
-  let CHlen =  (str.match(regex) || []).length;
-  return str.length - CHlen + CHlen * 2
+  let CHlen = (str.match(regex) || []).length;
+  return str.length - CHlen + CHlen * 2;
 }
 
 // 处理数据，生成columns
@@ -185,10 +186,8 @@ export function formateWord(d) {
 // sum 一侧（y轴）的最大值
 // splitNum 分隔线的条数
 export function computStep(sum, splitNum) {
-  console.log("传入--：", sum, splitNum);
   let quotient = Math.floor(sum / splitNum); // 商
   let remainder = sum % splitNum; // 余数
-  console.log("传入--：", sum, splitNum, quotient, remainder);
 
   if (sum == 0) {
     return {

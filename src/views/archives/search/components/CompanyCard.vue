@@ -8,42 +8,42 @@
         <div class="company-name">
           <!-- <span class="mr-12px">{{ comData?.companyName }}</span> -->
           <span class="mr-12px" v-html="highlightedText"></span>
-          <el-tag round effect="light" type="success">{{comData?.companyStatus || '-'}}</el-tag>
+          <el-tag round effect="light" type="success">{{comData?.companyStatus || '--'}}</el-tag>
         </div>
         <div class="company-tags">
-          <el-tag round effect="light" type="primary">{{ comData?.companyType || '-' }}</el-tag>
+          <el-tag round effect="light" type="primary">{{ comData?.companyType || '--' }}</el-tag>
         </div>
         <div class="desc-info">
           <div class="desc-item">
             <div class="desc-label">法定代表人：</div>
-            <div class="desc-value">{{ comData?.legalPerson || '-' }}</div>
+            <div class="desc-value">{{ comData?.legalPerson || '--' }}</div>
           </div>
           <div class="desc-item">
             <div class="desc-label">注册资本：</div>
-            <div class="desc-value">{{ comData?.capital || '-' }}</div>
+            <div class="desc-value">{{ comData?.capital || '--' }}</div>
           </div>
           <div class="desc-item">
             <span class="desc-label">成立日期：</span>
-            <span class="desc-value">{{ comData?.establishDate || '-' }}</span>
+            <span class="desc-value">{{ comData?.establishDate || '--' }}</span>
           </div>
           <div class="desc-item">
             <span class="desc-label">统一社会信用代码：</span>
-            <span class="desc-value">{{ comData?.creditNo || '-' }}</span>
+            <span class="desc-value">{{ comData?.creditNo || '--' }}</span>
           </div>
         </div>
         <el-divider border-style="dashed" />
         <div class="desc-info">
           <div class="desc-item">
             <span class="desc-label">电话：</span>
-            <span class="desc-value">{{ comData?.companyPhone || '-' }}</span>
+            <span class="desc-value">{{ comData?.companyPhone || '--' }}</span>
           </div>
           <div class="desc-item">
             <span class="desc-label">邮箱：</span>
-            <span class="desc-value">{{ comData?.companyEmail || '-' }}</span>
+            <span class="desc-value">{{ comData?.companyEmail || '无' }}</span>
           </div>
           <div class="desc-item">
             <span class="desc-label">官网：</span>
-            <span class="desc-value" style="width: 400px">{{ comData?.websiteUrl || '-' }}</span>
+            <span class="desc-value" style="width: 400px">{{ comData?.websiteUrl || '--' }}</span>
           </div>
         </div>
         <div class="desc-info">
