@@ -40,16 +40,20 @@ const goFirst = (menu: any[]) => {
   }
 };
 
-const waitPath = reactive(['/warehousing']);
+// const waitPath = reactive(['/warehousing']);
 const selectMenu = (index: string) => {
-  if(waitPath.includes(index)) {
-    ElMessage.warning("敬请期待！");
-  } else {
-    appStore.changeTopActive(index);
-    permissionStore.getMixLeftMenu(index);
-    const { mixLeftMenu } = permissionStore;
-    goFirst(mixLeftMenu);
-  }
+  appStore.changeTopActive(index);
+  permissionStore.getMixLeftMenu(index);
+  const { mixLeftMenu } = permissionStore;
+  goFirst(mixLeftMenu);
+  // if(waitPath.includes(index)) {
+  //   ElMessage.warning("敬请期待！");
+  // } else {
+  //   appStore.changeTopActive(index);
+  //   permissionStore.getMixLeftMenu(index);
+  //   const { mixLeftMenu } = permissionStore;
+  //   goFirst(mixLeftMenu);
+  // }
 };
 const permissionStore = usePermissionStore();
 const topMenu = ref<any[]>([]);

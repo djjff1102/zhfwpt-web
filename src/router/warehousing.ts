@@ -19,9 +19,9 @@ const routes: RouteRecordRaw[] = [
       {
         path: "index",
         component: () => import("@/views/warehousing/index.vue"),
-        name: "LogisticsWarehousing",
+        name: "Warehousing",
         meta: {
-          title: "LogisticsWarehousing",
+          title: "仓储",
           icon: "tree",
           hidden: false,
           roles: ["ADMIN"],
@@ -32,14 +32,11 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
-        path: "warehousingDetail",
-        component: () =>
-          import(
-            "@/components/LogisticsWarehousingInformation/detail/index.vue"
-          ),
-        name: "warehousingDetail",
+        path: "Logistics",
+        component: () => import("@/views/warehousing/index.vue"),
+        name: "Logistics",
         meta: {
-          title: "warehousingDetail",
+          title: "物流",
           icon: "tree",
           activeMenu: "/warehousing",
           hidden: false,
@@ -50,20 +47,18 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
-        path: "secondWarehousingDetail",
-        component: () =>
-          import(
-            "@/components/LogisticsWarehousingInformation/SecondWarehousingDetail/index.vue"
-          ),
-        name: "SecondWarehousingDetail",
+        path: "",
+        component: () => import("@/views/warehousing/index.vue"),
+        name: "MyRelation",
         meta: {
-          title: "secondWarehousingDetail",
+          title: "我联系的",
           icon: "tree",
           activeMenu: "/warehousing",
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
           code: [403],
+          showMenu: true,
         },
       },
     ],
