@@ -17,12 +17,12 @@ const routes: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: "index",
+        path: "",
         component: () => import("@/views/warehousing/index.vue"),
         name: "Warehousing",
         meta: {
           title: "仓储",
-          icon: "tree",
+          icon: "icon-quanjujiansuo",
           hidden: false,
           roles: ["ADMIN"],
           keepAlive: true,
@@ -33,12 +33,12 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: "warehousingDetail",
-        component: () => import("@/views/warehousing/WarehousingDeatil.vue"),
-        name: "WarehousingDeatil",
+        component: () => import("@/views/warehousing/WarehousingDetail.vue"),
+        name: "WarehousingDetail",
         meta: {
           title: "仓储详情",
           icon: "tree",
-          hidden: false,
+          hidden: true,
           roles: ["ADMIN"],
           keepAlive: true,
           code: [401],
@@ -52,7 +52,7 @@ const routes: RouteRecordRaw[] = [
         name: "Logistics",
         meta: {
           title: "物流",
-          icon: "tree",
+          icon: "icon-shenbaoliebiao",
           activeMenu: "/warehousing",
           hidden: false,
           roles: ["ADMIN"],
@@ -62,12 +62,27 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
-        path: "",
+        path: "logisticDetail",
+        component: () => import("@/views/warehousing/LogisticDeatil.vue"),
+        name: "WarehousingDeatil",
+        meta: {
+          title: "仓储详情",
+          icon: "tree",
+          hidden: true,
+          roles: ["ADMIN"],
+          keepAlive: true,
+          code: [401],
+          showMenu: false,
+          activeMenu: "/warehousing",
+        },
+      },
+      {
+        path: "MyRelation",
         component: () => import("@/views/warehousing/index.vue"),
         name: "MyRelation",
         meta: {
           title: "我联系的",
-          icon: "tree",
+          icon: "icon-woguanzhude",
           activeMenu: "/warehousing",
           hidden: false,
           roles: ["ADMIN"],

@@ -1,5 +1,5 @@
 <template>
-<div class="card-item">
+<div class="card-item" @click ="handleDetail">
   <div class="item-img"></div>
   <div class="item-center">
     <div class="item-top">
@@ -8,9 +8,6 @@
         <el-tag round effect="light" type="primary">优选</el-tag>
         <el-tag round effect="light" type="success">可免风险扫描</el-tag>
         <el-tag round effect="light" type="info" v-for="item in data.tab" :key="item">{{ item }}</el-tag>
-        <!-- <el-tag round effect="light" type="info">价格面议</el-tag>
-        <el-tag round effect="light" type="info">可以分隔</el-tag>
-        <el-tag round effect="light" type="info">随时可看</el-tag> -->
       </div>
     </div>
     <div class="item-top">
@@ -30,7 +27,8 @@
     </div>
     <div class="item-top">
       <div class="item-top-left">
-        胡家河 | 天津市东丽区新立街新兴村中国纺织物资天津公司仓库
+        <el-icon><Avatar /></el-icon>
+        胡家河 | <el-icon><Location /></el-icon> {{ data.location }}
       </div>
       <div class="item-top-right">
         {{ data.areaDescript }}
@@ -45,17 +43,32 @@
       </div>
     </div>
   </div>
-  <div class="item-right">
-    <el-button type="primary">联系TA</el-button>
+  <div class="item-right" @click.stop="stopProp">
+    <RelationCom :data="data"></RelationCom>
   </div>
 </div>
 </template>
 
 <script setup>
+import { useRouter, useRoute } from 'vue-router';
+import RelationCom from './RelationCom.vue'
+
+const router = useRouter()
+const route = useRoute()
 
 const props = defineProps({
   data: {}
 })
+
+// 跳转详情
+function handleDetail() {
+  router.push({
+    path: props.data.path
+  })
+}
+
+// 阻止冒泡
+function stopProp() {}
 </script>
 
 <style lang="scss" scoped>
@@ -65,10 +78,11 @@ const props = defineProps({
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    cursor: pointer;
     .item-img {
       width: 140px;
       height: 82px;
-      background-image: url('@/assets/cangchu.png');
+      background-image: url('@/assets/warehouse/cangchu.png');
       background-size: cover;
     }
     .item-center {
@@ -119,6 +133,9 @@ const props = defineProps({
   color: #999;
   font-size: 12px;
   flex-grow: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .area-font {

@@ -81,7 +81,7 @@
 
 <script setup>
 import { positionData, wareHouseType, areatype, rentType, leaseType, wareHouseCharact, sourceType, cityType,serveType, transType } from './baseType'
-import ItemCom from './ItemCom.vue'
+import ItemCom from './components/ItemCom.vue'
 
 const currentcity = ref('天津市')
 const choiceList = ref(['天津市'])
