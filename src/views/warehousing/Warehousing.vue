@@ -106,7 +106,7 @@ const props = defineProps({
     .item-img {
       width: 140px;
       height: 82px;
-      background-image: url('@/assets/cangchu.png');
+      background-image: url('@/assets/warehouse/cangchu.png');
       background-size: cover;
     }
     .item-center {
