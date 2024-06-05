@@ -33,6 +33,7 @@
         </template>
         <template v-slot:operations="{ rowIndex }">
           <fileDownLoad v-if="orderCode && tableData[rowIndex]?.material" btn="原件" :fileName="tableData[rowIndex]?.material?.fileName" :fileUrl="tableData[rowIndex]?.material?.fileUrl"></fileDownLoad>
+          <el-button type="text" @click="toDetail(tableData[rowIndex])">详情</el-button>
         </template>
       </m-table>
     </div>
@@ -42,6 +43,8 @@
 import { ref, reactive } from "vue";
 import { qyzxWarehouseGood } from  '@/api/archives'
 import { formatNumber } from '@/utils/common'
+import { useRouter } from "vue-router";
+const router = useRouter()
 
 const props = defineProps({
   orderCode: {
@@ -60,8 +63,8 @@ const columns = reactive([
     fixed: "left",
   },
   {
-    title: "库存单编号",
-    dataIndex: "inventoryListNo",
+    title: "过户/出库单号",
+    dataIndex: "transferCode",
     width: 180,
     fixed: "left",
   },
@@ -76,33 +79,25 @@ const columns = reactive([
     dataIndex: "locationAddress",
     ellipsis: true,
     tooltip: {position: 'left'},
-    
   },
   {
-    title: "库存单注册时间",
+    title: "过户/出库日期",
     width: 180,
-    dataIndex: "inventoryListRegistrationDate",
+    dataIndex: "transferDate",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
-    title: "库存单注册人",
-    width: 120,
-    dataIndex: "inventoryRegistrar",
+    title: "原货主",
+    width: 180,
+    dataIndex: "originalOwner",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
-    title: "注册重量",
-    width: 120,
-    dataIndex: "registrationWeight",
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "配货重量",
-    width: 120,
-    dataIndex: "distributionWeight",
+    title: "商品类别",
+     width: 120,
+    dataIndex: "cargoStatus",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
@@ -115,23 +110,9 @@ const columns = reactive([
     // slotName: 'warehousingGoods'
   },
   {
-    title: "商品类别",
-     width: 120,
-    dataIndex: "cargoStatus",
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "货物状态",
-     width: 120,
-    dataIndex: "cargoStatus",
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "卡号/批次号",
+    title: "总重量",
     width: 120,
-    dataIndex: "batchNumber",
+    dataIndex: "productWeight",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
@@ -142,23 +123,73 @@ const columns = reactive([
     ellipsis: true,
     tooltip: {position: 'left'},
   },
-  {
-    title: "重量单位",
-    width: 120,
-    dataIndex: "warehousingUnit",
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "存货凭证地址",
-    width: 160,
-    dataIndex: "inventoryCertificateAddress",
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
+
+  // {
+  //   title: "库存单注册时间",
+  //   width: 180,
+  //   dataIndex: "inventoryListRegistrationDate",
+  //   ellipsis: true,
+  //   tooltip: {position: 'left'},
+  // },
+  // {
+  //   title: "库存单注册人",
+  //   width: 120,
+  //   dataIndex: "inventoryRegistrar",
+  //   ellipsis: true,
+  //   tooltip: {position: 'left'},
+  // },
+  // {
+  //   title: "注册重量",
+  //   width: 120,
+  //   dataIndex: "registrationWeight",
+  //   ellipsis: true,
+  //   tooltip: {position: 'left'},
+  // },
+  // {
+  //   title: "配货重量",
+  //   width: 120,
+  //   dataIndex: "distributionWeight",
+  //   ellipsis: true,
+  //   tooltip: {position: 'left'},
+  // },
+  // {
+  //   title: "货物状态",
+  //    width: 120,
+  //   dataIndex: "cargoStatus",
+  //   ellipsis: true,
+  //   tooltip: {position: 'left'},
+  // },
+  // {
+  //   title: "卡号/批次号",
+  //   width: 120,
+  //   dataIndex: "batchNumber",
+  //   ellipsis: true,
+  //   tooltip: {position: 'left'},
+  // },
+  // {
+  //   title: "件数",
+  //   width: 120,
+  //   dataIndex: "warehousingQuantity",
+  //   ellipsis: true,
+  //   tooltip: {position: 'left'},
+  // },
+  // {
+  //   title: "重量单位",
+  //   width: 120,
+  //   dataIndex: "warehousingUnit",
+  //   ellipsis: true,
+  //   tooltip: {position: 'left'},
+  // },
+  // {
+  //   title: "存货凭证地址",
+  //   width: 160,
+  //   dataIndex: "inventoryCertificateAddress",
+  //   ellipsis: true,
+  //   tooltip: {position: 'left'},
+  // },
   {
     title: "操作",
-    width: 100,
+    width: 120,
     dataIndex: "operations",
     slotName: "operations",
     fixed: "right",
@@ -183,6 +214,17 @@ const scroll = ref({
 
 const jine = ref(0) // 金额总计
 const shuie = ref(0) // 税额
+
+// 跳转仓储详情
+function toDetail(row) {
+  router.push({
+    path: '/archives/relationWarehouseDetail',
+    query: {
+      id: row.id
+    }
+  })
+}
+
 const changePagesize = (v) => {
   pagination.value.pageSize = v;
   pagination.value.current = 1;

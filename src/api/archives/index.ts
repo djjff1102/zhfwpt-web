@@ -118,7 +118,7 @@ export function qyzxWarehouse(
   data: WarehouseSearch
 ): CustomAxiosPromise<ProvinceResult> {
   return request({
-    url: "/base/qyzx_warehouse",
+    url: "/base/qyzx_warehouse_out",
     method: "post",
     data,
   });
@@ -283,14 +283,16 @@ export function groupByInvoiceDate(
   return request({
     url: "/base/qyzx_invoice/groupByInvoiceDate",
     method: "post",
-    data
+    data,
   });
 }
 
 /**
  *  评估建议和风险项
  */
-export function suggestion(data: ProvinceSearch): CustomAxiosPromise<ProvinceResult> {
+export function suggestion(
+  data: ProvinceSearch
+): CustomAxiosPromise<ProvinceResult> {
   return request({
     url: "/base/fxjk_index_fxzph/suggestion",
     method: "post",
@@ -396,9 +398,10 @@ export function fxjkFieldMapping(
 }
 
 // 关联仓储
-export function qyzxWarehouseGood(data: any){
+export function qyzxWarehouseGood(data: any) {
   return request({
-    url: "base/qyzx_warehouse_good",
+    // url: "base/qyzx_warehouse_good",
+    url: "base/qyzx_warehouse_out_good",
     method: "post",
     data,
   });
@@ -407,7 +410,7 @@ export function qyzxWarehouseGood(data: any){
 // 物流仓储
 export function getwarehouseList(data: any) {
   return request({
-    url: "/base/qyzx_warehouse_good/get_warehouse",
+    url: "/base/qyzx_warehouse_out_good/get_warehouse",
     method: "post",
     data,
   });
@@ -470,6 +473,24 @@ export function getwarehouseAsscoiationOrderList(data: any) {
 export function getqyzxcertificategood(data: any) {
   return request({
     url: `base/qyzx_certificate_good`,
+    method: "post",
+    data,
+  });
+}
+
+// 关联仓储-仓储详情-提取一条过户单或者出库单数据
+export function qyzxwarehouseoutgood(params: any) {
+  return request({
+    url: `base/qyzx_warehouse_out_good/${params.id}`,
+    method: "get",
+    params,
+  });
+}
+
+// 关联仓储-仓储详情-提取过户单或者出库单详细数据
+export function getOutGoodItems(data: any) {
+  return request({
+    url: `base/qyzx_warehouse_out_good/getOutGoodItems`,
     method: "post",
     data,
   });

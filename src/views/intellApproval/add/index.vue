@@ -205,7 +205,7 @@
     :reportId="reportId"
     :preStrMoney="form.preStrMoney"
   ></detail-com>
-  <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com>
+  <!-- <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com> -->
   <ApprovalDo :showAdd="showApproval" @updateAdd="updateApprval" @updateData="updateApprovalStatus" :reportId="reportId"></ApprovalDo>
   <fileError :showAdd="errdata.flag" :errObj="errdata" @updateAdd="closeError"></fileError>
   <el-dialog v-model="suafaErr.flag" :width="700">
@@ -227,7 +227,7 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import addApplyCom from './addApplyCom.vue';
+// import addApplyCom from './addApplyCom.vue';
 import detailCom from './detailCom.vue'
 import ApprovalRecord from './ApprovalRecords.vue'
 import { searcht, add, update, getOneByCompanyName, businessUpdate, businessAdd } from '@/api/intellApproval'
@@ -340,7 +340,7 @@ const form = ref({
 })
 const defaultKey = ref('1'); // 默认打开的tab
 const curTab = ref('1') // 当前打开的tab
-const showAdd = ref(false); // 新增资料弹窗
+// const showAdd = ref(false); // 新增资料弹窗
 const showRecord = ref(false); // 审批记录
 const showApproval = ref(false) // 审批窗口
 
