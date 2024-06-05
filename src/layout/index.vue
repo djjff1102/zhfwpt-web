@@ -112,6 +112,7 @@ function toggleSideBar() {
       </div>
       <Main :showMenu="showMenu"/>
     </div>
+    <YaYi></YaYi>
   </div>
 </template>
 
