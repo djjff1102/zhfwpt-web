@@ -14,10 +14,6 @@ function toYayi() {
   window.open('http://localhost:7030/file#/knowledge/1795632897803874305', '_blank');
 }
 
-onMounted(() => {
-  document.addEventListener('mousemove', doDrag);
-  document.addEventListener('mouseup', stopDrag);
-})
 </script>
 
 <style lang="scss" scoped>
