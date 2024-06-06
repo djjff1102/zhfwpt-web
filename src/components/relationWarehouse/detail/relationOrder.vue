@@ -12,20 +12,27 @@
         @page-size-change="changePagesize"
         :bordered="false"
       >
-        <template v-slot:index="{rowIndex}">
-            <div>{{ rowIndex + 1 }}</div>
-        </template> 
-        <template v-slot:moneySlot="{rowIndex}">
-           {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].totalMoney) }}{{ tableData[rowIndex].amountUnit }}
+        <template v-slot:index="{ rowIndex }">
+          <div>{{ rowIndex + 1 }}</div>
         </template>
-        <template v-slot:warehousingQuantity="{rowIndex}">
+        <template v-slot:productWeight="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].productWeight)
+          }}{{ tableData[rowIndex].warehousingUnit }}
+        </template>
+
+        <template v-slot:warehousingQuantity="{ rowIndex }">
           <div>{{ formatNumber(tableData[rowIndex].warehousingQuantity) }}</div>
         </template>
-        <template v-slot:unitWeight="{rowIndex}">
-          <div>{{ formatNumber(tableData[rowIndex].unitWeight) }}</div>
+        <template v-slot:unitWeight="{ rowIndex }">
+          <div>
+            {{ formatNumber(tableData[rowIndex].unitWeight)
+            }}{{ tableData[rowIndex].warehousingUnit }}
+          </div>
         </template>
-        <template v-slot:operations="{rowIndex}">
-          <el-button type="text" @click="toOrderDetail(tableData[rowIndex])">详情</el-button>
+        <template v-slot:operations="{ rowIndex }">
+          <el-button type="text" @click="toOrderDetail(tableData[rowIndex])"
+            >详情</el-button
+          >
         </template>
       </m-table>
     </div>
@@ -33,12 +40,12 @@
 </template>
 
 <script setup>
-import { ref, reactive} from "vue";
-import {  getOutGoodItems } from '@/api/archives'
-import { useRoute } from 'vue-router'
-import { formatNumber,formateDate } from '@/utils/common'
+import { ref, reactive } from "vue";
+import { getOutGoodItems } from "@/api/archives";
+import { useRoute } from "vue-router";
+import { formatNumber, formateDate } from "@/utils/common";
 
-const route = useRoute()
+const route = useRoute();
 
 const loading = ref(false);
 const tableData = ref([]);
@@ -52,77 +59,76 @@ const columns = reactive([
   {
     title: "商品类别",
     dataIndex: "productCategary",
-    width: 180,
+    width: 120,
     ellipsis: true,
-    tooltip: {position: 'left'},
+    tooltip: { position: "left" },
   },
   {
     title: "商品编号",
-    fixed: "left",
     dataIndex: "productCode",
-    width: 200,
+    width: 280,
     ellipsis: true,
-    tooltip: {position: 'left'},
+    tooltip: { position: "left" },
   },
   {
     title: "商品名称",
-    fixed: "left",
     dataIndex: "warehousingGoods",
     width: 200,
     ellipsis: true,
-    tooltip: {position: 'left'},
+    tooltip: { position: "left" },
   },
   {
     title: "规格型号",
     dataIndex: "productNo",
-    width: 280,
+    width: 120,
     ellipsis: true,
-    tooltip: {position: 'left'},
+    tooltip: { position: "left" },
   },
   {
     title: "批次号",
     dataIndex: "batchNumber",
-    width: 180,
+    width: 120,
     ellipsis: true,
-    tooltip: {position: 'left'},
+    tooltip: { position: "left" },
   },
   {
     title: "总重量",
     dataIndex: "productWeight",
-    width: 280,
+    slotName: "productWeight",
+    width: 120,
     ellipsis: true,
-    tooltip: {position: 'left'},
+    tooltip: { position: "left" },
   },
   {
     title: "件数",
     dataIndex: "warehousingQuantity",
-    slotName: 'warehousingQuantity',
-    width: 180,
+    slotName: "warehousingQuantity",
+    width: 120,
     ellipsis: true,
-    tooltip: {position: 'left'},
+    tooltip: { position: "left" },
   },
   {
     title: "货区",
     dataIndex: "area",
-    width: 180,
+    width: 120,
     ellipsis: true,
-    tooltip: {position: 'left'},
+    tooltip: { position: "left" },
   },
-    {
+  {
     title: "垛",
     dataIndex: "region",
-    width: 180,
+    width: 120,
     ellipsis: true,
-    tooltip: {position: 'left'},
+    tooltip: { position: "left" },
   },
-    {
+  {
     title: "每件重量",
     dataIndex: "unitWeight",
     slotName: "unitWeight",
-    width: 180,
+    width: 120,
     ellipsis: true,
-    tooltip: {position: 'left'},
-  }
+    tooltip: { position: "left" },
+  },
 ]);
 const pagination = ref({
   total: 0,
@@ -134,8 +140,8 @@ const pagination = ref({
 const orderPar = ref({
   page_size: 10,
   page: 1,
-  outGoodId: route.query.id
-})
+  outGoodId: route.query.id,
+});
 const scroll = ref({
   y: 800,
   x: 1080,
@@ -144,29 +150,29 @@ const scroll = ref({
 const changePagesize = (v) => {
   orderPar.value.page_size = v;
   pagination.value.pageSize = v;
-  getqyzxOrder()
+  getqyzxOrder();
 };
 const changepage = (v) => {
   orderPar.value.page = v;
   getqyzxOrder();
 };
 
-
 // 获取主订单列表及详情
 function getqyzxOrder() {
-  if(loading.value) return
+  if (loading.value) return;
   loading.value = true;
-  getOutGoodItems(orderPar.value).then(res => {
-    tableData.value = res.data
-    pagination.value.total = res.total;
-    loading.value = false;
-  }).catch(err => {
-    loading.value = false;
-  })
+  getOutGoodItems(orderPar.value)
+    .then((res) => {
+      tableData.value = res.data;
+      pagination.value.total = res.total;
+      loading.value = false;
+    })
+    .catch((err) => {
+      loading.value = false;
+    });
 }
 
-
-getqyzxOrder()
+getqyzxOrder();
 </script>
 
 <style lang="scss" scoped>
