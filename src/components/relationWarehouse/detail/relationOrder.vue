@@ -18,6 +18,12 @@
         <template v-slot:moneySlot="{rowIndex}">
            {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].totalMoney) }}{{ tableData[rowIndex].amountUnit }}
         </template>
+        <template v-slot:warehousingQuantity="{rowIndex}">
+          <div>{{ formatNumber(tableData[rowIndex].warehousingQuantity) }}</div>
+        </template>
+        <template v-slot:unitWeight="{rowIndex}">
+          <div>{{ formatNumber(tableData[rowIndex].unitWeight) }}</div>
+        </template>
         <template v-slot:operations="{rowIndex}">
           <el-button type="text" @click="toOrderDetail(tableData[rowIndex])">详情</el-button>
         </template>
@@ -90,6 +96,7 @@ const columns = reactive([
   {
     title: "件数",
     dataIndex: "warehousingQuantity",
+    slotName: 'warehousingQuantity',
     width: 180,
     ellipsis: true,
     tooltip: {position: 'left'},
@@ -111,6 +118,7 @@ const columns = reactive([
     {
     title: "每件重量",
     dataIndex: "unitWeight",
+    slotName: "unitWeight",
     width: 180,
     ellipsis: true,
     tooltip: {position: 'left'},

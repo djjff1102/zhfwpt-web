@@ -63,9 +63,9 @@
       <div class="title-sub">申报额度信息</div>
       <el-form v-if="initPageParam.edit" ref="basefrom2" :model="form" layout="vertical" :rules="rules">
          <el-form-item prop="money" label="申请额度" required>
-          <w-input-number v-if="initPageParam.edit" v-model="form.money" :min="1" placeholder="请输入额度" style="height: 32px">
+          <w-input-number v-if="initPageParam.edit" v-model="form.money" :min="1" placeholder="请输入额度" style="height: 32px; width: 300px">
           </w-input-number>
-           <div v-else>{{ form.money }}</div>
+           <span style="display: inline-block; padding-left: 8px;">万元</span>
         </el-form-item>
         <el-form-item prop="limitType" label="申请调整额度类型" required>
           <el-select v-if="initPageParam.edit" v-model="form.limitType" placeholder="请选择申请调整额度类型" style="height: 32px" @change="handleChangeDate">

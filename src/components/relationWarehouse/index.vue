@@ -30,6 +30,12 @@
         </template>
         <template v-slot:taxAmountSlot="{ rowIndex }">
           {{ tableData[rowIndex].currency }}{{ formatNumber(tableData[rowIndex].taxAmount) }}{{ tableData[rowIndex].amountUnit }}
+        </template> 
+        <template v-slot:productWeight="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].productWeight) }}{{ tableData[rowIndex].warehousingUnit }}
+        </template>
+        <template v-slot:warehousingQuantity="{ rowIndex }">
+          {{ formatNumber(tableData[rowIndex].warehousingQuantity) }}
         </template>
         <template v-slot:operations="{ rowIndex }">
           <fileDownLoad v-if="orderCode && tableData[rowIndex]?.material" btn="原件" :fileName="tableData[rowIndex]?.material?.fileName" :fileUrl="tableData[rowIndex]?.material?.fileUrl"></fileDownLoad>
@@ -97,7 +103,7 @@ const columns = reactive([
   {
     title: "商品类别",
      width: 120,
-    dataIndex: "cargoStatus",
+    dataIndex: "productCategary",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
@@ -113,6 +119,7 @@ const columns = reactive([
     title: "总重量",
     width: 120,
     dataIndex: "productWeight",
+    slotName: "productWeight",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
@@ -120,6 +127,7 @@ const columns = reactive([
     title: "件数",
     width: 120,
     dataIndex: "warehousingQuantity",
+    slotName: 'warehousingQuantity',
     ellipsis: true,
     tooltip: {position: 'left'},
   },

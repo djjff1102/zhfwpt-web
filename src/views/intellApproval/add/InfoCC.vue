@@ -15,18 +15,13 @@
         <template v-slot:index="{rowIndex}">
             <div>{{ rowIndex + 1 }}</div>
         </template> 
-        <!-- <template v-slot:moneySlot="{rowIndex}">
-            <div>{{ formatNumber(tableData[rowIndex].totalMoney) }}</div>
-        </template> -->
-        <template v-slot:warehousingQuantitySlot="{rowIndex}">
-            <div>{{ formatNumber(tableData[rowIndex].warehousingQuantity) }}</div>
+        <template v-slot:productWeight="{rowIndex}">
+          <div>{{ formatNumber(tableData[rowIndex].productWeight) }}{{tableData[rowIndex].warehousingUnit}}</div>
         </template>
-        <template v-slot:registrationWeightSlot="{rowIndex}">
-          <div>{{ formatNumber(tableData[rowIndex].registrationWeight) }}</div>
+        <template v-slot:warehousingQuantity="{rowIndex}">
+          <div>{{ formatNumber(tableData[rowIndex].warehousingQuantity) }}</div>
         </template>
-        <template v-slot:distributionWeightSlot="{rowIndex}">
-          <div>{{ formatNumber(tableData[rowIndex].distributionWeight) }}{{tableData[rowIndex].warehousingUnit}}</div>
-        </template>
+        
         <template v-slot:materialslot="{rowIndex}">
           <attachFile :row="tableData[rowIndex]" :type="pro.CC" v-bind="$attrs"></attachFile>
         </template>
@@ -102,7 +97,7 @@ const columns = reactive([
   {
     title: "商品类别",
      width: 120,
-    dataIndex: "cargoStatus",
+    dataIndex: "productCategary",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
@@ -118,6 +113,7 @@ const columns = reactive([
     title: "总重量",
     width: 120,
     dataIndex: "productWeight",
+    slotName: 'productWeight',
     ellipsis: true,
     tooltip: {position: 'left'},
   },
@@ -125,6 +121,7 @@ const columns = reactive([
     title: "件数",
     width: 120,
     dataIndex: "warehousingQuantity",
+    slotName: 'warehousingQuantity',
     ellipsis: true,
     tooltip: {position: 'left'},
   },

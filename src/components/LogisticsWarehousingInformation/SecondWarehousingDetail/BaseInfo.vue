@@ -2,7 +2,7 @@
   <!-- 仓库基本信息 -->
   <el-descriptions class="margin-top" :column="2" border>
     <el-descriptions-item label="仓库企业名称" width="40">
-      {{ info?.companyName || '--'  }}
+      {{ info?.warehouseCompanyName || '--'  }}
      </el-descriptions-item>
      <el-descriptions-item label="仓库名称" width="40">
       {{ info?.shortName || '--'  }}

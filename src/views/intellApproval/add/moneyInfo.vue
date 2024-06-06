@@ -3,7 +3,7 @@
   <div style="margin-bottom: 24px;">
     <el-descriptions class="margin-top" :column="1" border>
       <el-descriptions-item  label="申请额度" label-class-name="my-label">
-        {{ data?.money   || '--'}}
+        {{ formatNumber(data?.money)   || '--'}} 万元
       </el-descriptions-item>
       <el-descriptions-item label="申请调整额度类型" label-class-name="my-label" >
         {{ data?.limitType == '1' ? '长期' : '短期' || '--' }}
@@ -16,6 +16,7 @@
   </div>
 </template>
 <script setup>
+import { formatNumber } from '@/utils/common'
 const props = defineProps({
   data: {
     default: {}

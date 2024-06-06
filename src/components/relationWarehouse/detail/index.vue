@@ -1,7 +1,7 @@
 <!-- 订单关联仓储-仓储详情 -->
 <template>
   <div class="second-warehousing-container">
-    <div class="title">new--基本信息</div>
+    <div class="title">基本信息</div>
     <BaseInfo :info="info"></BaseInfo>
     <div class="title">关联商品</div>
     <relationOrder></relationOrder>
