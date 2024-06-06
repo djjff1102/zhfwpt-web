@@ -148,7 +148,7 @@ const columns = reactive([
 ]);
 
 const scroll = ref({
-  y: 800,
+  y: 500,
   x: 1080,
 });
 

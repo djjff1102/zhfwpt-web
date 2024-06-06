@@ -61,17 +61,17 @@ const tableData = computed(() => {
 })
 
 const columns = reactive([
-  {
+   {
     title: "序号",
     width: 80,
     slotName: "index",
-    // fixed: "left",
+    fixed: "left",
   },
-    {
-    title: "库存单编号",
-    dataIndex: "inventoryListNo",
+  {
+    title: "过户/出库单号",
+    dataIndex: "transferCode",
     width: 180,
-    // fixed: "left",
+    fixed: "left",
   },
   {
     title: "仓库名称",
@@ -80,88 +80,51 @@ const columns = reactive([
   },
   {
     title: "仓库地址",
+    width: 180,
     dataIndex: "locationAddress",
-    width: 180,
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
-    title: "库存单注册时间",
+    title: "过户/出库日期",
     width: 180,
-    dataIndex: "inventoryListRegistrationDate",
+    dataIndex: "transferDate",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
-    title: "库存单注册人",
+    title: "原货主",
     width: 180,
-    dataIndex: "inventoryRegistrar",
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "注册重量",
-    width: 180,
-    dataIndex: "registrationWeight",
-    slotName: 'registrationWeightSlot',
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "配货重量",
-    width: 180,
-    dataIndex: "distributionWeight",
-    slotName: 'distributionWeightSlot',
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "商品名称",
-    width: 180,
-    dataIndex: "warehousingGoods",
+    dataIndex: "originalOwner",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
     title: "商品类别",
-    width: 180,
-    dataIndex: "productCategary",
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "货物状态",
-    width: 180,
+     width: 120,
     dataIndex: "cargoStatus",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
   {
-    title: "卡号/批次号",
-    width: 180,
-    dataIndex: "batchNumber",
+    title: "商品名称",
+     width: 120,
+    dataIndex: "warehousingGoods",
+    ellipsis: true,
+    tooltip: {position: 'left'},
+    // slotName: 'warehousingGoods'
+  },
+  {
+    title: "总重量",
+    width: 120,
+    dataIndex: "productWeight",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
-    {
+  {
     title: "件数",
-    width: 180,
+    width: 120,
     dataIndex: "warehousingQuantity",
-    ellipsis: true,
-    tooltip: {position: 'left'},
-    slotName: 'warehousingQuantitySlot'
-  },
-  {
-    title: "重量单位",
-    width: 180,
-    dataIndex: "warehousingUnit",
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "存货凭证地址",
-    width: 180,
-    dataIndex: "inventoryCertificateAddress",
     ellipsis: true,
     tooltip: {position: 'left'},
   },
@@ -183,7 +146,7 @@ const columns = reactive([
 ]);
 
 const scroll = ref({
-  y: 800,
+  y: 500,
   x: 1080,
 });
 
