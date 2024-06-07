@@ -475,19 +475,28 @@ export function getqyzxcertificategood(data: any) {
   });
 }
 
-// 关联仓储-仓储详情-提取一条过户单或者出库单数据
-export function qyzxwarehouseoutgood(params: any) {
+// 通用接口（变更信息、经营风险、法律诉讼）
+export function changeInfo(data: any) {
   return request({
-    url: `base/qyzx_warehouse_out_good/${params.id}`,
+    url: ``,
+    method: "post",
+    data,
+  });
+}
+
+// 获取ta标签
+export function companyItemSetting(params: any) {
+  return request({
+    url: `base/company_base/companyItemSetting/${params.company_id}`,
     method: "get",
     params,
   });
 }
 
-// 关联仓储-仓储详情-提取过户单或者出库单详细数据
-export function getOutGoodItems(data: any) {
+// 命中tab标签下的数据
+export function companyItemData(data: any) {
   return request({
-    url: `base/qyzx_warehouse_out_good/getOutGoodItems`,
+    url: `base/company_base/companyItemData`,
     method: "post",
     data,
   });
