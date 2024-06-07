@@ -501,3 +501,22 @@ export function companyItemData(data: any) {
     data,
   });
 }
+
+// 关联仓储-仓储详情-提取一条过户单或者出库单数据
+export function qyzxwarehouseoutgood(params: any) {
+  return request({
+    url: `base/qyzx_warehouse_out_good/${params.id}`,
+    method: "get",
+    params,
+  });
+}
+
+// 关联仓储-仓储详情-提取过户单或者出库单详细数据
+export function getOutGoodItems(data: any) {
+  return request({
+    url: `base/qyzx_warehouse_out_good/getOutGoodItems`,
+    method: "post",
+    data,
+  });
+}
+
