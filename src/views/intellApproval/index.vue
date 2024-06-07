@@ -179,7 +179,7 @@ const columns = ref([
     tooltip: {position: 'left'},
   },
   {
-    title: '申报额度',
+    title: '申报额度(万元)',
     dataIndex: 'money',
     slotName: 'moneySlot',
     width: 200,

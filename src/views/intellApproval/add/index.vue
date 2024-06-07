@@ -63,9 +63,9 @@
       <div class="title-sub">申报额度信息</div>
       <el-form v-if="initPageParam.edit" ref="basefrom2" :model="form" layout="vertical" :rules="rules">
          <el-form-item prop="money" label="申请额度" required>
-          <w-input-number v-if="initPageParam.edit" v-model="form.money" :min="1" placeholder="请输入额度" style="height: 32px">
+          <w-input-number v-if="initPageParam.edit" v-model="form.money" :min="1" placeholder="请输入额度" style="height: 32px; width: 300px">
           </w-input-number>
-           <div v-else>{{ form.money }}</div>
+           <span style="display: inline-block; padding-left: 8px;">万元</span>
         </el-form-item>
         <el-form-item prop="limitType" label="申请调整额度类型" required>
           <el-select v-if="initPageParam.edit" v-model="form.limitType" placeholder="请选择申请调整额度类型" style="height: 32px" @change="handleChangeDate">
@@ -205,7 +205,7 @@
     :reportId="reportId"
     :preStrMoney="form.preStrMoney"
   ></detail-com>
-  <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com>
+  <!-- <add-apply-com :showAdd="showAdd" :defaultKey="curTab" :companyName="form.companyName" @updateAdd="updateAdd" @updateData="updateData"></add-apply-com> -->
   <ApprovalDo :showAdd="showApproval" @updateAdd="updateApprval" @updateData="updateApprovalStatus" :reportId="reportId"></ApprovalDo>
   <fileError :showAdd="errdata.flag" :errObj="errdata" @updateAdd="closeError"></fileError>
   <el-dialog v-model="suafaErr.flag" :width="700">
@@ -227,7 +227,7 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import addApplyCom from './addApplyCom.vue';
+// import addApplyCom from './addApplyCom.vue';
 import detailCom from './detailCom.vue'
 import ApprovalRecord from './ApprovalRecords.vue'
 import { searcht, add, update, getOneByCompanyName, businessUpdate, businessAdd } from '@/api/intellApproval'
@@ -345,7 +345,7 @@ const form = ref({
 })
 const defaultKey = ref('1'); // 默认打开的tab
 const curTab = ref('1') // 当前打开的tab
-const showAdd = ref(false); // 新增资料弹窗
+// const showAdd = ref(false); // 新增资料弹窗
 const showRecord = ref(false); // 审批记录
 const showApproval = ref(false) // 审批窗口
 

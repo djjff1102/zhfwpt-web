@@ -50,7 +50,8 @@ export function qyzxBankStatement(data: any) {
  */
 export function forReportCC(data: any) {
   return request({
-    url: "base/qyzx_warehouse_good/forReport",
+    // url: "base/qyzx_warehouse_good/forReport",
+    url: "base/qyzx_warehouse_out_good/forReport",
     method: "post",
     data,
   });

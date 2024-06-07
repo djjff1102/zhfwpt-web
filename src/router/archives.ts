@@ -125,6 +125,22 @@ const routes: RouteRecordRaw[] = [
           showMenu: false,
         },
       },
+      {
+        path: "relationWarehouseDetail",
+        component: () =>
+          import("@/components/relationWarehouse/detail/index.vue"),
+        name: "relationWarehouseDetail",
+        meta: {
+          title: "发票详情",
+          icon: "icon-woguanzhude",
+          hidden: true,
+          roles: ["ADMIN"],
+          keepAlive: true,
+          code: [304],
+          activeMenu: "/archives",
+          showMenu: false,
+        },
+      },
     ],
   },
 ];
