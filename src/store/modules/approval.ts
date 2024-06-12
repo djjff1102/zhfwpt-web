@@ -173,6 +173,30 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     tabData.value.WL.status = 0;
   }
 
+  // 更新tab状态
+  function resreshTab(type: any) {
+    switch (type) {
+      case pro.DD:
+        tabData.value.DD.status = validateType(DDList.value);
+        break;
+      case pro.HT:
+        tabData.value.HT.status = validateType(HTList.value);
+        break;
+      case pro.FP:
+        tabData.value.FP.status = validateType(FPList.value);
+        break;
+      case pro.YH:
+        tabData.value.YH.status = validateType(YHList.value);
+        break;
+      case pro.CC:
+        tabData.value.CC.status = validateType(CCList.value);
+        break;
+      case pro.WL:
+        tabData.value.WL.status = validateType(WLList.value);
+        break;
+    }
+  }
+
   // 订单1
   function getqyzxOrder() {
     return new Promise((resole, reject) => {
@@ -511,6 +535,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     totalMoney,
     submitFlag,
     rediusReportId,
+    resreshTab,
     setListData,
     updateData,
     updateDataSave,

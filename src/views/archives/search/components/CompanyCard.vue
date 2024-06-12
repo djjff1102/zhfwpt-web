@@ -39,7 +39,7 @@
           </div>
           <div class="desc-item">
             <span class="desc-label">邮箱：</span>
-            <span class="desc-value">{{ comData?.companyEmail || '无' }}</span>
+            <span class="desc-value">{{ comData?.companyEmail || '--' }}</span>
           </div>
           <div class="desc-item">
             <span class="desc-label">官网：</span>
