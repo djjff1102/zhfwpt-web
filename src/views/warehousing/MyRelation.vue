@@ -10,7 +10,7 @@
       <div class="split"></div>
     </div>
     <div class="content-wrap">
-      <ItemCom v-for="(item, i) in data" :key="i" :data="item"></ItemCom>
+      <ItemCom v-for="(item, i) in data" :key="i" :data="item" :showCancel="true"></ItemCom>
     </div>
   </div>
 </template>
@@ -71,10 +71,10 @@ const props = defineProps({
 }
 .item-top-right {
   color: #999;
-  font-size: 12px;
+  font-size: 14px;
   width: 200px;
   .price-new {
-    font-size: 18px;
+    font-size: 20px;
     color: #f76161;
   }
   .price-old {
@@ -94,7 +94,7 @@ const props = defineProps({
 }
 
 .area-font {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   color: #333;
 }

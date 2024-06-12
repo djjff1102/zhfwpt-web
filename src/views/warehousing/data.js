@@ -31,7 +31,7 @@ export const data = [
     name: "天津国际物流公司睿东物流海运空运-双清包税-国际陆运",
     tab: ["低噪音", "全程跟踪"],
     position: "东莞市莞发物流有限公司   | 全国发货  |  陆运",
-    area: "2550m²",
+    area: "",
     priceType: 2, // 1显示新旧价格 2是价格范围
     newPrice: "68~93",
     oldPrice: "70~100",

@@ -25,9 +25,10 @@
             <!-- <div>{{ tableData[rowIndex].material ? '已上传' : '未上传'  }}</div> -->
         </template>
         <template v-slot:materialErrorslot="{rowIndex}">
-          <span v-for="(item, i) in tableData[rowIndex]?.material?.judgeResult" :key="i">
+          <materialError :results="tableData[rowIndex]?.material?.judgeResult"></materialError>
+          <!-- <span v-for="(item, i) in tableData[rowIndex]?.material?.judgeResult" :key="i">
             {{ item }} {{ (tableData[rowIndex]?.material?.judgeResult.length - 1) == i ? '': '、' }}
-          </span>
+          </span> -->
         </template>
         <template v-slot:operations="{rowIndex}">
           <reportOperation v-model="tableData[rowIndex]" :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.YH" :row="tableData[rowIndex]" v-bind="$attrs"></reportOperation>
@@ -43,6 +44,7 @@ import reportOperation from './reportOperation.vue'
 import { pro } from '../type'
 import attachFile from './attachFile.vue'
 import { useRoute } from "vue-router";
+import materialError from './materialError.vue'
 import { useApprovalStore } from '@/store/modules/approval'
 
 const route = useRoute();
