@@ -60,7 +60,7 @@ const monthRange = ref('') // 时间月份
 
 // 切换时间
 function changeMonth(v) {
-  emits('hanleMonth', v)
+  emits('hanleMonth', [dayjs(monthRange.value[0]).startOf('month').format('YYYY-MM-DD'), dayjs(monthRange.value[1]).endOf('month').format('YYYY-MM-DD')])
 }
 
 const now = dayjs();

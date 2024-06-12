@@ -102,8 +102,8 @@ function initBar(data) {
 function init() {
   const now = dayjs();
   const twelveMonthsAgo = now.subtract(11, 'month');
-  searchPar.value.startDate = twelveMonthsAgo.format('YYYY-MM-DD')
-  searchPar.value.endDate = now.format('YYYY-MM-DD')
+  searchPar.value.startDate = twelveMonthsAgo.startOf('month').format('YYYY-MM-DD')
+  searchPar.value.endDate = now.endOf('month').format('YYYY-MM-DD')
   getinvoiceCheckByDate()
 }
 

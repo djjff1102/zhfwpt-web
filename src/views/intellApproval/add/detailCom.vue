@@ -126,8 +126,7 @@ watch(
       const now = dayjs();
       // 计算11个月前的日期
       const twelveMonthsAgo = now.subtract(11, 'month');
-      monthRange.value = [ twelveMonthsAgo.format('YYYY-MM-DD'), now.format('YYYY-MM-DD') ]
-      // monthRange.value = [ dayjs().add(-1, 'year').format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD') ]
+      monthRange.value = [ twelveMonthsAgo.startOf('month').format('YYYY-MM-DD'), now.endOf('month').format('YYYY-MM-DD') ]
       setTimeout(() => {
         init(id)
       }, 0)
@@ -168,6 +167,7 @@ const echartData = ref({
 // 切换月份查询
 function changeMonth() {
   if(monthRange.value && monthRange.value[1]) {
+    monthRange.value[0] = dayjs(monthRange.value[0]).startOf('month').format('YYYY-MM-DD');
     monthRange.value[1] = dayjs(monthRange.value[1]).endOf('month').format('YYYY-MM-DD');
   }
   init(props.companyId)

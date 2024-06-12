@@ -56,7 +56,7 @@ const shortcuts = ref([
     value: () => {
       const now = dayjs();
       const twelveMonthsAgo = now.subtract(11, 'month');
-      return [ twelveMonthsAgo.format('YYYY-MM-DD'), now.format('YYYY-MM-DD') ]
+      return [ twelveMonthsAgo.startOf('month').format('YYYY-MM-DD'), now.endOf('month').format('YYYY-MM-DD') ]
     }
   },
   {
@@ -64,7 +64,7 @@ const shortcuts = ref([
     value: () => {
       const now = dayjs();
       const fiveMonthsAgo = now.subtract(5, 'month');
-      return [ fiveMonthsAgo.format('YYYY-MM-DD'), now.format('YYYY-MM-DD') ]
+      return [ fiveMonthsAgo.startOf('month').format('YYYY-MM-DD'), now.endOf('month').format('YYYY-MM-DD') ]
     },
   },
   {
@@ -72,7 +72,7 @@ const shortcuts = ref([
     value: () => {
       const firstday = dayjs().startOf('year')
       const now = dayjs();
-      return [ firstday.format('YYYY-MM-DD'), now.format('YYYY-MM-DD') ]
+      return [ firstday.startOf('month').format('YYYY-MM-DD'), now.endOf('month').format('YYYY-MM-DD') ]
     },
   },
 ])
@@ -103,6 +103,7 @@ const echartData = ref({
 // 切换月份查询
 function changeMonth() {
   if(monthRange.value && monthRange.value[1]) {
+    monthRange.value[0] = dayjs(monthRange.value[0]).startOf('month').format('YYYY-MM-DD');
     monthRange.value[1] = dayjs(monthRange.value[1]).endOf('month').format('YYYY-MM-DD');
   }
   init()
@@ -156,7 +157,7 @@ function init() {
 }
 const now = dayjs();
 const twelveMonthsAgo = now.subtract(11, 'month');
-monthRange.value = [ twelveMonthsAgo.format('YYYY-MM-DD'), now.format('YYYY-MM-DD') ]
+monthRange.value = [ twelveMonthsAgo.startOf('month').format('YYYY-MM-DD'), now.endOf('month').format('YYYY-MM-DD') ]
 // monthRange.value = [ dayjs().format('YYYY-MM-DD'), dayjs().add(1, 'year').format('YYYY-MM-DD') ]
 init();
 

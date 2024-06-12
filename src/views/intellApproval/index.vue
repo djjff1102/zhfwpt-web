@@ -138,12 +138,12 @@ watch(() => userStore.user.dataPermissionCode,  (v) => {
 })
 
 const curDateApplication = ref('') // 申报日期
+const curDate = ref('') // 创建日期
 const rowSelection = ref({
   type: 'checkbox',
   showCheckedAll: true
 })
 const showApproval = ref(false)
-const curDate = ref('')
 const loading = ref(false);
 const tableData = ref();
 const columns = ref([
@@ -247,7 +247,9 @@ const searchPar = ref({
   companyName: '', // 申报单位
   approveStatus: '', // 审批状态
   startTime: '',
-  endTime: ''
+  endTime: '',
+  applyStartTime: '', // 申报开始时间
+  applyEndTime: '' // 申报结束时间
 })
 const scroll = ref({
   y: 800,
@@ -402,13 +404,16 @@ function search() {
 
 function reset() {
   curDate.value = '';
+  curDateApplication.value = ''
   searchPar.value = {
     page_size: 10,
     page: 1,
     companyName: '', // 申报单位
     approveStatus: '', // 审批状态
-    startTime: '',
-    endTime: ''
+    startTime: '', // 创建开始时间
+    endTime: '', // 创建结束日期
+    applyStartTime: '', // 申报开始时间
+    applyEndTime: '' // 申报结束时间
   }
   getfpspReport();
 }
@@ -424,13 +429,13 @@ function onChange(dateString: any, date: any) {
   }
 }
 function onChangeApplication(dateString: any, date: any) {
-  // if(dateString && dateString.length > 0) {
-  //   searchPar.value.startTime = formateDate(curDate.value[0])
-  //   searchPar.value.endTime = formateDate(curDate.value[1])
-  // } else {
-  //   searchPar.value.startTime = '';
-  //   searchPar.value.endTime = '';
-  // }
+  if(dateString && dateString.length > 0) {
+    searchPar.value.applyStartTime = formateDate(curDateApplication.value[0])
+    searchPar.value.applyEndTime = formateDate(curDateApplication.value[1])
+  } else {
+    searchPar.value.applyStartTime = '';
+    searchPar.value.applyEndTime = '';
+  }
 }
 
 // 申报列表
