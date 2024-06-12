@@ -9,7 +9,7 @@
     <div class="search_box">
       <!--  搜索条件
       案号：失信被执行人、被执行人、限制高消费、终本案件、裁判文书、立案信息、开庭公告、法院公告、送达公告
-      ['FLSS-SDGG', 'FLSS-LAXX', 'FLSS-CPWS', 'FLSS-ZBAJ', 'FLSS-XZGXF', 'FLSS-BZXR']
+      ['FLSS-SXBZXR', 'FLSS-SDGG', 'FLSS-LAXX', 'FLSS-CPWS', 'FLSS-ZBAJ', 'FLSS-XZGXF', 'FLSS-BZXR']
 
       执行法院：失信被执行人、被执行人、终本案件
       ['FLSS-ZBAJ', 'FLSS-BZXR', 'FLSS-SXBZXR']
@@ -85,7 +85,7 @@ const LITIGANT = ['FLSS-SDGG', 'FLSS-FYGG', 'FLSS-KTGG', 'FLSS-LAXX', 'FLSS-CPWS
 const CASEREASON =  ['FLSS-SDGG', 'FLSS-FYGG', 'FLSS-KTGG', 'FLSS-LAXX'] // 案由
 const TITLE = ['FLSS-SFPM'] // 标题
 const COURT = ['FLSS-SFPM'] // 处置单位
-const SEARCHCODEALL = ['FLSS-SDGG', 'FLSS-LAXX', 'FLSS-CPWS', 'FLSS-ZBAJ', 'FLSS-XZGXF', 'FLSS-BZXR', 'FLSS-SFPM', 'FLSS-FYGG', 'FLSS-KTGG']
+const SEARCHCODEALL = ['FLSS-SXBZXR', 'FLSS-SDGG', 'FLSS-LAXX', 'FLSS-CPWS', 'FLSS-ZBAJ', 'FLSS-XZGXF', 'FLSS-BZXR', 'FLSS-SFPM', 'FLSS-FYGG', 'FLSS-KTGG']
 
 const props = defineProps({
   companyId: ''
@@ -153,6 +153,8 @@ const changePagesize = (v) => {
 
 const changepage = (v) => {
   searchPar.value.page = v;
+  pagination.value.current = v;
+  getcompanyItemData()
 };
 
 
