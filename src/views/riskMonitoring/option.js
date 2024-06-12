@@ -170,7 +170,7 @@ export const barOption = () => {
         },
         data: [],
         itemStyle: {
-          color: "rgba(255, 123, 68, 1)",
+          color: "#F88B11",
         },
       },
     ],
