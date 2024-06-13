@@ -251,7 +251,9 @@ const searchPar = ref({
   type: '',
   code: '',
   receivingCompanyName: '', // 受票单位（自己）
-  invoicingCompanyName: '' // 开票单位(查询)
+  invoicingCompanyName: '', // 开票单位(查询)
+  invoiceType: 1,
+  companyId: route.query.companyId,
 })
 const scroll = ref({
   y: 800,
@@ -314,7 +316,9 @@ function reset() {
     type: '',
     code: '',
     receivingCompanyName: name, // 受票单位（自己）
-    invoicingCompanyName: '' // 开票单位(查询)
+    invoicingCompanyName: '', // 开票单位(查询)
+    invoiceType: 1, // 发票类型 1为进项发票
+    companyId: route.query.companyId,
   }
   getqyzxInvoice();
 }

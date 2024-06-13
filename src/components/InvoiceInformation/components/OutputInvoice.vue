@@ -264,7 +264,9 @@ const searchPar = ref({
   type: '',
   code: '',
   receivingCompanyName: '', // 受票单位（查询）
-  invoicingCompanyName: '' // 开票单位(自己)
+  invoicingCompanyName: '', // 开票单位(自己)
+  invoiceType: 2,
+  companyId: route.query.companyId,
 })
 
 const echartData = ref({
@@ -335,7 +337,9 @@ function reset() {
     type: '',
     code: '',
     receivingCompanyName: '', // 受票单位（查询）
-    invoicingCompanyName: name
+    invoicingCompanyName: name,
+    invoiceType: 2,
+    companyId: route.query.companyId,
   }
   pagination.value.pageSize = 10;
   getqyzxInvoice();

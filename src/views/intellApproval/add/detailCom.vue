@@ -180,7 +180,8 @@ function getgroupByInvoiceDateIn() {
       companyId: props.companyId,
       receivingCompanyName: props.companyName,
       invoiceDateStart: monthRange.value[0],
-      invoiceDateEnd: monthRange.value[1]
+      invoiceDateEnd: monthRange.value[1],
+      invoiceType: 1
     }).then(res => {
       resolve(res.data)
     }).catch(err => {
@@ -196,7 +197,8 @@ function getgroupByInvoiceDateOut() {
       companyId: props.companyId,
       invoicingCompanyName: props.companyName,
       invoiceDateStart: monthRange.value[0],
-      invoiceDateEnd: monthRange.value[1]
+      invoiceDateEnd: monthRange.value[1],
+      invoiceType: 2
     }).then(res => {
       resolve(res.data)
     }).catch(err => {
