@@ -58,7 +58,9 @@ function deep(data, i) {
     } else if(j == moreNumber && !item.moreData) {
       let moreData = data.children.splice(moreNumber)
       data.children.push({
-        id:'more-node',
+        // id:'more-node',
+        id: moreData[0].point_id + 'more',
+        curNodeType: 'more-node',
         name: `展开(${moreData.length})`,
         sum: moreData.length,
         moreData

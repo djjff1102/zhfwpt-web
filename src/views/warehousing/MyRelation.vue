@@ -1,13 +1,19 @@
 <template>
   <div class="warehouse-wrap">
-    <div class="search-wrap">
-      <div class="city-select">
-        <span class="city-select-label">城市：</span>
-        <el-select v-model="currentcity" placeholder="请选择" clearable>
-            <el-option v-for="(item, i) in ['天津市']" :key="i" :value="item"></el-option>
-        </el-select>
-      </div>
-      <div class="split"></div>
+    <div class="search_box">
+      <el-form :model="searchPar" :inline="true" class="demo-form-inline">
+        <el-form-item field="companyName" label="公司名称" >
+          <el-input v-model="searchPar.companyName" placeholder="请输入公司名称" clearable/>
+        </el-form-item>
+        <el-form-item field="companyName" label="联系人" >
+          <el-input v-model="searchPar.companyName" placeholder="请输入联系人" clearable/>
+        </el-form-item>
+        <el-form-item field="provinceShort" label="区域">
+          <el-select v-model="searchPar.provinceShort" placeholder="请选择" clearable>
+            <el-option v-for="(item, i) in ['天津', '北京', '上海']" :key="i" :value="item"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
     </div>
     <div class="content-wrap">
       <ItemCom v-for="(item, i) in data" :key="i" :data="item" :showCancel="true"></ItemCom>
@@ -21,6 +27,9 @@ import ItemCom from './components/ItemCom.vue'
 
 const currentcity = ref('天津市')
 const choiceList = ref(['天津市'])
+const searchPar = ref({
+  companyName: ''
+})
 
 const props = defineProps({
   type: '',

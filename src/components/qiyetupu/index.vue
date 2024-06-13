@@ -188,10 +188,12 @@ function init(d) {
 
   // 绑定节点点击事件
   graph.on('click', (e) => {
-    if(e.item._cfg.id == 'more-node') {
+    if(e.item._cfg.id.includes('more')) {
       showMore.value = true
       moreData.value = e.item._cfg.model.moreData || []
-      console.log('dainji ----:', e.item._cfg.model.moreData)
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
     }
   });
 }
@@ -216,9 +218,9 @@ G6.registerNode(
       
       styles.width = Math.max(countCharacters(cfg.point_name || cfg.name) * 7 + 10, 100)
       let positionX = -(styles.width) / 2
-      if(cfg.x < 0 && (cfg.point_type == 3 || cfg.id =='more-node')) {
+      if(cfg.x < 0 && (cfg.point_type == 3 || cfg.curNodeType =='more-node')) {
         positionX = -((styles.width - 100) + styles.width) / 2
-      } else if(cfg.x > 0 && (cfg.point_type == 3 || cfg.id =='more-node')) {
+      } else if(cfg.x > 0 && (cfg.point_type == 3 || cfg.curNodeType =='more-node')) {
         positionX = w/2
       }
       const keyShape = group.addShape("rect", {
@@ -286,7 +288,7 @@ G6.registerNode(
             x: ((styles.width + 100)) / 2,
           },
         });
-      } else if(cfg.id == 'more-node' && cfg.x > 0){
+      } else if(cfg.curNodeType == 'more-node' && cfg.x > 0){
         group.addShape("text", {
           attrs: {
             ...labelCfg.style,
@@ -304,7 +306,7 @@ G6.registerNode(
         //   },
         //   name: 'image-shape',
         // });
-      } else if(cfg.id == 'more-node' && cfg.x < 0) {
+      } else if(cfg.curNodeType == 'more-node' && cfg.x < 0) {
         group.addShape("text", {
           attrs: {
             ...labelCfg.style,
@@ -389,10 +391,10 @@ G6.registerEdge("flow-line-en", {
 }
 .more-item {
     width:500px;
-    height: 40px;
-    line-height: 40px;
+ 
+    line-height: 30px;
     border-radius: 4px;
-    margin-top: 12px;
+    margin-top: 8px;
     padding: 0 8px;
     white-space: nowrap;
     overflow: hidden;
