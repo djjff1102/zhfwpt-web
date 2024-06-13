@@ -177,6 +177,7 @@ function changeMonth() {
 function getgroupByInvoiceDateIn() {
   return new Promise((resolve, reject) => {
     groupByInvoiceDate({
+      companyId: props.companyId,
       receivingCompanyName: props.companyName,
       invoiceDateStart: monthRange.value[0],
       invoiceDateEnd: monthRange.value[1]
@@ -192,7 +193,7 @@ function getgroupByInvoiceDateIn() {
 function getgroupByInvoiceDateOut() {
   return new Promise((resolve, reject) => {
     groupByInvoiceDate({
-      // invoicingCompanyName: data.value.name,
+      companyId: props.companyId,
       invoicingCompanyName: props.companyName,
       invoiceDateStart: monthRange.value[0],
       invoiceDateEnd: monthRange.value[1]

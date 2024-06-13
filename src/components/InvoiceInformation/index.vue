@@ -113,6 +113,7 @@ function changeMonth() {
 function getgroupByInvoiceDateIn() {
   return new Promise((resolve, reject) => {
     groupByInvoiceDate({
+      companyId: route.query.companyId,
       receivingCompanyName: route.query.companyName,
       invoiceDateStart: monthRange.value[0],
       invoiceDateEnd: monthRange.value[1]
@@ -128,6 +129,7 @@ function getgroupByInvoiceDateIn() {
 function getgroupByInvoiceDateOut() {
   return new Promise((resolve, reject) => {
     groupByInvoiceDate({
+      companyId: route.query.companyId,
       invoicingCompanyName: route.query.companyName,
       invoiceDateStart: monthRange.value[0],
       invoiceDateEnd: monthRange.value[1]
