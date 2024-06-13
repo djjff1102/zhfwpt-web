@@ -32,7 +32,7 @@ const searchPar = ref({
   startDate: '',
   endDate: ''
 })
-const statisticsChartRef = ref()
+let statisticsChartRef = null
 const approvalChartRef = ref()
 
 function hanleMonth(v) {
@@ -95,7 +95,7 @@ function initBar(data) {
     echarts.dispose(statisticsDom);
     statisticsDom = document.getElementById("statisticsChart");
   }
-  statisticsChartRef.value = echarts.init(statisticsDom, null, {
+  statisticsChartRef = echarts.init(statisticsDom, null, {
     width: "auto",
     height: '260'
   });
@@ -132,7 +132,7 @@ function initBar(data) {
   option.series[1].data = wait // 待审批
   option.series[2].data = pass // 通过
   option.series[3].data = money// 审批金额
-  statisticsChartRef.value.setOption(option);
+  statisticsChartRef.setOption(option);
 }
 
 function init() {
