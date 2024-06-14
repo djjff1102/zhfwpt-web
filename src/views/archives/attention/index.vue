@@ -185,7 +185,7 @@ function selectAll(rows: any) {
   if(rows) {
     let ids: any = []
     tableData.value.forEach((item: any) => {
-      ids.push(item.id)
+      ids.push(item.companyId)
     })
     rowId.value = ids;
   } else {
