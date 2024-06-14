@@ -9,9 +9,28 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router';
+import { getKnowledgeId } from '@/api/yayi'
+
+const route = useRoute()
 
 function toYayi() {
-  window.open('http://localhost:7030/file#/knowledge/1795632897803874305', '_blank');
+  let reportId = route.query.id
+  const data = {}
+  if(reportId) {
+    data.reportId = reportId
+    data.knowledgeType = 1 // 发票智能审批
+  } else {
+    data.knowledgeType = 0 // 大宗政策
+  }
+
+  getKnowledgeId(data).then(res => {
+    let data = res.data;
+    let url = `http://localhost:7030/file#/knowledge/${data.knowledgeId}?token=${res.yayitoken}&type=${data.knowledgeType}`
+    window.open(url, '_blank');
+  }).catch(err => {
+    console.log('获取用户token失败')
+  })
 }
 
 </script>
