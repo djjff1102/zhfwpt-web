@@ -59,7 +59,7 @@ function getinvoiceCheckByDate() {
 
 // 空数据处理
 function renderEmpty() {
-  statisticsChartRef.value.clear()
+  statisticsChartRef.clear()
   approvalChartRef.value.clear();
   let d = `<div class="no-data">
     <img src="${noData}" alt="" />
