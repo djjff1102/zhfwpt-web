@@ -115,6 +115,7 @@ watch(() => props.defaultfileList, (v) => {
 
 const emits = defineEmits(['updateReportId', 'updateFileData'])
 
+const cacheReportId = ref('') // 缓存id
 const scroll = ref({
   y: 500
 })
@@ -185,8 +186,9 @@ async function handleUpload(options) {
   // 上传API调用
   const formData = new FormData();
   formData.append("file", options.file);
-  formData.append("reportId", props.reportId);
+  formData.append("reportId", cacheReportId.value || props.reportId);
   importData(formData).then(res=>{
+    cacheReportId.value = res.data.reportId
     let rediusReportId = res.data.reportId // 上传成功，后端缓存，返回缓存ID，接下来获取table数据通过后端缓存获取
     approvalStore.setRediusReportId(rediusReportId)
     approvalStore.getTableData(rediusReportId); // 获取订单、合同、发票等信息
