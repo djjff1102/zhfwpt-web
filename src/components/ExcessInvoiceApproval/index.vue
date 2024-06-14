@@ -89,7 +89,7 @@ const columns = reactive([
     width: 180,
   },
   {
-    title: '申报额度',
+    title: '申报额度(万元)',
     dataIndex: 'money',
     slotName: 'moneySlot',
     width: 180,
