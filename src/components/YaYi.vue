@@ -25,10 +25,13 @@ function toYayi() {
   }
 
   getKnowledgeId(data).then(res => {
-    let result = res.data;
-    let url = `http://localhost:7030/file#/knowledge/${result.knowledgeId}?token=${result.yayitoken}&type=${data.knowledgeType}`
-    // let url = `http://localhost:7030/file#/knowledge/1795632897803874305?token=AkN4UHoHlAhFmkTsgQUAH5eEBK2BY41Djym28MaKMDY=A&sZGUxNWVkZWNkZjM4OWJjMmJhOWY2YjBkNjQ2YWU5YmM=&type=${data.knowledgeType}`
-    const page = window.open(url, '_blank');
+    if(res.data.yayitoken && res.data.knowledgeId) {
+      let result = res.data;
+      let url = `http://localhost:7030/file#/knowledge/${result.knowledgeId}?token=${encodeURIComponent(result.yayitoken)}&type=${data.knowledgeType}`
+      window.open(url, '_blank');
+    } else {
+      ElMessage.warning(res.data)
+    }
   }).catch(err => {
     console.log('获取用户token失败')
   })
