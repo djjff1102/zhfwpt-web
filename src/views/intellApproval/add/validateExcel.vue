@@ -251,6 +251,7 @@ async function handleDel() {
   approvalStore.setRediusReportId('')
   approvalStore.clearTable()
   approvalStore.setFileInfo({})
+  approvalStore.resetMoney()
 
   // let reportId = props.reportId;
   // await deleteDataAfterDeleteExcel({ reportId }).then(res => {
