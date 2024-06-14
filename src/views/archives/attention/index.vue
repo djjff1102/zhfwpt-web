@@ -50,9 +50,11 @@
         :pagination="pagination"
         :row-selection="rowSelection"
         row-key="companyId"
+        :selected-keys="rowId"
         @page-change="changepage"
         @page-size-change="changePagesize"
         @select="handlSelectRow"
+        @select-all="selectAll"
         :bordered="false"
       >
         <template v-slot:index="{rowIndex}">
@@ -178,6 +180,19 @@ const scroll = ref({
 });
 const rowId = ref([])
 
+// 全选、取消全选
+function selectAll(rows: any) {
+  if(rows) {
+    let ids: any = []
+    tableData.value.forEach((item: any) => {
+      ids.push(item.id)
+    })
+    rowId.value = ids;
+  } else {
+    rowId.value = []
+  }
+}
+
 function handlSelectRow(row: any) {
   rowId.value = row;
 }
@@ -189,6 +204,7 @@ const changePagesize = (v: any) => {
 };
 
 const changepage = (v: any) => {
+  rowId.value = []
   searchPar.value.page = v;
   getpage();
 };
