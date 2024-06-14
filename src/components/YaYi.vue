@@ -27,7 +27,8 @@ function toYayi() {
   getKnowledgeId(data).then(res => {
     if(res.data.yayitoken && res.data.knowledgeId) {
       let result = res.data;
-      let url = `http://localhost:7030/file#/knowledge/${result.knowledgeId}?token=${encodeURIComponent(result.yayitoken)}&type=${data.knowledgeType}`
+      let base = 'http://dzmy-dev.quesoar.com:20000/knowledge/#/knowledge/'
+      let url = `${base}${result.knowledgeId}?token=${encodeURIComponent(result.yayitoken)}&type=${data.knowledgeType}`
       window.open(url, '_blank');
     } else {
       ElMessage.warning(res.data)
