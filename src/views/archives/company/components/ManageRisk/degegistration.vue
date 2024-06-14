@@ -55,7 +55,7 @@
     </div>
   </div>
   <div class="flex-descript">
-    <div class="flex-descript-left des3">清算组备案信息</div>
+    <div class="flex-descript-left des3">债权人公告信息</div>
     <div class="flex-descript-right">
       <div class="row flex-base-start">
         <div class="col">登记机关</div>
