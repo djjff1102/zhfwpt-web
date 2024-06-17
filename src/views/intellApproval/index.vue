@@ -97,7 +97,7 @@
           <el-button
             v-hasPerm="btnApprovalCode.edit"
             type="text" @click="operate('operate', tableData[rowIndex])"
-            :disabled="tableData[rowIndex].approveStatus == status.pass">编辑</el-button>
+            :disabled="tableData[rowIndex].approveStatus == status.pass || tableData[rowIndex].editStatus == 1">编辑</el-button>
           <el-button
             v-hasPerm="btnApprovalCode.detail"
             type="text" @click="operate('detail', tableData[rowIndex])">详情</el-button>
