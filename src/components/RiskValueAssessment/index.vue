@@ -2,7 +2,7 @@
   <div id="suggestdom">
     <div class="container-risk-wrap">
       <div class="chart">
-        <RiskChart :riskData="riskData" :leval="riskOrCreditLevel" :colorStyle="colorStyle"/>
+        <RiskChart :riskData="riskData" :leval="riskOrCreditLevel" :colorStyle="colorStyle" :currentType="currentType"/>
       </div>
       <div class="information">
         <div class="suggest">
@@ -15,7 +15,7 @@
           </div>
           <div class="info">
             <p>
-              本次评估分值为 <span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ riskData || '--' }}</span>
+              本次评估分值为 <span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ riskData >=0 ? riskData : '--' }}</span>
               分，该分值处于<span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ riskOrCreditLevel && fxtype[Number(riskOrCreditLevel) - 1].label || '--' }}</span>，以下为风险点，请根据实际情况研判额度申报。
             </p>
             <!-- <p>
@@ -163,6 +163,7 @@ watch(() => props.companyId, (v) => {
   immediate: true
 })
 
+const currentType = ref(-1) // 1风险值（发票智能审批）2信用值（企业资信档案）
 const fxtype = ref([ // 
   {
     value: 1,
@@ -180,7 +181,7 @@ const fxtype = ref([ //
 
 const colorStyle = ref(['#5ECF69', '#FF9100', '#F76161']) // 默认值按信用定义
 const riskOrCreditLevel = ref(0) // 风险或者信用等级
-const riskData = ref(0) //  风险或者信用分
+const riskData = ref(-1) //  风险或者信用分
 
 const showRiskNum = ref(3) // 默认展示两条数据
 const isOpen = ref(false)
@@ -354,6 +355,7 @@ function getsuggestion() {
     // 否则显示信用值
     if(props.reportId) {
       riskData.value = res.data.riskScore
+      currentType.value = 1
       fxtype.value = [
         {
           value: 1,
@@ -371,6 +373,7 @@ function getsuggestion() {
       colorStyle.value = ['#F76161', '#FF9100', '#5ECF69']
       riskOrCreditLevel.value = res.data.riskLevel
     } else {
+      currentType.value = 2
       riskData.value = res.data.creditScore
       riskOrCreditLevel.value = res.data.creditLevel
     }

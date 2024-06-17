@@ -17,6 +17,9 @@ const props = defineProps({
   },
   colorStyle: {
     default: []
+  },
+  currentType: {
+    default: -1
   }
 })
 
@@ -31,9 +34,16 @@ watch(
   () => props.riskData,
   (d) => {
     nextTick(() => {
-      handleColor()
-      option.value.series[0].data[0].value =  Math.floor(d);
-      init();
+      if(props.currentType == 1 && d >= 0) {
+          handleColor()
+          option.value.series[0].data[0].value =  Math.floor(d);
+          init();
+      }
+      if(props.currentType == 2 && d>0) {
+        handleColor()
+        option.value.series[0].data[0].value =  Math.floor(d);
+        init();
+      }
     })
 
   }
