@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <div @click="toYayi">
+    <div @click="toYayi" style="z-index: 999;">
       <img src="@/assets/yayi.png" style="width: 24px">
     </div>
   </Teleport>
