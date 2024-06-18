@@ -22,7 +22,7 @@
     <el-descriptions-item label="新存储位置" width="40">
       {{ info?.currentLocation || '--' }}
       </el-descriptions-item>
-    <el-descriptions-item label="入库日期">
+    <el-descriptions-item label="原始入库日期">
       {{ info?.inventoryListRegistrationDate || '--'  }}
     </el-descriptions-item>
     <el-descriptions-item label="出库负责人">
