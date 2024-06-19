@@ -118,18 +118,28 @@
     
     <div class="com-section" >
       <div class="title-sub validate-title-sub">申报资料</div>
-      <validateExcel
-        v-if="initPageParam.edit"
-        :form="form"
-        :reportId="reportId"
-        :errorFlag="errorFlag"
-        :defaultfileList="ziliaoFile"
-        @updateReportId="updateReportId"
-        @updateFileData="updateFileData"
-        ></validateExcel>
-      <div style="margin-bottom: 12px;"  v-else>
-        <FileList :file="ziliaoFile" :showOnline="false"></FileList>
+      <div v-hasPerm="btnApprovalCode.fileUpload">
+        <validateExcel
+          v-if="initPageParam.edit"
+          :form="form"
+          :reportId="reportId"
+          :errorFlag="errorFlag"
+          :defaultfileList="ziliaoFile"
+          @updateReportId="updateReportId"
+          @updateFileData="updateFileData"
+          ></validateExcel>
+        <div style="margin-bottom: 12px;"  v-else>
+          <FileList :file="ziliaoFile" :showOnline="false"></FileList>
+        </div>
       </div>
+      <w-row class="grid-demo" v-hasPerm="btnApprovalCode.fileAdd">
+        <w-col :span="20">
+        </w-col>
+        <w-col v-if="initPageParam.edit" :span="4">
+          <div class="flex-base-end"><w-button type="primary">新增</w-button></div>
+        </w-col>
+      </w-row>
+
       <card-tab
         :tabData="tabData"
         :showExtra="false"
@@ -137,13 +147,6 @@
         @handleTab="handleTab"
       >
       </card-tab>
-      <!-- <w-row class="grid-demo">
-        <w-col :span="20">
-        </w-col>
-        <w-col v-if="initPageParam.edit" :span="4">
-          <div class="flex-base-end"><w-button type="primary" @click="handleAdd">新增</w-button></div>
-        </w-col>
-      </w-row> -->
       <InfoDD
         v-show="curTab == pro.DD" 
         :reportId="reportId"
