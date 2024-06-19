@@ -1,10 +1,17 @@
 <template>
   <div>
     <w-button type="primary" style="margin-right: 8px;" @click="visible = true">新增</w-button>
-    <w-modal v-model:visible="visible" @ok="handleBeforeClose" ok-text="知道了" :hide-cancel="true" :width="1800">
+    <w-modal
+      ok-text="确定"
+      cancel-text="取消"
+      v-model:visible="visible"
+      @ok="handleOK"
+      @cancel="handleCancel"
+      :width="1400">
       <template #title>
         详情
       </template>
+
       <div class="detail-describe">
         注：选择订单信息，合同、发票、银行流水、仓储、物流数据自动被选择。若数据无法勾选，请查看“数据情况”字段中的说明。如需调整请在本企业的业务系统中调整，调整完的内容会自动同步到本系统
       </div>
@@ -25,46 +32,29 @@
       <m-table
         :data="tableData"
         :columns="columns"
+        :row-selection="rowSelection"
+        row-key="id"
         :pagination="pagination"
         @page-change="changepage"
         @page-size-change="changePagesize"
+        @select="handlSelectRow"
+        @selectAll="selectAll"
         :bordered="false"
       >
         <template v-slot:index="{rowIndex}">
             <div>{{ rowIndex + 1 }}</div>
         </template> 
-      </m-table>  
+      </m-table>
     </w-modal>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
-import { fpspApproveDetail } from '@/api/intellApproval';
-import { download } from '@/api/file'
-import { approveStatus } from '../type'
+import { ref } from 'vue';
 
-const props = defineProps({
-  showRecord: {
-    type: Boolean,
-    default: false
-  },
-  reportId: {
-    type: String,
-    default: ''
-  }
-})
-
-
-watch( () => props.reportId, (v) => {
-  if(v && v!= '-1') {
-    getfpspApproveDetail()
-  }
-})
+const props = defineProps({})
 
 const loading = ref(false)
-const curLoadIndex = ref(-1) // 当前正在下载的index
-const curLoadRowIndex = ref(-1) // 当前正在下载的行index
 const tableData = ref([])
 const columns = reactive([
   {
@@ -160,7 +150,7 @@ const columns = reactive([
     fixed: "right",
   },
 ]);
-
+const rowId = ref([])
 const pagination = ref({
   total: 0,
   pageSize: 10,
@@ -174,8 +164,28 @@ const searchPar = ref({
   code: '', // 订单编号
   buyer: '' // 买方名称
 })
+const rowSelection = ref({
+  type: 'checkbox',
+  showCheckedAll: true
+})
 
 const emits = defineEmits(['updateAdd'])
+
+// 全选
+function selectAll(e) {
+  console.log('是否全选----------：', e)
+  if(e) {
+    // 全选
+
+  } else {
+    // 取消全选
+
+  }
+}
+
+function handlSelectRow(row: any) {
+  rowId.value = row;
+}
 
 // 搜索
 function search() {
@@ -187,87 +197,39 @@ function reset() {
 
 }
 
-function getFileName(fullFileName: string) {
-  if(fullFileName.length > 12) {
-    const fileName = fullFileName.substring(0, 6);
-    const fileExtension = fullFileName.substring(fullFileName.lastIndexOf('.'));
-    return fileName + '...' + fileExtension;
-  } else {
-    return fullFileName
-  }
-}
-
-function load(fileUrl: any, filename: any, i: any, rowIndex: any) {
-  if(loading.value) return
-  loading.value = true
-  curLoadIndex.value = i
-  curLoadRowIndex.value = rowIndex
-  download({
-    file_name: fileUrl
-  }).then(res => {
-    exportBlob(res.data,filename )
-    loading.value = false
-    curLoadIndex.value = -1
-    curLoadRowIndex.value = -1
-  }).catch(err=>{
-    loading.value = false
-    curLoadIndex.value = -1
-    curLoadRowIndex.value = -1
-  })
-}
-
-// 导出
-function exportBlob(b, name) {
-  const fileName = name
-  const typeValue = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-  const blob = new Blob([b], { type: typeValue});
-  const a = document.createElement('a');
-  a.download = fileName;
-  a.href = URL.createObjectURL(blob);
-  a.style.display = 'none';
-  document.body.appendChild(a);
-  a.click();
-  URL.revokeObjectURL(a.href);
-  document.body.removeChild(a);
-}
-
 const changePagesize = (v: any) => {
   pagination.value.pageSize = v;
   searchPar.value.page = 1;
   searchPar.value.page_size = v;
-  getfpspApproveDetail();
+  getOrder();
 };
 
 const changepage = (v: any) => {
   searchPar.value.page = v;
-  getfpspApproveDetail();
+  getOrder();
 };
 
-
-async function handleBeforeClose(done: any) {
-  await done()
-  // visible.value = false
-}
-
-function handleCancel () {
+// 点击确定查询数据
+async function handleOK() {
   visible.value = false
 }
 
-function getfpspApproveDetail() {
-  if(loading.value) return 
-  loading.value = true
-  searchPar.value.reportId = props.reportId as any
-  fpspApproveDetail(searchPar.value).then(res => {
-    tableData.value = res.data as any;
-    pagination.value.total = res.total as any
-    loading.value = false
-  }).catch(err => {
-    loading.value = false
-  })
+// 点击关闭，清空选择
+function handleCancel () {
+  console.log('关闭弹窗----------')
+  visible.value = false
+}
+
+// 获取订单
+function getOrder() {
+
 }
 </script>
 
 <style lang="scss" scoped>
+:deep(.no-data) {
+  width: 1300px!important;
+}
 .detail-describe {
   margin-bottom: 12px;
 }
