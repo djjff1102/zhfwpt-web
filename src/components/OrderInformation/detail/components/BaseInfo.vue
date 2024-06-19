@@ -36,7 +36,7 @@
     <el-descriptions-item label="卖方信息"  :span="4">
     </el-descriptions-item>
         <el-descriptions-item label="卖方名称">
-      {{ order?.buyerCompanyName || '--' }}
+      {{ order?.sellerCompanyName || '--' }}
     </el-descriptions-item>
     <el-descriptions-item label="交易商编号">
       {{ order?.sellerTransactNo ||'--' }}
