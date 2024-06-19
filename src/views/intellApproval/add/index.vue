@@ -108,7 +108,7 @@
             <span>{{ form.validDateEnd && form.validDateEnd.split(' ')[0] }}</span>
         </el-form-item>
         <el-form-item prop="reason" label="申请理由" required>
-          <el-input v-if="initPageParam.edit" type="textarea" v-model="form.reason"></el-input>
+          <el-input v-if="initPageParam.edit" type="textarea" v-model="form.reason" show-word-limit maxlength="500"></el-input>
           <div v-else>{{ form.reason }}</div>
         </el-form-item>
       </el-form>
