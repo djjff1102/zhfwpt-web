@@ -136,7 +136,7 @@
         <w-col :span="20">
         </w-col>
         <w-col v-if="initPageParam.edit" :span="4">
-          <div class="flex-base-end"><w-button type="primary">新增</w-button></div>
+          <div class="flex-base-end"><FileAdd></FileAdd></div>
         </w-col>
       </w-row>
 
@@ -230,7 +230,7 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-// import addApplyCom from './addApplyCom.vue';
+import FileAdd from './FileAdd.vue';
 import detailCom from './detailCom.vue'
 import ApprovalRecord from './ApprovalRecords.vue'
 import { searcht, add, update, getOneByCompanyName, businessUpdate, businessAdd } from '@/api/intellApproval'
