@@ -7,10 +7,10 @@
               <el-option v-for="(item, i) in appravalResultList" :key="i" :value="item.value" :label="item.label"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item prop="approveOpinion" label="审批意见">
+          <el-form-item prop="approveOpinion" label="审批意见" :rules="[{ max:500, message: '最大长度不能超过500字' }]">
             <el-input type="textarea" v-model="form.approveOpinion" placeholder="请输入审批意见"></el-input>
           </el-form-item>
-          <el-form-item prop="approveRemark" label="备注">
+          <el-form-item prop="approveRemark" label="备注" :rules="[{ max:500, message: '最大长度不能超过500字' }]">
             <el-input type="textarea" v-model="form.approveRemark" placeholder="请输入备注"></el-input>
           </el-form-item>
           <el-form-item prop="fileUrl" label="调研报告">
