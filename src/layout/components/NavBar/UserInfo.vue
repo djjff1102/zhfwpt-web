@@ -65,8 +65,8 @@ function getIP() {
   });
 }
 
-getGeolocation()
-getIP()
+// getGeolocation()
+// getIP()
 
 </script>
 <style lang="scss" scoped>
