@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <div @click="toYayi" style="z-index: 999;">
+    <div v-hasPerm="btnApprovalCode.YYBtn" @click="toYayi" style="z-index: 999;">
       <img src="@/assets/yayi.png" style="width: 24px">
     </div>
   </Teleport>
@@ -11,6 +11,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router';
 import { getKnowledgeId } from '@/api/yayi'
+import { btnApprovalCode } from '@/router/permissionCode'
 
 const route = useRoute()
 

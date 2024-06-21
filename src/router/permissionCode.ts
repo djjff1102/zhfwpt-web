@@ -15,6 +15,7 @@ export const btnApprovalCode = {
   fileUpload: "1015", // 资料上传
   fileAdd: "1014", // 资料新增
   loadfile: "1016", // 下载资料
+  YYBtn: "1017", // 雅意知识库
 };
 
 export const approvalMapping = {
