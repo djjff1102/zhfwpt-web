@@ -130,6 +130,30 @@
       <div style="margin-bottom: 12px;"  v-else>
         <FileList :file="ziliaoFile" :showOnline="false"></FileList>
       </div>
+
+      <!-- TODO: 暂时注释新增逻辑，部署测试环境 -->
+      <!-- <div v-hasPerm="btnApprovalCode.fileUpload">
+        <validateExcel
+          v-if="initPageParam.edit"
+          :form="form"
+          :reportId="reportId"
+          :errorFlag="errorFlag"
+          :defaultfileList="ziliaoFile"
+          @updateReportId="updateReportId"
+          @updateFileData="updateFileData"
+          ></validateExcel>
+        <div style="margin-bottom: 12px;"  v-else>
+          <FileList :file="ziliaoFile" :showOnline="false"></FileList>
+        </div>
+      </div> -->
+      <!-- <w-row class="grid-demo" v-hasPerm="btnApprovalCode.fileAdd">
+        <w-col :span="20">
+        </w-col>
+        <w-col v-if="initPageParam.edit" :span="4">
+          <div class="flex-base-end"><FileAdd></FileAdd></div>
+        </w-col>
+      </w-row> -->
+
       <card-tab
         :tabData="tabData"
         :showExtra="false"
@@ -137,13 +161,6 @@
         @handleTab="handleTab"
       >
       </card-tab>
-      <!-- <w-row class="grid-demo">
-        <w-col :span="20">
-        </w-col>
-        <w-col v-if="initPageParam.edit" :span="4">
-          <div class="flex-base-end"><w-button type="primary" @click="handleAdd">新增</w-button></div>
-        </w-col>
-      </w-row> -->
       <InfoDD
         v-show="curTab == pro.DD" 
         :reportId="reportId"
@@ -227,7 +244,7 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-// import addApplyCom from './addApplyCom.vue';
+import FileAdd from './FileAdd.vue';
 import detailCom from './detailCom.vue'
 import ApprovalRecord from './ApprovalRecords.vue'
 import { searcht, add, update, getOneByCompanyName, businessUpdate, businessAdd } from '@/api/intellApproval'

@@ -51,6 +51,9 @@ import { companyLicenseInfoCreditchinaNew, BDaeegmnopprrttuy } from '@/api/archi
 const props = defineProps({
   companyName: {
     default: ''
+  },
+  companyId: {
+    default: ''
   }
 })
 
@@ -121,7 +124,8 @@ const pagination = ref({
 const searchPar = ref({
   page_size: 10,
   page: 1,
-  companyName: props.companyName,
+  companyId: props.companyId,
+  // companyName: props.companyName,
   departmentNo: '', // 许可单位
   isHistory: 0 // 0官网还存在 1官网不存在
 })
@@ -201,8 +205,8 @@ init();
   margin-bottom: 12px;
   .tab-item {
     width: 176px;
-    height: 36px;
-    line-height: 36px;
+    // height: 36px;
+    line-height: 28px;
     background: #F8F8F8;
     border-radius: 4px;
     margin-right: 4px;

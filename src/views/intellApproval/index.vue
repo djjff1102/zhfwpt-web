@@ -44,8 +44,7 @@
     </div>
     <div class="oper">
       <w-button v-hasPerm="btnApprovalCode.add" type="primary" class="mr-8px" @click="operate('add')">新增</w-button>
-      <!-- TODO:还没有加权限 -->
-      <!-- <w-button :loading="loadZip" type="primary" class="mr-8px" @click="handleLoadZip">下载资料</w-button> -->
+      <w-button v-hasPerm="btnApprovalCode.loadfile" :loading="loadZip" type="primary" class="mr-8px" @click="handleLoadZip">下载资料</w-button>
       <w-button v-hasPerm="btnApprovalCode.export" :loading="loadingExport" type="primary" class="mr-8px" @click="handleExport">导出</w-button>
     </div>
       <div class="table-warp">
@@ -99,7 +98,7 @@
           <el-button
             v-hasPerm="btnApprovalCode.edit"
             type="text" @click="operate('operate', tableData[rowIndex])"
-            :disabled="tableData[rowIndex].approveStatus == status.pass">编辑</el-button>
+            :disabled="tableData[rowIndex].approveStatus == status.pass || tableData[rowIndex].editStatus == 1">编辑</el-button>
           <el-button
             v-hasPerm="btnApprovalCode.detail"
             type="text" @click="operate('detail', tableData[rowIndex])">详情</el-button>

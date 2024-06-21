@@ -12,6 +12,9 @@ export const btnApprovalCode = {
   save: "1010", // 暂存
   submit: "1011", // 提交
   companyDetail: "1012", // 从发票智能审批跳转企业详情
+  fileUpload: "1015", // 资料上传
+  fileAdd: "1014", // 资料新增
+  loadfile: "1016", // 下载资料
 };
 
 export const approvalMapping = {
