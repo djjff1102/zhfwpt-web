@@ -118,7 +118,21 @@
     
     <div class="com-section" >
       <div class="title-sub validate-title-sub">申报资料</div>
-      <div v-hasPerm="btnApprovalCode.fileUpload">
+      <validateExcel
+        v-if="initPageParam.edit"
+        :form="form"
+        :reportId="reportId"
+        :errorFlag="errorFlag"
+        :defaultfileList="ziliaoFile"
+        @updateReportId="updateReportId"
+        @updateFileData="updateFileData"
+        ></validateExcel>
+      <div style="margin-bottom: 12px;"  v-else>
+        <FileList :file="ziliaoFile" :showOnline="false"></FileList>
+      </div>
+
+      <!-- TODO: 暂时注释新增逻辑，部署测试环境 -->
+      <!-- <div v-hasPerm="btnApprovalCode.fileUpload">
         <validateExcel
           v-if="initPageParam.edit"
           :form="form"
@@ -131,14 +145,14 @@
         <div style="margin-bottom: 12px;"  v-else>
           <FileList :file="ziliaoFile" :showOnline="false"></FileList>
         </div>
-      </div>
-      <w-row class="grid-demo" v-hasPerm="btnApprovalCode.fileAdd">
+      </div> -->
+      <!-- <w-row class="grid-demo" v-hasPerm="btnApprovalCode.fileAdd">
         <w-col :span="20">
         </w-col>
         <w-col v-if="initPageParam.edit" :span="4">
           <div class="flex-base-end"><FileAdd></FileAdd></div>
         </w-col>
-      </w-row>
+      </w-row> -->
 
       <card-tab
         :tabData="tabData"
