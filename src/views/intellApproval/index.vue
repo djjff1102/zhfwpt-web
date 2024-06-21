@@ -45,7 +45,7 @@
     <div class="oper">
       <w-button v-hasPerm="btnApprovalCode.add" type="primary" class="mr-8px" @click="operate('add')">新增</w-button>
       <!-- TODO:还没有加权限 -->
-      <w-button :loading="loadZip" type="primary" class="mr-8px" @click="handleLoadZip">下载资料</w-button>
+      <w-button v-hasPerm="btnApprovalCode.loadfile" :loading="loadZip" type="primary" class="mr-8px" @click="handleLoadZip">下载资料</w-button>
       <w-button v-hasPerm="btnApprovalCode.export" :loading="loadingExport" type="primary" class="mr-8px" @click="handleExport">导出</w-button>
     </div>
       <div class="table-warp">
