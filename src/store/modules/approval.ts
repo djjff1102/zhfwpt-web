@@ -30,6 +30,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     page_size: 100,
     page: 1,
     dataType: "",
+    orderCodeList: "",
   });
   const totalMoney = ref({
     count: 0,
@@ -143,10 +144,37 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     fileInfo.value = d;
   }
 
-  // 获取订单、合同、 发票、 银行流水
+  // 获取订单、合同、 发票、 银行流水（企业手动导入数据）
   function getTableData(reportId?: any) {
     submitFlag.value = false; // 重新加载时，为提交加锁
     searchPar.value.dataType = reportId || searchPar.value.dataType;
+    return new Promise((resolve, reject) => {
+      Promise.all([
+        getqyzxOrder(),
+        getqyzxTransactionCertificate(),
+        getqyzxInvoic(),
+        getqyzxBankStatement(),
+        getCC(),
+        getWL(),
+      ])
+        .then((res) => {
+          submitFlag.value = true; // 加载完成后，为提交加锁
+          setTimeout(() => {
+            getMoneyAndLen(curTab.value);
+          }, 0);
+          resolve(1);
+        })
+        .catch((err) => {
+          reject(0);
+        });
+    });
+  }
+
+  // 获取订单、合同、 发票、 银行流水（企业自动导入数据）
+  function getTableDataAuto(orderCodeList: any) {
+    submitFlag.value = false; // 重新加载时，为提交加锁
+    searchPar.value.orderCodeList = orderCodeList;
+    searchPar.value.dataType = "";
     return new Promise((resolve, reject) => {
       Promise.all([
         getqyzxOrder(),
@@ -548,6 +576,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     updateData,
     updateDataSave,
     getTableData,
+    getTableDataAuto,
     setFileInfo,
     clearTable,
     resetTab,

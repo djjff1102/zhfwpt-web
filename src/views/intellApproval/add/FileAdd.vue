@@ -33,7 +33,8 @@
         :data="tableData"
         :columns="columns"
         :row-selection="rowSelection"
-        row-key="id"
+        row-key="code"
+        :default-selected-keys="defaultselectedkeys"
         :pagination="pagination"
         @page-change="changepage"
         @page-size-change="changePagesize"
@@ -49,8 +50,12 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue';
+<script setup>
+import { ref,onMounted } from 'vue';
+import { qyzxOrder } from '@/api/archives'
+import { useApprovalStore } from '@/store/modules/approval'
+
+const approvalStore = useApprovalStore();
 
 const props = defineProps({})
 
@@ -150,7 +155,6 @@ const columns = reactive([
     fixed: "right",
   },
 ]);
-const rowId = ref([])
 const pagination = ref({
   total: 0,
   pageSize: 10,
@@ -158,12 +162,15 @@ const pagination = ref({
   "show-jumper": true,
 });
 const visible = ref(false)
+const defaultselectedkeys = ref([]) // 默认选中的行
+const rowId = ref([]) // 已选的行code
 const searchPar = ref({
   page_size: 10,
   page: 1,
   code: '', // 订单编号
-  buyer: '' // 买方名称
+  enterpriseDataFlag: true // 买方名称
 })
+
 const rowSelection = ref({
   type: 'checkbox',
   showCheckedAll: true
@@ -183,35 +190,48 @@ function selectAll(e) {
   }
 }
 
-function handlSelectRow(row: any) {
+function handlSelectRow(row) {
   rowId.value = row;
+  console.log('row-----------------------:', row)
 }
 
 // 搜索
 function search() {
-
+  searchPar.value.page = 1;
+  getOrder();
 }
 
 // 重置
 function reset() {
-
+  searchPar.value.code = ''
+  searchPar.value.page = 1;
+  getOrder();
 }
 
-const changePagesize = (v: any) => {
+const changePagesize = (v) => {
   pagination.value.pageSize = v;
   searchPar.value.page = 1;
   searchPar.value.page_size = v;
   getOrder();
 };
 
-const changepage = (v: any) => {
+const changepage = (v) => {
   searchPar.value.page = v;
   getOrder();
 };
 
 // 点击确定查询数据
 async function handleOK() {
+  searchPar.value.code = ''
+  getOrder();
   visible.value = false
+  if(rowId.value.length != 0) {
+    approvalStore.getTableDataAuto(rowId.value);
+  } else {
+    approvalStore.clearTable()
+    approvalStore.resetMoney()
+  }
+  defaultselectedkeys.value = rowId.value
 }
 
 // 点击关闭，清空选择
@@ -222,8 +242,14 @@ function handleCancel () {
 
 // 获取订单
 function getOrder() {
-
+  qyzxOrder( searchPar.value ).then(res => {
+    tableData.value = res.data || []
+  }).catch(err => {
+  })
 }
+
+getOrder()
+
 </script>
 
 <style lang="scss" scoped>

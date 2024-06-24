@@ -75,9 +75,7 @@ export function groupByProvince(
 /**
  * 主订单列表及详情
  */
-export function qyzxOrder(
-  data: ProvinceSearch
-): CustomAxiosPromise<ProvinceResult> {
+export function qyzxOrder(data: any): any {
   return request({
     url: "/base/qyzx_order",
     method: "post",
