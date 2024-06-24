@@ -131,8 +131,7 @@
         <FileList :file="ziliaoFile" :showOnline="false"></FileList>
       </div>
 
-      <!-- TODO: 暂时注释新增逻辑，部署测试环境 -->
-      <!-- <div v-hasPerm="btnApprovalCode.fileUpload">
+      <div v-hasPerm="btnApprovalCode.fileUpload">
         <validateExcel
           v-if="initPageParam.edit"
           :form="form"
@@ -145,7 +144,8 @@
         <div style="margin-bottom: 12px;"  v-else>
           <FileList :file="ziliaoFile" :showOnline="false"></FileList>
         </div>
-      </div> -->
+      </div>
+      <!-- TODO:暂时注释调新增 -->
       <!-- <w-row class="grid-demo" v-hasPerm="btnApprovalCode.fileAdd">
         <w-col :span="20">
         </w-col>
@@ -153,6 +153,13 @@
           <div class="flex-base-end"><FileAdd></FileAdd></div>
         </w-col>
       </w-row> -->
+      <w-row class="grid-demo" >
+        <w-col :span="20">
+        </w-col>
+        <w-col v-if="initPageParam.edit" :span="4">
+          <div class="flex-base-end"><FileAdd></FileAdd></div>
+        </w-col>
+      </w-row>
 
       <card-tab
         :tabData="tabData"
