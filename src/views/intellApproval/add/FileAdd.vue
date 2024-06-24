@@ -222,6 +222,8 @@ const changepage = (v) => {
 
 // 点击确定查询数据
 async function handleOK() {
+  searchPar.value.code = ''
+  getOrder();
   visible.value = false
   if(rowId.value.length != 0) {
     approvalStore.getTableDataAuto(rowId.value);
