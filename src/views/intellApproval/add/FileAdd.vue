@@ -224,6 +224,7 @@ async function handleOK() {
     approvalStore.getTableDataAuto(rowId.value);
   } else {
     approvalStore.clearTable()
+    approvalStore.resetMoney()
   }
   defaultselectedkeys.value = rowId.value
 }

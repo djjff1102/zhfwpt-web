@@ -79,6 +79,14 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     rediusReportId.value = id;
   }
 
+  // 将金额和已选重置
+  function resetMoney() {
+    totalMoney.value = {
+      count: 0,
+      totalMoneySum: 0,
+    };
+  }
+
   function getMoneyAndLen(type: any, flag?: any) {
     curTab.value = type;
     if (flag == 1) return;
@@ -539,6 +547,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     totalMoney,
     submitFlag,
     rediusReportId,
+    resetMoney,
     setListData,
     updateData,
     updateDataSave,
