@@ -118,7 +118,7 @@
     
     <div class="com-section" >
       <div class="title-sub validate-title-sub">申报资料</div>
-      <validateExcel
+      <!-- <validateExcel
         v-if="initPageParam.edit"
         :form="form"
         :reportId="reportId"
@@ -129,7 +129,7 @@
         ></validateExcel>
       <div style="margin-bottom: 12px;"  v-else>
         <FileList :file="ziliaoFile" :showOnline="false"></FileList>
-      </div>
+      </div> -->
 
       <div v-hasPerm="btnApprovalCode.fileUpload">
         <validateExcel

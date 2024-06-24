@@ -162,12 +162,12 @@ const pagination = ref({
   "show-jumper": true,
 });
 const visible = ref(false)
-const defaultselectedkeys = ref(['li005']) // 默认选中的行
-const rowId = ref(['li005']) // 已选的行code
+const defaultselectedkeys = ref([]) // 默认选中的行
+const rowId = ref([]) // 已选的行code
 const searchPar = ref({
   page_size: 10,
   page: 1,
-  code: 'li005', // 订单编号
+  code: '', // 订单编号
   enterpriseDataFlag: true // 买方名称
 })
 
@@ -197,12 +197,15 @@ function handlSelectRow(row) {
 
 // 搜索
 function search() {
-
+  searchPar.value.page = 1;
+  getOrder();
 }
 
 // 重置
 function reset() {
-
+  searchPar.value.code = ''
+  searchPar.value.page = 1;
+  getOrder();
 }
 
 const changePagesize = (v) => {
@@ -238,15 +241,12 @@ function handleCancel () {
 // 获取订单
 function getOrder() {
   qyzxOrder( searchPar.value ).then(res => {
-    console.log('order-----------------:', res)
     tableData.value = res.data || []
   }).catch(err => {
   })
 }
 
-onMounted(() => {
-  getOrder();
-})
+getOrder()
 
 </script>
 
