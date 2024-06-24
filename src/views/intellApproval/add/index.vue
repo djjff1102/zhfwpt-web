@@ -145,15 +145,7 @@
           <FileList :file="ziliaoFile" :showOnline="false"></FileList>
         </div>
       </div>
-      <!-- TODO:暂时注释调新增 -->
-      <!-- <w-row class="grid-demo" v-hasPerm="btnApprovalCode.fileAdd">
-        <w-col :span="20">
-        </w-col>
-        <w-col v-if="initPageParam.edit" :span="4">
-          <div class="flex-base-end"><FileAdd></FileAdd></div>
-        </w-col>
-      </w-row> -->
-      <w-row class="grid-demo" >
+      <w-row class="grid-demo" v-hasPerm="btnApprovalCode.fileAdd">
         <w-col :span="20">
         </w-col>
         <w-col v-if="initPageParam.edit" :span="4">
