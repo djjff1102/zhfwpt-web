@@ -4,10 +4,14 @@ import variables from "@/styles/variables.module.scss";
 import { useAppStore } from "@/store/modules/app";
 import { translateRouteTitle } from "@/utils/i18n";
 import { useRouter, useRoute } from "vue-router";
+import { useNoticeApprovalStore } from '@/store/modules/notice'
 
 const appStore = useAppStore();
 const route = useRoute();
 const router = useRouter();
+
+const noticeStore = useNoticeApprovalStore();
+const roleLevel = computed(() => noticeStore.roleLevel) // 1税务 2企业
 
 watch(
   () => route,
@@ -61,6 +65,13 @@ onMounted(() => {
   topMenu.value = permissionStore.routes.filter(
     (item) => !item.meta || !item.meta.hidden
   );
+  topMenu.value.forEach(item => {
+    if(item.path == '/intellApproval' && roleLevel.value == 1) { // 税务
+      item.meta.title = '发票智能审批'
+    }else if(item.path == '/intellApproval' && roleLevel.value == 2) { // 企业
+      item.meta.title = '发票智能申请'
+    }
+  })
 });
 </script>
 <template>
