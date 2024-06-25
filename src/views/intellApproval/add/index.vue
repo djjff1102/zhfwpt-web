@@ -19,6 +19,12 @@
         type="primary"
         :disabled="form?.approveStatus != status.wait" 
         @click="updateApprval">审批</w-button>
+        <w-button 
+          v-hasPerm="btnApprovalCode.loadfile"
+          :loading="loadZip"
+          type="primary"
+          class="mr-8px"
+          @click="handleLoadZip">下载资料</w-button>
     </div>
   </div>
   <!-- 企业用户申报详情 -->
@@ -246,7 +252,7 @@ import { useRouter, useRoute } from 'vue-router';
 import FileAdd from './FileAdd.vue';
 import detailCom from './detailCom.vue'
 import ApprovalRecord from './ApprovalRecords.vue'
-import { searcht, add, update, getOneByCompanyName, businessUpdate, businessAdd } from '@/api/intellApproval'
+import { searcht, add, update, getOneByCompanyName, businessUpdate, businessAdd, exportApproveMaterialsZipByReportId } from '@/api/intellApproval'
 import { useUserStoreHook } from "@/store/modules/user";
 import { pro, nameMap } from '../type'
 import FileList from './FileList.vue';
@@ -310,6 +316,7 @@ let phone = userStore.user.phone;
 const route = useRoute();
 const router = useRouter();
 
+const loadZip = ref(false)
 const suafaErr = ref({
   flag: false,
   data: []
@@ -369,6 +376,29 @@ const fileList = ref([]) // 已经提交的文件
 const queryPar = ref({}) // 路由查询参数
 const uploadFlag = ref(-1) // -1未上传文件 0 上传文件失败 1上传成功
 const errorFlag = ref(false) // 信息提交时，深白资料有误，提示信息
+
+// 下载资料
+function handleLoadZip() {
+  if(loadZip.value) return;
+  loadZip.value = true;
+  exportApproveMaterialsZipByReportId([queryPar.value?.id]).then(res => {
+     loadZip.value = false;
+     fileHandleCompressed(res, '发票智能审批资料')
+  }).catch(err => {
+    loadZip.value = false;
+    console.log('下载zip包失败：', err)
+  })
+}
+
+function  fileHandleCompressed(data: any, fileName: any) {
+  let blob = new Blob([data.data], { type: 'application/zip,charset=utf-8'})//此处必须添加
+  let url = window.URL.createObjectURL(blob);
+  const link = window.document.createElement('a'); // 创建a标签
+  link.href = url;
+  link.download = fileName; // 重命名文件
+  link.click();
+  URL.revokeObjectURL(url); // 释放内存
+}
 
 //关闭错误弹窗
 function closeError() {
