@@ -9,7 +9,7 @@
     <el-upload
       :before-upload="handleBeforeUpload"
       :http-request="handleUpload"
-      accept="'.pdf,.png,.jpg,.jpeg,.gif,.zip,.ppt,.pptx,.xlsx,.xls,.doc,.docx'"
+      accept=".pdf,.png,.jpg,.jpeg,.gif,.zip,.ppt,.pptx,.xlsx,.xls,.doc,.docx"
       :on-exceed="handleExceed"
       :limit="5"
       :show-file-list="false"

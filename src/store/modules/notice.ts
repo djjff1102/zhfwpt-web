@@ -86,6 +86,7 @@ export const useNoticeApprovalStore = defineStore("noticeApprovalstore", () => {
     tableData,
     loading,
     scrollDisabled,
+    total,
     getNoticeApprovalList,
     toNoticeApprovalDetail,
     refreshNotice,

@@ -33,11 +33,12 @@
     <!-- 消息通知 trigger="click"-->
     <el-popover
       placement="bottom-start"
-      :width="407"
+      :width="507"
     >
       <template #reference>
         <div class="avatar w-[20px] h-[20px] ml-[12px]" @click="handleOpenNotice">
           <img class="!w-full !h-full object-cover" src="@/assets/base/notice.svg">
+          <span class="notice-num">{{ total }}</span>
         </div>
       </template>
       <NoticeInfo></NoticeInfo>
@@ -56,6 +57,12 @@ import { useTagsViewStore } from "@/store/modules/tagsView";
 import { useUserStore } from "@/store/modules/user";
 import UserInfo from './UserInfo.vue'
 import NoticeInfo from './NoticeInfo.vue'
+
+import { useNoticeApprovalStore } from '@/store/modules/notice'
+
+const noticeStore = useNoticeApprovalStore();
+
+const total = computed(() => noticeStore.total)
 
 const appStore = useAppStore();
 const tagsViewStore = useTagsViewStore();
@@ -129,6 +136,24 @@ function logout() {
     border-radius: 5px;
   }
 }
+
+.avatar {
+  position: relative;
+  .notice-num {
+    position: absolute;
+    top: 0;
+    right: -10px;
+    font-size: 12px;
+    line-height: 20px;;
+    background: red;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    text-align: center;
+  }
+}
+
 :deep(.el-popper__arrow::before) {
 
     display: none!important;
