@@ -5,7 +5,7 @@
     <div ref='innerDom' style="height: auto">
       <div class="notice-item" v-for="item in tableData" :key="item" @click="handleDetail(item)">
         <span :class="[roleLevel == 1 ? 'wait-status' : 'reject-status']">({{ roleLevel == 1 ? '待审批' : '驳回' }})</span> -
-        <span class="notice-company">{{ item.companyName }}</span>
+        <span class="notice-company">{{ item.reportCode }}{{ item.companyName }}</span>
       </div>
       <div v-if="tableData.length == 0" class="no-more">暂无通知</div>
     </div>
@@ -50,7 +50,7 @@ onMounted(() => {
   max-height: 300px;
   overflow-y: scroll;
   .notice-item {
-    width:375px;
+    width:475px;
     height: 40px;
     line-height: 40px;
     border-radius: 4px;
