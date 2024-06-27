@@ -29,6 +29,8 @@ export interface DeptForm {
   system_type?: number;
   remark?: string;
   id?: string;
+  storageEnterpriseIds: string[];
+  callbackAddress: string;
 }
 
 export interface OrganizationUnit {
@@ -40,4 +42,10 @@ export interface OrganizationUnit {
   type?: number;
   sort?: number;
   children?: OrganizationUnit[]; // 可选属性，表示子单位，递归地使用同一个接口
+}
+
+export interface EnterpriseEnty {
+  id: any;
+  enterpriseName: string;
+  [type: string]: any;
 }
