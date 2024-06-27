@@ -59,3 +59,24 @@ export function getDeptAlias(id: string): CustomAxiosPromise<string[]> {
     method: "get",
   });
 }
+
+/**
+ * 通过部门id 查询已选的仓储
+ */
+export function getSelectStore(id: string) {
+  return request({
+    url: `/org/organization/storage/find/${id}`,
+    method: "get",
+  });
+}
+
+/**
+ * 查询改组织下所有的仓库
+ */
+export function getAllStores(data: any) {
+  return request({
+    url: `/org/storage_enterprise`,
+    method: "post",
+    data,
+  });
+}
