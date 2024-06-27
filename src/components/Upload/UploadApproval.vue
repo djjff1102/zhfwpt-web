@@ -4,7 +4,7 @@
       :before-upload="handleBeforeUpload"
       :http-request="handleUpload"
       :on-exceed="handleExceed"
-      accept="'.pdf,.png,.jpg,.jpeg,.gif,.zip,.ppt,.pptx,.xlsx,.xls,.doc,.docx'"
+      accept=".doc,.docx,.pdf,.png,.jpg,.jpeg,.gif,.zip,.ppt,.pptx,.xlsx,.xls"
       :limit="5"
       :show-file-list="false"
       multiple

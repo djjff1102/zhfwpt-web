@@ -120,6 +120,9 @@ import dayjs from "dayjs";
 import { btnApprovalCode, approvalMapping } from '@/router/permissionCode'
 import { useUserStoreHook } from "@/store/modules/user";
 import { formatNumber, formateDate } from '@/utils/common'
+import { useNoticeApprovalStore } from '@/store/modules/notice'
+
+const noticeStore = useNoticeApprovalStore()
 
 const userStore = useUserStoreHook();
 const router = useRouter();  
@@ -311,6 +314,7 @@ function del(row: any) {
           id: row.id
         }).then(res => {
           loading.value = false;
+          noticeStore.refreshNotice()
           ElMessage.success("删除成功！");
           getfpspReport();
         }).catch(err => {
