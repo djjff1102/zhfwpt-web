@@ -5,7 +5,7 @@
     <div ref='innerDom' style="height: auto">
       <div class="notice-item" v-for="item in tableData" :key="item" @click="handleDetail(item)">
         <span :class="[roleLevel == 1 ? 'wait-status' : 'reject-status']">({{ roleLevel == 1 ? '待审批' : '驳回' }})</span> -
-        <span class="notice-company">{{ item.reportCode }}{{ item.companyName }}</span>
+        <span class="notice-company">{{ item.reportCode }}{{ roleLevel == 1 ? item.companyName : item.approveOpinion }}</span>
       </div>
       <div v-if="tableData.length == 0" class="no-more">暂无通知</div>
     </div>
