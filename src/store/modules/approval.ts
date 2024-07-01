@@ -30,7 +30,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     page_size: 100,
     page: 1,
     dataType: "",
-    orderCodeList: "",
+    orderCodeList: [],
   });
   const totalMoney = ref({
     count: 0,
