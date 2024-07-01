@@ -155,7 +155,9 @@
         <w-col :span="20">
         </w-col>
         <w-col v-if="initPageParam.edit" :span="4">
-          <div class="flex-base-end"><FileAdd></FileAdd></div>
+          <div class="flex-base-end">
+            <FileAdd :reportId="reportId"></FileAdd>
+          </div>
         </w-col>
       </w-row>
 
