@@ -1,10 +1,12 @@
 <template>
   <div>
     <div class="flex-base-between">
-      <SingleUpload
-        v-if="pageType != 'detail'"
-        @updateUpload="updateUpload">
-      </SingleUpload>
+      <span v-hasPerm="btnApprovalCode.fileUpload">
+        <SingleUpload
+          v-if="pageType != 'detail'"
+          @updateUpload="updateUpload">
+        </SingleUpload>
+      </span>
       <el-button
         v-if="pageType != 'detail'"
         type="text"
@@ -42,6 +44,7 @@ import { fileSave } from '@/api/intellApproval/special'
 import { splitFiltName } from '@/utils/common'
 import { pro, urlMap } from '../type'
 import { status } from '../type' 
+import { btnApprovalCode } from '@/router/permissionCode'
 
 const router = useRouter();
 const route = useRoute();

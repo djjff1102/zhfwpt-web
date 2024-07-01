@@ -1,6 +1,6 @@
 <template>
   <div>
-    <w-button type="primary" style="margin-right: 8px;" @click="visible = true">新增</w-button>
+    <w-button type="primary" style="margin-right: 8px;" @click="handleAdd">新增</w-button>
     <w-modal
       ok-text="确定"
       cancel-text="取消"
@@ -29,23 +29,52 @@
           </el-form-item>
         </el-form>
       </div>
-      <m-table
+
+      <el-table
+        ref="multipleTableRef"
         :data="tableData"
-        :columns="columns"
-        :row-selection="rowSelection"
-        row-key="code"
-        :default-selected-keys="defaultselectedkeys"
-        :pagination="pagination"
-        @page-change="changepage"
-        @page-size-change="changePagesize"
-        @select="handlSelectRow"
-        @selectAll="selectAll"
-        :bordered="false"
-      >
-        <template v-slot:index="{rowIndex}">
-            <div>{{ rowIndex + 1 }}</div>
-        </template> 
-      </m-table>
+        style="width: 100%"
+        @select-all="selectAll"
+        @selection-change="handlSelectRow">
+        <el-table-column type="selection" width="55" :selectable="checkselect"/>
+        <el-table-column label="订单编号" width="120" show-overflow-tooltip>
+          <template #default="scope">{{ scope.row.code }}</template>
+        </el-table-column>
+        <el-table-column property="orderCreateDate" label="订单创建日期" width="120"/>
+        <el-table-column
+          width="120"
+          property="goodType"
+          label="商品类别"
+          show-overflow-tooltip
+        />
+        <el-table-column property="buyerCompanyName" label="买方名称" width="120" show-overflow-tooltip/>
+        <el-table-column property="buyerCreditNo" label="买方信用代码" width="120"  show-overflow-tooltip/>
+        <el-table-column property="sellerCompanyName" label="卖方名称" width="120" show-overflow-tooltip/>
+        <el-table-column property="sellerCreditNo" label="卖方信用代码" width="120" show-overflow-tooltip/>
+        <el-table-column property="goodAddress" label="商品所在地址" width="120" show-overflow-tooltip/>
+        <el-table-column property="warehouseName" label="仓库名称" width="120" />
+        <el-table-column property="totalMoney" label="总金额" width="120"/>
+        <el-table-column property="dataDesc" label="数据情况" width="120"/>
+        <!-- <el-table-column property="address" label="操作" /> -->
+        <el-table-column fixed="right" label="操作"  min-width="80">
+          <template #default="scope">
+            <el-button type="text" size="small" @click="handleDetail(scope.$index, scope.row)">
+              详情
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div style="display: flex; justify-content: flex-end; padding-top: 12px;">
+        <el-pagination
+          :page-size="searchPar.page_size"
+          :pager-count="searchPar.page"
+          layout="prev, pager, next, jumper"
+          :total="total"
+          @current-change="changepage"
+        />
+      </div>
+
+
     </w-modal>
   </div>
 </template>
@@ -54,145 +83,78 @@
 import { ref,onMounted } from 'vue';
 import { qyzxOrder } from '@/api/archives'
 import { useApprovalStore } from '@/store/modules/approval'
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const approvalStore = useApprovalStore();
 
-const props = defineProps({})
+const props = defineProps({
+  reportId: {
+    default: ''
+  }
+})
 
-const loading = ref(false)
 const tableData = ref([])
-const columns = reactive([
-  {
-    title: "序号",
-    width: 80,
-    slotName: "index",
-    // fixed: "left",
-  },
-  {
-    title: "订单编号",
-    // fixed: "left",
-    dataIndex: "code",
-    width: 200,
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "订单创建日期",
-    dataIndex: "orderCreateDate",
-    width: 180,
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "商品类别",
-    dataIndex: "goodType",
-    width: 180,
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "买方名称",
-    dataIndex: "buyerCompanyName",
-    width: 220,
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "买方信用代码",
-    dataIndex: "buyerCreditNo",
-    width: 220,
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "卖方名称",
-    dataIndex: "sellerCompanyName",
-    width: 220,
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "卖方信用代码",
-    dataIndex: "sellerCreditNo",
-    width: 220,
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "商品所在地址",
-    dataIndex: "goodAddress",
-    width: 220,
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "仓库名称",
-    dataIndex: "warehouseName",
-    width: 220,
-    ellipsis: true,
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "总金额",
-    dataIndex: "totalMoney",
-    width: 220,
-    ellipsis: true,
-    slotName: "moneySlot",
-    tooltip: {position: 'left'},
-  },
-  {
-    title: "附件",
-    dataIndex: "material",
-    width: 120,
-    slotName: 'materialslot',
-    fixed: "right",
-  },
-  {
-    title: "操作",
-    dataIndex: "operations",
-    slotName: "operations",
-    width: 220,
-    fixed: "right",
-  },
-]);
-const pagination = ref({
-  total: 0,
-  pageSize: 10,
-  "show-total": true,
-  "show-jumper": true,
-});
+
 const visible = ref(false)
 const defaultselectedkeys = ref([]) // 默认选中的行
-const rowId = ref([]) // 已选的行code
+const total = ref(10)
+const selectedRows = ref([]) // 已选择的行
 const searchPar = ref({
-  page_size: 10,
+  page_size: 2,
   page: 1,
   code: '', // 订单编号
   enterpriseDataFlag: true // 买方名称
 })
+const pagesSelectRows = ref({}) // 记录每页选择的row
 
-const rowSelection = ref({
-  type: 'checkbox',
-  showCheckedAll: true
-})
-
+const multipleTableRef = ref()
 const emits = defineEmits(['updateAdd'])
 
-// 全选
-function selectAll(e) {
-  console.log('是否全选----------：', e)
-  if(e) {
-    // 全选
+// 跳转详情
+function handleDetail(index, row) {
+  router.push({
+    path: '/intellApproval/intellApprovalOrderDetail',
+    query: {
+      orderCode: row.code,
+      // reportId: props.reportId
+    }
+  })
+}
 
+// 判断是否可选
+function checkselect(row) {
+  return row.chooseFlag
+}
+
+// 新增
+function handleAdd() {
+  visible.value = true
+  toggleSelection(pagesSelectRows.value[searchPar.value.page])
+}
+
+// 默认选中
+const toggleSelection = (rows) => {
+  if (rows) {
+    rows.forEach((row) => {
+      rows.forEach(el => { // 记录的数据
+        const row = tableData.value.find(e => e.code === el.code); // row是当前表格数据
+        row && multipleTableRef.value.toggleRowSelection(row, true);
+      });
+    })
   } else {
-    // 取消全选
-
+    multipleTableRef.value.clearSelection()
   }
 }
 
+// 全选
+function selectAll(row) {
+  selectedRows.value = row
+}
+
+// 多选
 function handlSelectRow(row) {
-  rowId.value = row;
-  console.log('row-----------------------:', row)
+  selectedRows.value = row
 }
 
 // 搜索
@@ -208,14 +170,9 @@ function reset() {
   getOrder();
 }
 
-const changePagesize = (v) => {
-  pagination.value.pageSize = v;
-  searchPar.value.page = 1;
-  searchPar.value.page_size = v;
-  getOrder();
-};
 
 const changepage = (v) => {
+  pagesSelectRows.value[searchPar.value.page] = JSON.parse(JSON.stringify(selectedRows.value)) 
   searchPar.value.page = v;
   getOrder();
 };
@@ -225,18 +182,25 @@ async function handleOK() {
   searchPar.value.code = ''
   getOrder();
   visible.value = false
-  if(rowId.value.length != 0) {
-    approvalStore.getTableDataAuto(rowId.value);
-  } else {
+  pagesSelectRows.value[searchPar.value.page] = selectedRows.value; // 存储已经选中的行
+  let ids = []
+  Object.keys(pagesSelectRows.value).forEach(key => {
+    pagesSelectRows.value[key].forEach( item =>{
+      ids.push(item.code)
+    })
+   })
+  if(ids.length == 0) {
     approvalStore.clearTable()
     approvalStore.resetMoney()
+  } else {
+    approvalStore.getTableDataAuto(ids);
   }
-  defaultselectedkeys.value = rowId.value
 }
 
 // 点击关闭，清空选择
 function handleCancel () {
-  console.log('关闭弹窗----------')
+ searchPar.value.code = ''
+ getOrder();
   visible.value = false
 }
 
@@ -244,6 +208,10 @@ function handleCancel () {
 function getOrder() {
   qyzxOrder( searchPar.value ).then(res => {
     tableData.value = res.data || []
+    total.value = Number(res.total)
+    nextTick(() => {
+      toggleSelection(pagesSelectRows.value[searchPar.value.page])
+    })
   }).catch(err => {
   })
 }
@@ -270,4 +238,5 @@ getOrder()
   line-height: 48px;
   text-align: left;
 }
+
 </style>
