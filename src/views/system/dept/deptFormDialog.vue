@@ -23,7 +23,7 @@
         <el-input
           v-model="formData.callbackAddress"
           clearable
-          maxlength="20"
+          maxlength="200"
           placeholder="请输入回调地址"
         />
       </el-form-item>
@@ -45,27 +45,25 @@
           <w-button class="ml-3" @click="handleDelete(index)">删除</w-button>
         </div>
       </el-form-item>
-      <el-form-item label="仓库" prop="storageEnterpriseIds">
-        
-      <el-select
-        v-model="formData.storageEnterpriseIds"
-        placeholder=""
-        style="width: 240px"
-        clearable
-        multiple
-      >
-        <template #label="{ label, value }">
-          <span>{{ label }}: </span>
-          <span style="font-weight: bold">{{ value }}</span>
-        </template>
-        <el-option
-          v-for="item in enterPrise"
-          :key="item.id"
-          :label="item.enterpriseName"
-          :value="item.id"
-        />
-      </el-select>
-
+      <el-form-item label="仓库">
+        <el-select
+          v-model="formData.storageEnterpriseIds"
+          placeholder=""
+          style="width: 240px"
+          clearable
+          multiple
+        >
+          <template #label="{ label, value }">
+            <span>{{ label }}: </span>
+            <span style="font-weight: bold">{{ value }}</span>
+          </template>
+          <el-option
+            v-for="item in enterPrise"
+            :key="item.id"
+            :label="item.enterpriseName"
+            :value="item.id"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="备注" prop="remark">
         <el-input
@@ -104,7 +102,7 @@ const deptFormRef = ref(ElForm);
 
 const rules = reactive({
   name: [{ required: true, message: "组织名称不能为空", trigger: "blur" }],
-  storageEnterpriseIds: [{ required: true, message: "仓库不能为空", trigger: "blur" }],
+  // storageEnterpriseIds: [{ required: true, message: "仓库不能为空", trigger: "blur" }],
 });
 
 const enterPrise = ref<EnterpriseEnty>([])
