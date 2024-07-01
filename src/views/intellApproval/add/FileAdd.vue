@@ -138,7 +138,6 @@ const toggleSelection = (rows) => {
   if (rows) {
     rows.forEach((row) => {
       rows.forEach(el => { // 记录的数据
-        console.log('选中的行----------：', el)
         const row = tableData.value.find(e => e.code === el.code); // row是当前表格数据
         row && multipleTableRef.value.toggleRowSelection(row, true);
       });
@@ -150,7 +149,6 @@ const toggleSelection = (rows) => {
 
 // 全选
 function selectAll(row) {
-  console.log('是否全选----------：', row)
   selectedRows.value = row
 }
 

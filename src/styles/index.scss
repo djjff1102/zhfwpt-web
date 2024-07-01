@@ -261,3 +261,16 @@
     background-color: rgba(0, 0, 0, 0.02)!important;
   }
 }
+
+// 修改el-table头部样式
+.el-table thead {
+  color: #6A6A6A !important;
+
+}
+.el-table .cell {
+  font-weight: normal !important;
+}
+
+.el-table th.el-table__cell {
+  background-color: #eef6ff !important;
+}
