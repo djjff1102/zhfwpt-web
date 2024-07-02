@@ -141,11 +141,14 @@ function toFile() {
 
 // 跳转订单详情
 function toDetail(d) {
+  console.log('详情----------------：', d)
   let query = {}
   // 标记从订单调走，针对back时，做模块定位
   switch(props.type) {
     case pro.DD:
       query.orderCode = d.code
+      console.log('props.approveStatus----------:', props.approveStatus)
+      console.log('status.pass----------:', status.pass)
       if(props.approveStatus != status.pass) {
         query.reportId = props.reportId;
       }
@@ -183,6 +186,10 @@ function toDetail(d) {
 }
 
 function formateURL(path, query) {
+  console.log('path--query:',path,  query)
+  if(query.reportId == '-1') {
+    delete query.reportId;
+  }
   router.push({
     path,
     query
