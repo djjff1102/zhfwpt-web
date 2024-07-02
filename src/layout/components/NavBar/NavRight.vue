@@ -100,7 +100,8 @@ function logout() {
         tagsViewStore.delAllViews();
       })
       .then(() => {
-        router.push(`/login?redirect=${route.meta.activeMenu}`);
+        // router.push(`/introduce`)
+        // router.push(`/login?redirect=${route.meta.activeMenu}`);
       });
   });
 }
