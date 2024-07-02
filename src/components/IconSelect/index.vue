@@ -79,6 +79,7 @@ onMounted(() => {
 
     <el-popover
       shadow="none"
+      :show-arrow="false"
       :visible="visible"
       placement="bottom-end"
       trigger="click"
@@ -113,7 +114,12 @@ onMounted(() => {
               class="icon-item"
               @click="handleSelect(iconName)"
             >
-              <el-tooltip :content="iconName" placement="bottom" effect="light">
+              <el-tooltip
+                :show-arrow="false"
+                :content="iconName"
+                placement="bottom"
+                effect="light"
+              >
                 <svg-icon
                   color="var(--el-text-color-regular)"
                   :icon-class="iconName"

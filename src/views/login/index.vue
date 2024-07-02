@@ -2,10 +2,10 @@
   <div class="login-container">
     <div class="login-main">
       <div class="left-position">
-        <img src="../../assets/login/position.png"/>
+        <img src="../../assets/login/position.png" />
       </div>
       <div class="right-position">
-        <img src="../../assets/login/logo.png"/>
+        <img src="../../assets/login/logo.png" />
         <div class="login-title">大宗贸易综合服务平台</div>
         <div class="login-msg">欢迎登录</div>
         <div class="login-form">
@@ -16,7 +16,10 @@
             :rules="loginRules"
             class="login-form"
           >
-            <el-form-item prop="user_name" :style="{width: '360px', height: '48px'}">
+            <el-form-item
+              prop="user_name"
+              :style="{ width: '360px', height: '48px' }"
+            >
               <div class="p-2">
                 <svg-icon icon-class="user" />
               </div>
@@ -30,11 +33,15 @@
             </el-form-item>
 
             <el-tooltip
+              :show-arrow="false"
               :disabled="isCapslock === false"
               content="Caps lock is On"
               placement="right"
             >
-              <el-form-item prop="password" :style="{width: '360px', height: '48px'}">
+              <el-form-item
+                prop="password"
+                :style="{ width: '360px', height: '48px' }"
+              >
                 <span class="p-2">
                   <svg-icon icon-class="password" />
                 </span>
@@ -61,7 +68,7 @@
               :loading="loading"
               type="primary"
               class="w-full"
-              :style="{width: '360px', height: '48px'}"
+              :style="{ width: '360px', height: '48px' }"
               @click.prevent="handleLogin"
               >{{ $t("login.login") }}
             </w-button>
@@ -246,7 +253,7 @@ function handleLogin() {
           //   {}
           // );
           // router.push({ path: redirect, query: otherQueryParams });
-          router.push('/')
+          router.push("/");
         })
         .catch(() => {
           // 验证失败
@@ -273,7 +280,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 @font-face {
   font-family: myFont;
-  src: url('@/assets/iconfont/aliht.ttf')
+  src: url("@/assets/iconfont/aliht.ttf");
 }
 .login-main {
   display: flex;
@@ -294,7 +301,7 @@ onMounted(() => {
   }
 }
 
-.right-position{
+.right-position {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
