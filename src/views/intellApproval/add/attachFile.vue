@@ -2,7 +2,7 @@
   <div>
     <div v-if="!row.material">未上传</div>
     <el-button type="text" v-if="row.material" @click="load(row.material)">下载</el-button>
-    <el-button type="danger" link v-if="row.material && curType != 'detail'" @click="del">删除</el-button>
+    <el-button v-hasPerm="btnApprovalCode.fileUpload" type="danger" link v-if="row.material && curType != 'detail'" @click="del">删除</el-button>
     <!-- <div class="file-load" v-if="row?.material?.judgeCode == '1'" style="color: green" @click="load(row.material)">
         {{ row?.material.fileName}}</div> -->
   </div>
@@ -15,6 +15,7 @@ import { ref } from 'vue'
 import { exportBlob } from '@/utils/common'
 import { useApprovalStore } from '@/store/modules/approval'
 import { useRoute } from 'vue-router'
+import { btnApprovalCode } from '@/router/permissionCode'
 
 const route = useRoute()
 const approvalStore = useApprovalStore();
