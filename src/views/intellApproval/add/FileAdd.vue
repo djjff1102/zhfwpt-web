@@ -56,9 +56,9 @@
         <el-table-column property="totalMoney" label="总金额" width="120"/>
         <el-table-column property="dataDesc" label="数据情况" width="120"/>
         <!-- <el-table-column property="address" label="操作" /> -->
-        <el-table-column fixed="right" label="操作"  min-width="80">
+        <el-table-column label="操作"  min-width="80">
           <template #default="scope">
-            <el-button type="text" size="small" @click="handleDetail(scope.$index, scope.row)">
+            <el-button type="text" size="small" :disabled="!scope.row.chooseFlag" @click="handleDetail(scope.$index, scope.row)">
               详情
             </el-button>
           </template>

@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useRoute } from "vue-router";
 import { useTagsViewStore } from "@/store/modules/tagsView";
+
+const $route = useRoute();
 
 const tagsViewStore = useTagsViewStore();
 </script>
@@ -8,13 +11,12 @@ const tagsViewStore = useTagsViewStore();
   <section class="app-main">
     <router-view>
       <template #default="{ Component, route }">
-        <transition name="fade-slide" mode="out-in">
-          <!-- <keep-alive :include="tagsViewStore.cachedViews"> -->
-          <div class="app-wrap">
-            <component :is="Component" :key="route.fullPath" />
-          </div>
-          <!-- </keep-alive> -->
-        </transition>
+        <!-- <transition name="fade-slide" mode="out-in"> -->
+          <keep-alive >
+            <component v-if="$route.meta.keepAlive" :is="Component" :key="route.fullPath" />
+          </keep-alive>
+          <component v-if="!$route.meta.keepAlive" :is="Component" />
+        <!-- </transition> -->
       </template>
     </router-view>
   </section>
