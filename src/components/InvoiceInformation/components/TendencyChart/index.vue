@@ -22,7 +22,7 @@ const props = defineProps({
 const echartData = ref({
   // color: ['#5ECF69', '#3470FF'],
   title: {
-    text: "单位：万元",
+    text: "单位：元",
     left: "left",
     textStyle: {
       fontSize: 14,
