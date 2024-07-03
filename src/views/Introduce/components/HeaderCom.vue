@@ -4,6 +4,7 @@
       <div class="title-wrap">
         <img src="@/assets/login/logo.png" style="height: 30px;"/>
         <span class="login-title">大宗贸易综合服务平台</span>
+        <div class="no-login" @click="login">登录</div>
       </div>
       <div class="header-center">
         <div class="header-left">
@@ -17,9 +18,7 @@
           <img class="card4" src="../img/card4.png" />
         </div>
       </div>
-
     </div>
-    <div class="no-login" @click="login">请登录</div>
   </div>
 </template>
 
@@ -54,13 +53,6 @@ function login() {
   }
 }
 
-.no-login {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  cursor: pointer;
-}
-
 .header-wrap {
   min-width: 1200px;
   height: 645px;
@@ -76,6 +68,21 @@ function login() {
     justify-content: flex-start;
     align-items: center;
     padding-top: 21px;
+    position: relative;
+  }
+  
+  .no-login {
+    position: absolute;
+    right: 0px;
+    top: 12px;
+    cursor: pointer;
+    width: 104px;
+    height: 38px;
+    line-height: 38px;
+    text-align: center;
+    color: #fff;
+    background: #3470FF;
+    border-radius: 4px 4px 4px 4px;
   }
 }
 
@@ -83,6 +90,7 @@ function login() {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  margin-top: 50px;
   .header-left {
     width: 689px;
     flex-shrink: 1;
@@ -132,7 +140,7 @@ function login() {
 .login-title {
   font-family: myFont;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 28px;
   color: rgba(52, 112, 255, 1);
   display: inline-block;
   padding-left: 12px;
@@ -141,6 +149,8 @@ function login() {
   font-family: myFont;
   font-weight: bold;
   font-size: 50px;
+  line-height: 60px;
+  margin-bottom: 14px;
   color: rgba(52, 112, 255, 1);
 }
 </style>

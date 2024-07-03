@@ -268,7 +268,6 @@ onMounted(() => {
     width: 395px;
     height: 110px;
     background: linear-gradient( 180deg, #D9E4FF 0%, #DDEDFA 7%, #FFFFFF 68%, #F9FDFF 100%);
-    box-shadow: 0px 10px 20px 0px rgba(183,235,255,0.3);
     border-radius: 8px 8px 8px 8px;
     border: 1px solid #FFFFFF;
     cursor: pointer;
@@ -279,6 +278,9 @@ onMounted(() => {
     text-align: justify;
     font-style: normal;
     text-transform: none;
+    &:hover {
+      box-shadow: 0px 10px 20px 0px rgba(183,235,255,0.3);
+    }
   }
   img {
     width: 62px;
@@ -364,6 +366,17 @@ onMounted(() => {
   text-indent: 2em;
   width: 376px;
   text-align: left;
+  position: relative;
+  &::before {
+    content: '';
+    background-image: url('./img/circle.png');
+    width: 19px;
+    height: 15px;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 2px;
+    left: 0;
+  }
 }
 
 .img-right, .text-right {
