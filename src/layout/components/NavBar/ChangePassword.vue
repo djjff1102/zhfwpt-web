@@ -18,6 +18,7 @@
       >
         <el-form-item prop="password" label="旧密码">
           <el-input
+            autocomplete="new-password"
             placeholder="请输入旧密码"
             :type="passwordVisible === false ? 'password' : 'input'"
             v-model.trim="passwordData.password"
@@ -36,6 +37,7 @@
           label="新密码"
         >
           <el-input
+            autocomplete="new-password"
             placeholder="请输入新密码"
             @input="newPasswordChange"
             :type="newPasswordVisible === false ? 'password' : 'input'"
@@ -110,6 +112,7 @@
         </el-form-item>
         <el-form-item prop="confirmPassword" label="确认密码">
           <el-input
+            autocomplete="new-password"
             placeholder="请再次输入新密码"
             :type="confirmPasswordVisible === false ? 'password' : 'input'"
             v-model.trim="passwordData.confirmPassword"
@@ -136,14 +139,20 @@
 </template>
 <script setup lang="ts">
 import { PasswordData } from "@/api/auth/types";
+import { updateUserPassword } from "@/api/user";
 import type { FormRules } from "element-plus";
-import { object } from "vue-types";
+import { useUserStore } from "@/store/modules/user";
+import { useRoute, useRouter } from "vue-router";
+
 const dialogVisible = ref(false);
 const passwordVisible = ref(false);
 const newPasswordVisible = ref(false);
 const confirmPasswordVisible = ref(false);
+const userStore = useUserStore();
 const passwordForm = ref();
-const hasInput = ref(false);
+const hasInput = ref(false); //新密码输入框是否输入过
+const route = useRoute();
+const router = useRouter();
 const passedVerification = reactive({
   length: false,
   character: false,
@@ -166,7 +175,8 @@ const rules = reactive<FormRules<PasswordData>>({
   newPassword: [
     { required: true, message: "请输入新密码", trigger: "blur" },
     {
-      pattern: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,14}$/,
+      pattern:
+        /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:"<>?`\-=[\]\\;',./])[^\s\u4e00-\u9fa5]{8,14}$/,
       message: "密码设置不符合要求！",
       trigger: "blur",
     },
@@ -174,26 +184,40 @@ const rules = reactive<FormRules<PasswordData>>({
   confirmPassword: [
     { required: true, message: "请再次输入新密码", trigger: "blur" },
     {
-      pattern: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,14}$/,
+      pattern:
+        /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:"<>?`\-=[\]\\;',./])[^\s\u4e00-\u9fa5]{8,14}$/,
       message: "密码设置不符合要求！",
       trigger: "blur",
     },
     { validator: validatePass, trigger: "blur" },
   ],
 });
-function newPasswordChange(value: string) {
+function newPasswordChange() {
   hasInput.value = true;
-  const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]+$/;
+  const regex =
+    /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:"<>?`\-=[\]\\;',./]).*$/;
   const noSpaceRegex = /^[^\s\u4e00-\u9fa5]*$/;
-  passedVerification.length = value.length >= 8 && value.length <= 24;
-  passedVerification.character = regex.test(value);
-  passedVerification.space = noSpaceRegex.test(value);
+  passedVerification.length =
+    passwordData.newPassword.length >= 8 &&
+    passwordData.newPassword.length <= 14;
+  passedVerification.character = regex.test(passwordData.newPassword);
+  passedVerification.space = noSpaceRegex.test(passwordData.newPassword);
 }
 function confirmPassword() {
   passwordForm.value.validate((valid: boolean) => {
     if (valid) {
-      //调接口
-      dialogVisible.value = false;
+      updateUserPassword(
+        "",
+        1,
+        passwordData.password,
+        passwordData.newPassword
+      ).then((res) => {
+        ElMessage.success(res.message);
+        dialogVisible.value = false;
+        userStore.logout().then(() => {
+          router.push(`/login?redirect=${route.meta.activeMenu}`);
+        });
+      });
     }
   });
 }
@@ -203,6 +227,7 @@ function showPasswordDialog() {
     newPassword: "",
     confirmPassword: "",
   });
+  hasInput.value = false;
   dialogVisible.value = true;
 }
 defineExpose({ showPasswordDialog });
