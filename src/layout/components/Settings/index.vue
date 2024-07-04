@@ -136,7 +136,7 @@ onMounted(() => {
     </ul>
     <el-divider>导航设置</el-divider>
     <ul class="layout">
-      <el-tooltip content="左侧模式" placement="bottom"
+      <el-tooltip :show-arrow="false" content="左侧模式" placement="bottom"
         ><li
           :class="
             'layout-item layout-left ' +
@@ -146,7 +146,7 @@ onMounted(() => {
         >
           <div></div>
           <div></div></li></el-tooltip
-      ><el-tooltip content="顶部模式" placement="bottom"
+      ><el-tooltip :show-arrow="false" content="顶部模式" placement="bottom"
         ><li
           :class="
             'layout-item layout-top ' +
@@ -156,7 +156,7 @@ onMounted(() => {
         >
           <div></div>
           <div></div></li></el-tooltip
-      ><el-tooltip content="混合模式" placement="bottom"
+      ><el-tooltip :show-arrow="false" content="混合模式" placement="bottom"
         ><li
           :class="
             'layout-item layout-mix ' +

@@ -36,12 +36,12 @@ watch(
     nextTick(() => {
       if(props.currentType == 1 && d >= 0) {
           handleColor()
-          option.value.series[0].data[0].value =  Math.floor(d);
+          option.value.series[0].data[0].value =  d;
           init();
       }
       if(props.currentType == 2 && d>0) {
         handleColor()
-        option.value.series[0].data[0].value =  Math.floor(d);
+        option.value.series[0].data[0].value = d;
         init();
       }
     })
@@ -119,7 +119,7 @@ const option = ref({
         },
         detail: {
           valueAnimation: true,
-          fontSize: 30,
+          fontSize: 22,
           formatter: "{value}",
           color: "#fd666d",
         },

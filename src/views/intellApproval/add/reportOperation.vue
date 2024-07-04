@@ -2,9 +2,7 @@
   <div>
     <div class="flex-base-between">
       <span v-hasPerm="btnApprovalCode.fileUpload">
-        <SingleUpload
-          v-if="pageType != 'detail'"
-          @updateUpload="updateUpload">
+        <SingleUpload v-if="pageType != 'detail'" @updateUpload="updateUpload">
         </SingleUpload>
       </span>
       <el-button
@@ -12,25 +10,44 @@
         type="text"
         @click="handleError(row)"
         :disabled="checkError(row)"
-      >错误情况</el-button>
-      <el-button v-if="![pro.YH, pro.CC, pro.WL].includes(type)"  type="text" @click="toDetail(row)">详情</el-button>
+        >错误情况</el-button
+      >
+      <el-button
+        v-if="![pro.YH, pro.CC, pro.WL].includes(type)"
+        type="text"
+        @click="toDetail(row)"
+        >详情</el-button
+      >
       <!-- <el-button type="text" disabled>取消</el-button> -->
     </div>
 
     <el-dialog
-        title="错误信息"
-        v-model="dialogVisible"
-        width="600"
-        :before-close="handleClose"
-        :append-to-body="true"
-      >
+      title="错误信息"
+      v-model="dialogVisible"
+      width="600"
+      :before-close="handleClose"
+      :append-to-body="true"
+    >
       <div style="padding: 24px 30px">
-        <div v-for="(item, i) in row?.material.judgeResult" :key="item" class="common-click-txt">{{ i+ 1}}、{{ item }}</div>
-        <div class="common-click-txt" style="margin-top: 16px">可前往该附件中进行修改</div>
-        <div class="common-click-txt center-content">可 <span class="click-txt" @click="abortMsg">忽略</span>
-          <el-tooltip content="若选择忽略，提交时不会再进行错误提示" placement="bottom">
-           <img style="width: 20px" src="@/assets/tip.png">
-          </el-tooltip>改错误信息
+        <div
+          v-for="(item, i) in row?.material.judgeResult"
+          :key="item"
+          class="common-click-txt"
+        >
+          {{ i + 1 }}、{{ item }}
+        </div>
+        <div class="common-click-txt" style="margin-top: 16px">
+          可前往该附件中进行修改
+        </div>
+        <div class="common-click-txt center-content">
+          可 <span class="click-txt" @click="abortMsg">忽略</span>
+          <el-tooltip
+            :show-arrow="false"
+            content="若选择忽略，提交时不会再进行错误提示"
+            placement="bottom"
+          >
+            <img style="width: 20px" src="@/assets/tip.png" /> </el-tooltip
+          >改错误信息
         </div>
       </div>
     </el-dialog>
@@ -38,13 +55,13 @@
 </template>
 
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
-import { useApprovalStore } from '@/store/modules/approval'
-import { fileSave } from '@/api/intellApproval/special'
-import { splitFiltName } from '@/utils/common'
-import { pro, urlMap } from '../type'
-import { status } from '../type' 
-import { btnApprovalCode } from '@/router/permissionCode'
+import { useRouter, useRoute } from "vue-router";
+import { useApprovalStore } from "@/store/modules/approval";
+import { fileSave } from "@/api/intellApproval/special";
+import { splitFiltName } from "@/utils/common";
+import { pro, urlMap } from "../type";
+import { status } from "../type";
+import { btnApprovalCode } from "@/router/permissionCode";
 
 const router = useRouter();
 const route = useRoute();
@@ -52,31 +69,32 @@ const approvalStore = useApprovalStore();
 
 const props = defineProps({
   rowIndex: {
-    default: -1
+    default: -1,
   },
   rowId: {
-    default: -1
+    default: -1,
   },
   type: {
-    default: ''
+    default: "",
   },
   row: {
-    default: {}
+    default: {},
   },
   reportId: {
-    default: ''
+    default: "",
   },
-  approveStatus: {  // 审批状态 1 待审批 2通过 3 reject
-    default: ''
+  approveStatus: {
+    // 审批状态 1 待审批 2通过 3 reject
+    default: "",
   },
   modelValue: {
     type: Object,
-    default: {}
+    default: {},
   },
-})
+});
 
-const dialogVisible = ref(false)
-const pageType = ref(route.query.type)
+const dialogVisible = ref(false);
+const pageType = ref(route.query.type);
 
 const emits = defineEmits(["update:modelValue"]);
 
@@ -92,86 +110,87 @@ function abortMsg() {
   // }).catch(err => {
   //   ElMessage.success("忽略附件错误失败：" + JSON.stringify(err));
   // })
-  let row = props.row
-  row.material.judgeCode = 3
+  let row = props.row;
+  row.material.judgeCode = 3;
   emits("update:modelValue", row);
   approvalStore.resreshTab( props.type)
-  dialogVisible.value = false
+  dialogVisible.value = false;
 }
 
 function updateUpload(file) {
-    const data = {
-      fileUrl: file,
-      fileName: splitFiltName(file),
-      judgeId: props.rowId,
-      fileType: props.type, // 文件对应的数据类型，0为其他材料，1为订单，2为合同，3为发票，4为银行流水，5为仓储，6为物流
-      judgeCode: 0 // judgeCode 0为未处理的，1为校验通过的，2为校验异常的，3为用户选择忽略,重新上传默认为未处理
-    }
-  if(approvalStore.rediusReportId) {
-    data.reportId = approvalStore.rediusReportId
-    fileSave( data ).then(res => {
-      approvalStore.setListData( props.type)
-    }).catch(err => {
-      ElMessage.success("附件更新失败：" + JSON.stringify(err));
-    })
+  const data = {
+    fileUrl: file,
+    fileName: splitFiltName(file),
+    judgeId: props.rowId,
+    fileType: props.type, // 文件对应的数据类型，0为其他材料，1为订单，2为合同，3为发票，4为银行流水，5为仓储，6为物流
+    judgeCode: 0, // judgeCode 0为未处理的，1为校验通过的，2为校验异常的，3为用户选择忽略,重新上传默认为未处理
+  };
+  if (approvalStore.rediusReportId) {
+    data.reportId = approvalStore.rediusReportId;
+    fileSave(data)
+      .then((res) => {
+        approvalStore.setListData(props.type);
+      })
+      .catch((err) => {
+        ElMessage.success("附件更新失败：" + JSON.stringify(err));
+      });
   } else {
-    let row = props.row
-    row.material = data
+    let row = props.row;
+    row.material = data;
     emits("update:modelValue", row);
   }
-
 }
 
 // 检验错误信息的状态
 function checkError() {
-  if( props.row?.material?.judgeCode == 2 ) {
+  if (props.row?.material?.judgeCode == 2) {
     return false;
   } else {
-    return true
+    return true;
   }
 }
 
 // 附件错误信息
 function handleError() {
-  dialogVisible.value = true
+  dialogVisible.value = true;
 }
 
 function toFile() {
-  dialogVisible.value = false
+  dialogVisible.value = false;
 }
 
 // 跳转订单详情
 function toDetail(d) {
-  console.log('详情----------------：', d)
-  let query = {}
+  console.log("详情----------------：", d);
+  let query = {};
   // 标记从订单调走，针对back时，做模块定位
-  switch(props.type) {
+  switch (props.type) {
     case pro.DD:
-      query.orderCode = d.code
-      console.log('props.approveStatus----------:', props.approveStatus)
-      console.log('status.pass----------:', status.pass)
-      if(props.approveStatus != status.pass) {
+      query.orderCode = d.code;
+      console.log("props.approveStatus----------:", props.approveStatus);
+      console.log("status.pass----------:", status.pass);
+      if (props.approveStatus != status.pass) {
         query.reportId = props.reportId;
       }
-      formateURL( urlMap[pro.DD], query)
+      formateURL(urlMap[pro.DD], query);
       break;
     case pro.HT:
-      query.parentCode = d.code
-      if(props.approveStatus != status.pass) {
+      query.parentCode = d.code;
+      if (props.approveStatus != status.pass) {
         query.reportId = props.reportId;
       }
-      formateURL( urlMap[pro.HT], query)
+      formateURL(urlMap[pro.HT], query);
       break;
     case pro.FP:
       query = {
-        name:'发票详情',
+        name: "发票详情",
         number: d.number, // 发票号码
-        code: d.code // 发票代码
-      }
-      if(props.approveStatus != status.pass) {
+        code: d.code, // 发票代码
+      };
+      if (props.approveStatus != status.pass) {
         query.reportId = props.reportId;
       }
-      formateURL( urlMap[pro.FP], query)
+      formateURL(urlMap[pro.FP], query);
       break;
     case pro.YH:
       // formateURL( urlMap[pro.HT], {parentCode: d.code})
@@ -183,18 +202,17 @@ function toDetail(d) {
       // formateURL( urlMap[pro.HT], {parentCode: d.code})
       break;
   }
-
 }
 
 function formateURL(path, query) {
-  console.log('path--query:',path,  query)
-  if(query.reportId == '-1') {
+  console.log("path--query:", path, query);
+  if (query.reportId == "-1") {
     delete query.reportId;
   }
   router.push({
     path,
-    query
-  })
+    query,
+  });
 }
 </script>
 
@@ -203,7 +221,7 @@ function formateURL(path, query) {
   margin-bottom: 4px;
 }
 .click-txt {
-  color:#3470FF;
+  color: #3470ff;
   cursor: pointer;
   display: inline-block;
   /* padding: 4px; */

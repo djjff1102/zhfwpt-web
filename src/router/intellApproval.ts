@@ -23,12 +23,12 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: "申报列表",
           icon: "icon-shenbaoliebiao",
-          hidden: false,
+          hidden: false, //是否显示在菜单栏
           roles: ["ADMIN"],
           keepAlive: false,
-          code: [501],
-          showMenu: true,
-          activeMenu: "/intellApproval",
+          code: [501], //权限码
+          showMenu: true, //是否显示菜单栏
+          activeMenu: "/intellApproval", //顶部导航高亮的菜单
         },
       },
       {

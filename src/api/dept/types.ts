@@ -31,6 +31,7 @@ export interface DeptForm {
   id?: string;
   storageEnterpriseIds: string[];
   callbackAddress: string;
+  callbackToken: string;
 }
 
 export interface OrganizationUnit {

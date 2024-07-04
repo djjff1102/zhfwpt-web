@@ -59,12 +59,14 @@ export function updateUser(data: UserForm) {
  */
 export function updateUserPassword(
   id: string,
-  type = 0
+  type = 0,
+  old_password="",
+  new_password=""
 ): CustomAxiosPromise<any> {
   return request({
     url: "/org/user/update_password",
     method: "patch",
-    data: { id, type },
+    data: { id, type,old_password,new_password },
   });
 }
 
