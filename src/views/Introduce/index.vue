@@ -52,14 +52,14 @@
             <div class="text">综合税务申报：企业在线完成税务申报工作，包括申报指导、数据填报、提交审核等流程，保障企业税务申报的准确性。</div>
             <div class="text">综合税务审批：自动扫描申报信息异常情况，预测企业税务申报合理值，多方面辅助税务申报的审核流程，提高企业税务申报的效率。</div>
           </div>
-          <div class="content right-animation">
+          <div class="content right-animation animation-img">
             <img class="img-right" src="./img/slider1.png" />
           </div>
         </div>
       </div>
       <div ref="section2" class="section">
         <div class="slider-content">
-          <div class="content left-animation">
+          <div class="content left-animation animation-img">
             <img class="img-left" src="./img/slider2.png" />
           </div>
           <div class="content right-animation text-right">
@@ -77,14 +77,14 @@
             <div class="text">银行账户服务：在线完成银行账户的开设流程，包括资料提交、审核通过等步骤，简化开户流程。</div>
             <div class="text">外汇结算服务：支持企业在线完成外币收入的兑换操作，确保资金管理的便捷性和高效性。</div>
           </div>
-          <div class="content right-animation">
+          <div class="content right-animation animation-img">
             <img class="img-right" src="./img/slider3.png" />
           </div>
         </div>
       </div>
       <div ref="section4" class="section">
         <div class="slider-content">
-          <div class="content left-animation">
+          <div class="content left-animation animation-img">
             <img class="img-left" src="./img/slider4.png" />
           </div>
           <div class="content right-animation text-right">
@@ -101,7 +101,7 @@
             <img class="img-title" src="./img/title5.png" />
             <div class="text">台账下载：提供具有公信力的贸易台账下载功能，企业可以下载并使用这些台账作为交易真实性的自证材料，增强交易的可信度和透明度。</div>
           </div>
-          <div class="content right-animation">
+          <div class="content right-animation animation-img">
             <img class="img-right" src="./img/slider5.png" />
           </div>
         </div>
@@ -231,13 +231,16 @@ onMounted(() => {
 }
 
 .left-animation {
-  height: 315px;
   transform: translateX(-100%);
 }
 
 .right-animation {
-  height: 315px;
   transform: translateX(100%);
+}
+
+.animation-img {
+  display: flex;
+  align-items: center;
 }
 
 .slide-from-left {
@@ -378,7 +381,9 @@ onMounted(() => {
     left: 0;
   }
 }
-
+.text-right, .text-left {
+  padding-top: 64px;
+}
 .img-right, .text-right {
   width: 658px;
 }
