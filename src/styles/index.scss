@@ -6,12 +6,12 @@
 
 @font-face {
   font-family: myFontALHT;
-  src: url('@/assets/iconfont/aliht.ttf')
+  src: url("@/assets/iconfont/aliht.ttf");
 }
 
 @font-face {
   font-family: myNumberBold;
-  src: url('@/assets/iconfont/DINAlternateBold.ttf')
+  src: url("@/assets/iconfont/DINAlternateBold.ttf");
 }
 
 ::-webkit-scrollbar-thumb {
@@ -102,38 +102,40 @@
 
 /*修改穿梭组件样式*/
 .el-transfer__buttons {
-  padding: 0 16px!important;
+  padding: 0 16px !important;
 }
 .el-transfer__button {
   display: block;
 }
 .el-transfer__button:nth-child(2) {
-  margin-left: 0!important;
-  margin-top: 8px!important;
+  margin-left: 0 !important;
+  margin-top: 8px !important;
 }
 .el-transfer-panel {
-  width: 234px!important;
+  width: 234px !important;
 }
 .el-dialog__header {
-  border-bottom: solid 1px #F0F0F0;
+  border-bottom: solid 1px #f0f0f0;
 }
 /**修改对话框默认样式*/
 .el-dialog {
-  padding: 0 !important;;
+  padding: 0 !important;
 }
 .el-dialog__header {
   padding-left: 26px;
   padding-bottom: 0;
 }
 .el-dialog__footer {
-  padding: 8px 24px!important;
-  border-top: solid 1px #F0F0F0;
+  padding: 8px 24px !important;
+  border-top: solid 1px #f0f0f0;
 }
 .base-title {
   position: relative;
   margin: 16px 0;
   padding-left: 11px;
-  font-family: PingFangSC, PingFang SC;
+  font-family:
+    PingFangSC,
+    PingFang SC;
   font-weight: 500;
   font-size: 18px;
   color: #333333;
@@ -154,23 +156,23 @@
   width: 50px !important;
 }
 .w-form-item-label {
-  color: #272A31!important;
-  font-weight: bold!important;
+  color: #272a31 !important;
+  font-weight: bold !important;
 }
 .el-form-item__label {
-  color: #272A31!important;
-  font-weight: bold!important;
+  color: #272a31 !important;
+  font-weight: bold !important;
   &::before {
     padding-top: 3px;
   }
 }
 .el-dialog__header {
   height: 48px;
-  color: #383B40;
-  padding: 0 0 0 26px!important;
+  color: #383b40;
+  padding: 0 0 0 26px !important;
   font-size: 18px;
   font-weight: 600;
-  line-height: 48px;;
+  line-height: 48px;
 }
 .el-dialog__close {
   // color: #383B40!important;
@@ -192,7 +194,7 @@
   padding: 0;
 }
 .w-picker-cell-in-view .w-picker-date-value {
-  color: #333!important;
+  color: #333 !important;
   font-weight: normal;
 }
 // .w-picker-date-value {
@@ -204,22 +206,22 @@
 }
 // el-data时间控件圆角
 .el-date-table-cell__text {
-  font-size: 14px!important;
-  border-radius: 2px!important;
+  font-size: 14px !important;
+  border-radius: 2px !important;
 }
 .el-date-table td.start-date .el-date-table-cell {
-  border-top-left-radius: 2px!important;
-  border-bottom-left-radius: 2px!important;
+  border-top-left-radius: 2px !important;
+  border-bottom-left-radius: 2px !important;
 }
 .el-date-table td.end-date .el-date-table-cell {
   margin-right: 5px;
-  border-top-right-radius: 2px!important;
-  border-bottom-right-radius: 2px!important;
+  border-top-right-radius: 2px !important;
+  border-bottom-right-radius: 2px !important;
 }
 .el-date-table td .el-date-table-cell {
-  height: 24px!important;
-  padding: 0px 0!important;
-  box-sizing: border-box!important;
+  height: 24px !important;
+  padding: 0px 0 !important;
+  box-sizing: border-box !important;
 }
 .demo-form-inline {
   .el-select__wrapper {
@@ -235,9 +237,9 @@
   display: none;
 }
 .el-popover.el-popper {
-  padding: 0!important;
-  border: solid 1px #fff ;
-  box-shadow: 0px 10px 20px 0px rgba(0,0,0,0.04);
+  padding: 0 !important;
+  border: solid 1px #fff;
+  box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.04);
 }
 .el-dialog__body {
   padding: 12px 24px;
@@ -245,9 +247,9 @@
 .w-btn {
   margin-right: 8px;
 }
-.msg-tip{
- padding-bottom: 8px;
- color:red;
+.msg-tip {
+  padding-bottom: 8px;
+  color: red;
 }
 .w-scrollbar-track {
   z-index: 9;
@@ -258,14 +260,13 @@
 // 项目中两个table组件不一样，强制修改el-table hover时的样式
 .hover-row {
   td {
-    background-color: rgba(0, 0, 0, 0.02)!important;
+    background-color: rgba(0, 0, 0, 0.02) !important;
   }
 }
 
 // 修改el-table头部样式
 .el-table thead {
-  color: #6A6A6A !important;
-
+  color: #6a6a6a !important;
 }
 .el-table .cell {
   font-weight: normal !important;

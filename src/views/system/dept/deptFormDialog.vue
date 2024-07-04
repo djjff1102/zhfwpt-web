@@ -28,6 +28,24 @@
         />
       </el-form-item>
       <el-form-item
+        :rules="[
+          {
+            required: formData.callbackAddress,
+            message: '令牌不能为空',
+            trigger: 'blur',
+          },
+        ]"
+        label="令牌"
+        prop="callbackToken"
+      >
+        <el-input
+          v-model="formData.callbackToken"
+          clearable
+          maxlength="200"
+          placeholder="请输入令牌"
+        />
+      </el-form-item>
+      <el-form-item
         v-for="(item, index) in formData.alias"
         :key="item"
         :label="'曾用名' + (index + 1)"
@@ -87,8 +105,13 @@
 </template>
 
 <script setup lang="ts">
-import {  getDeptAlias, updateDept, getAllStores, getSelectStore } from "@/api/dept";
-import { DeptForm, EnterpriseEnty} from "@/api/dept/types";
+import {
+  getDeptAlias,
+  updateDept,
+  getAllStores,
+  getSelectStore,
+} from "@/api/dept";
+import { DeptForm, EnterpriseEnty } from "@/api/dept/types";
 import { formatData } from "@/utils/common";
 
 defineOptions({
@@ -99,18 +122,6 @@ defineOptions({
 const emits = defineEmits(["success"]);
 
 const deptFormRef = ref(ElForm);
-
-const rules = reactive({
-  name: [{ required: true, message: "组织名称不能为空", trigger: "blur" }],
-  // storageEnterpriseIds: [{ required: true, message: "仓库不能为空", trigger: "blur" }],
-});
-
-const enterPrise = ref<EnterpriseEnty>([])
-const dialog = reactive({
-  title: "添加组织",
-  visible: false,
-});
-
 const formData = reactive<DeptForm>({
   name: "",
   alias: [""],
@@ -119,7 +130,18 @@ const formData = reactive<DeptForm>({
   remark: "",
   storageEnterpriseIds: [], // 仓库id
   id: undefined,
-  callbackAddress: '' // 回调地址
+  callbackAddress: "", // 回调地址
+  callbackToken: "", // 令牌
+});
+const rules = reactive({
+  name: [{ required: true, message: "组织名称不能为空", trigger: "blur" }],
+  // storageEnterpriseIds: [{ required: true, message: "仓库不能为空", trigger: "blur" }],
+});
+
+const enterPrise = ref<EnterpriseEnty>([]);
+const dialog = reactive({
+  title: "添加组织",
+  visible: false,
 });
 
 function handleAdd() {
@@ -159,35 +181,33 @@ function showDialog(param?: DeptForm | string) {
   } else if (param) {
     Object.assign(formData, param);
     getAliasById(formData.id as string);
-    
+
     dialog.title = "修改组织";
   } else {
-    
     dialog.title = "添加组织";
   }
-  getAllStoresList()
+  getAllStoresList();
   dialog.visible = true;
 }
 
 function getAllStoresList() {
   getAllStores({
     page_size: 100,
-    page: 1
+    page: 1,
   }).then((res: any) => {
-    enterPrise.value = res.data || []
-  })
+    enterPrise.value = res.data || [];
+  });
 }
 
 function getAliasById(id: string) {
   getSelectStore(id).then((res) => {
-    formData.storageEnterpriseIds = res.data
-    console.log('已选择的仓储ids：', res)
-  })
+    formData.storageEnterpriseIds = res.data;
+    console.log("已选择的仓储ids：", res);
+  });
   getDeptAlias(id).then((res) => {
     formData.alias = res.data?.length > 0 ? res.data : [""];
   });
 }
-
 
 function closeDialog() {
   dialog.visible = false;
