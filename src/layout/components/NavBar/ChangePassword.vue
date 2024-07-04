@@ -2,7 +2,6 @@
   <teleport to="body">
     <el-dialog
       class="password-dialog"
-      align-center
       v-model="dialogVisible"
       title="修改密码"
       width="500"
@@ -176,7 +175,7 @@ const rules = reactive<FormRules<PasswordData>>({
     { required: true, message: "请输入新密码", trigger: "blur" },
     {
       pattern:
-        /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:"<>?`\-=[\]\\;',./])[^\s\u4e00-\u9fa5]{8,14}$/,
+        /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*￥()_+{}|:"<>?`\-=[\]\\;',./])[^\s\u4e00-\u9fa5]{8,14}$/,
       message: "密码设置不符合要求！",
       trigger: "blur",
     },
@@ -185,7 +184,7 @@ const rules = reactive<FormRules<PasswordData>>({
     { required: true, message: "请再次输入新密码", trigger: "blur" },
     {
       pattern:
-        /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:"<>?`\-=[\]\\;',./])[^\s\u4e00-\u9fa5]{8,14}$/,
+        /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*￥()_+{}|:"<>?`\-=[\]\\;',./])[^\s\u4e00-\u9fa5]{8,14}$/,
       message: "密码设置不符合要求！",
       trigger: "blur",
     },
@@ -195,7 +194,7 @@ const rules = reactive<FormRules<PasswordData>>({
 function newPasswordChange() {
   hasInput.value = true;
   const regex =
-    /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:"<>?`\-=[\]\\;',./]).*$/;
+    /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*￥()_+{}|:"<>?`\-=[\]\\;',./]).*$/;
   const noSpaceRegex = /^[^\s\u4e00-\u9fa5]*$/;
   passedVerification.length =
     passwordData.newPassword.length >= 8 &&
@@ -214,9 +213,11 @@ function confirmPassword() {
       ).then((res) => {
         ElMessage.success(res.message);
         dialogVisible.value = false;
-        userStore.logout().then(() => {
-          router.push(`/login?redirect=${route.meta.activeMenu}`);
-        });
+        setTimeout(() => {
+          userStore.logout().then(() => {
+            router.push(`/login?redirect=${route.meta.activeMenu}`);
+          });
+        }, 1000);
       });
     }
   });
@@ -229,6 +230,9 @@ function showPasswordDialog() {
   });
   hasInput.value = false;
   dialogVisible.value = true;
+  passwordVisible.value = false;
+  newPasswordVisible.value = false;
+  confirmPasswordVisible.value = false;
 }
 defineExpose({ showPasswordDialog });
 </script>
