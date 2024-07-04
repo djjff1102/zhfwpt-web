@@ -11,3 +11,20 @@ export interface LoginData {
    */
   password: string;
 }
+/**
+ * 修改密码
+ */
+export interface PasswordData {
+  /**
+   * 旧密码
+   */
+  password: string;
+  /**
+   * 新密码
+   */
+  newPassword: string;
+  /**
+   * 确认密码
+   */
+  confirmPassword: string;
+}
