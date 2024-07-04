@@ -16,13 +16,13 @@
     <!-- <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveStockRight)" label="股权穿透">
       <EquityPenetration v-bind="$attrs"></EquityPenetration>
     </el-tab-pane> -->
-    <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveSupply)" label="供应链分析">
+    <!-- <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveSupply)" label="供应链分析">
       <SupplyChainAnalysis></SupplyChainAnalysis>
-    </el-tab-pane>
-    <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.GoodsInformation)" label="主营商品">
+    </el-tab-pane> -->
+    <!-- <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.GoodsInformation)" label="主营商品">
       <GoodsInformation v-bind="$attrs"></GoodsInformation>
-      <!-- <SupplyChainAnalysis></SupplyChainAnalysis> -->
-    </el-tab-pane>
+      <SupplyChainAnalysis></SupplyChainAnalysis>
+    </el-tab-pane> -->
   </el-tabs>
 </template>
 <script setup>

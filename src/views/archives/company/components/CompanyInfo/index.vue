@@ -11,9 +11,9 @@
       <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveStockRight)" label="股权穿透">
         <EquityPenetration v-bind="$attrs"></EquityPenetration>
       </el-tab-pane>
-      <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveSupply)" label="新闻舆情">
+      <!-- <el-tab-pane v-if="dataPermissionCode.includes(approvalMapping.archiveSupply)" label="新闻舆情">
         新闻舆情
-      </el-tab-pane>
+      </el-tab-pane> -->
     </el-tabs>
   </div>
 
