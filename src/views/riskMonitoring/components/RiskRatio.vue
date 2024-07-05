@@ -59,7 +59,7 @@
                   </span>
               </div>
             </div>
-            <div class="load-end" v-if="scrollDisabled && tableData.length > 0">全部加载</div>
+            <div class="load-end flex justify-center items-center" v-if="scrollDisabled && tableData.length > 0"><span class="line mr-[8px]"></span> 已加载完成 <span class="line ml-[8px]"></span></div>
           </div>
         </div>
       </el-col>
@@ -237,9 +237,17 @@ getriskIndicator()
   }
 }
 .load-end {
-  color: #383B40;
+  font-weight: 400;
+  font-size: 14px;
+  color: #BFC4CD;
+  line-height: 22px;
   text-align: center;
-  padding-top: 12px;
+  padding-top: 16px;
+  .line {
+    width: 22px;
+    height: 1px;
+    background: #BFC4CD;
+  }
 }
 
 </style>
