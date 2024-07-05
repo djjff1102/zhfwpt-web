@@ -41,9 +41,11 @@
         :pagination="pagination"
         :row-selection="rowSelection"
         row-key="companyId"
+        :selected-keys="rowId"
         @page-change="changepage"
         @page-size-change="changePagesize"
         @select="handlSelectRow"
+        @select-all="selectAll"
         :bordered="false"
       >
         <template v-slot:index="{ rowIndex }">
@@ -174,6 +176,19 @@ const rowSelection = ref({
   showCheckedAll: true
 })
 
+// 全选、取消全选
+function selectAll(rows) {
+  if(rows) {
+    let ids = []
+    tableData.value.forEach((item) => {
+      ids.push(item.companyId)
+    })
+    rowId.value = ids;
+  } else {
+    rowId.value = []
+  }
+}
+
 function handlSelectRow(row) {
   rowId.value = row;
 }
@@ -216,6 +231,7 @@ const changePagesize = (v) => {
 };
 
 const changepage = (v) => {
+  rowId.value = []
   pagination.value.current = v;
   searchPar.value.page = v
   getRiskiList();

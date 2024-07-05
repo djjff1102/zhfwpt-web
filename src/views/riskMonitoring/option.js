@@ -78,9 +78,6 @@ export const barOption = () => {
       trigger: "axis",
       axisPointer: {
         type: "cross",
-        crossStyle: {
-          color: "#999",
-        },
       },
     },
     legend: {
@@ -109,7 +106,7 @@ export const barOption = () => {
       },
       {
         type: "value",
-        name: "审批金额",
+        name: "审批金额(万元)",
         min: 0,
         max: 25,
         interval: 5,
@@ -170,7 +167,7 @@ export const barOption = () => {
         },
         data: [],
         itemStyle: {
-          color: "rgba(255, 123, 68, 1)",
+          color: "#F88B11",
         },
       },
     ],

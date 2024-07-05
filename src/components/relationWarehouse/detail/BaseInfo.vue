@@ -17,12 +17,12 @@
       {{ info?.currentOwner || '--'  }}
      </el-descriptions-item>
      <el-descriptions-item label="原存储位置" :span="2" width="40">
-      {{ info?.originLocation || '--' }}
+      {{ info?.originalLocation || '--' }}
     </el-descriptions-item>
     <el-descriptions-item label="新存储位置" width="40">
       {{ info?.currentLocation || '--' }}
       </el-descriptions-item>
-    <el-descriptions-item label="入库日期">
+    <el-descriptions-item label="原始入库日期">
       {{ info?.inventoryListRegistrationDate || '--'  }}
     </el-descriptions-item>
     <el-descriptions-item label="出库负责人">

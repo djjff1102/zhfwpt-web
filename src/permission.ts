@@ -21,7 +21,7 @@ router.beforeEach(async (to, from, next) => {
   //   ).toString();
   // }
   if (hasToken) {
-    if (to.path === "/login") {
+    if (to.path === "/login" || to.path === "/introduce") {
       // 如果已登录，跳转首页
       next({ path: "/" });
       NProgress.done();
@@ -62,7 +62,7 @@ router.beforeEach(async (to, from, next) => {
     if (whiteList.indexOf(to.path) !== -1) {
       next();
     } else {
-      next(`/login?redirect=${to.path}`);
+      next(`/introduce?redirect=${to.path}`);
       NProgress.done();
     }
   }

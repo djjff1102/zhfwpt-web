@@ -15,7 +15,8 @@
       <w-popover
         v-model:popup-visible="showPopover"
         placement="bottom"
-        trigger="click">
+        trigger="click"
+        @popup-visible-change="popupVisibleChange">
         <template #content>
           <input-range :selectForm="selectForm" @update="update"></input-range>
         </template>
@@ -136,7 +137,12 @@ function handleShowDate() {
   nextTick(() => {
     datePickRef.value.focus()
   })
- 
+}
+
+function popupVisibleChange() {
+  if(!showPopover.value && !selectForm.value.start && !selectForm.value.end) {
+    cur.value = ''
+  }
 }
 
 // 确认注册资本

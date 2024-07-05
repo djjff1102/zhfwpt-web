@@ -179,7 +179,7 @@ export function warehouseDropDownBox(
   data: SelectSearch
 ): CustomAxiosPromise<SelectResult> {
   return request({
-    url: "/base/qyzx_warehouse/dropDownBox",
+    url: "/base/qyzx_warehouse_out/dropDownBox",
     method: "post",
     data,
   });

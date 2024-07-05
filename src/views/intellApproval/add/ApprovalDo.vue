@@ -8,10 +8,10 @@
             </el-select>
           </el-form-item>
           <el-form-item prop="approveOpinion" label="审批意见">
-            <el-input type="textarea" v-model="form.approveOpinion" placeholder="请输入审批意见"></el-input>
+            <el-input type="textarea" v-model="form.approveOpinion" placeholder="请输入审批意见" show-word-limit maxlength="500"></el-input>
           </el-form-item>
-          <el-form-item prop="approveRemark" label="备注">
-            <el-input type="textarea" v-model="form.approveRemark" placeholder="请输入备注"></el-input>
+          <el-form-item prop="approveRemark" label="备注" >
+            <el-input type="textarea" v-model="form.approveRemark" placeholder="请输入备注" show-word-limit maxlength="500"></el-input>
           </el-form-item>
           <el-form-item prop="fileUrl" label="调研报告">
             <UploadApproval @updateUpload="updateUpload"></UploadApproval>

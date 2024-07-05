@@ -3,11 +3,34 @@
     <div v-if="type == 'Warehousing'" class="search-wrap">
       <div class="city-select">
         <span class="city-select-label">城市：</span>
-        <el-select v-model="currentcity" placeholder="请选择" clearable>
+        <!-- <el-select v-model="currentcity" placeholder="请选择" clearable>
             <el-option v-for="(item, i) in ['天津市']" :key="i" :value="item"></el-option>
-          </el-select>
+          </el-select> -->
+
+
+        <el-select v-model="currentcity" placeholder="Select" style="width: 240px">
+          <el-option
+            v-for="item in cities"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+            <span style="float: left">{{ item.label }}</span>
+            <span
+              style="
+                float: right;
+                color: var(--el-text-color-secondary);
+                font-size: 13px;
+              "
+            >
+             <div class="area-right">
+              <span class="area-right-item" v-for="ch in item.child" type="primary" link :key="ch">{{ ch }}</span>
+             </div>
+            </span>
+          </el-option>
+        </el-select>
       </div>
-      <!-- <div class="split"></div> -->
+
       <SingleSelect
         title="位置"
         :list="positionData"
@@ -85,6 +108,73 @@ import ItemCom from './components/ItemCom.vue'
 
 const currentcity = ref('天津市')
 const choiceList = ref(['天津市'])
+const cities = ref(
+  [
+  {
+    value: 'Beijing',
+    label: '华北地区',
+    child: [
+      '北京',
+      '天津',
+      '大连',
+      '石家庄',
+      '哈尔滨',
+      '沈阳',
+      '太原',
+      '长春',
+      '威海',
+      '呼和浩特',
+      '烟台'
+    ]
+  },
+  {
+    value: 'Shanghai',
+    label: '华东地区',
+    child: [
+      '上海',
+      '杭州',
+      '苏州',
+      '南京',
+      '无锡',
+      '济南',
+      '青岛',
+      '昆山',
+      '宁波',
+      '南昌',
+      '福州',
+      '合肥',
+      '徐州',
+      '淄博'
+    ]
+  },
+  {
+    value: 'Nanjing',
+    label: '华南地区',
+    child: [
+      '深圳',
+      '广州',
+      '佛山',
+      '长沙',
+      '三亚',
+      '惠州',
+      '东菀',
+      '海口',
+      '珠海',
+      '中山',
+    ]
+  },
+  {
+    value: 'Chengdu',
+    label: '中西部',
+    child: [
+      '成都',
+      '重庆',
+      '武汉',
+      '郑州'
+    ]
+  }
+]
+)
 
 const props = defineProps({
   type: ''
@@ -93,6 +183,20 @@ const props = defineProps({
 </script>
 
 <style lang="scss" scoped>
+.area-right-item {
+  display: inline-block;
+  width: 60px;
+}
+li{
+  height: auto !important;
+}
+.area-right {
+  max-width: 270px;
+  height: AUTO;
+  padding: 0px 12px;
+  display: flex;
+  flex-wrap: wrap;
+}
 .warehouse-wrap {
   height: calc(100vh - 180px);
 }
@@ -134,10 +238,10 @@ const props = defineProps({
 }
 .item-top-right {
   color: #999;
-  font-size: 12px;
+  font-size: 14px;
   width: 200px;
   .price-new {
-    font-size: 18px;
+    font-size: 20px;
     color: #f76161;
   }
   .price-old {
@@ -157,7 +261,7 @@ const props = defineProps({
 }
 
 .area-font {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   color: #333;
 }

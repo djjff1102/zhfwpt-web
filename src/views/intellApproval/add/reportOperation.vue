@@ -113,6 +113,7 @@ function abortMsg() {
   let row = props.row;
   row.material.judgeCode = 3;
   emits("update:modelValue", row);
+  approvalStore.resreshTab( props.type)
   dialogVisible.value = false;
 }
 

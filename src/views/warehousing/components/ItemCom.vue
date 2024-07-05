@@ -44,7 +44,7 @@
     </div>
   </div>
   <div class="item-right" @click.stop="stopProp">
-    <RelationCom :data="data"></RelationCom>
+    <RelationCom :data="data" v-bind="$attrs"></RelationCom>
   </div>
 </div>
 </template>
@@ -109,10 +109,10 @@ function stopProp() {}
 }
 .item-top-right {
   color: #999;
-  font-size: 12px;
+  font-size: 14px;
   width: 200px;
   .price-new {
-    font-size: 18px;
+    font-size: 20px;
     color: #f76161;
   }
   .price-old {
@@ -139,7 +139,7 @@ function stopProp() {}
 }
 
 .area-font {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   color: #333;
 }

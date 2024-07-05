@@ -92,28 +92,28 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     if (flag == 1) return;
     if (type == pro.DD) {
       let sum = 0;
-      DDList.value.forEach((item) => (sum += item.totalMoney));
+      DDList.value.forEach((item) => (sum += Math.floor(item.totalMoney)));
       totalMoney.value = {
         count: DDList.value.length,
         totalMoneySum: sum,
       };
     } else if (type == pro.HT) {
       let sum = 0;
-      HTList.value.forEach((item) => (sum += item.amount));
+      HTList.value.forEach((item) => (sum += Math.floor(item.amount)));
       totalMoney.value = {
         count: HTList.value.length,
         totalMoneySum: sum,
       };
     } else if (type == pro.FP) {
       let sum = 0;
-      FPList.value.forEach((item) => (sum += item.allGoodMoneySum));
+      FPList.value.forEach((item) => (sum += Math.floor(item.allGoodMoneySum)));
       totalMoney.value = {
         count: FPList.value.length,
         totalMoneySum: sum,
       };
     } else if (type == pro.YH) {
       let sum = 0;
-      YHList.value.forEach((item) => (sum += item.paymentAmount));
+      YHList.value.forEach((item) => (sum += Math.floor(item.paymentAmount)));
       totalMoney.value = {
         count: YHList.value.length,
         totalMoneySum: sum,
@@ -207,6 +207,30 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     tabData.value.YH.status = 0;
     tabData.value.CC.status = 0;
     tabData.value.WL.status = 0;
+  }
+
+  // 更新tab状态
+  function resreshTab(type: any) {
+    switch (type) {
+      case pro.DD:
+        tabData.value.DD.status = validateType(DDList.value);
+        break;
+      case pro.HT:
+        tabData.value.HT.status = validateType(HTList.value);
+        break;
+      case pro.FP:
+        tabData.value.FP.status = validateType(FPList.value);
+        break;
+      case pro.YH:
+        tabData.value.YH.status = validateType(YHList.value);
+        break;
+      case pro.CC:
+        tabData.value.CC.status = validateType(CCList.value);
+        break;
+      case pro.WL:
+        tabData.value.WL.status = validateType(WLList.value);
+        break;
+    }
   }
 
   // 订单1
@@ -547,7 +571,7 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     totalMoney,
     submitFlag,
     rediusReportId,
-    resetMoney,
+    resreshTab,
     setListData,
     updateData,
     updateDataSave,
@@ -558,5 +582,6 @@ export const useApprovalStore = defineStore("approvalstore", () => {
     resetTab,
     getMoneyAndLen,
     setRediusReportId,
+    resetMoney,
   };
 });

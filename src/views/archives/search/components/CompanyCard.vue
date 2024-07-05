@@ -39,11 +39,12 @@
           </div>
           <div class="desc-item">
             <span class="desc-label">邮箱：</span>
-            <span class="desc-value">{{ comData?.companyEmail || '无' }}</span>
+            <span class="desc-value">{{ comData?.companyEmail || '--' }}</span>
           </div>
           <div class="desc-item">
             <span class="desc-label">官网：</span>
-            <span class="desc-value" style="width: 400px">{{ comData?.websiteUrl || '--' }}</span>
+            <span v-if="!comData.websiteUrl" class="desc-value" style="width: 400px">--</span>
+            <span v-else class="desc-value link-url" style="width: 400px" @click.stop="linkToWebsite(comData?.websiteUrl)">{{ comData?.websiteUrl || '--' }}</span>
           </div>
         </div>
         <div class="desc-info">
@@ -123,6 +124,11 @@ function btnType(v) {
   return v ? 'primary' : 'outline'
 }
 
+// 跳转官网
+function linkToWebsite(url) {
+  window.open(url, '_blank')
+}
+
 function handleCompanyDetail(d) {
   // 跳转企业详情
   router.push({ 
@@ -154,6 +160,7 @@ function handleAttention(d) {
   })
 }
 </script>
+<!-- 广州获谅商贸有限公司 -->
 <style lang="scss" scoped>
 .predict-danger {
   display: flex;
@@ -261,5 +268,8 @@ function handleAttention(d) {
 }
 :deep(.el-tag--primary) {
   background: rgba(122, 193, 234, 0.10);
+}
+.link-url {
+  color: #3470ff;
 }
 </style>

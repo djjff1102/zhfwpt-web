@@ -18,9 +18,10 @@
             <!-- <div>{{ tableData[rowIndex].material ? '已上传' : '未上传'  }}</div> -->
         </template>
         <template v-slot:materialErrorslot="{rowIndex}">
-          <span v-for="(item, i) in tableData[rowIndex]?.material?.judgeResult" :key="i">
+          <materialError :results="tableData[rowIndex]?.material?.judgeResult"></materialError>
+          <!-- <span v-for="(item, i) in tableData[rowIndex]?.material?.judgeResult" :key="i">
             {{ item }} {{ (tableData[rowIndex]?.material?.judgeResult.length - 1) == i ? '': '、' }}
-          </span>
+          </span> -->
         </template>
         <template v-slot:amountIncludeTaxSlot="{ rowIndex }">
           {{ formatNumber(tableData[rowIndex].allGoodMoneySum) }}
@@ -43,6 +44,7 @@ import { pro } from '../type'
 import { useApprovalStore } from '@/store/modules/approval'
 import attachFile from './attachFile.vue'
 import { useRoute } from "vue-router";
+import materialError from './materialError.vue'
 import { formatNumber, formatData } from '@/utils/common'
 const route = useRoute()
 

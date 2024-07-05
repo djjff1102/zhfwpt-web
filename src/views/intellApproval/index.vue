@@ -56,9 +56,11 @@
         :pagination="pagination"
         :row-selection="rowSelection"
         row-key="id"
+        :selected-keys="rowId"
         @page-change="changepage"
         @page-size-change="changePagesize"
         @select="handlSelectRow"
+        @select-all="selectAll"
         :bordered="false"
       >
         <template v-slot:index="{rowIndex}">
@@ -262,6 +264,19 @@ const reportId = ref('') // 报告id
 const rowId = ref([]);
 const loadZip = ref(false)
 
+// 全选、取消全选
+function selectAll(rows: any) {
+  if(rows) {
+    let ids: any = []
+    tableData.value.forEach((item: any) => {
+      ids.push(item.id)
+    })
+    rowId.value = ids;
+  } else {
+    rowId.value = []
+  }
+}
+
 function handlSelectRow(row: any) {
   rowId.value = row;
 }
@@ -388,14 +403,15 @@ function operate(type: string, data: any) {
  });
 }
 
-const changePagesize = (v) => {
+const changePagesize = (v: any) => {
   pagination.value.pageSize = v;
   searchPar.value.page = 1;
   searchPar.value.page_size = v;
   getfpspReport();
 };
 
-const changepage = (v) => {
+const changepage = (v: any) => {
+  rowId.value = []
   searchPar.value.page = v;
   getfpspReport();
 };

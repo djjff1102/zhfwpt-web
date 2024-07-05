@@ -28,8 +28,8 @@
         <el-form-item field="invoicingCompanyName" label="开票单位">
           <el-input v-model="searchPar.invoicingCompanyName" placeholder="请输入开票单位" clearable/>
         </el-form-item>
-        <el-form-item field="code" label="发票号码">
-          <el-input v-model="searchPar.code" placeholder="请输入发票号码" clearable/>
+        <el-form-item field="code" label="发票代码">
+          <el-input v-model="searchPar.code" placeholder="请输入发票代码" clearable/>
         </el-form-item>
         <el-form-item>
           <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
@@ -251,7 +251,9 @@ const searchPar = ref({
   type: '',
   code: '',
   receivingCompanyName: '', // 受票单位（自己）
-  invoicingCompanyName: '' // 开票单位(查询)
+  invoicingCompanyName: '', // 开票单位(查询)
+  invoiceType: 1,
+  companyId: route.query.companyId,
 })
 const scroll = ref({
   y: 800,
@@ -314,7 +316,9 @@ function reset() {
     type: '',
     code: '',
     receivingCompanyName: name, // 受票单位（自己）
-    invoicingCompanyName: '' // 开票单位(查询)
+    invoicingCompanyName: '', // 开票单位(查询)
+    invoiceType: 1, // 发票类型 1为进项发票
+    companyId: route.query.companyId,
   }
   getqyzxInvoice();
 }

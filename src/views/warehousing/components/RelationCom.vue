@@ -1,9 +1,9 @@
 <template>
   <div @click.stop="handleRelation">
     <el-button type="primary" :style="{ width: width + 'px'}" >联系TA</el-button>
+    <div v-if="showCancel== true" style="margin-top: 8px;"><el-button :style="{ width: width + 'px'}" >取消联系</el-button></div>
   </div>
     
-
     <el-dialog v-model="showRelation" :width="500">
       <template #header>
         <div class="dia-header">联系TA</div>
@@ -58,7 +58,11 @@ const props  = defineProps({
   width: {
     default: 100
   },
-  data: {}
+  data: {},
+  showCancel: {
+    type: Boolean,
+    default: false
+  }
 })
 
 const showRelation = ref(false)

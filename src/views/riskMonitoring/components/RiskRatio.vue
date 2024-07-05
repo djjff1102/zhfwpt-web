@@ -3,7 +3,9 @@
     <TitleCom title-text="企业信用占比"></TitleCom>
     <el-row :gutter="16">
       <el-col :span="8">
-        <div class="chart" id="ratioChart"></div>
+        <div class="chart" id="ratioChart">
+          <no-data ></no-data>
+        </div>
       </el-col>
       <el-col :span="16">
         <div class="table">
@@ -84,6 +86,11 @@ const props = defineProps({
 watch(() => props.riskData, (v) => {
   if(v) {
     nextTick(() => {
+      let high = v.high.count || 0
+      let middle = v.middle.count || 0
+      let low = v.low.count || 0
+      if(high == 0 && middle ==0 && low ==0 ) 
+        return
       const option = pieOption()
       option.title[0].subtext = (v.high.count + v.middle.count + v.low.count) + '个'
       option.series[0].data[0].value = v.high.count || 0
@@ -202,6 +209,12 @@ getriskIndicator()
 </script>
 
 <style lang="scss" scoped>
+.chart {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
 .table {
   width: 100%;
 }

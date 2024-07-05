@@ -27,11 +27,7 @@
           <div class="price-cell-item">{{ data.areaType }}</div>
           <div class="price-cell-item">{{ data.area }}</div>
         </div>
-        <div v-if="data.priceType == 1" class="price-cell">
-          <div class="price-cell-item price-base">{{ data.areaBuild }}</div>
-          <div class="price-cell-item price-base">仓库类型</div>
-          <div class="price-cell-item price-base">{{ data.areaStart }}</div>
-        </div>
+
         <div v-if="data.priceType == 1" class="price-cell">
           <div class="price-cell-item price-base">{{ data.areaBuild }}</div>
           <div class="price-cell-item price-base">仓库类型</div>
@@ -134,10 +130,10 @@ const props = defineProps({
   }
 }
 .price-cell:first-child {
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 .price-new {
-  font-size: 18px;
+  font-size: 20px;
   color: #f76161;
 }
 .price-old {

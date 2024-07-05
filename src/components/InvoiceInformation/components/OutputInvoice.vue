@@ -31,8 +31,8 @@
         <!-- <el-form-item field="invoicingCompanyName" label="开票单位">
           <el-input v-model="searchPar.invoicingCompanyName" placeholder="请输入开票单位" />
         </el-form-item> -->
-        <el-form-item field="code" label="发票号码">
-          <el-input v-model="searchPar.code" placeholder="请输入发票号码" clearable/>
+        <el-form-item field="code" label="发票代码">
+          <el-input v-model="searchPar.code" placeholder="请输入发票代码" clearable/>
         </el-form-item>
         <el-form-item>
           <w-button type="primary" class="mr-8px" @click="search">搜索</w-button>
@@ -264,7 +264,9 @@ const searchPar = ref({
   type: '',
   code: '',
   receivingCompanyName: '', // 受票单位（查询）
-  invoicingCompanyName: '' // 开票单位(自己)
+  invoicingCompanyName: '', // 开票单位(自己)
+  invoiceType: 2,
+  companyId: route.query.companyId,
 })
 
 const echartData = ref({
@@ -335,7 +337,9 @@ function reset() {
     type: '',
     code: '',
     receivingCompanyName: '', // 受票单位（查询）
-    invoicingCompanyName: name
+    invoicingCompanyName: name,
+    invoiceType: 2,
+    companyId: route.query.companyId,
   }
   pagination.value.pageSize = 10;
   getqyzxInvoice();

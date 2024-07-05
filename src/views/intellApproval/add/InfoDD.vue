@@ -22,9 +22,10 @@
           <attachFile v-model="tableData[rowIndex]" :row="tableData[rowIndex]" :type="pro.DD" v-bind="$attrs"></attachFile>
         </template>
         <template v-slot:materialErrorslot="{rowIndex}">
-            <span v-for="(item, i) in tableData[rowIndex]?.material?.judgeResult" :key="i">
+          <materialError :results="tableData[rowIndex]?.material?.judgeResult"></materialError>
+            <!-- <span v-for="(item, i) in tableData[rowIndex]?.material?.judgeResult" :key="i">
               {{ item }} {{ (tableData[rowIndex]?.material?.judgeResult.length - 1) == i ? '': '、' }}
-            </span>
+            </span> -->
         </template>
         <template v-slot:operations="{rowIndex}">
           <reportOperation v-model="tableData[rowIndex]" :rowIndex="rowIndex" :rowId="tableData[rowIndex].id" :type="pro.DD" :row="tableData[rowIndex]" v-bind="$attrs"></reportOperation>
@@ -41,6 +42,7 @@ import { formatNumber, checkFileError } from '@/utils/common'
 import reportOperation from './reportOperation.vue'
 import { pro } from '../type'
 import { useApprovalStore } from '@/store/modules/approval'
+import materialError from './materialError.vue'
 import attachFile from './attachFile.vue'
 
 

@@ -60,7 +60,7 @@
             <template #content>
               <div class="flex items-center">
                 <i
-                  v-if="hasInput"
+                  v-if="passwordData.newPassword"
                   class="iconfont mr-[4px] !text-[12px]"
                   :class="
                     passedVerification.length
@@ -72,7 +72,7 @@
               </div>
               <div class="flex items-center">
                 <i
-                  v-if="hasInput"
+                  v-if="passwordData.newPassword"
                   class="iconfont mr-[4px] !text-[12px]"
                   :class="
                     passedVerification.character
@@ -84,7 +84,7 @@
               </div>
               <div class="flex items-center">
                 <i
-                  v-if="hasInput"
+                  v-if="passwordData.newPassword"
                   class="iconfont mr-[4px] !text-[12px]"
                   :class="
                     passedVerification.space
@@ -98,7 +98,7 @@
             <i
               class="position-absolute right-[-42px] mr-[17px] ml-[14px] iconfont !text-[18px]"
               :class="
-                !hasInput
+                !passwordData.newPassword
                   ? 'icon-danchuangyichang text-[#F7951D]'
                   : passedVerification.length &&
                       passedVerification.character &&
@@ -149,7 +149,6 @@ const newPasswordVisible = ref(false);
 const confirmPasswordVisible = ref(false);
 const userStore = useUserStore();
 const passwordForm = ref();
-const hasInput = ref(false); //新密码输入框是否输入过
 const route = useRoute();
 const router = useRouter();
 const passedVerification = reactive({
@@ -192,7 +191,6 @@ const rules = reactive<FormRules<PasswordData>>({
   ],
 });
 function newPasswordChange() {
-  hasInput.value = true;
   const regex =
     /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*￥()_+{}|:"<>?`\-=[\]\\;',./]).*$/;
   const noSpaceRegex = /^[^\s\u4e00-\u9fa5]*$/;
@@ -228,7 +226,6 @@ function showPasswordDialog() {
     newPassword: "",
     confirmPassword: "",
   });
-  hasInput.value = false;
   dialogVisible.value = true;
   passwordVisible.value = false;
   newPasswordVisible.value = false;

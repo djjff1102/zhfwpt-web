@@ -98,7 +98,7 @@ const tableData = ref([])
 
 const visible = ref(false)
 const defaultselectedkeys = ref([]) // 默认选中的行
-const total = ref(10)
+const total = ref(0)
 const selectedRows = ref([]) // 已选择的行
 const searchPar = ref({
   page_size: 2,

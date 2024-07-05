@@ -41,8 +41,8 @@
 </template>
 <script setup>
 import { ref } from 'vue';
-// import TendencyChart from "./components/TendencyChart/index.vue";
-// import OutputInvoice from "./components/OutputInvoice.vue";
+import TendencyChart from "./components/TendencyChart/index.vue";
+import OutputInvoice from "./components/OutputInvoice.vue";
 import InputInvoice from "./components/InputInvoice.vue";
 import { groupByInvoiceDate } from '@/api/archives'
 import { useRoute } from 'vue-router';
@@ -113,9 +113,11 @@ function changeMonth() {
 function getgroupByInvoiceDateIn() {
   return new Promise((resolve, reject) => {
     groupByInvoiceDate({
+      companyId: route.query.companyId,
       receivingCompanyName: route.query.companyName,
       invoiceDateStart: monthRange.value[0],
-      invoiceDateEnd: monthRange.value[1]
+      invoiceDateEnd: monthRange.value[1],
+      invoiceType: 1,
     }).then(res => {
       resolve(res.data)
     }).catch(err => {
@@ -128,9 +130,11 @@ function getgroupByInvoiceDateIn() {
 function getgroupByInvoiceDateOut() {
   return new Promise((resolve, reject) => {
     groupByInvoiceDate({
+      companyId: route.query.companyId,
       invoicingCompanyName: route.query.companyName,
       invoiceDateStart: monthRange.value[0],
-      invoiceDateEnd: monthRange.value[1]
+      invoiceDateEnd: monthRange.value[1],
+      invoiceType: 2
     }).then(res => {
       resolve(res.data)
     }).catch(err => {

@@ -114,7 +114,7 @@
             <span>{{ form.validDateEnd && form.validDateEnd.split(' ')[0] }}</span>
         </el-form-item>
         <el-form-item prop="reason" label="申请理由" required>
-          <el-input v-if="initPageParam.edit" type="textarea" v-model="form.reason"></el-input>
+          <el-input v-if="initPageParam.edit" type="textarea" v-model="form.reason" show-word-limit maxlength="500"></el-input>
           <div v-else>{{ form.reason }}</div>
         </el-form-item>
       </el-form>
@@ -331,7 +331,8 @@ const basefrom2 = ref();
 const rules = reactive({
   applyTime: [{ required: true, message: '申请日期不能为空', trigger: ['blur', 'change'] }],
   money: [{ required: true, message: '请输入申请额度', trigger: 'focus' }],
-  reason: [{ required: true, message: '请输入申请理由', trigger: 'blur' }],
+  reason: [{ required: true, message: '请输入申请理由', trigger: 'blur' }, 
+  { max: 500, message: '最大长度不能超过500字', trigger: 'blur'}],
   limitType: [{ required: true, message: '请选择调整类型', trigger: ['blur', 'change'] }],
   adjustType: [{ required: true, message: '请选择短期调整类型' }],
   validDateStart: [{ required: true, message: '请选择起止有效期',trigger: ['blur', 'change'] }],

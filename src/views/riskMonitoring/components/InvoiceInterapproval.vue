@@ -26,12 +26,14 @@ import { invoiceCheckByDate } from '@/api/riskmonitor'
 import { ref } from 'vue'
 import dayjs from "dayjs";
 import { computStep } from '@/utils/common'
+import noData from "@/assets/images/no-data.png";
 
 const searchPar = ref({
   startDate: '',
   endDate: ''
 })
-
+let statisticsChartRef = null
+const approvalChartRef = ref()
 
 function hanleMonth(v) {
   searchPar.value.startDate = v[0]
@@ -41,25 +43,59 @@ function hanleMonth(v) {
 
 function getinvoiceCheckByDate() {
   invoiceCheckByDate( searchPar.value ).then(res => {
-    initPie(res.data)
-    initBar(res.data.invoiceCheckStatistic)
+    let refuseNum = res.data.refuseNum || 0
+    let unCheckNum = res.data.unCheckNum || 0
+    let passNum = res.data.passNum || 0
+    if(refuseNum == 0 && unCheckNum == 0 && passNum == 0) {
+      renderEmpty()
+    } else {
+      initPie(res.data)
+      initBar(res.data.invoiceCheckStatistic)
+    }
   }).catch(err => {
     console.log('整体概况发票审批情况按月份查询:', err)
   })
 }
 
+// 空数据处理
+function renderEmpty() {
+  statisticsChartRef.clear()
+  approvalChartRef.value.clear();
+  let d = `<div class="no-data">
+    <img src="${noData}" alt="" />
+    <span class="text-#BFC4CD">暂无数据</span>
+  </div>`
+  var img = document.createElement("img");
+  img.src = noData;
+
+  var img2 = document.createElement("img");
+  img2.src = noData;
+  var approvalChart = document.getElementById("approvalChart");
+  var statisticsChart = document.getElementById("statisticsChart");
+  approvalChart.innerHTML = d
+  statisticsChart.innerHTML = d
+}
+
 function initPie(data) {
-  const approvalDom = document.getElementById("approvalChart"); // 审批占比
-  const approvalChart = echarts.init(approvalDom, null, {
+  let approvalDom = document.getElementById("approvalChart"); // 审批占比
+  if (echarts.getInstanceByDom(approvalDom)) {
+    echarts.dispose(approvalDom);
+    approvalDom = document.getElementById("approvalChart");
+  }
+  approvalChartRef.value = echarts.init(approvalDom, null, {
     width: "auto",
     height: '260'
   });
-  approvalChart.setOption(renderOption(pieOption(), data));
+  approvalChartRef.value.setOption(renderOption(pieOption(), data));
 }
 
 function initBar(data) {
-  const statisticsDom = document.getElementById("statisticsChart");
-  const statisticsChart = echarts.init(statisticsDom, null, {
+  let statisticsDom = document.getElementById("statisticsChart");
+  if (echarts.getInstanceByDom(statisticsDom)) {
+    echarts.dispose(statisticsDom);
+    statisticsDom = document.getElementById("statisticsChart");
+  }
+  statisticsChartRef = echarts.init(statisticsDom, null, {
     width: "auto",
     height: '260'
   });
@@ -96,7 +132,7 @@ function initBar(data) {
   option.series[1].data = wait // 待审批
   option.series[2].data = pass // 通过
   option.series[3].data = money// 审批金额
-  statisticsChart.setOption(option);
+  statisticsChartRef.setOption(option);
 }
 
 function init() {
