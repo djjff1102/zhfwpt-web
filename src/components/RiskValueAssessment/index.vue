@@ -15,8 +15,8 @@
           </div>
           <div class="info">
             <p>
-              本次评估分值为 <span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ riskData >=0 ? riskData : '--' }}</span>
-              分，该分值处于<span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ riskOrCreditLevel && fxtype[Number(riskOrCreditLevel) - 1].label || '--' }}</span>，以下为风险点，请根据实际情况研判额度申报。
+              本次评估分值为 <span class="risk-leval" :class="`leval-${currentType==1?riskOrCreditLevel:4 - riskOrCreditLevel}`">{{ riskData >=0 ? riskData : '--' }}</span>
+              分，该分值处于<span class="risk-leval" :class="`leval-${currentType==1?riskOrCreditLevel: 4 - riskOrCreditLevel}`">{{ riskOrCreditLevel && fxtype[Number(riskOrCreditLevel) - 1].label || '--' }}</span>，以下为风险点，请根据实际情况研判额度申报。
             </p>
             <!-- <p>
               本次评估分值为 <span class="risk-leval" :class="'leval-' + suggestData.riskLevel">{{ suggestData.riskScore || '--' }}</span>

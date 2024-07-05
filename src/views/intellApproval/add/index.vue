@@ -170,31 +170,31 @@
       </card-tab>
       <InfoDD
         v-show="curTab == pro.DD" 
-        :reportId="reportId"
+        :reportId="rediusReportId?rediusReportId:reportId"
         :approveStatus="form.approveStatus"
       ></InfoDD>
       <InfoHT
         v-show="curTab == pro.HT"
-        :reportId="reportId"
+        :reportId="rediusReportId?rediusReportId:reportId"
         :approveStatus="form.approveStatus"
       ></InfoHT>
       <!-- 发票不区分进项和销项 -->
       <InfoFP
-        :reportId="reportId"
+        :reportId="rediusReportId?rediusReportId:reportId"
         v-show="curTab == pro.FP"
         :approveStatus="form.approveStatus"
       ></InfoFP>
       <InfoYH
         v-if="curTab == pro.YH"
-        :reportId="reportId"
+        :reportId="rediusReportId?rediusReportId:reportId"
       ></InfoYH>
       <InfoCC
         v-if="curTab == pro.CC"
-        :reportId="reportId"
+        :reportId="rediusReportId?rediusReportId:reportId"
       ></InfoCC>
       <InfoWL
         v-if="curTab == pro.WL"
-        :reportId="reportId"
+        :reportId="rediusReportId?rediusReportId:reportId"
       ></InfoWL>
       <div class="flex-base-start sum-line">
         <div style="margin-right: 16px">{{ nameMap[curTab] }}已选：<span class="num-light">{{ formatNumber(totalMoney?.count) || 0 }}</span></div>
@@ -251,6 +251,7 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { storeToRefs } from 'pinia';
 import FileAdd from './FileAdd.vue';
 import detailCom from './detailCom.vue'
 import ApprovalRecord from './ApprovalRecords.vue'
@@ -282,14 +283,7 @@ const noticeStore = useNoticeApprovalStore()
 const approvalStore = useApprovalStore();
 
 const userStore = useUserStoreHook();
-
-const tabData = computed(() => {
-  return approvalStore.tabData
-})
-
-const totalMoney = computed(() => {
-  return approvalStore.totalMoney
-})
+const {tabData,totalMoney,rediusReportId} = storeToRefs(approvalStore);
 
 // 校验文件是否已上传
 const fileUploadValidate = computed(() => {
