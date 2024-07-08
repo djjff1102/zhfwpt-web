@@ -11,7 +11,7 @@
     </div>
     <div v-if="initPageParam.title == '详情'" class="section-sub flex-base-end">
       <approval-record
-        v-hasPerm="btnApprovalCode.approvallist"
+        v-hasPerm="btnApprovalCode.approvalRecord"
         :reportId="reportId"
       ></approval-record>
       <w-button

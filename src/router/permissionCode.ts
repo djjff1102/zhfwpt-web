@@ -7,6 +7,7 @@ export const btnApprovalCode = {
   export: "1005", // 导出
   // approvallist: "1006", // 审批历史
   detail: "1007", // 详情
+  approvalRecord: "1013", // 审批记录
   // approvaluser: "1008", // 申请资料详情（用户信息）
   // approvalexcute: "1009", // 审批执行侧
   save: "1010", // 暂存
