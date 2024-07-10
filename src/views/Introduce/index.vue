@@ -151,8 +151,8 @@
         </div>
       </div>
       <div class="page-bottom">
-        <span class="bottom-text">指导单位：东疆商务局和东疆税务局</span>
-        <span class="bottom-text">组织单位：东疆商务局</span>
+        <span class="bottom-text">指导单位：天津东疆综合保税区商务促进局和国家税务总局天津东疆保税港区税务局</span>
+        <span class="bottom-text">组织单位：天津东疆综合保税区商务促进局</span>
       </div>
     </div>
   </div>

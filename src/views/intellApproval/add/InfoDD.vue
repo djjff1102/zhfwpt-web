@@ -9,7 +9,6 @@
         :scroll="scroll"
         :pagination="false"
         @page-change="changepage"
-        @page-size-change="changePagesize"
         :bordered="false"
       >
         <template v-slot:index="{rowIndex}">
