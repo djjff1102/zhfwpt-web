@@ -113,6 +113,7 @@ const emits = defineEmits(['updateAdd'])
 
 // 跳转详情
 function handleDetail(index, row) {
+  handleCancel();
   router.push({
     path: '/intellApproval/intellApprovalOrderDetail',
     query: {

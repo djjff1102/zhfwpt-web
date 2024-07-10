@@ -239,6 +239,7 @@ onMounted(() => {
 
     <!-- 弹窗 -->
     <userFormDialog
+      :roleList="roleList"
       ref="userFormDialogRef"
       @success="handleQuery"
       v-model="queryParams.organization_id"

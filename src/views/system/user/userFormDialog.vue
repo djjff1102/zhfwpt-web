@@ -42,7 +42,7 @@
           filterable
         >
           <el-option
-            v-for="item in roleOptions"
+            v-for="item in roleList"
             :key="item.id"
             :label="item.name"
             :value="item.id"
@@ -111,6 +111,10 @@ const props = defineProps({
     type: String,
     default: "0",
   },
+  roleList: {
+    type: Array,
+    default: ()=>[],
+  },
 });
 
 const dialog = reactive({
@@ -161,8 +165,6 @@ const rules = reactive({
   enable_flag: [{ required: true, message: "请选择状态", trigger: "blur" }],
 });
 
-const roleOptions = JSON.parse(localStorage.getItem("roleList") || "[]");
-// const organizationData = JSON.parse(localStorage.getItem("deptList") || "[]");
 
 function organizationData() {
   return JSON.parse(localStorage.getItem("deptList") || "[]");
