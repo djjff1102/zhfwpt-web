@@ -34,8 +34,7 @@
         ref="multipleTableRef"
         :data="tableData"
         style="width: 100%"
-        @select-all="selectAll"
-        @selection-change="handlSelectRow">
+        @selection-change="selectRows">
         <el-table-column type="selection" width="55" :selectable="checkselect"/>
         <el-table-column label="订单编号" width="120" show-overflow-tooltip>
           <template #default="scope">{{ scope.row.code }}</template>
@@ -80,7 +79,7 @@
 </template>
 
 <script setup>
-import { ref,onMounted } from 'vue';
+import { ref,onMounted, watch } from 'vue';
 import { qyzxOrder } from '@/api/archives'
 import { useApprovalStore } from '@/store/modules/approval'
 import { useRouter } from 'vue-router';
@@ -99,18 +98,20 @@ const tableData = ref([])
 const visible = ref(false)
 const defaultselectedkeys = ref([]) // 默认选中的行
 const total = ref(0)
-const selectedRows = ref([]) // 已选择的行
 const searchPar = ref({
-  page_size: 2,
+  page_size: 10,
   page: 1,
   code: '', // 订单编号
   enterpriseDataFlag: true // 买方名称
 })
-const pagesSelectRows = ref({}) // 记录每页选择的row
+const pagesSelectRows = ref([]) // 记录所有选择的row
+const curSelectRows = ref([]) // 当前table选择的row
 
 const multipleTableRef = ref()
 const emits = defineEmits(['updateAdd'])
-
+watch(()=>approvalStore.DDList,()=>{
+  pagesSelectRows.value = JSON.parse(JSON.stringify(approvalStore.DDList))
+})
 // 跳转详情
 function handleDetail(index, row) {
   handleCancel();
@@ -131,32 +132,24 @@ function checkselect(row) {
 // 新增
 function handleAdd() {
   visible.value = true
-  toggleSelection(pagesSelectRows.value[searchPar.value.page])
+  pagesSelectRows.value = JSON.parse(JSON.stringify(approvalStore.DDList))
+  toggleSelection()
 }
 
 // 默认选中
-const toggleSelection = (rows) => {
-  if (rows) {
-    rows.forEach((row) => {
-      rows.forEach(el => { // 记录的数据
-        const row = tableData.value.find(e => e.code === el.code); // row是当前表格数据
-        row && multipleTableRef.value.toggleRowSelection(row, true);
-      });
-    })
-  } else {
-    multipleTableRef.value.clearSelection()
-  }
+const toggleSelection = () => {
+  multipleTableRef.value.clearSelection();
+  pagesSelectRows.value.forEach(el => { // 记录的数据
+      const row = tableData.value.find(e => e.code === el.code); // row是当前表格数据
+      row && multipleTableRef.value.toggleRowSelection(row, true);
+  });
 }
 
-// 全选
-function selectAll(row) {
-  selectedRows.value = row
+
+function selectRows(rows) {
+  curSelectRows.value = rows
 }
 
-// 多选
-function handlSelectRow(row) {
-  selectedRows.value = row
-}
 
 // 搜索
 function search() {
@@ -173,23 +166,21 @@ function reset() {
 
 
 const changepage = (v) => {
-  pagesSelectRows.value[searchPar.value.page] = JSON.parse(JSON.stringify(selectedRows.value)) 
   searchPar.value.page = v;
   getOrder();
 };
 
 // 点击确定查询数据
 async function handleOK() {
+   //提交时把最后这页选择的数据保存
+  getPagesSelectRows();
   searchPar.value.code = ''
   getOrder();
   visible.value = false
-  pagesSelectRows.value[searchPar.value.page] = selectedRows.value; // 存储已经选中的行
   let ids = []
-  Object.keys(pagesSelectRows.value).forEach(key => {
-    pagesSelectRows.value[key].forEach( item =>{
+  pagesSelectRows.value.forEach( item =>{
       ids.push(item.code)
-    })
-   })
+  })
   if(ids.length == 0) {
     approvalStore.clearTable()
     approvalStore.resetMoney()
@@ -207,14 +198,25 @@ function handleCancel () {
 
 // 获取订单
 function getOrder() {
+  //获取新页table数据之前先把上次选择数据保存
+  getPagesSelectRows();
   qyzxOrder( searchPar.value ).then(res => {
     tableData.value = res.data || []
     total.value = Number(res.total)
     nextTick(() => {
-      toggleSelection(pagesSelectRows.value[searchPar.value.page])
+      toggleSelection()
     })
   }).catch(err => {
   })
+}
+function getPagesSelectRows(){
+  //将curSelectRows赋值给pagesSelectRows
+  let newSelectRows = [];
+  pagesSelectRows.value.forEach((el)=>{
+    const row = tableData.value.find(e => e.code === el.code); // row是当前表格数据
+    !row && newSelectRows.push(el)
+  })
+  pagesSelectRows.value = [...newSelectRows,...curSelectRows.value];
 }
 
 getOrder()
